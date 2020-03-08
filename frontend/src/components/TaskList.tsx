@@ -77,8 +77,6 @@ interface Props {
   style?: Record<string, any>;
   // may not be provided - and might be null
   ignoreContainerClipping?: boolean;
-
-  useClone?: boolean;
 }
 
 interface TaskListProps {
@@ -140,7 +138,6 @@ const TaskList = ({
     ignoreContainerClipping={ignoreContainerClipping}
     isDropDisabled={isDropDisabled}
     isCombineEnabled={isCombineEnabled}
-    renderClone={undefined}
   >
     {(
       dropProvided: DroppableProvided,

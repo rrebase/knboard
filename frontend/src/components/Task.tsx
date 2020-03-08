@@ -26,29 +26,10 @@ const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
 
 const imageSize = 40;
 
-const CloneBadge = styled.div`
-  background: ${G100};
-  bottom: ${grid / 2}px;
-  border: 2px solid ${G200};
-  border-radius: 50%;
-  box-sizing: border-box;
-  font-size: 10px;
-  position: absolute;
-  right: -${imageSize / 3}px;
-  top: -${imageSize / 3}px;
-  transform: rotate(40deg);
-  height: ${imageSize}px;
-  width: ${imageSize}px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface ContainerProps {
   isDragging: boolean;
   isGroupedOver: boolean;
   colors: AuthorColors;
-  isClone?: boolean;
 }
 
 const Container = styled.span<ContainerProps>`
@@ -148,7 +129,6 @@ interface Props {
   quote: Quote;
   isDragging: boolean;
   provided: DraggableProvided;
-  isClone?: boolean;
   isGroupedOver?: boolean;
   style?: Record<string, any>;
   index?: number;
@@ -160,7 +140,6 @@ const Task = ({
   isGroupedOver,
   provided,
   style,
-  isClone,
   index
 }: Props) => {
   const [editing, setEditing] = React.useState();
@@ -169,7 +148,6 @@ const Task = ({
     <Container
       isDragging={isDragging}
       isGroupedOver={Boolean(isGroupedOver)}
-      isClone={isClone}
       colors={quote.author.colors}
       ref={provided.innerRef}
       {...provided.draggableProps}
@@ -181,7 +159,6 @@ const Task = ({
       aria-label={`${quote.author.name} quote ${quote.content}`}
     >
       <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
-      {isClone ? <CloneBadge>Clone</CloneBadge> : null}
       <Content>
         {editing ? <span>editing</span> : <span>normal</span>}
         <BlockQuote>{quote.content}</BlockQuote>

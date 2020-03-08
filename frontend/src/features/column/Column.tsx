@@ -36,7 +36,6 @@ type Props = {
   index: number;
   isScrollable?: boolean;
   isCombineEnabled?: boolean;
-  useClone?: boolean;
 };
 
 const Column = ({
@@ -44,8 +43,7 @@ const Column = ({
   quotes,
   index,
   isScrollable,
-  isCombineEnabled,
-  useClone
+  isCombineEnabled
 }: Props) => {
   return (
     <Draggable draggableId={title} index={index}>
@@ -68,7 +66,6 @@ const Column = ({
             quotes={quotes}
             internalScroll={isScrollable}
             isCombineEnabled={Boolean(isCombineEnabled)}
-            useClone={Boolean(useClone)}
           />
         </Container>
       )}

@@ -32,13 +32,11 @@ interface Props {
   withScrollableColumns?: boolean;
   isCombineEnabled?: boolean;
   containerHeight?: string;
-  useClone?: boolean;
 }
 
 const Board = ({
   initial,
   containerHeight,
-  useClone,
   isCombineEnabled,
   withScrollableColumns
 }: Props) => {
@@ -120,7 +118,6 @@ const Board = ({
               quotes={columns[key]}
               isScrollable={withScrollableColumns}
               isCombineEnabled={isCombineEnabled}
-              useClone={useClone}
             />
           ))}
           {provided.placeholder}
