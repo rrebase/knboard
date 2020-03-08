@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Quote, AuthorColors } from "types";
-import { DraggableProvided } from "react-beautiful-dnd";
-import { N30, N0, G100, G200, N900, N70 } from "colors";
+import {
+  DraggableProvided,
+  Draggable,
+  DraggableStateSnapshot
+} from "react-beautiful-dnd";
+import { N30, N0, N900, N70 } from "colors";
 import { grid, borderRadius } from "const";
+import TaskEditor from "components/TaskEditor";
+import EditButton from "./EditButton";
 
 const getBackgroundColor = (
   isDragging: boolean,
@@ -127,47 +133,54 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
 interface Props {
   quote: Quote;
-  isDragging: boolean;
-  provided: DraggableProvided;
-  isGroupedOver?: boolean;
   style?: Record<string, any>;
-  index?: number;
+  index: number;
 }
 
-const Task = ({
-  quote,
-  isDragging,
-  isGroupedOver,
-  provided,
-  style,
-  index
-}: Props) => {
-  const [editing, setEditing] = React.useState();
+const Task = ({ quote, style, index }: Props) => {
+  const [hover, setHover] = React.useState<boolean>(false);
+  const [editing, setEditing] = React.useState<boolean>(false);
+
+  const beginHover = () => setHover(true);
+  const endHover = () => setHover(false);
+
+  if (editing) {
+    return <TaskEditor setEditing={setEditing} />;
+  }
 
   return (
-    <Container
-      isDragging={isDragging}
-      isGroupedOver={Boolean(isGroupedOver)}
-      colors={quote.author.colors}
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-      style={getStyle(provided, style)}
-      data-is-dragging={isDragging}
-      data-testid={quote.id}
-      data-index={index}
-      aria-label={`${quote.author.name} quote ${quote.content}`}
-    >
-      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
-      <Content>
-        {editing ? <span>editing</span> : <span>normal</span>}
-        <BlockQuote>{quote.content}</BlockQuote>
-        <Footer>
-          <Author colors={quote.author.colors}>{quote.author.name}</Author>
-          <QuoteId>id:{quote.id}</QuoteId>
-        </Footer>
-      </Content>
-    </Container>
+    <Draggable key={quote.id} draggableId={quote.id} index={index}>
+      {(
+        dragProvided: DraggableProvided,
+        dragSnapshot: DraggableStateSnapshot
+      ) => (
+        <Container
+          isDragging={dragSnapshot.isDragging}
+          isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+          colors={quote.author.colors}
+          ref={dragProvided.innerRef}
+          {...dragProvided.draggableProps}
+          {...dragProvided.dragHandleProps}
+          style={getStyle(dragProvided, style)}
+          data-is-dragging={dragSnapshot.isDragging}
+          data-testid={quote.id}
+          data-index={index}
+          aria-label={`${quote.author.name} quote ${quote.content}`}
+          onMouseEnter={beginHover}
+          onMouseLeave={endHover}
+        >
+          <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
+          <Content>
+            <BlockQuote>{quote.content}</BlockQuote>
+            <Footer>
+              <Author colors={quote.author.colors}>{quote.author.name}</Author>
+              <QuoteId>id:{quote.id}</QuoteId>
+            </Footer>
+          </Content>
+          {hover && <EditButton handleClick={() => setEditing(true)} />}
+        </Container>
+      )}
+    </Draggable>
   );
 };
 

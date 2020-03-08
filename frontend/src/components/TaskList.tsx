@@ -4,9 +4,6 @@ import { R50, T50, N30 } from "colors";
 import { grid } from "const";
 import { Quote } from "types";
 import {
-  Draggable,
-  DraggableProvided,
-  DraggableStateSnapshot,
   DroppableProvided,
   DroppableStateSnapshot,
   Droppable
@@ -75,7 +72,6 @@ interface Props {
   isDropDisabled?: boolean;
   isCombineEnabled?: boolean;
   style?: Record<string, any>;
-  // may not be provided - and might be null
   ignoreContainerClipping?: boolean;
 }
 
@@ -86,20 +82,7 @@ interface TaskListProps {
 const InnerTaskList = ({ quotes }: TaskListProps) => (
   <>
     {quotes.map((quote: Quote, index: number) => (
-      <Draggable key={quote.id} draggableId={quote.id} index={index}>
-        {(
-          dragProvided: DraggableProvided,
-          dragSnapshot: DraggableStateSnapshot
-        ) => (
-          <Task
-            key={quote.id}
-            quote={quote}
-            isDragging={dragSnapshot.isDragging}
-            isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-            provided={dragProvided}
-          />
-        )}
-      </Draggable>
+      <Task key={quote.id} quote={quote} index={index} />
     ))}
   </>
 );
