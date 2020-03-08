@@ -1,19 +1,18 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.scss";
-import Counter from "./features/counter/Counter";
 import { Provider } from "react-redux";
 import store from "./store";
+import { ThemeProvider, CssBaseline } from "@material-ui/core";
+import { theme } from "./const";
+import Board from "features/board";
+import { authorQuoteMap } from "data";
 
 const App = () => {
   return (
     <Provider store={store}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <Counter />
-        </header>
-      </div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Board initial={authorQuoteMap} />
+      </ThemeProvider>
     </Provider>
   );
 };
