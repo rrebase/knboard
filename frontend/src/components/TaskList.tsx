@@ -11,7 +11,7 @@ import {
   DroppableStateSnapshot,
   Droppable
 } from "react-beautiful-dnd";
-import QuoteItem from "./QuoteItem";
+import Task from "./Task";
 import Title from "./Title";
 
 export const getBackgroundColor = (
@@ -81,11 +81,11 @@ interface Props {
   useClone?: boolean;
 }
 
-interface QuoteListProps {
+interface TaskListProps {
   quotes: Quote[];
 }
 
-const InnerQuoteList = ({ quotes }: QuoteListProps) => (
+const InnerTaskList = ({ quotes }: TaskListProps) => (
   <>
     {quotes.map((quote: Quote, index: number) => (
       <Draggable key={quote.id} draggableId={quote.id} index={index}>
@@ -93,7 +93,7 @@ const InnerQuoteList = ({ quotes }: QuoteListProps) => (
           dragProvided: DraggableProvided,
           dragSnapshot: DraggableStateSnapshot
         ) => (
-          <QuoteItem
+          <Task
             key={quote.id}
             quote={quote}
             isDragging={dragSnapshot.isDragging}
@@ -116,13 +116,13 @@ const InnerList = ({ quotes, dropProvided, title }: InnerListProps) => (
   <Container>
     {title ? <Title>{title}</Title> : null}
     <DropZone ref={dropProvided.innerRef}>
-      <InnerQuoteList quotes={quotes} />
+      <InnerTaskList quotes={quotes} />
       {dropProvided.placeholder}
     </DropZone>
   </Container>
 );
 
-const QuoteList = ({
+const TaskList = ({
   ignoreContainerClipping,
   internalScroll,
   scrollContainerStyle,
@@ -173,4 +173,4 @@ const QuoteList = ({
   </Droppable>
 );
 
-export default QuoteList;
+export default TaskList;

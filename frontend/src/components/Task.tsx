@@ -106,14 +106,7 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-const BlockQuote = styled.div`
-  &::before {
-    content: open-quote;
-  }
-  &::after {
-    content: close-quote;
-  }
-`;
+const BlockQuote = styled.div``;
 
 const Footer = styled.div`
   display: flex;
@@ -161,7 +154,7 @@ interface Props {
   index?: number;
 }
 
-const QuoteItem = ({
+const Task = ({
   quote,
   isDragging,
   isGroupedOver,
@@ -169,31 +162,36 @@ const QuoteItem = ({
   style,
   isClone,
   index
-}: Props) => (
-  <Container
-    isDragging={isDragging}
-    isGroupedOver={Boolean(isGroupedOver)}
-    isClone={isClone}
-    colors={quote.author.colors}
-    ref={provided.innerRef}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    style={getStyle(provided, style)}
-    data-is-dragging={isDragging}
-    data-testid={quote.id}
-    data-index={index}
-    aria-label={`${quote.author.name} quote ${quote.content}`}
-  >
-    <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
-    {isClone ? <CloneBadge>Clone</CloneBadge> : null}
-    <Content>
-      <BlockQuote>{quote.content}</BlockQuote>
-      <Footer>
-        <Author colors={quote.author.colors}>{quote.author.name}</Author>
-        <QuoteId>id:{quote.id}</QuoteId>
-      </Footer>
-    </Content>
-  </Container>
-);
+}: Props) => {
+  const [editing, setEditing] = React.useState();
 
-export default React.memo<Props>(QuoteItem);
+  return (
+    <Container
+      isDragging={isDragging}
+      isGroupedOver={Boolean(isGroupedOver)}
+      isClone={isClone}
+      colors={quote.author.colors}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      style={getStyle(provided, style)}
+      data-is-dragging={isDragging}
+      data-testid={quote.id}
+      data-index={index}
+      aria-label={`${quote.author.name} quote ${quote.content}`}
+    >
+      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
+      {isClone ? <CloneBadge>Clone</CloneBadge> : null}
+      <Content>
+        {editing ? <span>editing</span> : <span>normal</span>}
+        <BlockQuote>{quote.content}</BlockQuote>
+        <Footer>
+          <Author colors={quote.author.colors}>{quote.author.name}</Author>
+          <QuoteId>id:{quote.id}</QuoteId>
+        </Footer>
+      </Content>
+    </Container>
+  );
+};
+
+export default React.memo<Props>(Task);

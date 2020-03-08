@@ -8,7 +8,7 @@ import {
   DraggableProvided,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
-import QuoteList from "components/QuoteList";
+import TaskList from "components/TaskList";
 import Title from "components/Title";
 
 const Container = styled.div`
@@ -59,7 +59,7 @@ const Column = ({
               {title}
             </Title>
           </Header>
-          <QuoteList
+          <TaskList
             listId={title}
             listType="QUOTE"
             style={{
