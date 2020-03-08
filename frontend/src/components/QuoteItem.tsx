@@ -5,16 +5,6 @@ import { DraggableProvided } from "react-beautiful-dnd";
 import { N30, N0, G100, G200, N900, N70 } from "colors";
 import { grid, borderRadius } from "const";
 
-interface Props {
-  quote: Quote;
-  isDragging: boolean;
-  provided: DraggableProvided;
-  isClone?: boolean;
-  isGroupedOver?: boolean;
-  style?: Record<string, any>;
-  index?: number;
-}
-
 const getBackgroundColor = (
   isDragging: boolean,
   isGroupedOver: boolean,
@@ -54,12 +44,14 @@ const CloneBadge = styled.div`
   align-items: center;
 `;
 
-const Container = styled.span<{
+interface ContainerProps {
   isDragging: boolean;
   isGroupedOver: boolean;
   colors: AuthorColors;
   isClone?: boolean;
-}>`
+}
+
+const Container = styled.span<ContainerProps>`
   border-radius: ${borderRadius}px;
   border: 2px solid transparent;
   border-color: ${props => getBorderColor(props.isDragging, props.colors)};
@@ -148,7 +140,7 @@ const QuoteId = styled.small`
   text-align: right;
 `;
 
-function getStyle(provided: DraggableProvided, style?: Record<string, any>) {
+const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   if (!style) {
     return provided.draggableProps.style;
   }
@@ -157,9 +149,19 @@ function getStyle(provided: DraggableProvided, style?: Record<string, any>) {
     ...provided.draggableProps.style,
     ...style
   };
+};
+
+interface Props {
+  quote: Quote;
+  isDragging: boolean;
+  provided: DraggableProvided;
+  isClone?: boolean;
+  isGroupedOver?: boolean;
+  style?: Record<string, any>;
+  index?: number;
 }
 
-function QuoteItem({
+const QuoteItem = ({
   quote,
   isDragging,
   isGroupedOver,
@@ -167,33 +169,31 @@ function QuoteItem({
   style,
   isClone,
   index
-}: Props) {
-  return (
-    <Container
-      isDragging={isDragging}
-      isGroupedOver={Boolean(isGroupedOver)}
-      isClone={isClone}
-      colors={quote.author.colors}
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-      style={getStyle(provided, style)}
-      data-is-dragging={isDragging}
-      data-testid={quote.id}
-      data-index={index}
-      aria-label={`${quote.author.name} quote ${quote.content}`}
-    >
-      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
-      {isClone ? <CloneBadge>Clone</CloneBadge> : null}
-      <Content>
-        <BlockQuote>{quote.content}</BlockQuote>
-        <Footer>
-          <Author colors={quote.author.colors}>{quote.author.name}</Author>
-          <QuoteId>id:{quote.id}</QuoteId>
-        </Footer>
-      </Content>
-    </Container>
-  );
-}
+}: Props) => (
+  <Container
+    isDragging={isDragging}
+    isGroupedOver={Boolean(isGroupedOver)}
+    isClone={isClone}
+    colors={quote.author.colors}
+    ref={provided.innerRef}
+    {...provided.draggableProps}
+    {...provided.dragHandleProps}
+    style={getStyle(provided, style)}
+    data-is-dragging={isDragging}
+    data-testid={quote.id}
+    data-index={index}
+    aria-label={`${quote.author.name} quote ${quote.content}`}
+  >
+    <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
+    {isClone ? <CloneBadge>Clone</CloneBadge> : null}
+    <Content>
+      <BlockQuote>{quote.content}</BlockQuote>
+      <Footer>
+        <Author colors={quote.author.colors}>{quote.author.name}</Author>
+        <QuoteId>id:{quote.id}</QuoteId>
+      </Footer>
+    </Content>
+  </Container>
+);
 
 export default React.memo<Props>(QuoteItem);

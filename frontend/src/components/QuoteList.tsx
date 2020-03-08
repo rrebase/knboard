@@ -112,19 +112,17 @@ interface InnerListProps {
   title?: string;
 }
 
-function InnerList({ quotes, dropProvided, title }: InnerListProps) {
-  return (
-    <Container>
-      {title ? <Title>{title}</Title> : null}
-      <DropZone ref={dropProvided.innerRef}>
-        <InnerQuoteList quotes={quotes} />
-        {dropProvided.placeholder}
-      </DropZone>
-    </Container>
-  );
-}
+const InnerList = ({ quotes, dropProvided, title }: InnerListProps) => (
+  <Container>
+    {title ? <Title>{title}</Title> : null}
+    <DropZone ref={dropProvided.innerRef}>
+      <InnerQuoteList quotes={quotes} />
+      {dropProvided.placeholder}
+    </DropZone>
+  </Container>
+);
 
-export default function QuoteList({
+const QuoteList = ({
   ignoreContainerClipping,
   internalScroll,
   scrollContainerStyle,
@@ -135,44 +133,44 @@ export default function QuoteList({
   style,
   quotes,
   title
-}: Props) {
-  return (
-    <Droppable
-      droppableId={listId}
-      type={listType}
-      ignoreContainerClipping={ignoreContainerClipping}
-      isDropDisabled={isDropDisabled}
-      isCombineEnabled={isCombineEnabled}
-      renderClone={undefined}
-    >
-      {(
-        dropProvided: DroppableProvided,
-        dropSnapshot: DroppableStateSnapshot
-      ) => (
-        <Wrapper
-          style={style}
-          isDraggingOver={dropSnapshot.isDraggingOver}
-          isDropDisabled={isDropDisabled}
-          isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
-          {...dropProvided.droppableProps}
-        >
-          {internalScroll ? (
-            <ScrollContainer style={scrollContainerStyle}>
-              <InnerList
-                quotes={quotes}
-                title={title}
-                dropProvided={dropProvided}
-              />
-            </ScrollContainer>
-          ) : (
+}: Props) => (
+  <Droppable
+    droppableId={listId}
+    type={listType}
+    ignoreContainerClipping={ignoreContainerClipping}
+    isDropDisabled={isDropDisabled}
+    isCombineEnabled={isCombineEnabled}
+    renderClone={undefined}
+  >
+    {(
+      dropProvided: DroppableProvided,
+      dropSnapshot: DroppableStateSnapshot
+    ) => (
+      <Wrapper
+        style={style}
+        isDraggingOver={dropSnapshot.isDraggingOver}
+        isDropDisabled={isDropDisabled}
+        isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+        {...dropProvided.droppableProps}
+      >
+        {internalScroll ? (
+          <ScrollContainer style={scrollContainerStyle}>
             <InnerList
               quotes={quotes}
               title={title}
               dropProvided={dropProvided}
             />
-          )}
-        </Wrapper>
-      )}
-    </Droppable>
-  );
-}
+          </ScrollContainer>
+        ) : (
+          <InnerList
+            quotes={quotes}
+            title={title}
+            dropProvided={dropProvided}
+          />
+        )}
+      </Wrapper>
+    )}
+  </Droppable>
+);
+
+export default QuoteList;

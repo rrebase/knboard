@@ -22,7 +22,7 @@ interface Quote {
 
 const jake: Author = {
   id: "1",
-  name: "Jake",
+  name: "Backlog",
   avatarUrl: jakeImg,
   colors: {
     soft: Y50,
@@ -32,7 +32,7 @@ const jake: Author = {
 
 const BMO: Author = {
   id: "2",
-  name: "BMO",
+  name: "Todo",
   avatarUrl: bmoImg,
   colors: {
     soft: G50,
@@ -42,7 +42,7 @@ const BMO: Author = {
 
 const finn: Author = {
   id: "3",
-  name: "Finn",
+  name: "In Progress",
   avatarUrl: finnImg,
   colors: {
     soft: B50,
@@ -52,7 +52,7 @@ const finn: Author = {
 
 const princess: Author = {
   id: "4",
-  name: "Princess bubblegum",
+  name: "Done",
   avatarUrl: princessImg,
   colors: {
     soft: P50,
