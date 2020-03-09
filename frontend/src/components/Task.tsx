@@ -6,10 +6,11 @@ import {
   Draggable,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
-import { N30, N0, N900, N70 } from "colors";
-import { grid, borderRadius } from "const";
+import { N30, N0, N70 } from "colors";
+import { grid, borderRadius, imageSize } from "const";
 import TaskEditor from "components/TaskEditor";
 import EditButton from "./EditButton";
+import { taskContainerStyles } from "styles";
 
 const getBackgroundColor = (
   isDragging: boolean,
@@ -30,8 +31,6 @@ const getBackgroundColor = (
 const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
   isDragging ? authorColors.hard : "transparent";
 
-const imageSize = 40;
-
 interface ContainerProps {
   isDragging: boolean;
   isGroupedOver: boolean;
@@ -39,39 +38,18 @@ interface ContainerProps {
 }
 
 const Container = styled.span<ContainerProps>`
-  border-radius: ${borderRadius}px;
-  border: 2px solid transparent;
   border-color: ${props => getBorderColor(props.isDragging, props.colors)};
   background-color: ${props =>
     getBackgroundColor(props.isDragging, props.isGroupedOver, props.colors)};
   box-shadow: ${({ isDragging }) =>
     isDragging ? `2px 2px 1px ${N70}` : "none"};
-  box-sizing: border-box;
-  padding: ${grid}px;
-  min-height: ${imageSize}px;
-  margin-bottom: ${grid}px;
-  user-select: none;
-
-  /* anchor overrides */
-  color: ${N900};
-
-  &:hover,
-  &:active {
-    color: ${N900};
-    text-decoration: none;
-  }
 
   &:focus {
-    outline: none;
     border-color: ${props => props.colors.hard};
-    box-shadow: none;
   }
-
-  /* flexbox */
-  display: flex;
 `;
 
-const Avatar = styled.img`
+export const Avatar = styled.img`
   width: ${imageSize}px;
   height: ${imageSize}px;
   border-radius: 50%;
@@ -80,7 +58,7 @@ const Avatar = styled.img`
   flex-grow: 0;
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   /* flex child */
   flex-grow: 1;
   /*
@@ -93,7 +71,7 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-const BlockQuote = styled.div``;
+const TextContent = styled.div``;
 
 const Footer = styled.div`
   display: flex;
@@ -131,6 +109,13 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   };
 };
 
+export const TaskFooter = ({ quote }: { quote: Quote }) => (
+  <Footer>
+    <Author colors={quote.author.colors}>{quote.author.name}</Author>
+    <QuoteId>id:{quote.id}</QuoteId>
+  </Footer>
+);
+
 interface Props {
   quote: Quote;
   style?: Record<string, any>;
@@ -145,7 +130,7 @@ const Task = ({ quote, style, index }: Props) => {
   const endHover = () => setHover(false);
 
   if (editing) {
-    return <TaskEditor setEditing={setEditing} />;
+    return <TaskEditor quote={quote} setEditing={setEditing} />;
   }
 
   return (
@@ -168,14 +153,12 @@ const Task = ({ quote, style, index }: Props) => {
           aria-label={`${quote.author.name} quote ${quote.content}`}
           onMouseEnter={beginHover}
           onMouseLeave={endHover}
+          css={taskContainerStyles}
         >
           <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
           <Content>
-            <BlockQuote>{quote.content}</BlockQuote>
-            <Footer>
-              <Author colors={quote.author.colors}>{quote.author.name}</Author>
-              <QuoteId>id:{quote.id}</QuoteId>
-            </Footer>
+            <TextContent>{quote.content}</TextContent>
+            <TaskFooter quote={quote} />
           </Content>
           {hover && <EditButton handleClick={() => setEditing(true)} />}
         </Container>
