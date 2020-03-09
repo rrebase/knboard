@@ -14,7 +14,7 @@ export interface Author {
 
 export interface ITask {
   id: Id;
-  content: string;
+  title: string;
   author: Author;
 }
 

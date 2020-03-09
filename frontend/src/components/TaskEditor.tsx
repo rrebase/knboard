@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 import TextareaAutosize from "react-textarea-autosize";
 import EditActions from "./EditActions";
 import { Avatar, Content, TaskFooter } from "./Task";
-import { ITask } from "types";
 import { N0 } from "colors";
 import { taskContainerStyles } from "styles";
+import { useDispatch } from "react-redux";
+import { updateTask, deleteTask } from "features/board/BoardSlice";
+import { ITask } from "types";
 
 const Container = styled.div`
   border-color: "transparent";
@@ -42,22 +44,38 @@ interface Props {
 }
 
 const TaskEditor = ({ task, setEditing, text, setText }: Props) => {
+  const dispatch = useDispatch();
   const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
+  const handleSave = () => {
+    const newTask: ITask = { ...task, title: text };
+    dispatch(updateTask(newTask));
+    setEditing(false);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteTask(task.id));
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setText(task.title);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Enter
     if (e.keyCode === 13) {
       e.preventDefault();
-      setEditing(false);
+      handleSave();
     }
     // Escape
     if (e.keyCode === 27) {
       e.preventDefault();
-      setEditing(false);
+      handleCancel();
     }
   };
 
@@ -77,7 +95,9 @@ const TaskEditor = ({ task, setEditing, text, setText }: Props) => {
         <TaskFooter task={task} />
         <EditActions
           saveLabel={adding ? "Add card" : "Save"}
-          setEditing={setEditing}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+          handleCancel={handleCancel}
         />
       </Content>
     </Container>

@@ -127,7 +127,7 @@ interface Props {
 }
 
 const Task = ({ task: task, style, index }: Props) => {
-  const [text, setText] = React.useState<string>(task.content);
+  const [text, setText] = React.useState<string>(task.title);
   const [hover, setHover] = React.useState<boolean>(false);
   const [editing, setEditing] = React.useState<boolean>(false);
 
@@ -162,7 +162,7 @@ const Task = ({ task: task, style, index }: Props) => {
           data-is-dragging={dragSnapshot.isDragging}
           data-testid={task.id}
           data-index={index}
-          aria-label={`${task.author.name} task ${task.content}`}
+          aria-label={`${task.author.name} task ${task.title}`}
           onMouseEnter={beginHover}
           onMouseLeave={endHover}
           css={taskContainerStyles}

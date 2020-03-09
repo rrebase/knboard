@@ -26,14 +26,17 @@ const CancelIcon = styled.div``;
 
 interface Props {
   saveLabel: string;
-  setEditing: (editing: boolean) => void;
+  handleSave: () => void;
+  handleDelete: () => void;
+  handleCancel: () => void;
 }
 
-const EditActions = ({ saveLabel, setEditing }: Props) => {
-  const handleSave = () => setEditing(false);
-  const handleDelete = () => setEditing(false);
-  const handleCancel = () => setEditing(false);
-
+const EditActions = ({
+  saveLabel,
+  handleSave,
+  handleDelete,
+  handleCancel
+}: Props) => {
   return (
     <Wrapper>
       <Actions>
