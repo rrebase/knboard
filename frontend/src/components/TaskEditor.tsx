@@ -35,13 +35,13 @@ const Text = styled.div`
 `;
 
 interface Props {
-  quote: ITask;
+  task: ITask;
   setEditing: (editing: boolean) => void;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const TaskEditor = ({ quote, setEditing, text, setText }: Props) => {
+const TaskEditor = ({ task, setEditing, text, setText }: Props) => {
   const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -63,7 +63,7 @@ const TaskEditor = ({ quote, setEditing, text, setText }: Props) => {
 
   return (
     <Container css={taskContainerStyles} onKeyDown={handleKeyDown}>
-      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
+      <Avatar src={task.author.avatarUrl} alt={task.author.name} />
       <Content>
         <Text>
           <TextareaAutosize
@@ -74,7 +74,7 @@ const TaskEditor = ({ quote, setEditing, text, setText }: Props) => {
             className="edit-textarea"
           />
         </Text>
-        <TaskFooter quote={quote} />
+        <TaskFooter task={task} />
         <EditActions
           saveLabel={adding ? "Add card" : "Save"}
           setEditing={setEditing}

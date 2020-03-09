@@ -9,7 +9,6 @@ export interface Author {
   id: Id;
   name: string;
   avatarUrl: string;
-  url: string;
   colors: AuthorColors;
 }
 
@@ -20,5 +19,5 @@ export interface ITask {
 }
 
 export interface TasksByColumn {
-  [key: string]: ITask[];
+  [key: string]: Id[];
 }

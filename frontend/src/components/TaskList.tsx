@@ -65,7 +65,7 @@ const Container = styled.div``;
 interface Props {
   listId?: string;
   listType?: string;
-  quotes: ITask[];
+  tasks: ITask[];
   title?: string;
   internalScroll?: boolean;
   scrollContainerStyle?: Record<string, any>;
@@ -76,28 +76,28 @@ interface Props {
 }
 
 interface TaskListProps {
-  quotes: ITask[];
+  tasks: ITask[];
 }
 
-const InnerTaskList = ({ quotes }: TaskListProps) => (
+const InnerTaskList = ({ tasks }: TaskListProps) => (
   <>
-    {quotes.map((quote: ITask, index: number) => (
-      <Task key={quote.id} quote={quote} index={index} />
+    {tasks.map((task: ITask, index: number) => (
+      <Task key={task.id} task={task} index={index} />
     ))}
   </>
 );
 
 interface InnerListProps {
   dropProvided: DroppableProvided;
-  quotes: ITask[];
+  tasks: ITask[];
   title?: string;
 }
 
-const InnerList = ({ quotes, dropProvided, title }: InnerListProps) => (
+const InnerList = ({ tasks, dropProvided, title }: InnerListProps) => (
   <Container>
     {title ? <Title>{title}</Title> : null}
     <DropZone ref={dropProvided.innerRef}>
-      <InnerTaskList quotes={quotes} />
+      <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>
   </Container>
@@ -112,7 +112,7 @@ const TaskList = ({
   listId = "LIST",
   listType,
   style,
-  quotes,
+  tasks: tasks,
   title
 }: Props) => (
   <Droppable
@@ -136,17 +136,13 @@ const TaskList = ({
         {internalScroll ? (
           <ScrollContainer style={scrollContainerStyle}>
             <InnerList
-              quotes={quotes}
+              tasks={tasks}
               title={title}
               dropProvided={dropProvided}
             />
           </ScrollContainer>
         ) : (
-          <InnerList
-            quotes={quotes}
-            title={title}
-            dropProvided={dropProvided}
-          />
+          <InnerList tasks={tasks} title={title} dropProvided={dropProvided} />
         )}
       </Wrapper>
     )}

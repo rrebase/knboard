@@ -1,15 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TasksByColumn } from "types";
-import { authorQuoteMap as taskMap } from "data";
+import { TasksByColumn, ITask } from "types";
+import { taskMap, taskMapOnlyId } from "data";
+import { byId } from "utils/normalize";
 
 interface InitialState {
   columns: string[];
   tasksByColumn: TasksByColumn;
+  tasksById: Record<string, ITask>;
 }
 
 export const initialState: InitialState = {
   columns: Object.keys(taskMap),
-  tasksByColumn: taskMap
+  tasksByColumn: taskMapOnlyId,
+  tasksById: byId(Object.values(taskMap).flat())
 };
 
 export const slice = createSlice({
@@ -20,6 +23,9 @@ export const slice = createSlice({
       state.columns = action.payload;
     },
     setTasksByColumn: (state, action: PayloadAction<TasksByColumn>) => {
+      state.tasksByColumn = action.payload;
+    },
+    updateTaskTitle: (state, action: PayloadAction<TasksByColumn>) => {
       state.tasksByColumn = action.payload;
     }
   }

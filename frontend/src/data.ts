@@ -3,22 +3,7 @@ import bmoImg from "static/media/bmo-min.png";
 import princessImg from "static/media/princess-min.png";
 import jakeImg from "static/media/jake-min.png";
 import { Y50, N400A, G50, B50, P50 } from "colors";
-
-interface Author {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  colors: {
-    soft: string;
-    hard: string;
-  };
-}
-
-interface Quote {
-  id: string;
-  content: string;
-  author: Author;
-}
+import { ITask, Author, Id } from "types";
 
 const jake: Author = {
   id: "1",
@@ -62,7 +47,7 @@ const princess: Author = {
 
 export const authors: Author[] = [jake, BMO, finn, princess];
 
-export const quotes: Quote[] = [
+export const tasks: ITask[] = [
   {
     id: "1",
     content: "Sometimes life is scary and dark",
@@ -128,13 +113,13 @@ export const quotes: Quote[] = [
 ];
 
 // So we do not have any clashes with our hardcoded ones
-let idCount: number = quotes.length + 1;
+let idCount: number = tasks.length + 1;
 
-export const getQuotes = (count: number): Quote[] =>
+export const getTasks = (count: number): ITask[] =>
   Array.from({ length: count }, (v, k) => k).map(() => {
-    const random: Quote = quotes[Math.floor(Math.random() * quotes.length)];
+    const random: ITask = tasks[Math.floor(Math.random() * tasks.length)];
 
-    const custom: Quote = {
+    const custom: ITask = {
       ...random,
       id: `G${idCount++}`
     };
@@ -154,22 +139,24 @@ export const getAuthors = (count: number): Author[] =>
     return custom;
   });
 
-const getByAuthor = (author: Author, items: Quote[]): Quote[] =>
-  items.filter((quote: Quote) => quote.author === author);
+const getByAuthor = (author: Author, items: ITask[]): ITask[] =>
+  items.filter((task: ITask) => task.author === author);
 
-export const authorQuoteMap = authors.reduce(
+export const taskMap = authors.reduce(
   (previous, author: Author) => ({
     ...previous,
-    [author.name]: getByAuthor(author, quotes)
+    [author.name]: getByAuthor(author, tasks)
   }),
   {}
 );
 
-export const generateQuoteMap = (quoteCount: number) =>
-  authors.reduce(
-    (previous, author: Author) => ({
-      ...previous,
-      [author.name]: getQuotes(quoteCount / authors.length)
-    }),
-    {}
-  );
+const getByAuthorOnlyId = (author: Author, items: ITask[]): Id[] =>
+  items.filter((task: ITask) => task.author === author).map(task => task.id);
+
+export const taskMapOnlyId = authors.reduce(
+  (previous, author: Author) => ({
+    ...previous,
+    [author.name]: getByAuthorOnlyId(author, tasks)
+  }),
+  {}
+);

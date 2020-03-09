@@ -10,8 +10,8 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import Column from "features/column";
-import { TasksByColumn, ITask } from "types";
-import reorder, { reorderQuoteMap } from "utils/reorder";
+import { TasksByColumn, Id } from "types";
+import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { setTasksByColumn, setColumns } from "./BoardSlice";
@@ -44,6 +44,7 @@ const Board = ({
   const tasksByColumn = useSelector(
     (state: RootState) => state.board.tasksByColumn
   );
+  const tasksById = useSelector((state: RootState) => state.board.tasksById);
   const dispatch = useDispatch();
 
   const onDragEnd = (result: DropResult) => {
@@ -55,12 +56,12 @@ const Board = ({
         return;
       }
 
-      const column: ITask[] = tasksByColumn[result.source.droppableId];
-      const withQuoteRemoved: ITask[] = [...column];
-      withQuoteRemoved.splice(result.source.index, 1);
+      const column: Id[] = tasksByColumn[result.source.droppableId];
+      const withTaskRemoved: Id[] = [...column];
+      withTaskRemoved.splice(result.source.index, 1);
       const newColumns: TasksByColumn = {
         ...tasksByColumn,
-        [result.source.droppableId]: withQuoteRemoved
+        [result.source.droppableId]: withTaskRemoved
       };
       dispatch(setTasksByColumn(newColumns));
       return;
@@ -93,13 +94,13 @@ const Board = ({
       return;
     }
 
-    const data = reorderQuoteMap({
-      quoteMap: tasksByColumn,
+    const data = reorderTasks({
+      tasksByColumn,
       source,
       destination
     });
 
-    dispatch(setTasksByColumn(data.quoteMap));
+    dispatch(setTasksByColumn(data.tasksByColumn));
   };
 
   const board = (
@@ -117,7 +118,7 @@ const Board = ({
               key={key}
               index={index}
               title={key}
-              quotes={tasksByColumn[key]}
+              tasks={tasksByColumn[key].map(taskId => tasksById[taskId])}
               isScrollable={withScrollableColumns}
               isCombineEnabled={isCombineEnabled}
             />

@@ -32,7 +32,7 @@ const Header = styled.div<{ isDragging: boolean }>`
 
 type Props = {
   title: string;
-  quotes: ITask[];
+  tasks: ITask[];
   index: number;
   isScrollable?: boolean;
   isCombineEnabled?: boolean;
@@ -40,7 +40,7 @@ type Props = {
 
 const Column = ({
   title,
-  quotes,
+  tasks,
   index,
   isScrollable,
   isCombineEnabled
@@ -52,18 +52,18 @@ const Column = ({
           <Header isDragging={snapshot.isDragging}>
             <Title
               {...provided.dragHandleProps}
-              aria-label={`${title} quote list`}
+              aria-label={`${title} task list`}
             >
               {title}
             </Title>
           </Header>
           <TaskList
             listId={title}
-            listType="QUOTE"
+            listType="TASK"
             style={{
               backgroundColor: snapshot.isDragging ? G50 : null
             }}
-            quotes={quotes}
+            tasks={tasks}
             internalScroll={isScrollable}
             isCombineEnabled={Boolean(isCombineEnabled)}
           />

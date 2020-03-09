@@ -1,4 +1,4 @@
-import { TasksByColumn, ITask } from "types";
+import { TasksByColumn, Id } from "types";
 import { DraggableLocation } from "react-beautiful-dnd";
 
 // a little function to help us with reordering the result
@@ -12,38 +12,34 @@ const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
 
 export default reorder;
 
-interface ReorderQuoteMapArgs {
-  quoteMap: TasksByColumn;
+interface ReorderTasksArgs {
+  tasksByColumn: TasksByColumn;
   source: DraggableLocation;
   destination: DraggableLocation;
 }
 
-export interface ReorderQuoteMapResult {
-  quoteMap: TasksByColumn;
+export interface ReorderTasksResult {
+  tasksByColumn: TasksByColumn;
 }
 
-export const reorderQuoteMap = ({
-  quoteMap,
+export const reorderTasks = ({
+  tasksByColumn,
   source,
   destination
-}: ReorderQuoteMapArgs): ReorderQuoteMapResult => {
-  const current: ITask[] = [...quoteMap[source.droppableId]];
-  const next: ITask[] = [...quoteMap[destination.droppableId]];
-  const target: ITask = current[source.index];
+}: ReorderTasksArgs): ReorderTasksResult => {
+  const current: Id[] = [...tasksByColumn[source.droppableId]];
+  const next: Id[] = [...tasksByColumn[destination.droppableId]];
+  const target: Id = current[source.index];
 
   // moving to same list
   if (source.droppableId === destination.droppableId) {
-    const reordered: ITask[] = reorder(
-      current,
-      source.index,
-      destination.index
-    );
+    const reordered: Id[] = reorder(current, source.index, destination.index);
     const result: TasksByColumn = {
-      ...quoteMap,
+      ...tasksByColumn,
       [source.droppableId]: reordered
     };
     return {
-      quoteMap: result
+      tasksByColumn: result
     };
   }
 
@@ -55,13 +51,13 @@ export const reorderQuoteMap = ({
   next.splice(destination.index, 0, target);
 
   const result: TasksByColumn = {
-    ...quoteMap,
+    ...tasksByColumn,
     [source.droppableId]: current,
     [destination.droppableId]: next
   };
 
   return {
-    quoteMap: result
+    tasksByColumn: result
   };
 };
 

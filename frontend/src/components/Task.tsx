@@ -93,7 +93,7 @@ const Author = styled.small<any>`
   padding: ${grid / 2}px;
 `;
 
-const QuoteId = styled.small`
+const TaskId = styled.small`
   flex-grow: 1;
   flex-shrink: 1;
   margin: 0;
@@ -113,21 +113,21 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   };
 };
 
-export const TaskFooter = ({ quote }: { quote: ITask }) => (
+export const TaskFooter = ({ task }: { task: ITask }) => (
   <Footer>
-    <Author colors={quote.author.colors}>{quote.author.name}</Author>
-    <QuoteId>id:{quote.id}</QuoteId>
+    <Author colors={task.author.colors}>{task.author.name}</Author>
+    <TaskId>id:{task.id}</TaskId>
   </Footer>
 );
 
 interface Props {
-  quote: ITask;
+  task: ITask;
   style?: Record<string, any>;
   index: number;
 }
 
-const Task = ({ quote, style, index }: Props) => {
-  const [text, setText] = React.useState<string>(quote.content);
+const Task = ({ task: task, style, index }: Props) => {
+  const [text, setText] = React.useState<string>(task.content);
   const [hover, setHover] = React.useState<boolean>(false);
   const [editing, setEditing] = React.useState<boolean>(false);
 
@@ -137,7 +137,7 @@ const Task = ({ quote, style, index }: Props) => {
   if (editing) {
     return (
       <TaskEditor
-        quote={quote}
+        task={task}
         setEditing={setEditing}
         text={text}
         setText={setText}
@@ -146,7 +146,7 @@ const Task = ({ quote, style, index }: Props) => {
   }
 
   return (
-    <Draggable key={quote.id} draggableId={quote.id} index={index}>
+    <Draggable key={task.id} draggableId={task.id} index={index}>
       {(
         dragProvided: DraggableProvided,
         dragSnapshot: DraggableStateSnapshot
@@ -154,23 +154,23 @@ const Task = ({ quote, style, index }: Props) => {
         <Container
           isDragging={dragSnapshot.isDragging}
           isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-          colors={quote.author.colors}
+          colors={task.author.colors}
           ref={dragProvided.innerRef}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
           style={getStyle(dragProvided, style)}
           data-is-dragging={dragSnapshot.isDragging}
-          data-testid={quote.id}
+          data-testid={task.id}
           data-index={index}
-          aria-label={`${quote.author.name} quote ${quote.content}`}
+          aria-label={`${task.author.name} task ${task.content}`}
           onMouseEnter={beginHover}
           onMouseLeave={endHover}
           css={taskContainerStyles}
         >
-          <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
+          <Avatar src={task.author.avatarUrl} alt={task.author.name} />
           <Content>
             <TextContent>{text}</TextContent>
-            <TaskFooter quote={quote} />
+            <TaskFooter task={task} />
           </Content>
           {hover && <EditButton handleClick={() => setEditing(true)} />}
         </Container>
