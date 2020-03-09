@@ -7,5 +7,14 @@ export const borderRadius = 2;
 export const imageSize = 40;
 
 export const theme = createMuiTheme({
-  palette: {}
+  palette: {},
+  overrides: {
+    MuiButton: {
+      root: {
+        "&:hover": {
+          transition: "none"
+        }
+      }
+    }
+  }
 });

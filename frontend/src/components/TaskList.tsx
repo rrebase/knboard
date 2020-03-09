@@ -1,6 +1,7 @@
 import React from "react";
+import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
-import { R50, T50, N30 } from "colors";
+import { R50, T50, N30, N80A, N900 } from "colors";
 import { grid } from "const";
 import { ITask } from "types";
 import {
@@ -10,6 +11,9 @@ import {
 } from "react-beautiful-dnd";
 import Task from "./Task";
 import Title from "./Title";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { css } from "@emotion/core";
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,
@@ -84,6 +88,23 @@ const InnerTaskList = ({ tasks }: TaskListProps) => (
     {tasks.map((task: ITask, index: number) => (
       <Task key={task.id} task={task} index={index} />
     ))}
+    <Button
+      fullWidth
+      css={css`
+        text-transform: inherit;
+        color: ${N80A};
+        padding: 4px 0;
+        &:hover {
+          color: ${N900};
+        }
+        .MuiButton-iconSizeMedium > *:first-child {
+          font-size: 12px;
+        }
+      `}
+      startIcon={<FontAwesomeIcon icon={faPlus} />}
+    >
+      Add another card
+    </Button>
   </>
 );
 
