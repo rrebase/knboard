@@ -5,7 +5,7 @@ import jakeImg from "static/media/jake-min.png";
 import { Y50, N400A, G50, B50, P50 } from "colors";
 import { ITask, Author, Id } from "types";
 
-const jake: Author = {
+export const jake: Author = {
   id: "1",
   name: "Backlog",
   avatarUrl: jakeImg,

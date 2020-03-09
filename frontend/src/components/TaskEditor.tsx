@@ -41,11 +41,11 @@ interface Props {
   setEditing: (editing: boolean) => void;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  adding: boolean;
 }
 
-const TaskEditor = ({ task, setEditing, text, setText }: Props) => {
+const TaskEditor = ({ task, setEditing, text, setText, adding }: Props) => {
   const dispatch = useDispatch();
-  const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);

@@ -116,7 +116,7 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 export const TaskFooter = ({ task }: { task: ITask }) => (
   <Footer>
     <Author colors={task.author.colors}>{task.author.name}</Author>
-    <TaskId>id:{task.id}</TaskId>
+    <TaskId>id:{task.id.substring(0, 5)}</TaskId>
   </Footer>
 );
 
@@ -141,6 +141,7 @@ const Task = ({ task: task, style, index }: Props) => {
         setEditing={setEditing}
         text={text}
         setText={setText}
+        adding={false}
       />
     );
   }

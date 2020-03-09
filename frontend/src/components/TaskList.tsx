@@ -14,6 +14,9 @@ import Title from "./Title";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";
+import { jake } from "data";
+import TaskEditor from "./TaskEditor";
+import { uuid } from "uuidv4";
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,
@@ -88,25 +91,48 @@ const InnerTaskList = ({ tasks }: TaskListProps) => (
     {tasks.map((task: ITask, index: number) => (
       <Task key={task.id} task={task} index={index} />
     ))}
-    <Button
-      fullWidth
-      css={css`
-        text-transform: inherit;
-        color: ${N80A};
-        padding: 4px 0;
-        &:hover {
-          color: ${N900};
-        }
-        .MuiButton-iconSizeMedium > *:first-child {
-          font-size: 12px;
-        }
-      `}
-      startIcon={<FontAwesomeIcon icon={faPlus} />}
-    >
-      Add another card
-    </Button>
   </>
 );
+
+const AddCard = () => {
+  const [adding, setAdding] = React.useState<boolean>(false);
+  const newTask: ITask = { id: uuid(), title: "", author: jake };
+
+  return (
+    <>
+      {adding ? (
+        <TaskEditor
+          task={newTask}
+          setEditing={() => null}
+          text=""
+          setText={() => null}
+          adding={false}
+        />
+      ) : (
+        <Button
+          css={css`
+            text-transform: inherit;
+            color: ${N80A};
+            padding: 4px 0;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            &:hover {
+              color: ${N900};
+            }
+            .MuiButton-iconSizeMedium > *:first-of-type {
+              font-size: 12px;
+            }
+          `}
+          startIcon={<FontAwesomeIcon icon={faPlus} />}
+          fullWidth
+          onClick={() => setAdding(true)}
+        >
+          Add another card
+        </Button>
+      )}
+    </>
+  );
+};
 
 interface InnerListProps {
   dropProvided: DroppableProvided;
@@ -121,6 +147,7 @@ const InnerList = ({ tasks, dropProvided, title }: InnerListProps) => (
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>
+    <AddCard />
   </Container>
 );
 
