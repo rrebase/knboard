@@ -8,7 +8,7 @@ import counterReducer, {
   fetchValueSuccess,
   fetchValueError
 } from "./CounterSlice";
-import { renderWithRedux, rootInitialState } from "utils/test-helpers";
+import { renderWithRedux, rootInitialState } from "utils/testHelpers";
 import axios from "axios";
 
 jest.mock("axios");
