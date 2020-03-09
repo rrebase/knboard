@@ -2,6 +2,7 @@ import React from "react";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "@emotion/styled";
+import { iconBoxStyles } from "styles";
 
 interface Props {
   handleClick: () => void;
@@ -21,27 +22,13 @@ const InnerWrapper = styled.div`
 `;
 
 const IconBox = styled.div`
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  margin: 1px;
-  color: rgba(0, 0, 0, 0.5);
   background: #f5f6f7;
-  opacity: 0.9;
-  &:hover {
-    opacity: 1;
-    background: rgba(220, 220, 220, 1);
-  }
 `;
 
 const EditButton = ({ handleClick }: Props) => (
   <Wrapper>
     <InnerWrapper>
-      <IconBox onClick={handleClick}>
+      <IconBox css={iconBoxStyles} onClick={handleClick}>
         <FontAwesomeIcon icon={faPen} color="#999" />
       </IconBox>
     </InnerWrapper>

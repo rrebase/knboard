@@ -27,7 +27,7 @@ interface Props {
 
 const TaskEditor = ({ setEditing }: Props) => {
   const [text, setText] = React.useState<string>("");
-  const [adding, setAdding] = React.useState<boolean>(true);
+  const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);

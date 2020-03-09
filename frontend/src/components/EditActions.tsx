@@ -1,4 +1,20 @@
 import React from "react";
+import styled from "@emotion/styled";
+import { Button } from "@material-ui/core";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { iconBoxStyles } from "styles";
+
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-right: 8px;
+  }
+`;
+
+const CancelIcon = styled.div``;
 
 interface Props {
   saveLabel: string;
@@ -11,22 +27,19 @@ const EditActions = ({ saveLabel, setEditing }: Props) => {
   const handleCancel = () => setEditing(false);
 
   return (
-    <div>
-      <div style={{ backgroundColor: "#5aac44" }} onClick={handleSave}>
+    <Actions>
+      <Button onClick={handleSave} variant="contained" size="small">
         {saveLabel}
-      </div>
+      </Button>
       {handleDelete && (
-        <div
-          style={{ backgroundColor: "#EA2525", marginLeft: 0 }}
-          onClick={handleDelete}
-        >
+        <Button size="small" onClick={handleDelete} variant="outlined">
           Delete
-        </div>
+        </Button>
       )}
-      <div className="Edit-Button-Cancel" onClick={handleCancel}>
-        X
-      </div>
-    </div>
+      <CancelIcon css={iconBoxStyles} onClick={handleCancel}>
+        <FontAwesomeIcon icon={faTimes} color="#999" />
+      </CancelIcon>
+    </Actions>
   );
 };
 
