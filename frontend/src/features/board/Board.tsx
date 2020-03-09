@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/core";
-import { B100, B200 } from "colors";
+import { B200 } from "colors";
 import {
   DragDropContext,
   Droppable,
@@ -10,8 +10,11 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import Column from "features/column";
-import { QuoteMap, Quote } from "types";
+import { TasksByColumn, ITask } from "types";
 import reorder, { reorderQuoteMap } from "utils/reorder";
+import { RootState } from "store";
+import { useSelector, useDispatch } from "react-redux";
+import { setTasksByColumn, setColumns } from "./BoardSlice";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
@@ -20,7 +23,6 @@ const ParentContainer = styled.div<{ height: string }>`
 `;
 
 const Container = styled.div`
-  background-color: ${B100};
   min-height: 100vh;
   /* like display:flex but will allow bleeding over the window width */
   min-width: 100vw;
@@ -28,38 +30,39 @@ const Container = styled.div`
 `;
 
 interface Props {
-  initial: QuoteMap;
   withScrollableColumns?: boolean;
   isCombineEnabled?: boolean;
   containerHeight?: string;
 }
 
 const Board = ({
-  initial,
   containerHeight,
   isCombineEnabled,
   withScrollableColumns
 }: Props) => {
-  const [columns, setColumns] = React.useState<QuoteMap>(initial);
-  const [ordered, setOrdered] = React.useState<string[]>(Object.keys(initial));
+  const columns = useSelector((state: RootState) => state.board.columns);
+  const tasksByColumn = useSelector(
+    (state: RootState) => state.board.tasksByColumn
+  );
+  const dispatch = useDispatch();
 
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {
       if (result.type === "COLUMN") {
-        const shallow: string[] = [...ordered];
+        const shallow: string[] = [...columns];
         shallow.splice(result.source.index, 1);
-        setOrdered(shallow);
+        dispatch(setColumns(shallow));
         return;
       }
 
-      const column: Quote[] = columns[result.source.droppableId];
-      const withQuoteRemoved: Quote[] = [...column];
+      const column: ITask[] = tasksByColumn[result.source.droppableId];
+      const withQuoteRemoved: ITask[] = [...column];
       withQuoteRemoved.splice(result.source.index, 1);
-      const newColumns: QuoteMap = {
-        ...columns,
+      const newColumns: TasksByColumn = {
+        ...tasksByColumn,
         [result.source.droppableId]: withQuoteRemoved
       };
-      setColumns(newColumns);
+      dispatch(setTasksByColumn(newColumns));
       return;
     }
 
@@ -82,22 +85,21 @@ const Board = ({
     // reordering column
     if (result.type === "COLUMN") {
       const newOrdered: string[] = reorder(
-        ordered,
+        columns,
         source.index,
         destination.index
       );
-      setOrdered(newOrdered);
-
+      dispatch(setColumns(newOrdered));
       return;
     }
 
     const data = reorderQuoteMap({
-      quoteMap: columns,
+      quoteMap: tasksByColumn,
       source,
       destination
     });
 
-    setColumns(data.quoteMap);
+    dispatch(setTasksByColumn(data.quoteMap));
   };
 
   const board = (
@@ -110,12 +112,12 @@ const Board = ({
     >
       {(provided: DroppableProvided) => (
         <Container ref={provided.innerRef} {...provided.droppableProps}>
-          {ordered.map((key: string, index: number) => (
+          {columns.map((key: string, index: number) => (
             <Column
               key={key}
               index={index}
               title={key}
-              quotes={columns[key]}
+              quotes={tasksByColumn[key]}
               isScrollable={withScrollableColumns}
               isCombineEnabled={isCombineEnabled}
             />

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { R50, T50, N30 } from "colors";
 import { grid } from "const";
-import { Quote } from "types";
+import { ITask } from "types";
 import {
   DroppableProvided,
   DroppableStateSnapshot,
@@ -65,7 +65,7 @@ const Container = styled.div``;
 interface Props {
   listId?: string;
   listType?: string;
-  quotes: Quote[];
+  quotes: ITask[];
   title?: string;
   internalScroll?: boolean;
   scrollContainerStyle?: Record<string, any>;
@@ -76,12 +76,12 @@ interface Props {
 }
 
 interface TaskListProps {
-  quotes: Quote[];
+  quotes: ITask[];
 }
 
 const InnerTaskList = ({ quotes }: TaskListProps) => (
   <>
-    {quotes.map((quote: Quote, index: number) => (
+    {quotes.map((quote: ITask, index: number) => (
       <Task key={quote.id} quote={quote} index={index} />
     ))}
   </>
@@ -89,7 +89,7 @@ const InnerTaskList = ({ quotes }: TaskListProps) => (
 
 interface InnerListProps {
   dropProvided: DroppableProvided;
-  quotes: Quote[];
+  quotes: ITask[];
   title?: string;
 }
 

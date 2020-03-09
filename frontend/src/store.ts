@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Action, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import counterReducer from "./features/counter/CounterSlice";
+import boardReducer from "./features/board/BoardSlice";
 
 export const rootReducer = combineReducers({
-  counter: counterReducer
+  counter: counterReducer,
+  board: boardReducer
 });
 
 const store = configureStore({

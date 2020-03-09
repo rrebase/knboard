@@ -1,4 +1,5 @@
-import { QuoteMap, DraggableLocation, Quote } from "types";
+import { TasksByColumn, ITask } from "types";
+import { DraggableLocation } from "react-beautiful-dnd";
 
 // a little function to help us with reordering the result
 const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
@@ -12,13 +13,13 @@ const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
 export default reorder;
 
 interface ReorderQuoteMapArgs {
-  quoteMap: QuoteMap;
+  quoteMap: TasksByColumn;
   source: DraggableLocation;
   destination: DraggableLocation;
 }
 
 export interface ReorderQuoteMapResult {
-  quoteMap: QuoteMap;
+  quoteMap: TasksByColumn;
 }
 
 export const reorderQuoteMap = ({
@@ -26,18 +27,18 @@ export const reorderQuoteMap = ({
   source,
   destination
 }: ReorderQuoteMapArgs): ReorderQuoteMapResult => {
-  const current: Quote[] = [...quoteMap[source.droppableId]];
-  const next: Quote[] = [...quoteMap[destination.droppableId]];
-  const target: Quote = current[source.index];
+  const current: ITask[] = [...quoteMap[source.droppableId]];
+  const next: ITask[] = [...quoteMap[destination.droppableId]];
+  const target: ITask = current[source.index];
 
   // moving to same list
   if (source.droppableId === destination.droppableId) {
-    const reordered: Quote[] = reorder(
+    const reordered: ITask[] = reorder(
       current,
       source.index,
       destination.index
     );
-    const result: QuoteMap = {
+    const result: TasksByColumn = {
       ...quoteMap,
       [source.droppableId]: reordered
     };
@@ -53,7 +54,7 @@ export const reorderQuoteMap = ({
   // insert into next
   next.splice(destination.index, 0, target);
 
-  const result: QuoteMap = {
+  const result: TasksByColumn = {
     ...quoteMap,
     [source.droppableId]: current,
     [destination.droppableId]: next

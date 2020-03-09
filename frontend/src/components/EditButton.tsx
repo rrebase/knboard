@@ -14,8 +14,8 @@ const Wrapper = styled.div`
 
 const InnerWrapper = styled.div`
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;

@@ -6,17 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { iconBoxStyles } from "styles";
 
 const Wrapper = styled.div`
-  position: relative;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #ebecf0;
 `;
 
 const Actions = styled.div`
-  position: absolute;
-  top: 20px;
   display: flex;
   align-items: center;
 
   button {
     margin-right: 8px;
+    font-size: 8px;
+    min-width: 24px;
   }
 `;
 

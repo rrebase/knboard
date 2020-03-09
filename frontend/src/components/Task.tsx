@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Quote, AuthorColors } from "types";
+import { ITask, AuthorColors } from "types";
 import {
   DraggableProvided,
   Draggable,
@@ -71,7 +71,11 @@ export const Content = styled.div`
   flex-direction: column;
 `;
 
-const TextContent = styled.div``;
+const TextContent = styled.div`
+  position: relative;
+  padding-right: 14px;
+  word-break: break-word;
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -109,7 +113,7 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   };
 };
 
-export const TaskFooter = ({ quote }: { quote: Quote }) => (
+export const TaskFooter = ({ quote }: { quote: ITask }) => (
   <Footer>
     <Author colors={quote.author.colors}>{quote.author.name}</Author>
     <QuoteId>id:{quote.id}</QuoteId>
@@ -117,12 +121,13 @@ export const TaskFooter = ({ quote }: { quote: Quote }) => (
 );
 
 interface Props {
-  quote: Quote;
+  quote: ITask;
   style?: Record<string, any>;
   index: number;
 }
 
 const Task = ({ quote, style, index }: Props) => {
+  const [text, setText] = React.useState<string>(quote.content);
   const [hover, setHover] = React.useState<boolean>(false);
   const [editing, setEditing] = React.useState<boolean>(false);
 
@@ -130,7 +135,14 @@ const Task = ({ quote, style, index }: Props) => {
   const endHover = () => setHover(false);
 
   if (editing) {
-    return <TaskEditor quote={quote} setEditing={setEditing} />;
+    return (
+      <TaskEditor
+        quote={quote}
+        setEditing={setEditing}
+        text={text}
+        setText={setText}
+      />
+    );
   }
 
   return (
@@ -157,7 +169,7 @@ const Task = ({ quote, style, index }: Props) => {
         >
           <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
           <Content>
-            <TextContent>{quote.content}</TextContent>
+            <TextContent>{text}</TextContent>
             <TaskFooter quote={quote} />
           </Content>
           {hover && <EditButton handleClick={() => setEditing(true)} />}

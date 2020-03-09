@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
 import { N30, G50 } from "colors";
-import { Quote } from "types";
+import { ITask } from "types";
 import {
   Draggable,
   DraggableProvided,
@@ -32,7 +32,7 @@ const Header = styled.div<{ isDragging: boolean }>`
 
 type Props = {
   title: string;
-  quotes: Quote[];
+  quotes: ITask[];
   index: number;
   isScrollable?: boolean;
   isCombineEnabled?: boolean;

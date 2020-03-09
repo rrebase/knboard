@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import TextareaAutosize from "react-textarea-autosize";
 import EditActions from "./EditActions";
 import { Avatar, Content, TaskFooter } from "./Task";
-import { Quote } from "types";
+import { ITask } from "types";
 import { N0 } from "colors";
 import { taskContainerStyles } from "styles";
 
@@ -15,6 +15,7 @@ const Container = styled.div`
 
 const Text = styled.div`
   min-height: 50px;
+  padding-right: 14px;
   &:hover {
     background: white;
   }
@@ -34,12 +35,13 @@ const Text = styled.div`
 `;
 
 interface Props {
-  quote: Quote;
+  quote: ITask;
   setEditing: (editing: boolean) => void;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const TaskEditor = ({ quote, setEditing }: Props) => {
-  const [text, setText] = React.useState<string>("");
+const TaskEditor = ({ quote, setEditing, text, setText }: Props) => {
   const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,7 +62,7 @@ const TaskEditor = ({ quote, setEditing }: Props) => {
   };
 
   return (
-    <Container css={taskContainerStyles}>
+    <Container css={taskContainerStyles} onKeyDown={handleKeyDown}>
       <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
       <Content>
         <Text>
@@ -70,7 +72,6 @@ const TaskEditor = ({ quote, setEditing }: Props) => {
             value={text}
             onChange={handleChange}
             className="edit-textarea"
-            onKeyDown={handleKeyDown}
           />
         </Text>
         <TaskFooter quote={quote} />
