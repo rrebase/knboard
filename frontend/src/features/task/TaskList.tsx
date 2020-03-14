@@ -10,7 +10,7 @@ import {
   Droppable
 } from "react-beautiful-dnd";
 import Task from "./Task";
-import Title from "./Title";
+import Title from "../../components/Title";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";

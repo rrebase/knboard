@@ -8,8 +8,8 @@ import {
 } from "react-beautiful-dnd";
 import { N30, N0, N70 } from "colors";
 import { grid, borderRadius, imageSize } from "const";
-import TaskEditor from "components/TaskEditor";
-import EditButton from "./EditButton";
+import TaskEditor from "features/task/TaskEditor";
+import EditButton from "../../components/EditButton";
 import { taskContainerStyles } from "styles";
 
 const getBackgroundColor = (

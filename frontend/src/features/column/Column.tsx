@@ -8,7 +8,7 @@ import {
   DraggableProvided,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
-import TaskList from "components/TaskList";
+import TaskList from "features/task/TaskList";
 import Title from "components/Title";
 
 const Container = styled.div`

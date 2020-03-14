@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 import TextareaAutosize from "react-textarea-autosize";
-import EditActions from "./EditActions";
+import EditActions from "../../components/EditActions";
 import { Avatar, Content, TaskFooter } from "./Task";
 import { N0 } from "colors";
 import { taskContainerStyles } from "styles";
 import { useDispatch } from "react-redux";
-import { updateTask, deleteTask } from "features/board/BoardSlice";
+import { updateTask, deleteTask } from "features/task/TaskSlice";
 import { ITask } from "types";
 
 const Container = styled.div`

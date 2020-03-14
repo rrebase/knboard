@@ -4,10 +4,14 @@ import { Action, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import counterReducer from "./features/counter/CounterSlice";
 import boardReducer from "./features/board/BoardSlice";
+import columnReducer from "./features/column/ColumnSlice";
+import taskReducer from "./features/task/TaskSlice";
 
 export const rootReducer = combineReducers({
   counter: counterReducer,
-  board: boardReducer
+  board: boardReducer,
+  column: columnReducer,
+  task: taskReducer
 });
 
 const store = configureStore({

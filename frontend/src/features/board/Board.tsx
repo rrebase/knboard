@@ -14,7 +14,8 @@ import { TasksByColumn, Id } from "types";
 import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
-import { setTasksByColumn, setColumns } from "./BoardSlice";
+import { setTasksByColumn } from "features/task/TaskSlice";
+import { setColumns } from "features/column/ColumnSlice";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
@@ -40,11 +41,9 @@ const Board = ({
   isCombineEnabled,
   withScrollableColumns
 }: Props) => {
-  const columns = useSelector((state: RootState) => state.board.columns);
-  const tasksByColumn = useSelector(
-    (state: RootState) => state.board.tasksByColumn
-  );
-  const tasksById = useSelector((state: RootState) => state.board.tasksById);
+  const columns = useSelector((state: RootState) => state.column.all);
+  const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
+  const tasksById = useSelector((state: RootState) => state.task.byId);
   const dispatch = useDispatch();
 
   const onDragEnd = (result: DropResult) => {
