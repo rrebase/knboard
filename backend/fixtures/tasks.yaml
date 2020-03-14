@@ -1,15 +1,3 @@
-- model: auth.User
-  pk: 1
-  fields:
-    username: r@r.ee
-    password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
-    first_name: Ragnar
-    last_name: Rebase
-    email: r@r.ee
-    is_superuser: true
-    is_staff: true
-    is_active: true
-
 - model: boards.Board
   pk: 1
   fields:

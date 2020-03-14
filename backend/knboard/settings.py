@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
     'boards',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,6 @@ FIXTURE_DIRS = ['fixtures']
 
 # Add django extensions
 INSTALLED_APPS += ["django_extensions"]
+
+# Auth user
+AUTH_USER_MODEL = 'accounts.User'
