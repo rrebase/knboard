@@ -14,8 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "src",
-    "types": ["node", "@emotion/core"]
+    "baseUrl": "src"
   },
   "include": ["src"]
 }
