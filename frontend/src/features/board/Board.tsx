@@ -15,6 +15,8 @@ import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { setTasksByColumn, setColumns } from "./BoardSlice";
+import { useQuery } from "@apollo/react-hooks";
+import { TASKS_QUERY } from "./queries";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
@@ -46,6 +48,31 @@ const Board = ({
   );
   const tasksById = useSelector((state: RootState) => state.board.tasksById);
   const dispatch = useDispatch();
+  const { loading, error, data } = useQuery(TASKS_QUERY, {});
+
+  console.log({ loading, error, data });
+
+  /*
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = {
+        query: "{allTasks {id title}}",
+        variables: null
+      };
+
+      const response = await fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const result = await response.json();
+      console.log(result.data);
+    };
+    fetchData();
+  }, []);
+  */
 
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {

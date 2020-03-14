@@ -2,3 +2,4 @@ Django==3.0.4
 graphene-django==2.9.0
 django-extensions==2.2.8
 PyYAML==5.3
+django-cors-headers==3.2.1
