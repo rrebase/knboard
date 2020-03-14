@@ -14,10 +14,9 @@ class Board(models.Model):
 class Column(models.Model):
     title = models.CharField(max_length=255)
     board = models.ForeignKey('Board', related_name='columns', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'{self.title} {self.user.name}'
+        return self.title
 
 
 class Task(models.Model):
@@ -28,7 +27,7 @@ class Task(models.Model):
     column = models.ForeignKey('Column', related_name="tasks", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.id} {self.title} {self.weight} {self.column.title}'
+        return f'{self.id} - {self.title} - {self.column.title}'
 
     class Meta:
         ordering = ['-weight']
