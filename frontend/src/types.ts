@@ -1,5 +1,10 @@
 export type Id = string;
 
+export interface Board {
+  id: number;
+  name: string;
+}
+
 export interface AuthorColors {
   soft: string;
   hard: string;

@@ -27,7 +27,7 @@ router.register(r"boards", BoardViewSet)
 router.register(r"tasks", TaskViewSet)
 
 urlpatterns = [
-    url(r"^", include(router.urls)),
+    url(r"^api/", include(router.urls)),
     url(r"^api-auth/", include("rest_framework.urls")),
     path("tagauks/", admin.site.urls),
 ]

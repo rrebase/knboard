@@ -3,6 +3,21 @@
   fields:
     name: Internals
 
+- model: boards.Board
+  pk: 2
+  fields:
+    name: Operating Systems
+
+- model: boards.Board
+  pk: 3
+  fields:
+    name: Fundamentals of Computation
+
+- model: boards.Board
+  pk: 4
+  fields:
+    name: Data Science
+
 - model: boards.Column
   pk: 1
   fields:

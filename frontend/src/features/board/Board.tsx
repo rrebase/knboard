@@ -41,7 +41,7 @@ const Board = ({
   isCombineEnabled,
   withScrollableColumns
 }: Props) => {
-  const columns = useSelector((state: RootState) => state.column.all);
+  const columns = useSelector((state: RootState) => state.column.entities);
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const dispatch = useDispatch();

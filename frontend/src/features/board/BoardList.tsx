@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { Container, Grid } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBoards } from "./BoardSlice";
+import { RootState } from "store";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -32,6 +35,13 @@ const BoardCard = styled.a`
 `;
 
 const BoardList = () => {
+  const dispatch = useDispatch();
+  const boards = useSelector((state: RootState) => state.board.entities);
+
+  React.useEffect(() => {
+    dispatch(fetchBoards());
+  }, []);
+
   return (
     <Container maxWidth="sm">
       <BoardsSection>
@@ -41,9 +51,11 @@ const BoardList = () => {
         </Title>
         <Cards>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <BoardCard>board1</BoardCard>
-            </Grid>
+            {boards.map(board => (
+              <Grid item xs={4} key={board.id}>
+                <BoardCard>{board.name}</BoardCard>
+              </Grid>
+            ))}
           </Grid>
         </Cards>
       </BoardsSection>
