@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faTh } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { css } from "@emotion/core";
+import { barHeight } from "const";
 
 const Container = styled.div`
-  min-height: 50px;
+  min-height: ${barHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,11 +21,30 @@ const Item = styled.div`
   color: #333;
 `;
 
+const Icons = styled.div`
+  font-size: 1.25rem;
+  a {
+    color: #333;
+  }
+`;
+
 const Navbar = () => {
   return (
     <Container>
       <Item>
-        <FontAwesomeIcon icon={faHome} />
+        <Icons>
+          <Link
+            to="/"
+            css={css`
+              margin-right: 0.75rem;
+            `}
+          >
+            <FontAwesomeIcon icon={faHome} />
+          </Link>
+          <Link to="/boards/">
+            <FontAwesomeIcon icon={faTh} />
+          </Link>
+        </Icons>
       </Item>
       <Item>Knboard</Item>
       <Item>Me</Item>

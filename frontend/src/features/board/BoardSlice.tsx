@@ -72,9 +72,10 @@ export const slice = createSlice({
     },
     getBoardDetailSuccess: (
       state,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       action: PayloadAction<BoardDetailResponse>
     ) => {
+      const { id, name } = action.payload;
+      state.detail = { id, name };
       state.detailError = null;
       state.detailLoading = false;
     },

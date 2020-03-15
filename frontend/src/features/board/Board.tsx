@@ -17,6 +17,8 @@ import { setColumns } from "features/column/ColumnSlice";
 import { useParams } from "react-router-dom";
 import { fetchBoardDetail } from "./BoardSlice";
 import Spinner from "components/Spinner";
+import { barHeight } from "const";
+import PageError from "components/PageError";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
@@ -25,7 +27,7 @@ const ParentContainer = styled.div<{ height: string }>`
 `;
 
 const Container = styled.div`
-  min-height: 100vh - 50px;
+  min-height: 100vh - ${barHeight}px;
   /* like display:flex but will allow bleeding over the window width */
   min-width: 100vw;
   display: inline-flex;
@@ -43,6 +45,7 @@ const Board = ({
   withScrollableColumns
 }: Props) => {
   const loading = useSelector((state: RootState) => state.board.detailLoading);
+  const error = useSelector((state: RootState) => state.board.detailError);
   const columns = useSelector((state: RootState) => state.column.entities);
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const tasksById = useSelector((state: RootState) => state.task.byId);
@@ -139,6 +142,10 @@ const Board = ({
 
   if (loading) {
     return <Spinner loading={loading} />;
+  }
+
+  if (error) {
+    return <PageError>{error}</PageError>;
   }
 
   return (
