@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TasksByColumn, ITask, Id } from "types";
-// import { taskMap, taskMapOnlyId } from "data";
-// import { arrayToObjbyId } from "utils/normalize";
 import {
   getBoardDetailSuccess,
   BoardDetailResponse
@@ -15,9 +13,7 @@ interface InitialState {
 }
 
 export const initialState: InitialState = {
-  // byColumn: taskMapOnlyId,
   byColumn: {},
-  // byId: arrayToObjbyId(Object.values(taskMap).flat())
   byId: {}
 };
 

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { taskMap } from "data";
 import {
   getBoardDetailSuccess,
   BoardDetailResponse
@@ -10,7 +9,6 @@ interface InitialState {
 }
 
 export const initialState: InitialState = {
-  // entities: Object.keys(taskMap)
   entities: []
 };
 
