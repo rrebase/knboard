@@ -1,16 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TasksByColumn, ITask, Id } from "types";
-import { taskMap, taskMapOnlyId } from "data";
-import { arrayToObjbyId } from "utils/normalize";
+// import { taskMap, taskMapOnlyId } from "data";
+// import { arrayToObjbyId } from "utils/normalize";
+import {
+  getBoardDetailSuccess,
+  BoardDetailResponse
+} from "features/board/BoardSlice";
+
+type TasksById = Record<string, ITask>;
 
 interface InitialState {
   byColumn: TasksByColumn;
-  byId: Record<string, ITask>;
+  byId: TasksById;
 }
 
 export const initialState: InitialState = {
-  byColumn: taskMapOnlyId,
-  byId: arrayToObjbyId(Object.values(taskMap).flat())
+  // byColumn: taskMapOnlyId,
+  byColumn: {},
+  // byId: arrayToObjbyId(Object.values(taskMap).flat())
+  byId: {}
 };
 
 export const slice = createSlice({
@@ -32,6 +40,23 @@ export const slice = createSlice({
         }
       }
       delete state.byId[action.payload];
+    }
+  },
+  extraReducers: {
+    [getBoardDetailSuccess.type]: (
+      state,
+      action: PayloadAction<BoardDetailResponse>
+    ) => {
+      const byColumn: TasksByColumn = {};
+      const byId: TasksById = {};
+      for (const col of action.payload.columns) {
+        for (const task of col.tasks) {
+          byId[task.id] = task;
+        }
+        byColumn[col.title] = col.tasks.map(t => t.id);
+      }
+      state.byColumn = byColumn;
+      state.byId = byId;
     }
   }
 });

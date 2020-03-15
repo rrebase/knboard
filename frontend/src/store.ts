@@ -1,4 +1,4 @@
-import { loadState, saveState } from "./utils/localStorage";
+import { loadState } from "./utils/localStorage";
 import { configureStore } from "@reduxjs/toolkit";
 import { Action, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";

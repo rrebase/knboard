@@ -6,7 +6,7 @@ import { Y50, N400A, G50, B50, P50 } from "colors";
 import { ITask, Author, Id } from "types";
 
 export const jake: Author = {
-  id: "1",
+  id: 1,
   name: "Backlog",
   avatarUrl: jakeImg,
   colors: {
@@ -16,7 +16,7 @@ export const jake: Author = {
 };
 
 const BMO: Author = {
-  id: "2",
+  id: 2,
   name: "Todo",
   avatarUrl: bmoImg,
   colors: {
@@ -26,7 +26,7 @@ const BMO: Author = {
 };
 
 const finn: Author = {
-  id: "3",
+  id: 3,
   name: "In Progress",
   avatarUrl: finnImg,
   colors: {
@@ -36,7 +36,7 @@ const finn: Author = {
 };
 
 const princess: Author = {
-  id: "4",
+  id: 4,
   name: "Done",
   avatarUrl: princessImg,
   colors: {
@@ -49,65 +49,81 @@ export const authors: Author[] = [jake, BMO, finn, princess];
 
 export const tasks: ITask[] = [
   {
-    id: "1",
+    id: 1,
     title: "Sometimes life is scary and dark",
+    description: "Sometimes life is scary and dark",
     author: BMO
   },
   {
-    id: "2",
+    id: 2,
     title:
+      "Sucking at something is the first step towards being sorta good at something.",
+    description:
       "Sucking at something is the first step towards being sorta good at something.",
     author: jake
   },
   {
-    id: "3",
+    id: 3,
     title: "You got to focus on what's real, man",
+    description: "You got to focus on what's real, man",
     author: jake
   },
   {
-    id: "4",
+    id: 4,
     title: "Is that where creativity comes from? From sad biz?",
+    description: "Is that where creativity comes from? From sad biz?",
     author: finn
   },
   {
-    id: "5",
+    id: 5,
     title: "Homies help homies. Always",
+    description: "Homies help homies. Always",
     author: finn
   },
   {
-    id: "6",
+    id: 6,
     title: "Responsibility demands sacrifice",
+    description: "Responsibility demands sacrifice",
     author: princess
   },
   {
-    id: "7",
+    id: 7,
     title: "That's it! The answer was so simple, I was too smart to see it!",
+    description:
+      "That's it! The answer was so simple, I was too smart to see it!",
     author: princess
   },
   {
-    id: "8",
+    id: 8,
     title:
+      "People make mistakes. It's all a part of growing up and you never really stop growing",
+    description:
       "People make mistakes. It's all a part of growing up and you never really stop growing",
     author: finn
   },
   {
-    id: "9",
+    id: 9,
     title: "Don't you always call sweatpants 'give up on life pants,' Jake?",
+    description:
+      "Don't you always call sweatpants 'give up on life pants,' Jake?",
     author: finn
   },
   {
-    id: "10",
+    id: 10,
     title: "I should not have drunk that much tea!",
+    description: "I should not have drunk that much tea!",
     author: princess
   },
   {
-    id: "11",
+    id: 11,
     title: "Please! I need the real you!",
+    description: "Please! I need the real you!",
     author: princess
   },
   {
-    id: "12",
+    id: 12,
     title: "Haven't slept for a solid 83 hours, but, yeah, I'm good.",
+    description: "Haven't slept for a solid 83 hours, but, yeah, I'm good.",
     author: princess
   }
 ];
@@ -121,7 +137,7 @@ export const getTasks = (count: number): ITask[] =>
 
     const custom: ITask = {
       ...random,
-      id: `G${idCount++}`
+      id: idCount++
     };
 
     return custom;
@@ -133,7 +149,7 @@ export const getAuthors = (count: number): Author[] =>
 
     const custom: Author = {
       ...random,
-      id: `author-${idCount++}`
+      id: idCount++
     };
 
     return custom;

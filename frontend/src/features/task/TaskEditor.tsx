@@ -81,7 +81,9 @@ const TaskEditor = ({ task, setEditing, text, setText, adding }: Props) => {
 
   return (
     <Container css={taskContainerStyles} onKeyDown={handleKeyDown}>
-      <Avatar src={task.author.avatarUrl} alt={task.author.name} />
+      {task.author && (
+        <Avatar src={task.author.avatarUrl} alt={task.author.name} />
+      )}
       <Content>
         <Text>
           <TextareaAutosize

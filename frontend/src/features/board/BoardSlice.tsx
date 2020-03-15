@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, AppDispatch } from "store";
-import { Board } from "types";
+import { Board, Column, ITask } from "types";
 import api, { API_BOARDS } from "api";
 
 interface InitialState {
@@ -26,6 +26,14 @@ export const initialState: InitialState = {
   detailLoading: false,
   detailError: null
 };
+
+interface ColumnsResponse extends Column {
+  tasks: ITask[];
+}
+
+export interface BoardDetailResponse extends Board {
+  columns: ColumnsResponse[];
+}
 
 export const slice = createSlice({
   name: "board",
@@ -62,8 +70,11 @@ export const slice = createSlice({
     getBoardDetailStart: state => {
       state.detailLoading = true;
     },
-    getBoardDetailSuccess: (state, action: PayloadAction<Board>) => {
-      state.detail = action.payload;
+    getBoardDetailSuccess: (
+      state,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      action: PayloadAction<BoardDetailResponse>
+    ) => {
       state.detailError = null;
       state.detailLoading = false;
     },

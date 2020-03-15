@@ -1,8 +1,13 @@
-export type Id = string;
+export type Id = number;
 
 export interface Board {
   id: number;
   name: string;
+}
+
+export interface Column {
+  id: number;
+  title: string;
 }
 
 export interface AuthorColors {
@@ -20,7 +25,8 @@ export interface Author {
 export interface ITask {
   id: Id;
   title: string;
-  author: Author;
+  description: string;
+  author?: Author;
 }
 
 export interface TasksByColumn {

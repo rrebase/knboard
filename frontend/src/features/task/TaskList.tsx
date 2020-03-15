@@ -16,7 +16,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";
 import { jake } from "data";
 import TaskEditor from "./TaskEditor";
-import { uuid } from "uuidv4";
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,
@@ -96,7 +95,7 @@ const InnerTaskList = ({ tasks }: TaskListProps) => (
 
 const AddCard = () => {
   const [adding, setAdding] = React.useState<boolean>(false);
-  const newTask: ITask = { id: uuid(), title: "", author: jake };
+  const newTask: ITask = { id: 999, title: "", author: jake, description: "" };
 
   return (
     <>

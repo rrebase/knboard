@@ -34,18 +34,29 @@ const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
 interface ContainerProps {
   isDragging: boolean;
   isGroupedOver: boolean;
-  colors: AuthorColors;
+  colors?: AuthorColors;
 }
 
+const defaultColors = {
+  soft: "#eee",
+  hard: "#aaa"
+};
+
 const Container = styled.span<ContainerProps>`
-  border-color: ${props => getBorderColor(props.isDragging, props.colors)};
+  border-color: ${props =>
+    getBorderColor(props.isDragging, props.colors || defaultColors)};
   background-color: ${props =>
-    getBackgroundColor(props.isDragging, props.isGroupedOver, props.colors)};
+    getBackgroundColor(
+      props.isDragging,
+      props.isGroupedOver,
+      props.colors || defaultColors
+    )};
   box-shadow: ${({ isDragging }) =>
     isDragging ? `2px 2px 1px ${N70}` : "none"};
 
   &:focus {
-    border-color: ${props => props.colors.hard};
+    border-color: ${props =>
+      props.colors ? props.colors.hard : defaultColors.hard};
   }
 `;
 
@@ -115,8 +126,10 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
 export const TaskFooter = ({ task }: { task: ITask }) => (
   <Footer>
-    <Author colors={task.author.colors}>{task.author.name}</Author>
-    <TaskId>id:{task.id.substring(0, 5)}</TaskId>
+    {task.author && (
+      <Author colors={task.author.colors}>{task.author.name}</Author>
+    )}
+    <TaskId>id:{task.id}</TaskId>
   </Footer>
 );
 
@@ -147,7 +160,7 @@ const Task = ({ task: task, style, index }: Props) => {
   }
 
   return (
-    <Draggable key={task.id} draggableId={task.id} index={index}>
+    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
       {(
         dragProvided: DraggableProvided,
         dragSnapshot: DraggableStateSnapshot
@@ -155,7 +168,7 @@ const Task = ({ task: task, style, index }: Props) => {
         <Container
           isDragging={dragSnapshot.isDragging}
           isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-          colors={task.author.colors}
+          colors={task.author ? task.author.colors : undefined}
           ref={dragProvided.innerRef}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
@@ -163,12 +176,16 @@ const Task = ({ task: task, style, index }: Props) => {
           data-is-dragging={dragSnapshot.isDragging}
           data-testid={task.id}
           data-index={index}
-          aria-label={`${task.author.name} task ${task.title}`}
+          aria-label={`${task.author ? task.author.name : "unassigned"} task ${
+            task.title
+          }`}
           onMouseEnter={beginHover}
           onMouseLeave={endHover}
           css={taskContainerStyles}
         >
-          <Avatar src={task.author.avatarUrl} alt={task.author.name} />
+          {task.author && (
+            <Avatar src={task.author.avatarUrl} alt={task.author.name} />
+          )}
           <Content>
             <TextContent>{text}</TextContent>
             <TaskFooter task={task} />
