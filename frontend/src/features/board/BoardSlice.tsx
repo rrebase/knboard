@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, AppDispatch } from "store";
 import { Board } from "types";
-import { api, BOARDS } from "endpoints";
+import { API_BOARDS } from "endpoints";
+import axios from "axios";
 
 interface InitialState {
   entities: Board[];
@@ -34,12 +35,16 @@ export const slice = createSlice({
   }
 });
 
-const { getBoardsStart, getBoardsSuccess, getBoardsFail } = slice.actions;
+export const {
+  getBoardsStart,
+  getBoardsSuccess,
+  getBoardsFail
+} = slice.actions;
 
 export const fetchBoards = (): AppThunk => async (dispatch: AppDispatch) => {
   dispatch(getBoardsStart());
   try {
-    const response = await api.get(BOARDS);
+    const response = await axios.get(API_BOARDS);
     dispatch(getBoardsSuccess(response.data));
   } catch (e) {
     dispatch(getBoardsFail("Failed to fetch boards."));

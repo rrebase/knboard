@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-export const LOCAL_STORAGE_KEY = "knboard-v5";
+export const LOCAL_STORAGE_KEY = "knboard-v6";
 
 export const grid = 8;
 export const borderRadius = 2;

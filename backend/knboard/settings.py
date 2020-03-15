@@ -130,3 +130,6 @@ INSTALLED_APPS += ["django_extensions"]
 
 # Auth user
 AUTH_USER_MODEL = 'accounts.User'
+
+# Don't append slash
+APPEND_SLASH = False

@@ -1,4 +1,1 @@
-import axios from "axios";
-
-export const api = axios.create();
-export const BOARDS = "/api/boards";
+export const API_BOARDS = "/api/boards/";
