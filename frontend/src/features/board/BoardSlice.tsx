@@ -4,21 +4,27 @@ import { Board } from "types";
 import api, { API_BOARDS } from "api";
 
 interface InitialState {
+  detail: Board | null;
   entities: Board[];
   fetchLoading: boolean;
   fetchError: string | null;
   createDialogOpen: boolean;
   createLoading: boolean;
   createError: string | null;
+  detailLoading: boolean;
+  detailError: string | null;
 }
 
 export const initialState: InitialState = {
+  detail: null,
   entities: [],
   fetchLoading: false,
   fetchError: null,
   createDialogOpen: false,
   createLoading: false,
-  createError: null
+  createError: null,
+  detailLoading: false,
+  detailError: null
 };
 
 export const slice = createSlice({
@@ -52,6 +58,18 @@ export const slice = createSlice({
     },
     setCreateDialogOpen: (state, action: PayloadAction<boolean>) => {
       state.createDialogOpen = action.payload;
+    },
+    getBoardDetailStart: state => {
+      state.detailLoading = true;
+    },
+    getBoardDetailSuccess: (state, action: PayloadAction<Board>) => {
+      state.detail = action.payload;
+      state.detailError = null;
+      state.detailLoading = false;
+    },
+    getBoardDetailFail: (state, action: PayloadAction<string>) => {
+      state.detailError = action.payload;
+      state.detailLoading = false;
     }
   }
 });
@@ -63,10 +81,13 @@ export const {
   createBoardStart,
   createBoardSuccess,
   createBoardFail,
-  setCreateDialogOpen
+  setCreateDialogOpen,
+  getBoardDetailStart,
+  getBoardDetailSuccess,
+  getBoardDetailFail
 } = slice.actions;
 
-export const fetchBoards = (): AppThunk => async (dispatch: AppDispatch) => {
+export const fetchBoardList = (): AppThunk => async (dispatch: AppDispatch) => {
   dispatch(getBoardsStart());
   try {
     const response = await api.get(API_BOARDS);
@@ -85,6 +106,18 @@ export const createBoard = (name: string): AppThunk => async (
     dispatch(createBoardSuccess(response.data));
   } catch (err) {
     dispatch(createBoardFail(err.toString()));
+  }
+};
+
+export const fetchBoardDetail = (id: string): AppThunk => async (
+  dispatch: AppDispatch
+) => {
+  dispatch(getBoardDetailStart());
+  try {
+    const response = await api.get(`${API_BOARDS}${id}/`);
+    dispatch(getBoardDetailSuccess(response.data));
+  } catch (err) {
+    dispatch(getBoardDetailFail(err.toString()));
   }
 };
 

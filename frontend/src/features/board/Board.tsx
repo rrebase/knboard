@@ -16,6 +16,8 @@ import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { setTasksByColumn } from "features/task/TaskSlice";
 import { setColumns } from "features/column/ColumnSlice";
+import { useParams } from "react-router-dom";
+import { fetchBoardDetail } from "./BoardSlice";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
@@ -45,6 +47,13 @@ const Board = ({
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const dispatch = useDispatch();
+  const { id } = useParams();
+
+  React.useEffect(() => {
+    if (id) {
+      dispatch(fetchBoardDetail(id));
+    }
+  }, [id]);
 
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {

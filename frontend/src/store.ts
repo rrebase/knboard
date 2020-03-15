@@ -20,6 +20,7 @@ const store = configureStore({
   reducer: rootReducer
 });
 
+/*
 store.subscribe(() => {
   const state = store.getState();
 
@@ -28,6 +29,7 @@ store.subscribe(() => {
     board: state.board
   });
 });
+*/
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppThunk = ThunkAction<void, RootState, null, Action<string>>;
