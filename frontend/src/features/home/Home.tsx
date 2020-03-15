@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div>
+      <p style={{ marginLeft: 16 }}>Welcome home 👋</p>
       <nav>
         <ul>
           <li>

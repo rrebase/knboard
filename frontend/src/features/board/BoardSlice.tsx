@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, AppDispatch } from "store";
-import { Board, Column, ITask } from "types";
+import { Board, IColumn, ITask } from "types";
 import api, { API_BOARDS } from "api";
 
 interface InitialState {
@@ -27,7 +27,7 @@ export const initialState: InitialState = {
   detailError: null
 };
 
-interface ColumnsResponse extends Column {
+interface ColumnsResponse extends IColumn {
   tasks: ITask[];
 }
 
