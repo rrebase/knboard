@@ -8,6 +8,7 @@ import { fetchBoards } from "./BoardSlice";
 import { RootState } from "store";
 import { css, SerializedStyles } from "@emotion/core";
 import { Link } from "react-router-dom";
+import NewBoardDialog from "./NewBoardDialog";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -53,14 +54,20 @@ const boardCardStyles = css`
   color: #fff;
 `;
 
-const newCardStyles = css`
+export const newCardStyles = css`
   ${boardCardBaseStyles}
   background-color: #e0e2e5;
   color: #333;
+  width: 100%;
+  font-size: 0.7rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    background-color: #d0d2d5;
+  }
 `;
 
 interface CardProps {
@@ -115,9 +122,9 @@ const BoardList = () => {
                 {board.name}
               </Card>
             ))}
-            <Card key="new-board" cardCss={newCardStyles} to="#">
-              Create new board
-            </Card>
+            <Grid item xs={4} key="new-board">
+              <NewBoardDialog />
+            </Grid>
           </Grid>
         </Cards>
       </BoardsSection>
