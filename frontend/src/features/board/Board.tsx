@@ -8,7 +8,7 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import Column from "features/column";
-import { TasksByColumn, Id } from "types";
+import { TasksByColumn, Id, IColumn } from "types";
 import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -61,7 +61,7 @@ const Board = ({
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {
       if (result.type === "COLUMN") {
-        const shallow: string[] = [...columns];
+        const shallow: IColumn[] = [...columns];
         shallow.splice(result.source.index, 1);
         dispatch(setColumns(shallow));
         return;
@@ -96,7 +96,7 @@ const Board = ({
 
     // reordering column
     if (result.type === "COLUMN") {
-      const newOrdered: string[] = reorder(
+      const newOrdered: IColumn[] = reorder(
         columns,
         source.index,
         destination.index
@@ -124,12 +124,14 @@ const Board = ({
     >
       {(provided: DroppableProvided) => (
         <Container ref={provided.innerRef} {...provided.droppableProps}>
-          {columns.map((key: string, index: number) => (
+          {columns.map((column: IColumn, index: number) => (
             <Column
-              key={key}
+              key={column.title}
               index={index}
-              title={key}
-              tasks={tasksByColumn[key].map(taskId => tasksById[taskId])}
+              title={column.title}
+              tasks={tasksByColumn[column.title].map(
+                taskId => tasksById[taskId]
+              )}
               isScrollable={withScrollableColumns}
               isCombineEnabled={isCombineEnabled}
             />

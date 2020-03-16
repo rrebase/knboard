@@ -3,9 +3,10 @@ import {
   getBoardDetailSuccess,
   BoardDetailResponse
 } from "features/board/BoardSlice";
+import { IColumn } from "types";
 
 interface InitialState {
-  entities: string[];
+  entities: IColumn[];
 }
 
 export const initialState: InitialState = {
@@ -16,7 +17,7 @@ export const slice = createSlice({
   name: "column",
   initialState,
   reducers: {
-    setColumns: (state, action: PayloadAction<string[]>) => {
+    setColumns: (state, action: PayloadAction<IColumn[]>) => {
       state.entities = action.payload;
     }
   },
@@ -25,7 +26,10 @@ export const slice = createSlice({
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {
-      state.entities = action.payload.columns.map(c => c.title);
+      state.entities = action.payload.columns.map(column => ({
+        id: column.id,
+        title: column.title
+      }));
     }
   }
 });
