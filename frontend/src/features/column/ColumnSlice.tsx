@@ -4,6 +4,8 @@ import {
   BoardDetailResponse
 } from "features/board/BoardSlice";
 import { IColumn } from "types";
+import { AppThunk, AppDispatch, RootState } from "store";
+import api, { API_SORT_COLUMNS } from "api";
 
 interface InitialState {
   entities: IColumn[];
@@ -35,5 +37,21 @@ export const slice = createSlice({
 });
 
 export const { setColumns } = slice.actions;
+
+export const updateColumns = (columns: IColumn[]): AppThunk => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  const previousColumns = getState().column.entities;
+  try {
+    dispatch(setColumns(columns));
+    await api.post(API_SORT_COLUMNS, {
+      order: columns.map(col => col.id)
+    });
+  } catch (err) {
+    dispatch(setColumns(previousColumns));
+    // TODO: NOTISTACK ERROR
+  }
+};
 
 export default slice.reducer;

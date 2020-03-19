@@ -13,7 +13,7 @@ import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { setTasksByColumn } from "features/task/TaskSlice";
-import { setColumns } from "features/column/ColumnSlice";
+import { updateColumns } from "features/column/ColumnSlice";
 import { useParams } from "react-router-dom";
 import { fetchBoardDetail } from "./BoardSlice";
 import Spinner from "components/Spinner";
@@ -63,7 +63,7 @@ const Board = ({
       if (result.type === "COLUMN") {
         const shallow: IColumn[] = [...columns];
         shallow.splice(result.source.index, 1);
-        dispatch(setColumns(shallow));
+        dispatch(updateColumns(shallow));
         return;
       }
 
@@ -101,7 +101,7 @@ const Board = ({
         source.index,
         destination.index
       );
-      dispatch(setColumns(newOrdered));
+      dispatch(updateColumns(newOrdered));
       return;
     }
 

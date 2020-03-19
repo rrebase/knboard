@@ -6,5 +6,6 @@ axios.defaults.xsrfCookieName = "csrftoken";
 
 // Available endpoints
 export const API_BOARDS = "/api/boards/";
+export const API_SORT_COLUMNS = "/api/sort/column/";
 
 export default axios;
