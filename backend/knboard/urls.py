@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from accounts.api import UserViewSet
-from boards.api import BoardViewSet, TaskViewSet
+from boards.api import BoardViewSet, TaskViewSet, sort_column, sort_task
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
@@ -28,6 +28,8 @@ router.register(r"tasks", TaskViewSet)
 
 urlpatterns = [
     url(r"^api/", include(router.urls)),
+    url(r"^api/sort/column/", sort_column),
+    url(r"^api/sort/task/", sort_task),
     url(r"^api-auth/", include("rest_framework.urls")),
     path("tagauks/", admin.site.urls),
 ]

@@ -23,66 +23,65 @@
   fields:
     title: Backlog
     board: 1
+    column_order: 1
 
 - model: boards.Column
   pk: 2
   fields:
     title: Todo
     board: 1
+    column_order: 2
 
 - model: boards.Column
   pk: 3
   fields:
     title: In progress
     board: 1
+    column_order: 3
 
 - model: boards.Column
   pk: 4
   fields:
     title: Done
     board: 1
+    column_order: 4
 
 - model: boards.Task
   pk: 1
   fields:
     title: Implement Landing page
-    slug: implement-landing-page
     description: Implement the landing page. Use figma designs provided by Steve.
-    weight: 0
     column: 1
+    task_order: 1
 
 - model: boards.Task
   pk: 2
   fields:
     title: Profile page detail view
-    slug: profile-page-detail-view
     description: Implement the profile page detail view.
-    weight: 1
     column: 1
+    task_order: 2
 
 - model: boards.Task
   pk: 3
   fields:
     title: User friends
-    slug: user-friends
     description: Implement the user friends component. Building the API is not part of this task.
-    weight: 0
     column: 2
+    task_order: 1
 
 - model: boards.Task
   pk: 4
   fields:
     title: User settings
-    slug: user-settings
     description: Implement user settings.
-    weight: 0
     column: 3
+    task_order: 1
 
 - model: boards.Task
   pk: 5
   fields:
     title: Cookie Consent
-    slug: cookie-consent
     description: Add cookie consent functionality.
-    weight: 1
     column: 3
+    task_order: 1

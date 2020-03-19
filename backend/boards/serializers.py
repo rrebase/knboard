@@ -12,7 +12,7 @@ class BoardSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ["id", "title", "description"]
+        fields = ["id", "title", "description", "task_order"]
 
 
 class ColumnSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class ColumnSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Column
-        fields = ["id", "title", "tasks"]
+        fields = ["id", "title", "tasks", "column_order"]
 
 
 class BoardDetailSerializer(serializers.ModelSerializer):

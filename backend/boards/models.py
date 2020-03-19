@@ -1,3 +1,5 @@
+from adminsortable.fields import SortableForeignKey
+from adminsortable.models import SortableMixin
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -11,23 +13,26 @@ class Board(models.Model):
         return self.name
 
 
-class Column(models.Model):
+class Column(SortableMixin):
     title = models.CharField(max_length=255)
     board = models.ForeignKey('Board', related_name='columns', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
-
-class Task(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(allow_unicode=True)
-    description = models.TextField()
-    weight = models.FloatField()
-    column = models.ForeignKey('Column', related_name="tasks", on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.id} - {self.title} - {self.column.title}'
+    column_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
     class Meta:
-        ordering = ['-weight']
+        ordering = ['column_order']
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Task(SortableMixin):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    column = SortableForeignKey(Column, related_name="tasks", on_delete=models.CASCADE)
+    task_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
+    def __str__(self):
+        return f'{self.id} - {self.title}'
+
+    class Meta:
+        ordering = ['task_order']
