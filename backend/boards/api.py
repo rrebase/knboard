@@ -31,7 +31,6 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 @api_view(["POST"])
 def sort_column(request, format=None):
-    print(request.POST)
     return sort_model(request, Column)
 
 

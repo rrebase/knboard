@@ -6,6 +6,10 @@ import {
 import { IColumn } from "types";
 import { AppThunk, AppDispatch, RootState } from "store";
 import api, { API_SORT_COLUMNS } from "api";
+import {
+  createSuccessToast,
+  createErrorToast
+} from "features/toast/ToastSlice";
 
 interface InitialState {
   entities: IColumn[];
@@ -48,9 +52,10 @@ export const updateColumns = (columns: IColumn[]): AppThunk => async (
     await api.post(API_SORT_COLUMNS, {
       order: columns.map(col => col.id)
     });
+    dispatch(createSuccessToast("Columns ordered"));
   } catch (err) {
     dispatch(setColumns(previousColumns));
-    // TODO: NOTISTACK ERROR
+    dispatch(createErrorToast(err.toString()));
   }
 };
 

@@ -2,8 +2,8 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
 
+import Toast from "features/toast/Toast";
 import Board from "features/board";
 import BoardList from "features/board/BoardList";
 import Navbar from "components/Navbar";
@@ -18,22 +18,21 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={3}>
-            <CssBaseline />
-            <Navbar />
-            <Switch>
-              <Route path="/boards">
-                <BoardList />
-              </Route>
-              <Route path="/b/:id">
-                <BoardBar />
-                <Board />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </SnackbarProvider>
+          <CssBaseline />
+          <Navbar />
+          <Switch>
+            <Route path="/boards">
+              <BoardList />
+            </Route>
+            <Route path="/b/:id">
+              <BoardBar />
+              <Board />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+          <Toast />
         </ThemeProvider>
       </Router>
     </Provider>
