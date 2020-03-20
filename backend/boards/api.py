@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
@@ -35,8 +36,21 @@ def sort_column(request, format=None):
 
 
 @api_view(["POST"])
+@transaction.atomic
 def sort_task(request, format=None):
+    move_tasks(request)
     return sort_model(request, Task)
+
+
+def move_tasks(request):
+    tasks_by_column = request.data.get("tasks", {})
+    # from itertools import chain
+    # list(chain.from_iterable(tasks_by_column.values()))
+
+    for column_name, tasks in tasks_by_column.items():
+        column = Column.objects.get(title=column_name)
+        tasks = Task.objects.filter(pk__in=tasks)
+        tasks.update(column=column)
 
 
 def sort_model(request, Model):

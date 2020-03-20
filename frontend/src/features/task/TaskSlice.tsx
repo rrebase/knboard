@@ -4,6 +4,12 @@ import {
   getBoardDetailSuccess,
   BoardDetailResponse
 } from "features/board/BoardSlice";
+import { AppDispatch, AppThunk, RootState } from "store";
+import {
+  createErrorToast,
+  createSuccessToast
+} from "features/toast/ToastSlice";
+import api, { API_SORT_TASKS } from "api";
 
 type TasksById = Record<string, ITask>;
 
@@ -58,5 +64,22 @@ export const slice = createSlice({
 });
 
 export const { setTasksByColumn, updateTask, deleteTask } = slice.actions;
+
+export const updateTasksByColumn = (
+  tasksByColumn: TasksByColumn
+): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const previousTasksByColumn = getState().task.byColumn;
+  try {
+    dispatch(setTasksByColumn(tasksByColumn));
+    await api.post(API_SORT_TASKS, {
+      tasks: tasksByColumn,
+      order: Object.values(tasksByColumn).flat()
+    });
+    dispatch(createSuccessToast("Tasks ordered"));
+  } catch (err) {
+    dispatch(setTasksByColumn(previousTasksByColumn));
+    dispatch(createErrorToast(err.toString()));
+  }
+};
 
 export default slice.reducer;

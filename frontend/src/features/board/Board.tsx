@@ -12,7 +12,7 @@ import { TasksByColumn, Id, IColumn } from "types";
 import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
-import { setTasksByColumn } from "features/task/TaskSlice";
+import { updateTasksByColumn } from "features/task/TaskSlice";
 import { updateColumns } from "features/column/ColumnSlice";
 import { useParams } from "react-router-dom";
 import { fetchBoardDetail } from "./BoardSlice";
@@ -74,7 +74,7 @@ const Board = ({
         ...tasksByColumn,
         [result.source.droppableId]: withTaskRemoved
       };
-      dispatch(setTasksByColumn(newColumns));
+      dispatch(updateTasksByColumn(newColumns));
       return;
     }
 
@@ -111,7 +111,7 @@ const Board = ({
       destination
     });
 
-    dispatch(setTasksByColumn(data.tasksByColumn));
+    dispatch(updateTasksByColumn(data.tasksByColumn));
   };
 
   const board = (
