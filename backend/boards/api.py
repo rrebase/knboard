@@ -1,8 +1,13 @@
 from django.db import transaction
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 from boards.models import Board, Task, Column
 from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer
@@ -30,22 +35,41 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-@api_view(["POST"])
-def sort_column(request, format=None):
-    return sort_model(request, Column)
+class SortColumnSerializer(Serializer):
+    order = PrimaryKeyRelatedField(many=True, queryset=Column.objects.all())
 
 
-@api_view(["POST"])
-@transaction.atomic
-def sort_task(request, format=None):
-    move_tasks(request)
-    return sort_model(request, Task)
+class SortTaskSerializer(Serializer):
+    order = PrimaryKeyRelatedField(many=True, queryset=Task.objects.all())
+
+
+class SortColumn(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @transaction.atomic
+    def post(self, request, format=None):
+        serializer = SortColumnSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        response = sort_model(request, Column)
+        return response
+
+
+class SortTask(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @transaction.atomic
+    def post(self, request, format=None):
+        serializer = SortColumnSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        move_tasks(request)
+        response = sort_model(request, Column)
+        return response
 
 
 def move_tasks(request):
-    tasks_by_column = request.data.get("tasks", {})
-    # from itertools import chain
-    # list(chain.from_iterable(tasks_by_column.values()))
+    tasks_by_column = request.data.get("tasks")
+    board_id = request.data.get("board")
+    # board = Board.objects.get(id=board_id)
 
     for column_name, tasks in tasks_by_column.items():
         column = Column.objects.get(title=column_name)
@@ -58,6 +82,11 @@ def sort_model(request, Model):
 
     try:
         ordered_pks = request.data.get("order", [])
+
+        # Check for duplicates
+        if len(ordered_pks) != len(set(ordered_pks)):
+            return Response(status=HTTP_400_BAD_REQUEST)
+
         objects_dict = dict(
             [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
         )

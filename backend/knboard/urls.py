@@ -16,10 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 from rest_framework import routers
 
 from accounts.api import UserViewSet
-from boards.api import BoardViewSet, TaskViewSet, sort_column, sort_task
+from boards.api import BoardViewSet, TaskViewSet, SortColumn, SortTask
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
@@ -28,8 +29,12 @@ router.register(r"tasks", TaskViewSet)
 
 urlpatterns = [
     url(r"^api/", include(router.urls)),
-    url(r"^api/sort/column/", sort_column),
-    url(r"^api/sort/task/", sort_task),
+    url(r"^api/sort/column/", SortColumn.as_view(), name="sort-column"),
+    url(r"^api/sort/task/", SortTask.as_view(), name="sort-task"),
     url(r"^api-auth/", include("rest_framework.urls")),
     path("tagauks/", admin.site.urls),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns
