@@ -135,9 +135,6 @@ INSTALLED_APPS += ["django_extensions"]
 # Auth user
 AUTH_USER_MODEL = 'accounts.User'
 
-# Don't append slash
-APPEND_SLASH = False
-
 # Configure django-debug-toolbar
 DEBUG_TOOLBAR_PANELS = [
     'ddt_request_history.panels.request_history.RequestHistoryPanel',

@@ -5,3 +5,4 @@ markdown==3.2.1
 django-extensions==2.2.8
 PyYAML==5.3
 pytest-django==3.8.0
+pytest-factoryboy==2.0.3

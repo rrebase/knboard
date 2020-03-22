@@ -1,22 +1,31 @@
 from django.db import transaction
-from rest_framework import viewsets, serializers
-from rest_framework.decorators import api_view
-from rest_framework.exceptions import ValidationError
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
 from boards.models import Board, Task, Column
+from boards.permissions import IsOwnerToDelete
 from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer
 
 
-class BoardViewSet(viewsets.ModelViewSet):
+class BoardViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerToDelete]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -24,9 +33,12 @@ class BoardViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset().filter(members=user)
+
         if self.action == "retrieve":
-            return super().get_queryset().prefetch_related("columns__tasks")
-        return super().get_queryset()
+            return qs.prefetch_related("columns__tasks")
+        return qs
 
 
 class TaskViewSet(viewsets.ModelViewSet):

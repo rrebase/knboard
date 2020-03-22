@@ -1,5 +1,10 @@
 import pytest
 import uuid
+from pytest_factoryboy import register
+
+from boards.tests.factories import UserFactory
+
+register(UserFactory)
 
 
 @pytest.fixture
@@ -31,3 +36,18 @@ def api_client_with_credentials(db, create_user, api_client):
     api_client.force_authenticate(user=user)
     yield api_client
     api_client.force_authenticate(user=None)
+
+
+@pytest.fixture
+def steve(db, user_factory):
+    return user_factory(username="steve")
+
+
+@pytest.fixture
+def amy(db, user_factory):
+    return user_factory(username="amy")
+
+
+@pytest.fixture
+def leo(db, user_factory):
+    return user_factory(username="leo")

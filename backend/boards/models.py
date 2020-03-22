@@ -8,21 +8,32 @@ User = get_user_model()
 
 class Board(models.Model):
     name = models.CharField(max_length=255)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='boards')
+    members = models.ManyToManyField(User)
+
+    class Meta:
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        is_new = self.pk is None
+        super().save(force_insert, force_update, using, update_fields)
+        if is_new:
+            self.members.add(self.owner)
+
 
 class Column(SortableMixin):
     title = models.CharField(max_length=255)
-    board = models.ForeignKey('Board', related_name='columns', on_delete=models.CASCADE)
+    board = models.ForeignKey("Board", related_name="columns", on_delete=models.CASCADE)
     column_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
     class Meta:
-        ordering = ['column_order']
+        ordering = ["column_order"]
 
     def __str__(self):
-        return f'{self.title}'
+        return f"{self.title}"
 
 
 class Task(SortableMixin):
@@ -32,7 +43,7 @@ class Task(SortableMixin):
     task_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
     def __str__(self):
-        return f'{self.id} - {self.title}'
+        return f"{self.id} - {self.title}"
 
     class Meta:
-        ordering = ['task_order']
+        ordering = ["task_order"]
