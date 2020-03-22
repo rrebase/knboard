@@ -32,3 +32,9 @@ export interface ITask {
 export interface TasksByColumn {
   [key: string]: Id[];
 }
+
+/*
+export interface User {
+
+}
+*/

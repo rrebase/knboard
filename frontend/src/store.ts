@@ -2,6 +2,7 @@ import { loadState } from "./utils/localStorage";
 import { configureStore } from "@reduxjs/toolkit";
 import { Action, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
+import authReducer from "./features/auth/AuthSlice";
 import toastReducer from "./features/toast/ToastSlice";
 import counterReducer from "./features/counter/CounterSlice";
 import boardReducer from "./features/board/BoardSlice";
@@ -9,6 +10,7 @@ import columnReducer from "./features/column/ColumnSlice";
 import taskReducer from "./features/task/TaskSlice";
 
 export const rootReducer = combineReducers({
+  auth: authReducer,
   toast: toastReducer,
   counter: counterReducer,
   board: boardReducer,
