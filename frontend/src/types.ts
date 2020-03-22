@@ -33,8 +33,7 @@ export interface TasksByColumn {
   [key: string]: Id[];
 }
 
-/*
 export interface User {
-
+  key: string;
+  username: string;
 }
-*/

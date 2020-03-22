@@ -1,4 +1,4 @@
-import { loadState } from "./utils/localStorage";
+import { loadState, saveState } from "./utils/localStorage";
 import { configureStore } from "@reduxjs/toolkit";
 import { Action, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
@@ -24,16 +24,17 @@ const store = configureStore({
   reducer: rootReducer
 });
 
-/*
 store.subscribe(() => {
   const state = store.getState();
 
   saveState({
     ...state,
-    board: state.board
+    auth: {
+      ...state.auth,
+      user: state.auth.user
+    }
   });
 });
-*/
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppThunk = ThunkAction<void, RootState, null, Action<string>>;

@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk, AppDispatch } from "store";
+import api, { API_LOGIN } from "api";
+import { User } from "types";
 
 interface InitialState {
-  user: null;
+  user: User | null;
   loading: boolean;
   error: string | null;
 }
@@ -19,7 +22,7 @@ export const slice = createSlice({
     loginStart: state => {
       state.loading = true;
     },
-    loginSuccess: (state, action: PayloadAction<null>) => {
+    loginSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.loading = false;
     },
@@ -34,5 +37,21 @@ export const slice = createSlice({
 });
 
 export const { loginStart, loginSuccess, loginError, logout } = slice.actions;
+
+export const login = (username: string, password: string): AppThunk => async (
+  dispatch: AppDispatch
+) => {
+  dispatch(loginStart());
+  try {
+    const response = await api.post(API_LOGIN, { username, password });
+    dispatch(loginSuccess(response.data));
+  } catch (err) {
+    let errorMsg = err.toString();
+    if (err.response.status === 400) {
+      errorMsg = err.response.data.non_field_errors;
+    }
+    dispatch(loginError(errorMsg));
+  }
+};
 
 export default slice.reducer;

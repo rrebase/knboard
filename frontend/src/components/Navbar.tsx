@@ -5,6 +5,8 @@ import { faHome, faTh } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { css } from "@emotion/core";
 import { barHeight } from "const";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 const Container = styled.div`
   min-height: ${barHeight}px;
@@ -35,6 +37,8 @@ const Icons = styled.div`
 `;
 
 const Navbar = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <Container>
       <Item>
@@ -54,7 +58,7 @@ const Navbar = () => {
         </Icons>
       </Item>
       <Item>Knboard</Item>
-      <Item>Me</Item>
+      <Item>{user?.username}</Item>
     </Container>
   );
 };

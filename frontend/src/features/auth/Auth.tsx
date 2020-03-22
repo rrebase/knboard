@@ -1,7 +1,8 @@
 import React from "react";
-import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import { ReactComponent as Board } from "static/svg/board.svg";
+import LoginDialog from "./LoginDialog";
+import RegisterDialog from "./RegisterDialog";
 
 const Container = styled.div`
   margin-top: 150px;
@@ -15,18 +16,19 @@ const Title = styled.h1`
   margin-bottom: 0.75rem;
 `;
 
-const Login = () => {
+const Auth = () => {
   return (
     <Container>
       <div>
         <Board width={200} height={200} />
       </div>
       <Title>knboard</Title>
-      <Button variant="contained" color="primary">
-        Login
-      </Button>
+      <div>
+        <LoginDialog />
+        <RegisterDialog />
+      </div>
     </Container>
   );
 };
 
-export default Login;
+export default Auth;
