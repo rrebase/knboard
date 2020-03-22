@@ -12,9 +12,11 @@ import { newCardStyles } from "./BoardList";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoard, setCreateDialogOpen } from "./BoardSlice";
 import { RootState } from "store";
+import { Alert } from "@material-ui/lab";
 
 const NewBoardDialog = () => {
   const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.board.createError);
   const open = useSelector((state: RootState) => state.board.createDialogOpen);
   const [name, setName] = React.useState<string>("");
 
@@ -49,6 +51,7 @@ const NewBoardDialog = () => {
             Create a new private board. Only members of the board will be able
             to see and edit it.
           </DialogContentText>
+          {error && <Alert severity="error">{error}</Alert>}
           <TextField
             autoFocus
             margin="dense"

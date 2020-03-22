@@ -68,10 +68,13 @@ export const { setTasksByColumn, updateTask, deleteTask } = slice.actions;
 export const updateTasksByColumn = (
   tasksByColumn: TasksByColumn
 ): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const previousTasksByColumn = getState().task.byColumn;
+  const state = getState();
+  const previousTasksByColumn = state.task.byColumn;
+  const boardId = state.board.detail?.id;
   try {
     dispatch(setTasksByColumn(tasksByColumn));
     await api.post(API_SORT_TASKS, {
+      board: boardId,
       tasks: tasksByColumn,
       order: Object.values(tasksByColumn).flat()
     });
