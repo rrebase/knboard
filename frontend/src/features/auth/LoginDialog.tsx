@@ -28,6 +28,7 @@ const LoginDialog = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const error = useSelector((state: RootState) => state.auth.error);
+  const loading = useSelector((state: RootState) => state.auth.loading);
   const { register, handleSubmit, errors } = useForm<FormData>();
 
   const handleOpen = () => {
@@ -97,7 +98,12 @@ const LoginDialog = () => {
               fullWidth
             />
             <FormActions>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={loading}
+              >
                 Login
               </Button>
             </FormActions>

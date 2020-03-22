@@ -22,6 +22,11 @@ export const slice = createSlice({
       state.message = action.payload;
       state.severity = "success";
     },
+    createInfoToast: (state, action: PayloadAction<string>) => {
+      state.open = true;
+      state.message = action.payload;
+      state.severity = "info";
+    },
     createErrorToast: (state, action: PayloadAction<string>) => {
       state.open = true;
       state.message = action.payload;
@@ -35,6 +40,7 @@ export const slice = createSlice({
 
 export const {
   createSuccessToast,
+  createInfoToast,
   createErrorToast,
   clearToast
 } = slice.actions;
