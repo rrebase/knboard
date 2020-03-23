@@ -33,3 +33,27 @@
     is_superuser: false
     is_staff: true
     is_active: true
+
+- model: accounts.User
+  pk: 4
+  fields:
+    username: tim@gmail.com
+    password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
+    first_name: Tim
+    last_name: Woodstock
+    email: tim@gmail.com
+    is_superuser: false
+    is_staff: true
+    is_active: true
+
+- model: accounts.User
+  pk: 5
+  fields:
+    username: sten@gmail.com
+    password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
+    first_name: Sten
+    last_name: Woodstock
+    email: sten@gmail.com
+    is_superuser: false
+    is_staff: true
+    is_active: true
