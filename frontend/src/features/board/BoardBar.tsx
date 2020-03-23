@@ -7,6 +7,7 @@ import { AvatarGroup } from "@material-ui/lab";
 import { Avatar, Tooltip } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
+import MemberInvite from "components/MemberInvite";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -51,6 +52,7 @@ const BoardBar = () => {
           );
         })}
       </AvatarGroup>
+      <MemberInvite />
     </Container>
   );
 };
