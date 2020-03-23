@@ -6,6 +6,7 @@ import { createInfoToast } from "features/toast/ToastSlice";
 import { logout } from "features/auth/AuthSlice";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
+import { avatarStyles } from "styles";
 
 const Username = styled.div`
   color: #333;
@@ -55,15 +56,7 @@ const UserMenu = () => {
           }
         `}
       >
-        <Avatar
-          css={css`
-            height: 1.875rem;
-            width: 1.875rem;
-            font-size: 12px;
-          `}
-        >
-          {user?.username.charAt(0)}
-        </Avatar>
+        <Avatar css={avatarStyles}>{user?.username.charAt(0)}</Avatar>
       </Button>
       <Menu
         id="user-menu"

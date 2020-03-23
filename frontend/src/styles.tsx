@@ -43,3 +43,9 @@ export const taskContainerStyles = css`
   /* flexbox */
   display: flex;
 `;
+
+export const avatarStyles = css`
+  height: 1.875rem;
+  width: 1.875rem;
+  font-size: 12px;
+`;

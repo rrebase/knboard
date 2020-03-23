@@ -74,8 +74,8 @@ export const slice = createSlice({
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {
-      const { id, name } = action.payload;
-      state.detail = { id, name };
+      const { id, name, owner, members } = action.payload;
+      state.detail = { id, name, owner, members };
       state.detailError = null;
       state.detailLoading = false;
     },
