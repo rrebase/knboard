@@ -12,9 +12,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["id", "url", "username", "email", "is_staff"]
 
 
+class BoardOwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id"]
+
+
+class BoardMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email"]
+
+
 class TokenSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = TokenModel
-        fields = ('key', 'username')
+        fields = ("key", "username")

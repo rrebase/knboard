@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from boards.models import Board, Task, Column
+from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
+from .models import Board, Task, Column
 
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -25,7 +26,9 @@ class ColumnSerializer(serializers.ModelSerializer):
 
 class BoardDetailSerializer(serializers.ModelSerializer):
     columns = ColumnSerializer(many=True, read_only=True)
+    owner = BoardOwnerSerializer(read_only=True)
+    members = BoardMemberSerializer(many=True, read_only=True)
 
     class Meta:
         model = Board
-        fields = ["id", "name", "columns"]
+        fields = ["id", "name", "owner", "members", "columns"]

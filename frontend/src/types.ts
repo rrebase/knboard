@@ -1,8 +1,20 @@
 export type Id = number;
 
+export interface BoardOwner {
+  id: number;
+}
+
+export interface BoardMember {
+  id: number;
+  username: string;
+  email: string;
+}
+
 export interface Board {
   id: number;
   name: string;
+  owner: BoardOwner;
+  members: BoardMember[];
 }
 
 export interface IColumn {
