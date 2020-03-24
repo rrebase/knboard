@@ -10,7 +10,7 @@ interface UserOption {
   email: string;
 }
 
-const UserSearch = () => {
+const UserSearch = ({ inputEl }: any) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = React.useState<UserOption[]>([]);
   const loading = open && options.length === 0;
@@ -59,6 +59,7 @@ const UserSearch = () => {
           {...params}
           label="Search username"
           variant="outlined"
+          inputRef={inputEl}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

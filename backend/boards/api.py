@@ -1,16 +1,20 @@
 from django.db import transaction
+from django.contrib.auth import get_user_model
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.decorators import action
 
 from boards.models import Board, Task, Column
-from boards.permissions import IsOwnerToDelete
-from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer
+from boards.permissions import IsOwnerForDangerousMethods
+from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, InviteMemberSerializer
+
+User = get_user_model()
 
 
 class BoardViewSet(
@@ -22,7 +26,7 @@ class BoardViewSet(
 ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    permission_classes = [IsAuthenticated, IsOwnerToDelete]
+    permission_classes = [IsAuthenticated, IsOwnerForDangerousMethods]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -39,6 +43,22 @@ class BoardViewSet(
         if self.action == "retrieve":
             return qs.prefetch_related("columns__tasks")
         return qs
+
+    @action(detail=True, methods=["post"], serializer_class=InviteMemberSerializer)
+    def invite_member(self, request, pk):
+        user = self.request.user
+        board = self.get_object()
+
+        if board.owner != user:
+            return Response(status=HTTP_403_FORBIDDEN)
+
+        try:
+            user = User.objects.get(username=request.data.get('username'))
+        except User.DoesNotExist:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        board.members.add(user)
+        return Response(status=HTTP_200_OK)
 
 
 class TaskViewSet(viewsets.ModelViewSet):

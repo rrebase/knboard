@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
 from .models import Board, Task, Column
+
+User = get_user_model()
 
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -32,3 +35,7 @@ class BoardDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = ["id", "name", "owner", "members", "columns"]
+
+
+class InviteMemberSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)

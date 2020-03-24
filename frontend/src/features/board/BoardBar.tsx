@@ -52,7 +52,7 @@ const BoardBar = () => {
           );
         })}
       </AvatarGroup>
-      <MemberInvite />
+      <MemberInvite boardId={detail.id} />
     </Container>
   );
 };

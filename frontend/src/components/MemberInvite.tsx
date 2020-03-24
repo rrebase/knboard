@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button, Popover } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import UserSearch from "./UserSearch";
+import api, { API_BOARDS } from "api";
+import { useDispatch } from "react-redux";
+import { createErrorToast } from "features/toast/ToastSlice";
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;
@@ -19,8 +22,14 @@ const Description = styled.p`
   font-weight: bold;
 `;
 
-const MemberInvite = () => {
+interface Props {
+  boardId: number;
+}
+
+const MemberInvite = ({ boardId }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const inputEl = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +37,22 @@ const MemberInvite = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const postInviteMember = async (username: string) => {
+    try {
+      await api.post(`${API_BOARDS}/${boardId}/invite_member/`, { username });
+    } catch (err) {
+      dispatch(createErrorToast(err.toString()));
+    }
+  };
+
+  const handleClickInvite = () => {
+    const inputElem = inputEl?.current;
+    if (inputElem) {
+      const username = inputElem.value;
+      postInviteMember(username);
+    }
   };
 
   return (
@@ -65,7 +90,7 @@ const MemberInvite = () => {
       >
         <Content>
           <Description>Invite to Board</Description>
-          <UserSearch />
+          <UserSearch inputEl={inputEl} />
           <Button
             color="primary"
             variant="contained"
@@ -73,6 +98,7 @@ const MemberInvite = () => {
               margin-top: 0.75rem;
               width: 100%;
             `}
+            onClick={handleClickInvite}
           >
             Invite
           </Button>
