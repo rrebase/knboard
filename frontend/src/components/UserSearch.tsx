@@ -10,7 +10,12 @@ interface UserOption {
   email: string;
 }
 
-const UserSearch = ({ inputEl }: any) => {
+interface Props {
+  inputEl: React.RefObject<HTMLInputElement>;
+  boardId: number;
+}
+
+const UserSearch = ({ inputEl, boardId }: Props) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = React.useState<UserOption[]>([]);
   const loading = open && options.length === 0;
@@ -19,11 +24,11 @@ const UserSearch = ({ inputEl }: any) => {
     let active = true;
 
     if (!loading) {
-      return undefined;
+      return;
     }
 
     (async () => {
-      const response = await api(API_USERS);
+      const response = await api(`${API_USERS}?excludemembers=${boardId}`);
       const users = response.data;
 
       if (active) {

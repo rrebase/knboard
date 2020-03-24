@@ -5,8 +5,12 @@ import styled from "@emotion/styled";
 import UserSearch from "./UserSearch";
 import api, { API_BOARDS } from "api";
 import { useDispatch } from "react-redux";
-import { createErrorToast } from "features/toast/ToastSlice";
+import {
+  createErrorToast,
+  createSuccessToast
+} from "features/toast/ToastSlice";
 import { addBoardMember } from "features/board/BoardSlice";
+import { BoardMember } from "types";
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;
@@ -46,13 +50,16 @@ const MemberInvite = ({ boardId }: Props) => {
         `${API_BOARDS}/${boardId}/invite_member/`,
         { username }
       );
-      dispatch(addBoardMember(response.data));
+      const newMember = response.data as BoardMember;
+      dispatch(addBoardMember(newMember));
+      dispatch(createSuccessToast(`Invited ${newMember.username}`));
+      handleClose();
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
     }
   };
 
-  const handleClickInvite = () => {
+  const handleClickInvite = async () => {
     const inputElem = inputEl?.current;
     if (inputElem) {
       const username = inputElem.value;
@@ -91,11 +98,10 @@ const MemberInvite = ({ boardId }: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
         transitionDuration={0}
-        keepMounted
       >
         <Content>
           <Description>Invite to Board</Description>
-          <UserSearch inputEl={inputEl} />
+          <UserSearch inputEl={inputEl} boardId={boardId} />
           <Button
             color="primary"
             variant="contained"
