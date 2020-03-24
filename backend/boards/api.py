@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 
 from boards.models import Board, Task, Column
 from boards.permissions import IsOwnerForDangerousMethods
-from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, InviteMemberSerializer
+from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, InviteMemberSerializer, BoardMemberSerializer
 
 User = get_user_model()
 
@@ -58,7 +58,7 @@ class BoardViewSet(
             return Response(status=HTTP_400_BAD_REQUEST)
 
         board.members.add(user)
-        return Response(status=HTTP_200_OK)
+        return Response(data=BoardMemberSerializer(instance=user).data, status=HTTP_200_OK)
 
 
 class TaskViewSet(viewsets.ModelViewSet):

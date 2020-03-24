@@ -6,6 +6,7 @@ import UserSearch from "./UserSearch";
 import api, { API_BOARDS } from "api";
 import { useDispatch } from "react-redux";
 import { createErrorToast } from "features/toast/ToastSlice";
+import { addBoardMember } from "features/board/BoardSlice";
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;
@@ -41,7 +42,11 @@ const MemberInvite = ({ boardId }: Props) => {
 
   const postInviteMember = async (username: string) => {
     try {
-      await api.post(`${API_BOARDS}/${boardId}/invite_member/`, { username });
+      const response = await api.post(
+        `${API_BOARDS}/${boardId}/invite_member/`,
+        { username }
+      );
+      dispatch(addBoardMember(response.data));
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
     }

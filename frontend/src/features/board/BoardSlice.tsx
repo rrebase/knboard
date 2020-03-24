@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, AppDispatch } from "store";
-import { Board, IColumn, ITask } from "types";
+import { Board, IColumn, ITask, BoardMember } from "types";
 import api, { API_BOARDS } from "api";
 
 interface InitialState {
@@ -82,6 +82,9 @@ export const slice = createSlice({
     getBoardDetailFail: (state, action: PayloadAction<string>) => {
       state.detailError = action.payload;
       state.detailLoading = false;
+    },
+    addBoardMember: (state, action: PayloadAction<BoardMember>) => {
+      state.detail?.members.push(action.payload);
     }
   }
 });
@@ -96,7 +99,8 @@ export const {
   setCreateDialogOpen,
   getBoardDetailStart,
   getBoardDetailSuccess,
-  getBoardDetailFail
+  getBoardDetailFail,
+  addBoardMember
 } = slice.actions;
 
 export const fetchBoardList = (): AppThunk => async (dispatch: AppDispatch) => {
