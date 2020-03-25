@@ -9,8 +9,8 @@ import {
   createErrorToast,
   createSuccessToast
 } from "features/toast/ToastSlice";
-import { addBoardMember } from "features/board/BoardSlice";
 import { BoardMember } from "types";
+import { addBoardMember } from "features/member/MemberSlice";
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;

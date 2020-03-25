@@ -4,11 +4,11 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { barHeight } from "const";
 import { AvatarGroup } from "@material-ui/lab";
-import { Tooltip } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
 import MemberInvite from "components/MemberInvite";
 import MemberDetail from "components/MemberDetail";
+import { memberSelectors } from "features/member/MemberSlice";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -24,6 +24,9 @@ const Name = styled.div`
 `;
 
 const BoardBar = () => {
+  const members = useSelector((state: RootState) =>
+    memberSelectors.selectAll(state)
+  );
   const error = useSelector((state: RootState) => state.board.detailError);
   const loading = useSelector((state: RootState) => state.board.detailLoading);
   const detail = useSelector((state: RootState) => state.board.detail);
@@ -41,20 +44,13 @@ const BoardBar = () => {
           margin-left: 1.5rem;
           & .MuiAvatarGroup-avatar {
             ${avatarStyles}
+            border: none;
           }
         `}
       >
-        {detail.members.map(member => {
-          const title =
-            member.id === detail.owner.id
-              ? `${member.username} (owner)`
-              : member.username;
-          return (
-            <Tooltip key={member.id} title={title} aria-label={title}>
-              <MemberDetail board={detail} member={member} />
-            </Tooltip>
-          );
-        })}
+        {members.map(member => (
+          <MemberDetail key={member.id} board={detail} member={member} />
+        ))}
       </AvatarGroup>
       <MemberInvite boardId={detail.id} />
     </Container>

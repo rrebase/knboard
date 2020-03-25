@@ -8,6 +8,7 @@ import counterReducer from "./features/counter/CounterSlice";
 import boardReducer from "./features/board/BoardSlice";
 import columnReducer from "./features/column/ColumnSlice";
 import taskReducer from "./features/task/TaskSlice";
+import memberReducer from "./features/member/MemberSlice";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,7 +16,8 @@ export const rootReducer = combineReducers({
   counter: counterReducer,
   board: boardReducer,
   column: columnReducer,
-  task: taskReducer
+  task: taskReducer,
+  member: memberReducer
 });
 
 const store = configureStore({

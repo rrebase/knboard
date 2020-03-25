@@ -45,7 +45,7 @@ interface Props {
   member: BoardMember;
 }
 
-const MemberDetail = React.forwardRef(function MemberDetail(
+const MemberDialog = React.forwardRef(function MemberDetail(
   { board, member }: Props,
   _ref
 ) {
@@ -173,4 +173,4 @@ const MemberDetail = React.forwardRef(function MemberDetail(
   );
 });
 
-export default MemberDetail;
+export default MemberDialog;
