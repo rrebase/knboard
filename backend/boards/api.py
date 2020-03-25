@@ -57,7 +57,7 @@ class BoardViewSet(
         new_member = self.get_member()
 
         self.get_object().members.add(new_member)
-        return Response(data=BoardMemberSerializer(instance=member).data)
+        return Response(data=BoardMemberSerializer(instance=new_member).data)
 
     @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
     def remove_member(self, request, pk):
