@@ -37,5 +37,5 @@ class BoardDetailSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "owner", "members", "columns"]
 
 
-class InviteMemberSerializer(serializers.Serializer):
+class MemberSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)

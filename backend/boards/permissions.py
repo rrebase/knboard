@@ -1,6 +1,11 @@
 from rest_framework import permissions
 
 
+class IsOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return board.owner == self.request.user
+
+
 class IsOwnerForDangerousMethods(permissions.BasePermission):
     """
     Object-level permission to only allow owners of an object to delete it.

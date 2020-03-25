@@ -13,7 +13,7 @@
 - model: accounts.User
   pk: 2
   fields:
-    username: steve@gmail.com
+    username: steveapple1
     password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
     first_name: Steve
     last_name: Apple
@@ -25,7 +25,7 @@
 - model: accounts.User
   pk: 3
   fields:
-    username: dave@ice.com
+    username: daveice
     password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
     first_name: Dave
     last_name: Ice
@@ -37,7 +37,7 @@
 - model: accounts.User
   pk: 4
   fields:
-    username: tim@gmail.com
+    username: timwoodstock
     password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
     first_name: Tim
     last_name: Woodstock
@@ -49,7 +49,7 @@
 - model: accounts.User
   pk: 5
   fields:
-    username: sten@gmail.com
+    username: stenwood55
     password: pbkdf2_sha256$180000$k48VxRZbQfhp$+BLXapUGNiSy1hCEAmc+gNViN83OHK37fKcJ0BfgwQ4=
     first_name: Sten
     last_name: Woodstock

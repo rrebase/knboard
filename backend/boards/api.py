@@ -11,8 +11,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 
 from boards.models import Board, Task, Column
-from boards.permissions import IsOwnerForDangerousMethods
-from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, InviteMemberSerializer, BoardMemberSerializer
+from boards.permissions import IsOwner, IsOwnerForDangerousMethods
+from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, MemberSerializer, BoardMemberSerializer
 
 User = get_user_model()
 
@@ -44,21 +44,31 @@ class BoardViewSet(
             return qs.prefetch_related("columns__tasks")
         return qs
 
-    @action(detail=True, methods=["post"], serializer_class=InviteMemberSerializer)
-    def invite_member(self, request, pk):
-        user = self.request.user
-        board = self.get_object()
-
-        if board.owner != user:
-            return Response(status=HTTP_403_FORBIDDEN)
-
+    def get_member(self):
         try:
-            user = User.objects.get(username=request.data.get('username'))
+            member = User.objects.get(username=self.request.data.get('username'))
         except User.DoesNotExist:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-        board.members.add(user)
-        return Response(data=BoardMemberSerializer(instance=user).data, status=HTTP_200_OK)
+        return member
+
+    @action(detail=True, methods=["post"], serializer_class=MemberSerializer, permission_classes=[IsOwner])
+    def invite_member(self, request, pk):
+        new_member = self.get_member()
+
+        self.get_object().members.add(new_member)
+        return Response(data=BoardMemberSerializer(instance=member).data)
+
+    @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
+    def remove_member(self, request, pk):
+        member = self.get_member()
+        board = self.get_object()
+
+        if member == board.owner:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        board.members.remove(member)
+        return Response(data=BoardMemberSerializer(instance=member).data)
 
 
 class TaskViewSet(viewsets.ModelViewSet):
