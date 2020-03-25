@@ -4,10 +4,11 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { barHeight } from "const";
 import { AvatarGroup } from "@material-ui/lab";
-import { Avatar, Tooltip } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
 import MemberInvite from "components/MemberInvite";
+import MemberDetail from "components/MemberDetail";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -38,6 +39,9 @@ const BoardBar = () => {
         max={3}
         css={css`
           margin-left: 1.5rem;
+          & .MuiAvatarGroup-avatar {
+            ${avatarStyles}
+          }
         `}
       >
         {detail.members.map(member => {
@@ -47,7 +51,7 @@ const BoardBar = () => {
               : member.username;
           return (
             <Tooltip key={member.id} title={title} aria-label={title}>
-              <Avatar css={avatarStyles}>{member.username.charAt(0)}</Avatar>
+              <MemberDetail board={detail} member={member} />
             </Tooltip>
           );
         })}

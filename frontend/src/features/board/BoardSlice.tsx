@@ -85,6 +85,13 @@ export const slice = createSlice({
     },
     addBoardMember: (state, action: PayloadAction<BoardMember>) => {
       state.detail?.members.push(action.payload);
+    },
+    removeBoardMember: (state, action: PayloadAction<BoardMember>) => {
+      if (state.detail) {
+        state.detail.members = state.detail.members.filter(
+          member => member.id !== action.payload.id
+        );
+      }
     }
   }
 });
@@ -100,7 +107,8 @@ export const {
   getBoardDetailStart,
   getBoardDetailSuccess,
   getBoardDetailFail,
-  addBoardMember
+  addBoardMember,
+  removeBoardMember
 } = slice.actions;
 
 export const fetchBoardList = (): AppThunk => async (dispatch: AppDispatch) => {
