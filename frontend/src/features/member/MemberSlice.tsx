@@ -15,11 +15,13 @@ interface ExtraInitialState {
   dialogMember: number | null;
 }
 
+export const initialState = memberAdapter.getInitialState<ExtraInitialState>({
+  dialogMember: null
+});
+
 export const slice = createSlice({
   name: "member",
-  initialState: memberAdapter.getInitialState<ExtraInitialState>({
-    dialogMember: null
-  }),
+  initialState,
   reducers: {
     addBoardMember: memberAdapter.addOne,
     removeBoardMember: memberAdapter.removeOne,

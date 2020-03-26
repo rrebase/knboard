@@ -4,7 +4,7 @@ import axios from "axios";
 import { renderWithRedux, rootInitialState } from "utils/testHelpers";
 import MockAdapter from "axios-mock-adapter";
 import NewBoardDialog from "./NewBoardDialog";
-import { createBoardStart } from "./BoardSlice";
+import { createBoard } from "./BoardSlice";
 
 const axiosMock = new MockAdapter(axios);
 
@@ -28,7 +28,5 @@ it("should show dialog", async () => {
   });
   fireEvent.click(screen.getByTestId("create-board-btn"));
 
-  expect(mockStore.getActions()).toEqual([
-    { type: createBoardStart.type, payload: undefined }
-  ]);
+  expect(mockStore.getActions()[0].type).toEqual(createBoard.pending.type);
 });

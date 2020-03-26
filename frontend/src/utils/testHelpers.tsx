@@ -3,19 +3,21 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { initialState as counterInitialState } from "features/counter/CounterSlice";
+import { initialState as toastInitialState } from "features/toast/ToastSlice";
 import { initialState as boardInitialState } from "features/board/BoardSlice";
 import { initialState as columnInitialState } from "features/column/ColumnSlice";
 import { initialState as taskInitialState } from "features/task/TaskSlice";
+import { initialState as memberInitialState } from "features/member/MemberSlice";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const mockStore = configureStore([thunk]);
 
 export const rootInitialState = {
-  counter: counterInitialState,
+  toast: toastInitialState,
   board: boardInitialState,
   column: columnInitialState,
-  task: taskInitialState
+  task: taskInitialState,
+  member: memberInitialState
 };
 
 export const renderWithRedux = (

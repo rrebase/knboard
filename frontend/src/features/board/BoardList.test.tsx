@@ -3,7 +3,7 @@ import { screen, fireEvent, wait } from "@testing-library/react";
 import BoardList from "./BoardList";
 import axios from "axios";
 import { renderWithRedux, rootInitialState } from "utils/testHelpers";
-import { getBoardsStart, getBoardsSuccess, getBoardsFail } from "./BoardSlice";
+import { fetchAllBoards } from "./BoardSlice";
 import { API_BOARDS } from "api";
 import boardReducer from "features/board/BoardSlice";
 import MockAdapter from "axios-mock-adapter";
@@ -34,10 +34,10 @@ it("should fetch and render board list", async () => {
   fireEvent.mouseLeave(screen.getByText("Internals"));
   expect(screen.queryAllByTestId("fade")).toHaveLength(0);
 
-  expect(mockStore.getActions()).toEqual([
-    { type: getBoardsStart.type, payload: undefined },
-    { type: getBoardsSuccess.type, payload: boards }
-  ]);
+  const actions = mockStore.getActions();
+  expect(actions[0].type).toEqual(fetchAllBoards.pending.type);
+  expect(actions[1].type).toEqual(fetchAllBoards.fulfilled.type);
+  expect(actions[1].payload).toEqual(boards);
 });
 
 it("should handle failure to fetch boards", async () => {
@@ -45,16 +45,14 @@ it("should handle failure to fetch boards", async () => {
   const { mockStore } = renderWithRedux(<BoardList />);
 
   // failure is not dispatched yet
-  expect(mockStore.getActions()).toEqual([
-    { type: getBoardsStart.type, payload: undefined }
-  ]);
+  expect(mockStore.getActions()[0].type).toEqual(fetchAllBoards.pending.type);
 });
 
 it("should set loading start on start", () => {
   expect(
     boardReducer(
       { ...rootInitialState.board, fetchLoading: false },
-      getBoardsStart
+      fetchAllBoards.pending
     )
   ).toEqual({ ...rootInitialState.board, fetchLoading: true });
 });
@@ -64,7 +62,7 @@ it("should set boards on success", () => {
   expect(
     boardReducer(
       { ...rootInitialState.board, fetchLoading: true, entities: [] },
-      { type: getBoardsSuccess, payload: boards }
+      { type: fetchAllBoards.fulfilled, payload: boards }
     )
   ).toEqual({
     ...rootInitialState.board,
@@ -78,7 +76,7 @@ it("should set error on fail", () => {
   expect(
     boardReducer(
       { ...rootInitialState.board, fetchLoading: true, fetchError: null },
-      { type: getBoardsFail, payload: errorMsg }
+      { type: fetchAllBoards.rejected, payload: errorMsg }
     )
   ).toEqual({
     ...rootInitialState.board,
