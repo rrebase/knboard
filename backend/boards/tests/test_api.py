@@ -75,7 +75,7 @@ def test_board_list(api_client, steve, amy, leo):
 
     # Not authenticated
     response = get_board_list()
-    assert response.status_code == 403
+    assert response.status_code == 401
 
     # Owner can see he's own boards
     api_client.force_authenticate(user=steve)
@@ -106,7 +106,7 @@ def test_board_detail(api_client, steve, amy, leo):
 
     # Not authenticated
     response = get_uni_board_detail()
-    assert response.status_code == 403
+    assert response.status_code == 401
 
     # Owner can see he's own board
     api_client.force_authenticate(user=steve)
@@ -136,7 +136,7 @@ def test_board_delete(api_client, steve, amy, leo):
 
     # Not authenticated
     response = delete_uni_board()
-    assert response.status_code == 403
+    assert response.status_code == 401
     assert Board.objects.filter(id=uni_board.id).exists()
 
     # Not part of the board, can't see it
@@ -164,7 +164,7 @@ def test_board_create(api_client, steve, amy):
 
     # Not authenticated
     response = create_board()
-    assert response.status_code == 403
+    assert response.status_code == 401
     assert len(Board.objects.all()) == 0
 
     # steve should be owner and member after creation
