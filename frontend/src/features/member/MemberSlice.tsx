@@ -10,17 +10,25 @@ import {
 } from "features/board/BoardSlice";
 import { RootState } from "store";
 
-const memberAdapter = createEntityAdapter({
-  sortComparer: (a: BoardMember, b: BoardMember) =>
-    a.username.localeCompare(b.username)
+const memberAdapter = createEntityAdapter<BoardMember>({
+  sortComparer: (a, b) => a.username.localeCompare(b.username)
 });
+
+interface ExtraInitialState {
+  dialogMember: number | null;
+}
 
 export const slice = createSlice({
   name: "member",
-  initialState: memberAdapter.getInitialState(),
+  initialState: memberAdapter.getInitialState<ExtraInitialState>({
+    dialogMember: null
+  }),
   reducers: {
     addBoardMember: memberAdapter.addOne,
-    removeBoardMember: memberAdapter.removeOne
+    removeBoardMember: memberAdapter.removeOne,
+    setDialogMember: (state, action: PayloadAction<number | null>) => {
+      state.dialogMember = action.payload;
+    }
   },
   extraReducers: {
     [getBoardDetailSuccess.type]: (
@@ -32,7 +40,11 @@ export const slice = createSlice({
   }
 });
 
-export const { addBoardMember, removeBoardMember } = slice.actions;
+export const {
+  addBoardMember,
+  removeBoardMember,
+  setDialogMember
+} = slice.actions;
 
 export const memberSelectors = memberAdapter.getSelectors(
   (state: RootState) => state.member

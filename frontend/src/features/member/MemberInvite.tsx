@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Button, Popover } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import UserSearch from "./UserSearch";
+import UserSearch from "components/UserSearch";
 import api, { API_BOARDS } from "api";
 import { useDispatch } from "react-redux";
 import {

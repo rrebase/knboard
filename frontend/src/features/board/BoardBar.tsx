@@ -6,9 +6,10 @@ import { barHeight } from "const";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
-import MemberInvite from "components/MemberInvite";
-import MemberDetail from "components/MemberDetail";
+import MemberInvite from "features/member/MemberInvite";
+import MemberDetail from "features/member/MemberDetail";
 import { memberSelectors } from "features/member/MemberSlice";
+import MemberDialog from "features/member/MemberDialog";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -49,9 +50,10 @@ const BoardBar = () => {
         `}
       >
         {members.map(member => (
-          <MemberDetail key={member.id} board={detail} member={member} />
+          <MemberDetail key={member.id} member={member} />
         ))}
       </AvatarGroup>
+      <MemberDialog board={detail} />
       <MemberInvite boardId={detail.id} />
     </Container>
   );
