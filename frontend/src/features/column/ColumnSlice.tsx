@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  getBoardDetailSuccess,
-  BoardDetailResponse
-} from "features/board/BoardSlice";
+import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
 import { IColumn } from "types";
 import { AppThunk, AppDispatch, RootState } from "store";
 import api, { API_SORT_COLUMNS } from "api";
@@ -28,7 +25,7 @@ export const slice = createSlice({
     }
   },
   extraReducers: {
-    [getBoardDetailSuccess.type]: (
+    [fetchBoardById.fulfilled.type]: (
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {

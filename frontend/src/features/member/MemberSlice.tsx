@@ -4,10 +4,7 @@ import {
   createEntityAdapter
 } from "@reduxjs/toolkit";
 import { BoardMember } from "types";
-import {
-  getBoardDetailSuccess,
-  BoardDetailResponse
-} from "features/board/BoardSlice";
+import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
 import { RootState } from "store";
 
 const memberAdapter = createEntityAdapter<BoardMember>({
@@ -31,7 +28,7 @@ export const slice = createSlice({
     }
   },
   extraReducers: {
-    [getBoardDetailSuccess.type]: (
+    [fetchBoardById.fulfilled.type]: (
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {

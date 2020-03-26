@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { Container, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBoardList } from "./BoardSlice";
+import { fetchAllBoards } from "./BoardSlice";
 import { RootState } from "store";
 import { css, SerializedStyles } from "@emotion/core";
 import { Link } from "react-router-dom";
@@ -101,7 +101,7 @@ const BoardList = () => {
   const boards = useSelector((state: RootState) => state.board.entities);
 
   React.useEffect(() => {
-    dispatch(fetchBoardList());
+    dispatch(fetchAllBoards());
   }, []);
 
   return (

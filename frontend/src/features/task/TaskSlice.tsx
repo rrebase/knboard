@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TasksByColumn, ITask, Id } from "types";
-import {
-  getBoardDetailSuccess,
-  BoardDetailResponse
-} from "features/board/BoardSlice";
+import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
 import { AppDispatch, AppThunk, RootState } from "store";
 import {
   createErrorToast,
@@ -45,7 +42,7 @@ export const slice = createSlice({
     }
   },
   extraReducers: {
-    [getBoardDetailSuccess.type]: (
+    [fetchBoardById.fulfilled.type]: (
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {

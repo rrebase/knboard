@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, AppDispatch } from "store";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Board, IColumn, ITask } from "types";
 import api, { API_BOARDS } from "api";
 
@@ -35,102 +34,80 @@ export interface BoardDetailResponse extends Board {
   columns: ColumnsResponse[];
 }
 
+export const fetchAllBoards = createAsyncThunk<Board[]>(
+  "board/fetchAllStatus",
+  async () => {
+    const response = await api.get(API_BOARDS);
+    return response.data;
+  }
+);
+
+export const fetchBoardById = createAsyncThunk<Board, string>(
+  "board/fetchByIdStatus",
+  async id => {
+    const response = await api.get(`${API_BOARDS}${id}/`);
+    return response.data;
+  }
+);
+
+export const createBoard = createAsyncThunk<Board, string>(
+  "board/createBoardStatus",
+  async name => {
+    const response = await api.post(API_BOARDS, { name });
+    return response.data;
+  }
+);
+
 export const slice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    getBoardsStart: state => {
+    setCreateDialogOpen: (state, action: PayloadAction<boolean>) => {
+      state.createDialogOpen = action.payload;
+    }
+  },
+  extraReducers: {
+    [fetchAllBoards.pending.type]: state => {
       state.fetchLoading = true;
     },
-    getBoardsSuccess: (state, action: PayloadAction<Board[]>) => {
+    [fetchAllBoards.fulfilled.type]: (state, action) => {
       state.entities = action.payload;
       state.fetchError = null;
       state.fetchLoading = false;
     },
-    getBoardsFail: (state, action: PayloadAction<string>) => {
+    [fetchAllBoards.rejected.type]: (state, action) => {
       state.fetchError = action.payload;
       state.fetchLoading = false;
     },
-    createBoardStart: state => {
-      state.createLoading = true;
-    },
-    createBoardSuccess: (state, action: PayloadAction<Board>) => {
-      state.entities.push(action.payload);
-      state.createError = null;
-      state.createLoading = false;
-      state.createDialogOpen = false;
-    },
-    createBoardFail: (state, action: PayloadAction<string>) => {
-      state.createError = action.payload;
-      state.createLoading = false;
-    },
-    setCreateDialogOpen: (state, action: PayloadAction<boolean>) => {
-      state.createDialogOpen = action.payload;
-    },
-    getBoardDetailStart: state => {
+    [fetchBoardById.pending.type]: state => {
       state.detailLoading = true;
     },
-    getBoardDetailSuccess: (
-      state,
-      action: PayloadAction<BoardDetailResponse>
-    ) => {
+    [fetchBoardById.fulfilled.type]: (state, action) => {
       const { id, name, owner, members } = action.payload;
       state.detail = { id, name, owner, members };
       state.detailError = null;
       state.detailLoading = false;
     },
-    getBoardDetailFail: (state, action: PayloadAction<string>) => {
+    [fetchBoardById.rejected.type]: (state, action) => {
       state.detailError = action.payload;
       state.detailLoading = false;
+    },
+    [createBoard.pending.type]: state => {
+      state.createLoading = true;
+    },
+    [createBoard.fulfilled.type]: (state, action) => {
+      state.entities.push(action.payload);
+      state.createError = null;
+      state.createLoading = false;
+      state.createDialogOpen = false;
+    },
+    [createBoard.rejected.type]: (state, action) => {
+      state.createError = action.payload;
+      state.createLoading = false;
     }
   }
 });
 
-export const {
-  getBoardsStart,
-  getBoardsSuccess,
-  getBoardsFail,
-  createBoardStart,
-  createBoardSuccess,
-  createBoardFail,
-  setCreateDialogOpen,
-  getBoardDetailStart,
-  getBoardDetailSuccess,
-  getBoardDetailFail
-} = slice.actions;
-
-export const fetchBoardList = (): AppThunk => async (dispatch: AppDispatch) => {
-  dispatch(getBoardsStart());
-  try {
-    const response = await api.get(API_BOARDS);
-    dispatch(getBoardsSuccess(response.data));
-  } catch (err) {
-    dispatch(getBoardsFail(err.toString()));
-  }
-};
-
-export const createBoard = (name: string): AppThunk => async (
-  dispatch: AppDispatch
-) => {
-  dispatch(createBoardStart());
-  try {
-    const response = await api.post(API_BOARDS, { name });
-    dispatch(createBoardSuccess(response.data));
-  } catch (err) {
-    dispatch(createBoardFail(err.toString()));
-  }
-};
-
-export const fetchBoardDetail = (id: string): AppThunk => async (
-  dispatch: AppDispatch
-) => {
-  dispatch(getBoardDetailStart());
-  try {
-    const response = await api.get(`${API_BOARDS}${id}/`);
-    dispatch(getBoardDetailSuccess(response.data));
-  } catch (err) {
-    dispatch(getBoardDetailFail(err.toString()));
-  }
-};
+export const { setCreateDialogOpen } = slice.actions;
 
 export default slice.reducer;
