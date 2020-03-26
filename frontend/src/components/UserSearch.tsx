@@ -21,6 +21,12 @@ const UserSearch = ({ inputEl, boardId }: Props) => {
   const loading = open && options.length === 0;
 
   useEffect(() => {
+    if (inputEl.current) {
+      inputEl.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
     let active = true;
 
     if (!loading) {
