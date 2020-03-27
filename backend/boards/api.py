@@ -12,7 +12,13 @@ from rest_framework.decorators import action
 
 from boards.models import Board, Task, Column
 from boards.permissions import IsOwner, IsOwnerForDangerousMethods
-from boards.serializers import BoardSerializer, TaskSerializer, BoardDetailSerializer, MemberSerializer, BoardMemberSerializer
+from boards.serializers import (
+    BoardSerializer,
+    TaskSerializer,
+    BoardDetailSerializer,
+    MemberSerializer,
+    BoardMemberSerializer,
+)
 
 User = get_user_model()
 
@@ -46,13 +52,18 @@ class BoardViewSet(
 
     def get_member(self):
         try:
-            member = User.objects.get(username=self.request.data.get('username'))
+            member = User.objects.get(username=self.request.data.get("username"))
         except User.DoesNotExist:
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return member
 
-    @action(detail=True, methods=["post"], serializer_class=MemberSerializer, permission_classes=[IsOwner])
+    @action(
+        detail=True,
+        methods=["post"],
+        serializer_class=MemberSerializer,
+        permission_classes=[IsOwner],
+    )
     def invite_member(self, request, pk):
         new_member = self.get_member()
 
@@ -77,51 +88,40 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-class SortColumnSerializer(Serializer):
-    order = PrimaryKeyRelatedField(many=True, queryset=Column.objects.all())
-
-
-class SortTaskSerializer(Serializer):
-    order = PrimaryKeyRelatedField(many=True, queryset=Task.objects.all())
-
-
 class SortColumn(APIView):
     permission_classes = [IsAuthenticated]
 
     @transaction.atomic
     def post(self, request, format=None):
-        serializer = SortColumnSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
         response = sort_model(request, Column)
-        return response
+        return sort_model(request, Column)
 
 
 class SortTask(APIView):
     permission_classes = [IsAuthenticated]
 
+    def move_tasks(self, request):
+        tasks_by_column = request.data.get("tasks")
+        board_id = request.data.get("board")
+        board = Board.objects.get(id=board_id)
+        pre_columns = Column.objects.filter(board=board)
+        pre_tasks = Task.objects.filter(column__in=pre_columns).prefetch_related(
+            "columns"
+        )
+
+        for column_name, task_ids in tasks_by_column.items():
+            column = pre_columns.get(title=column_name)
+            tasks = pre_tasks.filter(pk__in=task_ids)
+            tasks.update(column=column)
+
     @transaction.atomic
     def post(self, request, format=None):
-        serializer = SortColumnSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        move_tasks(request)
-        response = sort_model(request, Column)
+        self.move_tasks(request)
+        response = sort_model(request, Task)
         return response
 
 
-def move_tasks(request):
-    tasks_by_column = request.data.get("tasks")
-    board_id = request.data.get("board")
-    # board = Board.objects.get(id=board_id)
-
-    for column_name, tasks in tasks_by_column.items():
-        column = Column.objects.get(title=column_name)
-        tasks = Task.objects.filter(pk__in=tasks)
-        tasks.update(column=column)
-
-
 def sort_model(request, Model):
-    response = {"objects_sorted": False}
-
     try:
         ordered_pks = request.data.get("order", [])
 
@@ -132,7 +132,6 @@ def sort_model(request, Model):
         objects_dict = dict(
             [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
         )
-
         order_field_name = Model._meta.ordering[0]
 
         if order_field_name.startswith("-"):
@@ -159,8 +158,7 @@ def sort_model(request, Model):
                 obj.save(update_fields=[order_field_name])
 
             start_index += step
-        response = {"objects_sorted": True}
     except (KeyError, IndexError, Model.DoesNotExist, AttributeError, ValueError) as e:
-        pass
+        return Response(status=HTTP_400_BAD_REQUEST)
 
-    return Response(response)
+    return Response(status=HTTP_200_OK)
