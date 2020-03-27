@@ -2,21 +2,29 @@
   pk: 1
   fields:
     name: Internals
+    owner: 1
+    members: [1]
 
 - model: boards.Board
   pk: 2
   fields:
     name: Operating Systems
+    owner: 1
+    members: [1]
 
 - model: boards.Board
   pk: 3
   fields:
     name: Fundamentals of Computation
+    owner: 1
+    members: [1]
 
 - model: boards.Board
   pk: 4
   fields:
     name: Data Science
+    owner: 1
+    members: [1]
 
 - model: boards.Column
   pk: 1
