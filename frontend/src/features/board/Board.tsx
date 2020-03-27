@@ -13,7 +13,7 @@ import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTasksByColumn } from "features/task/TaskSlice";
-import { updateColumns } from "features/column/ColumnSlice";
+import { updateColumns, columnSelectors } from "features/column/ColumnSlice";
 import { useParams } from "react-router-dom";
 import { fetchBoardById } from "./BoardSlice";
 import Spinner from "components/Spinner";
@@ -46,7 +46,9 @@ const Board = ({
 }: Props) => {
   const loading = useSelector((state: RootState) => state.board.detailLoading);
   const error = useSelector((state: RootState) => state.board.detailError);
-  const columns = useSelector((state: RootState) => state.column.entities);
+  const columns = useSelector((state: RootState) =>
+    columnSelectors.selectAll(state)
+  );
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const dispatch = useDispatch();

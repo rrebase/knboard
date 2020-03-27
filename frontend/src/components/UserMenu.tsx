@@ -46,7 +46,6 @@ const UserMenu = () => {
         aria-controls="user-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        disableRipple
         css={css`
           min-width: 1.5rem;
           padding: 0;

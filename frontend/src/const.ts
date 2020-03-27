@@ -9,6 +9,14 @@ export const barHeight = 50;
 
 export const theme = createMuiTheme({
   palette: {},
+  transitions: {
+    create: () => "none"
+  },
+  props: {
+    MuiButtonBase: {
+      disableRipple: true
+    }
+  },
   overrides: {
     MuiButton: {
       root: {

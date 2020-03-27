@@ -1,5 +1,5 @@
 import React from "react";
-import { screen, fireEvent, wait } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import BoardList from "./BoardList";
 import axios from "axios";
 import { renderWithRedux, rootInitialState } from "utils/testHelpers";

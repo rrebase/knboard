@@ -1,49 +1,58 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  createEntityAdapter
+} from "@reduxjs/toolkit";
 import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
 import { IColumn } from "types";
-import { AppThunk, AppDispatch, RootState } from "store";
 import api, { API_SORT_COLUMNS } from "api";
 import {
   createSuccessToast,
   createErrorToast
 } from "features/toast/ToastSlice";
+import { RootState, AppDispatch, AppThunk } from "store";
 
-interface InitialState {
-  entities: IColumn[];
-}
+const columnAdapter = createEntityAdapter<IColumn>({});
 
-export const initialState: InitialState = {
-  entities: []
-};
+export const initialState = columnAdapter.getInitialState();
 
 export const slice = createSlice({
   name: "column",
   initialState,
   reducers: {
-    setColumns: (state, action: PayloadAction<IColumn[]>) => {
-      state.entities = action.payload;
-    }
+    setColumns: columnAdapter.setAll
   },
   extraReducers: {
     [fetchBoardById.fulfilled.type]: (
       state,
       action: PayloadAction<BoardDetailResponse>
     ) => {
-      state.entities = action.payload.columns.map(column => ({
-        id: column.id,
-        title: column.title
-      }));
+      columnAdapter.setAll(
+        state,
+        action.payload.columns.map(column => ({
+          id: column.id,
+          title: column.title
+        }))
+      );
     }
   }
 });
 
 export const { setColumns } = slice.actions;
 
+export const columnSelectors = columnAdapter.getSelectors(
+  (state: RootState) => state.column
+);
+
+/**
+ * Post the new order of columns.
+ * If the request fails, restore the previous order of columns.
+ */
 export const updateColumns = (columns: IColumn[]): AppThunk => async (
   dispatch: AppDispatch,
   getState: () => RootState
 ) => {
-  const previousColumns = getState().column.entities;
+  const previousColumns = columnSelectors.selectAll(getState());
   try {
     dispatch(setColumns(columns));
     await api.post(API_SORT_COLUMNS, {
