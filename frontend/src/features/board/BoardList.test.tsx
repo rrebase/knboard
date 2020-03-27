@@ -26,7 +26,7 @@ it("should fetch and render board list", async () => {
   expect(screen.getByText(/My boards/i)).toBeVisible();
   expect(screen.getByText(/Create new board/i)).toBeVisible();
 
-  await wait(() => screen.getByText("Internals"));
+  await screen.findByText("Internals");
 
   expect(screen.queryAllByTestId("fade")).toHaveLength(0);
   fireEvent.mouseOver(screen.getByText("Internals"));

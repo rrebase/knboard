@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, AppDispatch } from "store";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { API_LOGIN, API_LOGOUT } from "api";
 import { User } from "types";
 import { createErrorToast } from "features/toast/ToastSlice";
@@ -16,59 +15,52 @@ export const initialState: InitialState = {
   error: null
 };
 
+interface LoginProps {
+  username: string;
+  password: string;
+}
+
+export const login = createAsyncThunk<User, LoginProps>(
+  "auth/loginStatus",
+  async credentials => {
+    const response = await api.post(API_LOGIN, credentials);
+    return response.data;
+  }
+);
+
+export const logout = createAsyncThunk(
+  "auth/logoutStatus",
+  async (_, { dispatch }) => {
+    try {
+      await api.post(API_LOGOUT);
+    } catch (err) {
+      dispatch(createErrorToast(err.toString()));
+    }
+  }
+);
+
 export const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    loginStart: state => {
+  reducers: {},
+  extraReducers: {
+    [login.pending.type]: state => {
       state.loading = true;
     },
-    loginSuccess: (state, action: PayloadAction<User>) => {
+    [login.fulfilled.type]: (state, action) => {
       state.user = action.payload;
       state.loading = false;
       state.error = null;
     },
-    loginError: (state, action: PayloadAction<string>) => {
+    [login.rejected.type]: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
-    logoutSuccess: state => {
+    [logout.fulfilled.type]: state => {
       state.user = null;
       state.error = null;
     }
   }
 });
-
-export const {
-  loginStart,
-  loginSuccess,
-  loginError,
-  logoutSuccess
-} = slice.actions;
-
-export const login = (username: string, password: string): AppThunk => async (
-  dispatch: AppDispatch
-) => {
-  dispatch(loginStart());
-  try {
-    const response = await api.post(API_LOGIN, { username, password });
-    dispatch(loginSuccess(response.data));
-  } catch (err) {
-    let errorMsg = err.toString();
-    if (err.response.status === 400) {
-      errorMsg = err.response.data.non_field_errors;
-    }
-    dispatch(loginError(errorMsg));
-  }
-};
-
-export const logout = (): AppThunk => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(logoutSuccess());
-    await api.post(API_LOGOUT);
-  } catch (err) {
-    dispatch(createErrorToast(err.toString()));
-  }
-};
 
 export default slice.reducer;

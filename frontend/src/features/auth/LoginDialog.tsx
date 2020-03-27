@@ -40,12 +40,17 @@ const LoginDialog = () => {
   };
 
   const onSubmit = handleSubmit(({ username, password }) => {
-    dispatch(login(username, password));
+    dispatch(login({ username, password }));
   });
 
   return (
     <>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleOpen}
+        data-testid="open-login-btn"
+      >
         Login
       </Button>
       <Dialog
@@ -103,6 +108,7 @@ const LoginDialog = () => {
                 color="primary"
                 type="submit"
                 disabled={loading}
+                data-testid="submit-login-btn"
               >
                 Login
               </Button>
