@@ -49,5 +49,21 @@ export interface TasksByColumn {
 
 export interface User {
   key: string;
+  id: number;
   username: string;
+}
+
+export interface UserDetail {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: string;
+  date_joined: string;
+}
+
+export interface Avatar {
+  id: number;
+  photo: string;
 }

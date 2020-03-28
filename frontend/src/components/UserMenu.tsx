@@ -7,6 +7,7 @@ import { logout } from "features/auth/AuthSlice";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { avatarStyles } from "styles";
+import { useHistory } from "react-router-dom";
 
 const Username = styled.div`
   color: #333;
@@ -22,6 +23,7 @@ const UserMenu = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +40,11 @@ const UserMenu = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     dispatch(logout());
+  };
+
+  const handleToProfile = () => {
+    setAnchorEl(null);
+    history.push("/profile");
   };
 
   return (
@@ -69,8 +76,8 @@ const UserMenu = () => {
         keepMounted
       >
         <Username>{user?.username}</Username>
-        <MenuItem onClick={handleNotImplemented}>Profile</MenuItem>
-        <MenuItem onClick={handleNotImplemented}>My account</MenuItem>
+        <MenuItem onClick={handleToProfile}>Profile</MenuItem>
+        <MenuItem onClick={handleNotImplemented}>Available Shortcuts</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

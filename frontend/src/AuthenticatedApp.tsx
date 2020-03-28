@@ -6,12 +6,16 @@ import BoardList from "features/board/BoardList";
 import Navbar from "components/Navbar";
 import Home from "features/home/Home";
 import BoardBar from "features/board/BoardBar";
+import Profile from "features/profile/Profile";
 
 const AuthenticatedApp = () => {
   return (
     <>
       <Navbar />
       <Switch>
+        <Route path="/profile">
+          <Profile />
+        </Route>
         <Route path="/boards">
           <BoardList />
         </Route>

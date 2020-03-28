@@ -33,6 +33,12 @@ const Container = styled.div`
   display: inline-flex;
 `;
 
+const EmptyBoard = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+`;
+
 interface Props {
   withScrollableColumns?: boolean;
   isCombineEnabled?: boolean;
@@ -115,6 +121,10 @@ const Board = ({
 
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
+
+  if (!loading && columns.length === 0) {
+    return <EmptyBoard>This board is empty.</EmptyBoard>;
+  }
 
   const board = (
     <Droppable

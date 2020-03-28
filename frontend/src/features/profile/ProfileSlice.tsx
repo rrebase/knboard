@@ -2,6 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserDetail, Avatar } from "types";
 import api, { API_USERS, API_AVATARS } from "api";
 import { RootState } from "store";
+import { createSuccessToast } from "features/toast/ToastSlice";
+
+export interface ValidationErrors extends Partial<UserDetail> {
+  non_field_errors?: string[];
+}
 
 export const fetchUserDetail = createAsyncThunk<UserDetail>(
   "profile/fetchUserDetailStatus",
@@ -9,6 +14,30 @@ export const fetchUserDetail = createAsyncThunk<UserDetail>(
     const id = (getState() as RootState).auth.user?.id;
     const response = await api.get(`${API_USERS}${id}/`);
     return response.data;
+  }
+);
+
+export const updateUser = createAsyncThunk<
+  UserDetail,
+  UserDetail,
+  {
+    rejectValue: ValidationErrors;
+  }
+>(
+  "profile/updateUserStatus",
+  async (userData, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const id = (getState() as RootState).auth.user?.id;
+      const response = await api.put(`${API_USERS}${id}/`, userData);
+      dispatch(createSuccessToast("User saved"));
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
@@ -21,20 +50,35 @@ export const fetchAvatarList = createAsyncThunk<Avatar[]>(
 );
 
 interface InitialState {
-  avatars: string[];
+  avatars: Avatar[];
   userDetail: UserDetail | null;
+  apiErrors?: ValidationErrors;
 }
 
 export const initialState: InitialState = {
   avatars: [],
-  userDetail: null
+  userDetail: null,
+  apiErrors: undefined
 };
 
 export const slice = createSlice({
   name: "profile",
   initialState,
   reducers: {},
-  extraReducers: {}
+  extraReducers: builder => {
+    builder.addCase(fetchUserDetail.fulfilled, (state, action) => {
+      state.userDetail = action.payload;
+    });
+    builder.addCase(fetchAvatarList.fulfilled, (state, action) => {
+      state.avatars = action.payload;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.userDetail = action.payload;
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
+      state.apiErrors = action.payload;
+    });
+  }
 });
 
 export const {} = slice.actions;

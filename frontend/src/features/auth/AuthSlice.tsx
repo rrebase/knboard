@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { API_LOGIN, API_LOGOUT } from "api";
 import { User } from "types";
-import { createErrorToast } from "features/toast/ToastSlice";
+import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
 import { AxiosError } from "axios";
+import { updateUser } from "features/profile/ProfileSlice";
 
 interface InitialState {
   user: User | null;
@@ -22,7 +23,7 @@ interface LoginProps {
 }
 
 interface ValidationErrors {
-  non_field_errors: string[];
+  non_field_errors?: string[];
 }
 
 export const login = createAsyncThunk<
@@ -49,6 +50,7 @@ export const logout = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       await api.post(API_LOGOUT);
+      dispatch(createInfoToast("Logged out"));
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
     }
@@ -75,6 +77,11 @@ export const slice = createSlice({
     builder.addCase(logout.fulfilled, state => {
       state.user = null;
       state.error = undefined;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      if (state.user) {
+        state.user.username = action.payload.username;
+      }
     });
   }
 });

@@ -75,7 +75,9 @@ const LoginDialog = () => {
                   margin-bottom: 0.75rem;
                 `}
               >
-                {error}
+                {error.non_field_errors?.map(errorMsg => (
+                  <div key={errorMsg}>{errorMsg}</div>
+                ))}
               </Alert>
             )}
             <TextField

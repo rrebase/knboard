@@ -81,7 +81,6 @@ const MemberDialog = ({ board }: Props) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-      {}
       <Container>
         {confirmDelete ? (
           <div>

@@ -49,7 +49,7 @@ const Navbar = () => {
           >
             <FontAwesomeIcon icon={faHome} />
           </NavLink>
-          <NavLink exact to="/boards/">
+          <NavLink exact to="/boards">
             <FontAwesomeIcon icon={faTh} />
           </NavLink>
         </Icons>
