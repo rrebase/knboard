@@ -13,10 +13,24 @@ class AvatarSerializer(serializers.ModelSerializer):
         fields = ["id", "photo"]
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "url", "username", "email"]
+        fields = ["id", "username", "email"]
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "avatar",
+            "date_joined",
+        ]
 
 
 class BoardOwnerSerializer(serializers.ModelSerializer):
@@ -32,8 +46,9 @@ class BoardMemberSerializer(serializers.ModelSerializer):
 
 
 class TokenSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source="user.id", read_only=True)
     username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = TokenModel
-        fields = ("key", "username")
+        fields = ("key", "id", "username")

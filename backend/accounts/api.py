@@ -5,7 +5,7 @@ from rest_framework import filters
 from accounts.models import Avatar
 from boards.models import Board
 
-from accounts.serializers import AvatarSerializer, UserSerializer
+from accounts.serializers import AvatarSerializer, UserSerializer, UserDetailSerializer
 
 User = get_user_model()
 
@@ -32,6 +32,11 @@ class UserViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter, ExcludeBoardMembersFilter]
     search_fields = ["username"]
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return UserDetailSerializer
+        return super().get_serializer_class()
 
 
 class AvatarViewSet(ReadOnlyModelViewSet):
