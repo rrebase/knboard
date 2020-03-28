@@ -4,7 +4,7 @@ import {
   createEntityAdapter
 } from "@reduxjs/toolkit";
 import { BoardMember } from "types";
-import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
+import { fetchBoardById } from "features/board/BoardSlice";
 import { RootState } from "store";
 
 const memberAdapter = createEntityAdapter<BoardMember>({
@@ -29,13 +29,10 @@ export const slice = createSlice({
       state.dialogMember = action.payload;
     }
   },
-  extraReducers: {
-    [fetchBoardById.fulfilled.type]: (
-      state,
-      action: PayloadAction<BoardDetailResponse>
-    ) => {
+  extraReducers: builder => {
+    builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       memberAdapter.setAll(state, action.payload.members);
-    }
+    });
   }
 });
 

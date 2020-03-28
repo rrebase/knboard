@@ -2,17 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api, { API_LOGIN, API_LOGOUT } from "api";
 import { User } from "types";
 import { createErrorToast } from "features/toast/ToastSlice";
+import { AxiosError } from "axios";
 
 interface InitialState {
   user: User | null;
   loading: boolean;
-  error: string | null;
+  error?: ValidationErrors;
 }
 
 export const initialState: InitialState = {
   user: null,
   loading: false,
-  error: null
+  error: undefined
 };
 
 interface LoginProps {
@@ -20,13 +21,28 @@ interface LoginProps {
   password: string;
 }
 
-export const login = createAsyncThunk<User, LoginProps>(
-  "auth/loginStatus",
-  async credentials => {
+interface ValidationErrors {
+  non_field_errors: string[];
+}
+
+export const login = createAsyncThunk<
+  User,
+  LoginProps,
+  {
+    rejectValue: ValidationErrors;
+  }
+>("auth/loginStatus", async (credentials, { rejectWithValue }) => {
+  try {
     const response = await api.post(API_LOGIN, credentials);
     return response.data;
+  } catch (err) {
+    const error: AxiosError<ValidationErrors> = err;
+    if (!error.response) {
+      throw err;
+    }
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 export const logout = createAsyncThunk(
   "auth/logoutStatus",
@@ -43,23 +59,23 @@ export const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
-  extraReducers: {
-    [login.pending.type]: state => {
+  extraReducers: builder => {
+    builder.addCase(login.pending, state => {
       state.loading = true;
-    },
-    [login.fulfilled.type]: (state, action) => {
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
       state.loading = false;
-      state.error = null;
-    },
-    [login.rejected.type]: (state, action) => {
+      state.error = undefined;
+    });
+    builder.addCase(login.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
-    },
-    [logout.fulfilled.type]: state => {
+    });
+    builder.addCase(logout.fulfilled, state => {
       state.user = null;
-      state.error = null;
-    }
+      state.error = undefined;
+    });
   }
 });
 

@@ -1,9 +1,5 @@
-import {
-  createSlice,
-  PayloadAction,
-  createEntityAdapter
-} from "@reduxjs/toolkit";
-import { BoardDetailResponse, fetchBoardById } from "features/board/BoardSlice";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { fetchBoardById } from "features/board/BoardSlice";
 import { IColumn } from "types";
 import api, { API_SORT_COLUMNS } from "api";
 import {
@@ -22,11 +18,8 @@ export const slice = createSlice({
   reducers: {
     setColumns: columnAdapter.setAll
   },
-  extraReducers: {
-    [fetchBoardById.fulfilled.type]: (
-      state,
-      action: PayloadAction<BoardDetailResponse>
-    ) => {
+  extraReducers: builder => {
+    builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       columnAdapter.setAll(
         state,
         action.payload.columns.map(column => ({
@@ -34,7 +27,7 @@ export const slice = createSlice({
           title: column.title
         }))
       );
-    }
+    });
   }
 });
 

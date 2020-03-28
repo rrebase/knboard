@@ -30,7 +30,7 @@ interface ColumnsResponse extends IColumn {
   tasks: ITask[];
 }
 
-export interface BoardDetailResponse extends Board {
+interface BoardDetailResponse extends Board {
   columns: ColumnsResponse[];
 }
 
@@ -42,7 +42,7 @@ export const fetchAllBoards = createAsyncThunk<Board[]>(
   }
 );
 
-export const fetchBoardById = createAsyncThunk<Board, string>(
+export const fetchBoardById = createAsyncThunk<BoardDetailResponse, string>(
   "board/fetchByIdStatus",
   async id => {
     const response = await api.get(`${API_BOARDS}${id}/`);
@@ -66,45 +66,45 @@ export const slice = createSlice({
       state.createDialogOpen = action.payload;
     }
   },
-  extraReducers: {
-    [fetchAllBoards.pending.type]: state => {
+  extraReducers: builder => {
+    builder.addCase(fetchAllBoards.pending, state => {
       state.fetchLoading = true;
-    },
-    [fetchAllBoards.fulfilled.type]: (state, action) => {
+    });
+    builder.addCase(fetchAllBoards.fulfilled, (state, action) => {
       state.entities = action.payload;
       state.fetchError = null;
       state.fetchLoading = false;
-    },
-    [fetchAllBoards.rejected.type]: (state, action) => {
-      state.fetchError = action.payload;
+    });
+    builder.addCase(fetchAllBoards.rejected, (state, action) => {
+      state.fetchError = action.payload as string;
       state.fetchLoading = false;
-    },
-    [fetchBoardById.pending.type]: state => {
+    });
+    builder.addCase(fetchBoardById.pending, state => {
       state.detailLoading = true;
-    },
-    [fetchBoardById.fulfilled.type]: (state, action) => {
+    });
+    builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       const { id, name, owner, members } = action.payload;
       state.detail = { id, name, owner, members };
       state.detailError = null;
       state.detailLoading = false;
-    },
-    [fetchBoardById.rejected.type]: (state, action) => {
-      state.detailError = action.payload;
+    });
+    builder.addCase(fetchBoardById.rejected, (state, action) => {
+      state.detailError = action.payload as string;
       state.detailLoading = false;
-    },
-    [createBoard.pending.type]: state => {
+    });
+    builder.addCase(createBoard.pending, state => {
       state.createLoading = true;
-    },
-    [createBoard.fulfilled.type]: (state, action) => {
+    });
+    builder.addCase(createBoard.fulfilled, (state, action) => {
       state.entities.push(action.payload);
       state.createError = null;
       state.createLoading = false;
       state.createDialogOpen = false;
-    },
-    [createBoard.rejected.type]: (state, action) => {
-      state.createError = action.payload;
+    });
+    builder.addCase(createBoard.rejected, (state, action) => {
+      state.createError = action.payload as string;
       state.createLoading = false;
-    }
+    });
   }
 });
 
