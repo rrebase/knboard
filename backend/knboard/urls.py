@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from rest_framework import routers
+from django.conf.urls.static import static
 
-from accounts.api import UserViewSet
+
+from accounts.api import UserViewSet, AvatarViewSet
 from boards.api import BoardViewSet, TaskViewSet, SortColumn, SortTask
 
 router = routers.DefaultRouter()
+router.register(r"avatars", AvatarViewSet)
 router.register(r"users", UserViewSet)
 router.register(r"boards", BoardViewSet)
 router.register(r"tasks", TaskViewSet)
@@ -32,10 +35,11 @@ urlpatterns = [
     url(r"^api/sort/column/", SortColumn.as_view(), name="sort-column"),
     url(r"^api/sort/task/", SortTask.as_view(), name="sort-task"),
     url(r"^api-auth/", include("rest_framework.urls")),
-    url(r'^dj-rest-auth/', include('dj_rest_auth.urls')),
+    url(r"^dj-rest-auth/", include("dj_rest_auth.urls")),
     path("tagauks/", admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns
+
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

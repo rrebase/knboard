@@ -166,3 +166,7 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     "TOKEN_SERIALIZER": "accounts.serializers.TokenSerializer"
 }
+
+# Static files and media (CSS, JavaScript, images)
+MEDIA_ROOT = "./media"
+MEDIA_URL = "/media/"

@@ -1,0 +1,219 @@
+- model: accounts.Avatar
+  pk: 1
+  fields:
+    photo: avatars/parrot.png
+
+- model: accounts.Avatar
+  pk: 2
+  fields:
+    photo: avatars/duck.png
+
+- model: accounts.Avatar
+  pk: 3
+  fields:
+    photo: avatars/dog.png
+
+- model: accounts.Avatar
+  pk: 4
+  fields:
+    photo: avatars/horse.png
+
+- model: accounts.Avatar
+  pk: 5
+  fields:
+    photo: avatars/turtle.png
+
+- model: accounts.Avatar
+  pk: 6
+  fields:
+    photo: avatars/leopard.png
+
+- model: accounts.Avatar
+  pk: 7
+  fields:
+    photo: avatars/spider.png
+
+- model: accounts.Avatar
+  pk: 8
+  fields:
+    photo: avatars/starfish.png
+
+- model: accounts.Avatar
+  pk: 9
+  fields:
+    photo: avatars/elephant.png
+
+- model: accounts.Avatar
+  pk: 10
+  fields:
+    photo: avatars/dolphin.png
+
+- model: accounts.Avatar
+  pk: 11
+  fields:
+    photo: avatars/lion.png
+
+- model: accounts.Avatar
+  pk: 12
+  fields:
+    photo: avatars/camel.png
+
+- model: accounts.Avatar
+  pk: 13
+  fields:
+    photo: avatars/eagle.png
+
+- model: accounts.Avatar
+  pk: 14
+  fields:
+    photo: avatars/flamingo.png
+
+- model: accounts.Avatar
+  pk: 15
+  fields:
+    photo: avatars/zebra.png
+
+- model: accounts.Avatar
+  pk: 16
+  fields:
+    photo: avatars/tiger.png
+
+- model: accounts.Avatar
+  pk: 17
+  fields:
+    photo: avatars/kangaroo.png
+
+- model: accounts.Avatar
+  pk: 18
+  fields:
+    photo: avatars/sheep.png
+
+- model: accounts.Avatar
+  pk: 19
+  fields:
+    photo: avatars/bird.png
+
+- model: accounts.Avatar
+  pk: 20
+  fields:
+    photo: avatars/shark.png
+
+- model: accounts.Avatar
+  pk: 21
+  fields:
+    photo: avatars/cow.png
+
+- model: accounts.Avatar
+  pk: 22
+  fields:
+    photo: avatars/panda.png
+
+- model: accounts.Avatar
+  pk: 23
+  fields:
+    photo: avatars/cheetah.png
+
+- model: accounts.Avatar
+  pk: 24
+  fields:
+    photo: avatars/gorilla.png
+
+- model: accounts.Avatar
+  pk: 25
+  fields:
+    photo: avatars/butterfly.png
+
+- model: accounts.Avatar
+  pk: 26
+  fields:
+    photo: avatars/dinosaur.png
+
+- model: accounts.Avatar
+  pk: 27
+  fields:
+    photo: avatars/bee.png
+
+- model: accounts.Avatar
+  pk: 28
+  fields:
+    photo: avatars/hen.png
+
+- model: accounts.Avatar
+  pk: 29
+  fields:
+    photo: avatars/penguin.png
+
+- model: accounts.Avatar
+  pk: 30
+  fields:
+    photo: avatars/mouse.png
+
+- model: accounts.Avatar
+  pk: 31
+  fields:
+    photo: avatars/squirrel.png
+
+- model: accounts.Avatar
+  pk: 32
+  fields:
+    photo: avatars/cat.png
+
+- model: accounts.Avatar
+  pk: 33
+  fields:
+    photo: avatars/frog.png
+
+- model: accounts.Avatar
+  pk: 34
+  fields:
+    photo: avatars/dove.png
+
+- model: accounts.Avatar
+  pk: 35
+  fields:
+    photo: avatars/monkey.png
+
+- model: accounts.Avatar
+  pk: 36
+  fields:
+    photo: avatars/bat.png
+
+- model: accounts.Avatar
+  pk: 37
+  fields:
+    photo: avatars/bug.png
+
+- model: accounts.Avatar
+  pk: 38
+  fields:
+    photo: avatars/giraffe.png
+
+- model: accounts.Avatar
+  pk: 39
+  fields:
+    photo: avatars/fox.png
+
+- model: accounts.Avatar
+  pk: 40
+  fields:
+    photo: avatars/koala.png
+
+- model: accounts.Avatar
+  pk: 41
+  fields:
+    photo: avatars/bear.png
+
+- model: accounts.Avatar
+  pk: 42
+  fields:
+    photo: avatars/fish.png
+
+- model: accounts.Avatar
+  pk: 43
+  fields:
+    photo: avatars/cobra.png
+
+- model: accounts.Avatar
+  pk: 44
+  fields:
+    photo: avatars/crocodile.png

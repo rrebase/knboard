@@ -12,3 +12,4 @@ class Command(BaseCommand):
 
         management.call_command("loaddata", "users")
         management.call_command("loaddata", "tasks")
+        management.call_command("loaddata", "avatars")

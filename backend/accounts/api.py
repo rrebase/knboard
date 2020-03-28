@@ -2,9 +2,10 @@ from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import filters
+from accounts.models import Avatar
 from boards.models import Board
 
-from accounts.serializers import UserSerializer
+from accounts.serializers import AvatarSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -32,5 +33,8 @@ class UserViewSet(ReadOnlyModelViewSet):
     filter_backends = [filters.SearchFilter, ExcludeBoardMembersFilter]
     search_fields = ["username"]
 
-    def get_queryset(self):
-        return super().get_queryset()
+
+class AvatarViewSet(ReadOnlyModelViewSet):
+    serializer_class = AvatarSerializer
+    queryset = Avatar.objects.all()
+    permission_classes = [IsAuthenticated]

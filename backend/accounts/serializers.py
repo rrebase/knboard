@@ -2,8 +2,15 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from dj_rest_auth.models import TokenModel
+from .models import Avatar
 
 User = get_user_model()
+
+
+class AvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Avatar
+        fields = ["id", "photo"]
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
