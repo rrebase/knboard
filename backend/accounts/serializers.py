@@ -31,6 +31,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "avatar",
             "date_joined",
         ]
+        read_only_fields = [
+            "id",
+            "date_joined",
+        ]
 
 
 class BoardOwnerSerializer(serializers.ModelSerializer):

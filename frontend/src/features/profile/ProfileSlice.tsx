@@ -52,12 +52,14 @@ export const fetchAvatarList = createAsyncThunk<Avatar[]>(
 interface InitialState {
   avatars: Avatar[];
   userDetail: UserDetail | null;
+  loading: boolean;
   apiErrors?: ValidationErrors;
 }
 
 export const initialState: InitialState = {
   avatars: [],
   userDetail: null,
+  loading: false,
   apiErrors: undefined
 };
 
@@ -72,11 +74,16 @@ export const slice = createSlice({
     builder.addCase(fetchAvatarList.fulfilled, (state, action) => {
       state.avatars = action.payload;
     });
+    builder.addCase(updateUser.pending, state => {
+      state.loading = true;
+    });
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.userDetail = action.payload;
+      state.loading = false;
     });
     builder.addCase(updateUser.rejected, (state, action) => {
       state.apiErrors = action.payload;
+      state.loading = false;
     });
   }
 });

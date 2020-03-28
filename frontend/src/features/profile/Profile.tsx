@@ -48,6 +48,7 @@ const Profile = () => {
     (state: RootState) => state.profile.userDetail
   );
   const apiErrors = useSelector((state: RootState) => state.profile.apiErrors);
+  const loading = useSelector((state: RootState) => state.profile.loading);
   const { register, errors, handleSubmit, setError } = useForm<FormData>({
     mode: "onChange"
   });
@@ -59,10 +60,10 @@ const Profile = () => {
 
   React.useEffect(() => {
     if (apiErrors) {
-      Object.keys(apiErrors).forEach(key => {
+      for (const errorKey in apiErrors) {
         // @ts-ignore
-        setError(key, "api_error", apiErrors[key]);
-      });
+        setError(errorKey, "api_error", apiErrors[errorKey]);
+      }
     }
   }, [apiErrors]);
 
@@ -110,6 +111,8 @@ const Profile = () => {
                 name="first_name"
                 inputRef={register()}
                 defaultValue={userDetail.first_name}
+                helperText={errors.first_name?.message}
+                error={Boolean(errors.first_name)}
                 label="First name"
                 variant="outlined"
                 margin="dense"
@@ -122,6 +125,8 @@ const Profile = () => {
                 name="last_name"
                 inputRef={register()}
                 defaultValue={userDetail.last_name}
+                helperText={errors.last_name?.message}
+                error={Boolean(errors.last_name)}
                 label="Last name"
                 variant="outlined"
                 margin="dense"
@@ -152,6 +157,7 @@ const Profile = () => {
               variant="contained"
               color="primary"
               type="submit"
+              disabled={loading}
               css={css`
                 margin-top: 1rem;
                 text-align: right;
