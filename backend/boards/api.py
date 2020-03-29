@@ -95,8 +95,16 @@ class SortColumn(APIView):
 
     @transaction.atomic
     def post(self, request, format=None):
-        response = sort_model(request, Column)
-        return sort_model(request, Column)
+        try:
+            return sort_model(request, Column)
+        except (
+            KeyError,
+            IndexError,
+            AttributeError,
+            ValueError,
+            Column.DoesNotExist,
+        ):
+            return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class SortTask(APIView):
@@ -118,41 +126,47 @@ class SortTask(APIView):
 
     @transaction.atomic
     def post(self, request, format=None):
-        self.move_tasks(request)
-        response = sort_model(request, Task)
-        return response
+        try:
+            self.move_tasks(request)
+            return sort_model(request, Task)
+        except (
+            KeyError,
+            IndexError,
+            AttributeError,
+            ValueError,
+            Column.DoesNotExist,
+            Task.DoesNotExist,
+        ):
+            return Response(status=HTTP_400_BAD_REQUEST)
 
 
 def sort_model(request, Model):
-    try:
-        ordered_pks = request.data.get("order", [])
+    ordered_pks = request.data.get("order", [])
 
-        # Check for duplicates
-        if len(ordered_pks) != len(set(ordered_pks)):
-            return Response(status=HTTP_400_BAD_REQUEST)
-
-        objects_dict = dict(
-            [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
-        )
-        order_field_name = Model._meta.ordering[0]
-
-        step = 1
-        start_object = min(
-            objects_dict.values(), key=lambda x: getattr(x, order_field_name)
-        )
-        start_index = getattr(start_object, order_field_name, len(ordered_pks))
-
-        for pk in ordered_pks:
-            obj = objects_dict.get(str(pk))
-
-            # perform the update only if the order field has changed
-            if getattr(obj, order_field_name) != start_index:
-                setattr(obj, order_field_name, start_index)
-                # only update the object's order field
-                obj.save(update_fields=[order_field_name])
-
-            start_index += step
-    except (KeyError, IndexError, AttributeError, ValueError, Model.DoesNotExist) as e:
+    # Check for duplicates
+    if len(ordered_pks) != len(set(ordered_pks)):
         return Response(status=HTTP_400_BAD_REQUEST)
+
+    objects_dict = dict(
+        [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
+    )
+    order_field_name = Model._meta.ordering[0]
+
+    step = 1
+    start_object = min(
+        objects_dict.values(), key=lambda x: getattr(x, order_field_name)
+    )
+    start_index = getattr(start_object, order_field_name, len(ordered_pks))
+
+    for pk in ordered_pks:
+        obj = objects_dict.get(str(pk))
+
+        # perform the update only if the order field has changed
+        if getattr(obj, order_field_name) != start_index:
+            setattr(obj, order_field_name, start_index)
+            # only update the object's order field
+            obj.save(update_fields=[order_field_name])
+
+        start_index += step
 
     return Response(status=HTTP_200_OK)

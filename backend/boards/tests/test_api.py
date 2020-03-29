@@ -62,12 +62,75 @@ def test_order_tasks_same_column(
             "order": [task3.id, task1.id, task2.id],
         },
     )
+    assert response.status_code == 200
 
     # State after ordering
     column.refresh_from_db()
     assert list(column.tasks.all()) == [task3, task1, task2]
 
+
+def test_order_tasks_between_two_columns(
+    api_client_with_credentials, board_factory, column_factory, task_factory
+):
+    """
+    Order tasks between two columns:
+    Column1: Task1, Task2, Task3
+    Column2: Task4, Task5
+    After order:
+    Column1: Task1, Task3
+    Column2: Task4, Task2, Task5
+    """
+    board = board_factory()
+    column1 = column_factory(board=board)
+    column2 = column_factory(board=board)
+    task1 = task_factory(column=column1, task_order=1)
+    task2 = task_factory(column=column1, task_order=2)
+    task3 = task_factory(column=column1, task_order=3)
+    task4 = task_factory(column=column2, task_order=4)
+    task5 = task_factory(column=column2, task_order=5)
+
+    # Initial state
+    column1.refresh_from_db()
+    column2.refresh_from_db()
+    assert list(column1.tasks.all()) == [task1, task2, task3]
+    assert list(column2.tasks.all()) == [task4, task5]
+
+    response = api_client_with_credentials.post(
+        reverse("sort-task"),
+        {
+            "board": column1.board.id,
+            "tasks": {column1.title: [task1.id, task3.id], column2.title: [task4.id, task2.id, task5.id]},
+            "order": [task1.id, task3.id, task4.id, task2.id, task5.id],
+        },
+    )
     assert response.status_code == 200
+
+    # State after ordering
+    column1.refresh_from_db()
+    column2.refresh_from_db()
+    assert list(column1.tasks.all()) == [task1, task3]
+    assert list(column2.tasks.all()) == [task4, task2, task5]
+
+
+def test_can_not_order_tasks_between_two_boards(
+    api_client_with_credentials, board_factory, column_factory, task_factory
+):
+    board1 = board_factory()
+    board2 = board_factory()
+    board1_col = column_factory(board=board1)
+    board2_col = column_factory(board=board2)
+    board1_task = task_factory(column=board1_col, task_order=1)
+    board2_task = task_factory(column=board2_col, task_order=2)
+
+    response = api_client_with_credentials.post(
+        reverse("sort-task"),
+        {
+            "board": board1.id,
+            "tasks": {board1_col.title: [], board2_col.title: [board1_task.id, board2_task.id]},
+            "order": [board1_task.id, board2_task.id],
+        },
+    )
+    assert response.status_code == 400
 
 
 def test_order_duplicate(api_client_with_credentials, col_done):
