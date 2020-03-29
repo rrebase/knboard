@@ -27,10 +27,11 @@ const ParentContainer = styled.div<{ height: string }>`
 `;
 
 const Container = styled.div`
-  min-height: 100vh - ${barHeight}px;
-  /* like display:flex but will allow bleeding over the window width */
+  min-height: calc(100vh - ${barHeight * 2}px);
   min-width: 100vw;
   display: inline-flex;
+  overflow-x: scroll;
+  width: 100%;
 `;
 
 const EmptyBoard = styled.div`
