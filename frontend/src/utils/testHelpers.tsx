@@ -5,15 +5,18 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
 import { initialState as authInitialState } from "features/auth/AuthSlice";
+import { initialState as profileInitialState } from "features/profile/ProfileSlice";
 import { initialState as toastInitialState } from "features/toast/ToastSlice";
 import { initialState as boardInitialState } from "features/board/BoardSlice";
 import { initialState as columnInitialState } from "features/column/ColumnSlice";
 import { initialState as taskInitialState } from "features/task/TaskSlice";
 import { initialState as memberInitialState } from "features/member/MemberSlice";
 import { MemoryRouter } from "react-router-dom";
+import { RootState } from "store";
 
 export const rootInitialState = {
   auth: authInitialState,
+  profile: profileInitialState,
   toast: toastInitialState,
   board: boardInitialState,
   column: columnInitialState,
@@ -23,7 +26,7 @@ export const rootInitialState = {
 
 export const renderWithProviders = (
   ui: React.ReactNode,
-  initialState: object = rootInitialState
+  initialState: RootState = rootInitialState
 ) => {
   const store = configureStore([thunk])(initialState);
   return {
