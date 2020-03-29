@@ -1,7 +1,7 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import axios from "axios";
-import { renderWithRedux, rootInitialState } from "utils/testHelpers";
+import { rootInitialState, renderWithProviders } from "utils/testHelpers";
 import MockAdapter from "axios-mock-adapter";
 import NewBoardDialog from "./NewBoardDialog";
 import { createBoard } from "./BoardSlice";
@@ -13,12 +13,12 @@ beforeEach(() => {
 });
 
 it("should not show dialog", async () => {
-  renderWithRedux(<NewBoardDialog />);
+  renderWithProviders(<NewBoardDialog />);
   expect(screen.queryByText(/Create a new private board./i)).toBeNull();
 });
 
 it("should show dialog", async () => {
-  const { mockStore } = renderWithRedux(<NewBoardDialog />, {
+  const { mockStore } = renderWithProviders(<NewBoardDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, createDialogOpen: true }
   });

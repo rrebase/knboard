@@ -1,7 +1,7 @@
 import React from "react";
 import { screen, fireEvent, act } from "@testing-library/react";
 import axios from "axios";
-import { renderWithRedux } from "utils/testHelpers";
+import { renderWithProviders } from "utils/testHelpers";
 import MockAdapter from "axios-mock-adapter";
 import Auth from "./Auth";
 import { API_LOGIN } from "api";
@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 
 it("should have knboard text", async () => {
-  renderWithRedux(<Auth />);
+  renderWithProviders(<Auth />);
   expect(screen.getByText("knboard")).toBeVisible();
 });
 
@@ -24,7 +24,7 @@ it("should login", async () => {
   const credentials = { username, password };
 
   axiosMock.onPost(API_LOGIN).reply(200, credentials);
-  const { mockStore } = renderWithRedux(<Auth />);
+  const { mockStore } = renderWithProviders(<Auth />);
 
   await act(async () => {
     fireEvent.click(screen.getByTestId("open-login-btn"));
