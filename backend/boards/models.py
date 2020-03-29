@@ -8,8 +8,8 @@ User = get_user_model()
 
 class Board(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='boards')
-    members = models.ManyToManyField(User)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='owned_boards')
+    members = models.ManyToManyField(User, related_name='boards')
 
     class Meta:
         ordering = ["id"]

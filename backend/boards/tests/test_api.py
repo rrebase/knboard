@@ -167,7 +167,7 @@ def test_board_create(api_client, steve, amy):
     assert response.status_code == 401
     assert len(Board.objects.all()) == 0
 
-    # steve should be owner and member after creation
+    # Steve should be owner and member after creation
     api_client.force_authenticate(user=steve)
     response = create_board()
     assert response.status_code == 201
@@ -176,8 +176,89 @@ def test_board_create(api_client, steve, amy):
     assert pets.owner == steve
     assert list(pets.members.all()) == [steve]
 
-    # amy should not see any boards
+    # Amy should not see any boards
     api_client.force_authenticate(user=amy)
     response = api_client.get(reverse("board-list"))
     assert response.status_code == 200
     assert len(response.data) == 0
+
+
+def test_board_invite_member(api_client, board_factory, steve, leo, amy):
+    board = board_factory(owner=steve)
+    board.members.add(leo)
+    board.save()
+
+    # Initially there are two members
+    assert len(board.members.all()) == 2
+
+    send_invite = lambda username: api_client.post(
+        reverse("board-invite-member", kwargs={"pk": board.id}), {"username": username}
+    )
+
+    # Not authenticated
+    response = send_invite(amy.username)
+    assert response.status_code == 401
+    assert len(board.members.all()) == 2
+
+    # Leo is not an owner and should not be able to invite others
+    api_client.force_authenticate(user=leo)
+    response = send_invite(amy.username)
+    assert response.status_code == 403
+    assert len(board.members.all()) == 2
+
+    # Steve as the owner should be able to successfully invite Amy
+    api_client.force_authenticate(user=steve)
+    response = send_invite(amy.username)
+    assert response.status_code == 200
+    assert len(board.members.all()) == 3
+    assert amy.id in list(map(lambda member: member.id, board.members.all()))
+
+    # Should handle adding an existing member
+    api_client.force_authenticate(user=steve)
+    response = send_invite(steve.username)
+    assert response.status_code == 200
+    assert len(board.members.all()) == 3
+
+
+def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
+    board = board_factory(owner=steve)
+    board.members.add(leo)
+    board.members.add(amy)
+    board.save()
+
+    # Initially there are two members
+    assert len(board.members.all()) == 3
+
+    remove_member = lambda username: api_client.post(
+        reverse("board-remove-member", kwargs={"pk": board.id}), {"username": username}
+    )
+
+    # Not authenticated
+    response = remove_member(leo.username)
+    assert response.status_code == 401
+    assert len(board.members.all()) == 3
+
+    # Leo should not be able to remove Amy (Leo isn't the owner)
+    api_client.force_authenticate(user=leo)
+    response = remove_member(amy.username)
+    assert response.status_code == 403
+    assert len(board.members.all()) == 3
+
+    # Steve can't remove himself (the owner)
+    api_client.force_authenticate(user=steve)
+    response = remove_member(steve.username)
+    assert response.status_code == 400
+    assert len(board.members.all()) == 3
+
+    # Steve can't remove Mike (not a member of the board)
+    api_client.force_authenticate(user=steve)
+    response = remove_member(mike.username)
+    assert response.status_code == 400
+    assert len(board.members.all()) == 3
+
+    # Steve can remove Leo
+    api_client.force_authenticate(user=steve)
+    response = remove_member(leo.username)
+    assert response.status_code == 200
+    assert len(board.members.all()) == 2
+    assert leo.id not in list(map(lambda member: member.id, board.members.all()))

@@ -2,9 +2,17 @@ import pytest
 import uuid
 from pytest_factoryboy import register
 
-from boards.tests.factories import UserFactory
+from boards.tests.factories import UserFactory, BoardFactory, ColumnFactory, TaskFactory
 
 register(UserFactory)
+register(BoardFactory)
+register(ColumnFactory)
+register(TaskFactory)
+
+
+@pytest.fixture(autouse=True)
+def enable_db_access(db):
+    pass
 
 
 @pytest.fixture
@@ -51,3 +59,8 @@ def amy(db, user_factory):
 @pytest.fixture
 def leo(db, user_factory):
     return user_factory(username="leo")
+
+
+@pytest.fixture
+def mike(db, user_factory):
+    return user_factory(username="mike")

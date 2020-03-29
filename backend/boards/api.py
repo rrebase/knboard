@@ -62,7 +62,7 @@ class BoardViewSet(
         detail=True,
         methods=["post"],
         serializer_class=MemberSerializer,
-        permission_classes=[IsOwner],
+        permission_classes=[IsAuthenticated, IsOwner],
     )
     def invite_member(self, request, pk):
         new_member = self.get_member()
@@ -75,7 +75,7 @@ class BoardViewSet(
         member = self.get_member()
         board = self.get_object()
 
-        if member == board.owner:
+        if member == board.owner or board not in member.boards.all():
             return Response(status=HTTP_400_BAD_REQUEST)
 
         board.members.remove(member)
