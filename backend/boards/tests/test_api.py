@@ -77,7 +77,7 @@ def test_board_list(api_client, steve, amy, leo):
     response = get_board_list()
     assert response.status_code == 401
 
-    # Owner can see he's own boards
+    # Owner can see his own boards
     api_client.force_authenticate(user=steve)
     response = get_board_list()
     assert response.status_code == 200
@@ -108,7 +108,7 @@ def test_board_detail(api_client, steve, amy, leo):
     response = get_uni_board_detail()
     assert response.status_code == 401
 
-    # Owner can see he's own board
+    # Owner can see his own board
     api_client.force_authenticate(user=steve)
     response = get_uni_board_detail()
     assert response.status_code == 200
@@ -151,7 +151,7 @@ def test_board_delete(api_client, steve, amy, leo):
     assert response.status_code == 403
     assert Board.objects.filter(id=uni_board.id).exists()
 
-    # Owner can see he's own board
+    # Owner can see his own board
     api_client.force_authenticate(user=steve)
     response = delete_uni_board()
     assert response.status_code == 204
