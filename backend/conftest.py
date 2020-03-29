@@ -28,7 +28,7 @@ def test_password():
 
 
 @pytest.fixture
-def create_user(db, django_user_model, test_password):
+def create_user(django_user_model, test_password):
     def make_user(**kwargs):
         kwargs["password"] = test_password
         if "username" not in kwargs:
@@ -39,7 +39,7 @@ def create_user(db, django_user_model, test_password):
 
 
 @pytest.fixture
-def api_client_with_credentials(db, create_user, api_client):
+def api_client_with_credentials(create_user, api_client):
     user = create_user()
     api_client.force_authenticate(user=user)
     yield api_client
@@ -47,20 +47,20 @@ def api_client_with_credentials(db, create_user, api_client):
 
 
 @pytest.fixture
-def steve(db, user_factory):
+def steve(user_factory):
     return user_factory(username="steve")
 
 
 @pytest.fixture
-def amy(db, user_factory):
+def amy(user_factory):
     return user_factory(username="amy")
 
 
 @pytest.fixture
-def leo(db, user_factory):
+def leo(user_factory):
     return user_factory(username="leo")
 
 
 @pytest.fixture
-def mike(db, user_factory):
+def mike(user_factory):
     return user_factory(username="mike")

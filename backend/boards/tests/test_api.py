@@ -38,6 +38,38 @@ def test_order_columns(api_client_with_credentials, col_backlog, col_done):
     assert col_backlog.column_order == 2
 
 
+def test_order_tasks_same_column(
+    api_client_with_credentials, column_factory, task_factory
+):
+    """
+    Order tasks (in one column):
+    Task1, Task2, Task3 -> Task3, Task1, Task2
+    """
+    column = column_factory()
+    task1 = task_factory(column=column, task_order=1)
+    task2 = task_factory(column=column, task_order=2)
+    task3 = task_factory(column=column, task_order=3)
+
+    # Initial state
+    column.refresh_from_db()
+    assert list(column.tasks.all()) == [task1, task2, task3]
+
+    response = api_client_with_credentials.post(
+        reverse("sort-task"),
+        {
+            "board": column.board.id,
+            "tasks": {column.title: [task3.id, task1.id, task2.id]},
+            "order": [task3.id, task1.id, task2.id],
+        },
+    )
+
+    # State after ordering
+    column.refresh_from_db()
+    assert list(column.tasks.all()) == [task3, task1, task2]
+
+    assert response.status_code == 200
+
+
 def test_order_duplicate(api_client_with_credentials, col_done):
     response = api_client_with_credentials.post(
         reverse("sort-column"), {"order": [col_done.id, col_done.id]}
@@ -214,9 +246,13 @@ def test_board_invite_member(api_client, board_factory, steve, leo, amy):
     assert amy.id in list(map(lambda member: member.id, board.members.all()))
 
     # Should handle adding an existing member
-    api_client.force_authenticate(user=steve)
     response = send_invite(steve.username)
     assert response.status_code == 200
+    assert len(board.members.all()) == 3
+
+    # Should handle adding non existant user
+    response = send_invite("notvalidusername")
+    assert response.status_code == 400
     assert len(board.members.all()) == 3
 
 
@@ -251,13 +287,16 @@ def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
     assert len(board.members.all()) == 3
 
     # Steve can't remove Mike (not a member of the board)
-    api_client.force_authenticate(user=steve)
     response = remove_member(mike.username)
     assert response.status_code == 400
     assert len(board.members.all()) == 3
 
+    # Steve can't remove a non existant user
+    response = remove_member("notvalidusername")
+    assert response.status_code == 400
+    assert len(board.members.all()) == 3
+
     # Steve can remove Leo
-    api_client.force_authenticate(user=steve)
     response = remove_member(leo.username)
     assert response.status_code == 200
     assert len(board.members.all()) == 2

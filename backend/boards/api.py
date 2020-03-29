@@ -54,7 +54,7 @@ class BoardViewSet(
         try:
             member = User.objects.get(username=self.request.data.get("username"))
         except User.DoesNotExist:
-            return Response(status=HTTP_400_BAD_REQUEST)
+            return None
 
         return member
 
@@ -66,6 +66,8 @@ class BoardViewSet(
     )
     def invite_member(self, request, pk):
         new_member = self.get_member()
+        if not new_member:
+            return Response(status=HTTP_400_BAD_REQUEST)
 
         self.get_object().members.add(new_member)
         return Response(data=BoardMemberSerializer(instance=new_member).data)
@@ -75,7 +77,7 @@ class BoardViewSet(
         member = self.get_member()
         board = self.get_object()
 
-        if member == board.owner or board not in member.boards.all():
+        if not member or member == board.owner or board not in member.boards.all():
             return Response(status=HTTP_400_BAD_REQUEST)
 
         board.members.remove(member)
@@ -134,18 +136,10 @@ def sort_model(request, Model):
         )
         order_field_name = Model._meta.ordering[0]
 
-        if order_field_name.startswith("-"):
-            order_field_name = order_field_name[1:]
-            step = -1
-            start_object = max(
-                objects_dict.values(), key=lambda x: getattr(x, order_field_name)
-            )
-        else:
-            step = 1
-            start_object = min(
-                objects_dict.values(), key=lambda x: getattr(x, order_field_name)
-            )
-
+        step = 1
+        start_object = min(
+            objects_dict.values(), key=lambda x: getattr(x, order_field_name)
+        )
         start_index = getattr(start_object, order_field_name, len(ordered_pks))
 
         for pk in ordered_pks:
@@ -158,7 +152,7 @@ def sort_model(request, Model):
                 obj.save(update_fields=[order_field_name])
 
             start_index += step
-    except (KeyError, IndexError, Model.DoesNotExist, AttributeError, ValueError) as e:
+    except (KeyError, IndexError, AttributeError, ValueError, Model.DoesNotExist) as e:
         return Response(status=HTTP_400_BAD_REQUEST)
 
     return Response(status=HTTP_200_OK)

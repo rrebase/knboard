@@ -1,27 +1,10 @@
 import pytest
 from rest_framework.reverse import reverse
-from django.utils.http import urlencode
 from boards.models import Column, Board
 from django.contrib.auth import get_user_model
+from boards.utils import reverse_querystring
 
 User = get_user_model()
-
-
-def reverse_querystring(
-    view, urlconf=None, args=None, kwargs=None, current_app=None, query_kwargs=None
-):
-    """
-    Custom reverse to handle query strings.
-
-    Usage:
-        reverse('app.views.my_view', kwargs={'pk': 123}, query_kwargs={'search', 'Steve'})
-    """
-    base_url = reverse(
-        view, urlconf=urlconf, args=args, kwargs=kwargs, current_app=current_app
-    )
-    if query_kwargs:
-        return f"{base_url}?{urlencode(query_kwargs)}"
-    return base_url
 
 
 def test_user_list(api_client, steve, amy, leo):
