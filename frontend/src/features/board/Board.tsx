@@ -122,10 +122,6 @@ const Board = ({
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
 
-  if (!loading && columns.length === 0) {
-    return <EmptyBoard>This board is empty.</EmptyBoard>;
-  }
-
   const board = (
     <Droppable
       droppableId="board"
@@ -160,6 +156,10 @@ const Board = ({
 
   if (error) {
     return <PageError>{error}</PageError>;
+  }
+
+  if (!loading && columns.length === 0) {
+    return <EmptyBoard>This board is empty.</EmptyBoard>;
   }
 
   return (

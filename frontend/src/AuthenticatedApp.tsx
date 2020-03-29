@@ -7,24 +7,28 @@ import Navbar from "components/Navbar";
 import Home from "features/home/Home";
 import BoardBar from "features/board/BoardBar";
 import Profile from "features/profile/Profile";
+import PageError from "components/PageError";
 
 const AuthenticatedApp = () => {
   return (
     <>
       <Navbar />
       <Switch>
-        <Route path="/profile">
+        <Route exact path="/profile">
           <Profile />
         </Route>
-        <Route path="/boards">
+        <Route exact path="/boards">
           <BoardList />
         </Route>
-        <Route path="/b/:id">
+        <Route exact path="/b/:id">
           <BoardBar />
           <Board />
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="*">
+          <PageError>Page not found</PageError>
         </Route>
       </Switch>
     </>

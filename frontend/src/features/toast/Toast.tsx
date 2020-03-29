@@ -23,9 +23,11 @@ const Toast = () => {
   }
 
   useEffect(() => {
-    timer = setTimeout(() => {
-      handleClose();
-    }, TOAST_AUTO_HIDE_DURATION);
+    if (open) {
+      timer = setTimeout(() => {
+        handleClose();
+      }, TOAST_AUTO_HIDE_DURATION);
+    }
     return () => clearTimeout(timer);
   }, [open]);
 

@@ -5,3 +5,9 @@
 import "@testing-library/jest-dom/extend-expect";
 import "mutationobserver-shim";
 import "jest-localstorage-mock";
+
+import { axiosMock } from "utils/testHelpers";
+
+beforeEach(() => {
+  axiosMock.reset();
+});

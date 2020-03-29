@@ -3,6 +3,8 @@ import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 import { initialState as authInitialState } from "features/auth/AuthSlice";
 import { initialState as profileInitialState } from "features/profile/ProfileSlice";
@@ -23,6 +25,8 @@ export const rootInitialState = {
   task: taskInitialState,
   member: memberInitialState
 };
+
+export const axiosMock = new MockAdapter(axios);
 
 export const renderWithProviders = (
   ui: React.ReactNode,

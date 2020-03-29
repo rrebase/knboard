@@ -1,17 +1,9 @@
 import React from "react";
 import { screen, fireEvent, act } from "@testing-library/react";
-import axios from "axios";
-import { renderWithProviders } from "utils/testHelpers";
-import MockAdapter from "axios-mock-adapter";
+import { renderWithProviders, axiosMock } from "utils/testHelpers";
 import Auth from "./Auth";
 import { API_LOGIN } from "api";
 import { login } from "./AuthSlice";
-
-const axiosMock = new MockAdapter(axios);
-
-beforeEach(() => {
-  axiosMock.reset();
-});
 
 it("should have knboard text", async () => {
   renderWithProviders(<Auth />);

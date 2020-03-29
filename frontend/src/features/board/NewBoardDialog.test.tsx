@@ -1,16 +1,8 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
-import axios from "axios";
 import { rootInitialState, renderWithProviders } from "utils/testHelpers";
-import MockAdapter from "axios-mock-adapter";
 import NewBoardDialog from "./NewBoardDialog";
 import { createBoard } from "./BoardSlice";
-
-const axiosMock = new MockAdapter(axios);
-
-beforeEach(() => {
-  axiosMock.reset();
-});
 
 it("should not show dialog", async () => {
   renderWithProviders(<NewBoardDialog />);

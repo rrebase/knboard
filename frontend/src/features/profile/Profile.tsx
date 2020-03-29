@@ -158,6 +158,7 @@ const Profile = () => {
               color="primary"
               type="submit"
               disabled={loading}
+              data-testid="profile-save"
               css={css`
                 margin-top: 1rem;
                 text-align: right;

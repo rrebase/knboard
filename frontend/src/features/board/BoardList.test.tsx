@@ -1,20 +1,16 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import BoardList from "./BoardList";
-import axios from "axios";
-import { renderWithProviders, rootInitialState } from "utils/testHelpers";
+import {
+  renderWithProviders,
+  rootInitialState,
+  axiosMock
+} from "utils/testHelpers";
 import { fetchAllBoards } from "./BoardSlice";
 import { API_BOARDS } from "api";
 import boardReducer from "features/board/BoardSlice";
-import MockAdapter from "axios-mock-adapter";
-
-const axiosMock = new MockAdapter(axios);
 
 const boards = [{ id: 1, name: "Internals" }];
-
-beforeEach(() => {
-  axiosMock.reset();
-});
 
 it("should fetch and render board list", async () => {
   axiosMock.onGet(API_BOARDS).reply(200, boards);

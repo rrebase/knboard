@@ -11,7 +11,7 @@ interface InitialState {
   createLoading: boolean;
   createError: string | null;
   detailLoading: boolean;
-  detailError: string | null;
+  detailError?: string;
 }
 
 export const initialState: InitialState = {
@@ -23,7 +23,7 @@ export const initialState: InitialState = {
   createLoading: false,
   createError: null,
   detailLoading: false,
-  detailError: null
+  detailError: undefined
 };
 
 interface ColumnsResponse extends IColumn {
@@ -42,13 +42,20 @@ export const fetchAllBoards = createAsyncThunk<Board[]>(
   }
 );
 
-export const fetchBoardById = createAsyncThunk<BoardDetailResponse, string>(
-  "board/fetchByIdStatus",
-  async id => {
+export const fetchBoardById = createAsyncThunk<
+  BoardDetailResponse,
+  string,
+  {
+    rejectValue: string;
+  }
+>("board/fetchByIdStatus", async (id, { rejectWithValue }) => {
+  try {
     const response = await api.get(`${API_BOARDS}${id}/`);
     return response.data;
+  } catch (err) {
+    return rejectWithValue(err.message);
   }
-);
+});
 
 export const createBoard = createAsyncThunk<Board, string>(
   "board/createBoardStatus",
@@ -85,11 +92,11 @@ export const slice = createSlice({
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       const { id, name, owner, members } = action.payload;
       state.detail = { id, name, owner, members };
-      state.detailError = null;
+      state.detailError = undefined;
       state.detailLoading = false;
     });
     builder.addCase(fetchBoardById.rejected, (state, action) => {
-      state.detailError = action.payload as string;
+      state.detailError = action.payload;
       state.detailLoading = false;
     });
     builder.addCase(createBoard.pending, state => {

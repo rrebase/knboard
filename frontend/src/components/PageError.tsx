@@ -20,7 +20,7 @@ interface Props {
 }
 
 const PageError = ({ children }: Props) => (
-  <Paper elevation={3} css={paperStyles}>
+  <Paper elevation={1} css={paperStyles}>
     {children}
   </Paper>
 );
