@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  Container,
-  Divider,
-  TextField,
-  Avatar,
-  Button
-} from "@material-ui/core";
+import { Container, Divider, TextField, Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetail, fetchAvatarList, updateUser } from "./ProfileSlice";
 import { RootState } from "store";
 import { css } from "@emotion/core";
 import { useForm } from "react-hook-form";
+import UserAvatar from "./UserAvatar";
 
 const Title = styled.h3`
   margin-top: 2rem;
@@ -21,10 +16,6 @@ const Title = styled.h3`
 const FormContainer = styled.div`
   margin-top: 2rem;
   display: flex;
-`;
-
-const AvatarContainer = styled.div`
-  margin: 3rem;
 `;
 
 const Row = styled.div``;
@@ -80,15 +71,7 @@ const Profile = () => {
       <Title>About</Title>
       <Divider />
       <FormContainer>
-        <AvatarContainer>
-          <Avatar
-            css={css`
-              height: 6rem;
-              width: 6rem;
-              font-size: 36px;
-            `}
-          />
-        </AvatarContainer>
+        <UserAvatar />
         <UserForm onSubmit={handleSubmit(onSubmit)}>
           <Fields>
             <Row>
@@ -169,19 +152,6 @@ const Profile = () => {
           </Fields>
         </UserForm>
       </FormContainer>
-      {/* <div style={{ width: 300, marginLeft: 500 }}>
-        {avatars.map((avatar: any, index: number) => (
-          <span
-            key={index}
-            css={css`
-              margin-left: 0.5rem;
-              display: none;
-            `}
-          >
-            <img src={avatar.photo} alt="batimg" width={40} height={40} />
-          </span>
-        ))}
-      </div> */}
     </Container>
   );
 };

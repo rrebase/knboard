@@ -51,6 +51,7 @@ export interface User {
   key: string;
   id: number;
   username: string;
+  photo_url: string | null;
 }
 
 export interface UserDetail {
@@ -59,11 +60,12 @@ export interface UserDetail {
   first_name: string;
   last_name: string;
   email: string;
-  avatar: string;
+  avatar: Avatar | null;
   date_joined: string;
 }
 
 export interface Avatar {
   id: number;
   photo: string;
+  name: string;
 }

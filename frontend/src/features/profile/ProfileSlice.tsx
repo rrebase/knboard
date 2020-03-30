@@ -41,6 +41,18 @@ export const updateUser = createAsyncThunk<
   }
 );
 
+export const updateAvatar = createAsyncThunk<Avatar, number>(
+  "profile/updateAvatarStatus",
+  async (avatarId, { dispatch, getState }) => {
+    const id = (getState() as RootState).auth.user?.id;
+    const response = await api.post(`${API_USERS}${id}/update_avatar/`, {
+      id: avatarId
+    });
+    dispatch(createSuccessToast("Avatar saved"));
+    return response.data;
+  }
+);
+
 export const fetchAvatarList = createAsyncThunk<Avatar[]>(
   "profile/fetchAvatarListStatus",
   async () => {
@@ -84,6 +96,11 @@ export const slice = createSlice({
     builder.addCase(updateUser.rejected, (state, action) => {
       state.apiErrors = action.payload;
       state.loading = false;
+    });
+    builder.addCase(updateAvatar.fulfilled, (state, action) => {
+      if (state.userDetail) {
+        state.userDetail.avatar = action.payload;
+      }
     });
   }
 });
