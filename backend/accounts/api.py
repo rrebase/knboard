@@ -6,6 +6,8 @@ from accounts.models import Avatar
 from boards.models import Board
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .serializers import AvatarSerializer, UserSerializer, UserDetailSerializer
 from .permissions import IsSelfForUpdate
@@ -46,6 +48,15 @@ class UserViewSet(
         if self.action == "retrieve" or self.action == "update":
             return UserDetailSerializer
         return super().get_serializer_class()
+
+    @action(detail=True, methods=["post"])
+    def update_avatar(self, request, pk):
+        avatar_id = request.data.get('id')
+        avatar = Avatar.objects.get(id=avatar_id)
+        user = self.get_object()
+        user.avatar = avatar
+        user.save()
+        return Response(AvatarSerializer(instance=avatar).data)
 
 
 class AvatarViewSet(ReadOnlyModelViewSet):

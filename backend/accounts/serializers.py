@@ -1,16 +1,23 @@
 from django.contrib.auth import get_user_model
+from pathlib import Path
 
 from rest_framework import serializers
 from dj_rest_auth.models import TokenModel
 from .models import Avatar
 
+
 User = get_user_model()
 
 
 class AvatarSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Avatar
-        fields = ["id", "photo"]
+        fields = ["id", "photo", "name"]
+
+    def get_name(self, obj):
+        return Path(obj.photo.name).stem
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,6 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
+    avatar = AvatarSerializer(read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -33,6 +42,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
+            "avatar",
             "date_joined",
         ]
 
@@ -52,7 +62,13 @@ class BoardMemberSerializer(serializers.ModelSerializer):
 class TokenSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="user.id", read_only=True)
     username = serializers.CharField(source="user.username", read_only=True)
+    photo_url = serializers.SerializerMethodField()
 
     class Meta:
         model = TokenModel
-        fields = ("key", "id", "username")
+        fields = ("key", "id", "username", "photo_url")
+
+    def get_photo_url(self, obj):
+        if not obj.user.avatar:
+            return None
+        return obj.user.avatar.photo.url
