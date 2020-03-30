@@ -35,12 +35,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'accounts',
     'boards',
     'adminsortable',
     'rest_framework',
     'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
     'dj_rest_auth',
+    'dj_rest_auth.registration',
     'debug_toolbar'
 ]
 
@@ -170,3 +174,9 @@ REST_AUTH_SERIALIZERS = {
 # Static files and media (CSS, JavaScript, images)
 MEDIA_ROOT = "./media"
 MEDIA_URL = "/media/"
+
+# For django.contrib.sites
+SITE_ID = 1
+
+# Allauth
+ACCOUNT_EMAIL_VERIFICATION = None

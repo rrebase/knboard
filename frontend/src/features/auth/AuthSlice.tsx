@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { API_LOGIN, API_LOGOUT } from "api";
+import api, { API_LOGIN, API_LOGOUT, API_REGISTER } from "api";
 import { User } from "types";
 import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
 import { AxiosError } from "axios";
@@ -17,13 +17,39 @@ export const initialState: InitialState = {
   error: undefined
 };
 
+interface ValidationErrors {
+  non_field_errors?: string[];
+}
+
+interface RegisterProps {
+  username: string;
+  email: string;
+  password1: string;
+  password2: string;
+}
+
+export const register = createAsyncThunk<
+  User,
+  RegisterProps,
+  {
+    rejectValue: ValidationErrors;
+  }
+>("auth/registerStatus", async (credentials, { rejectWithValue }) => {
+  try {
+    const response = await api.post(API_REGISTER, credentials);
+    return response.data;
+  } catch (err) {
+    const error: AxiosError<ValidationErrors> = err;
+    if (!error.response) {
+      throw err;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
 interface LoginProps {
   username: string;
   password: string;
-}
-
-interface ValidationErrors {
-  non_field_errors?: string[];
 }
 
 export const login = createAsyncThunk<
@@ -88,6 +114,10 @@ export const slice = createSlice({
         // eslint-disable-next-line @typescript-eslint/camelcase
         state.user.photo_url = action.payload.photo;
       }
+    });
+    builder.addCase(register.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
     });
   }
 });
