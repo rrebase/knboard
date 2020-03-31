@@ -27,8 +27,8 @@ interface FormData {
 const LoginDialog = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const error = useSelector((state: RootState) => state.auth.error);
-  const loading = useSelector((state: RootState) => state.auth.loading);
+  const apiErrors = useSelector((state: RootState) => state.auth.loginErrors);
+  const loading = useSelector((state: RootState) => state.auth.loginLoading);
   const { register, handleSubmit, errors } = useForm<FormData>();
 
   const handleOpen = () => {
@@ -68,14 +68,14 @@ const LoginDialog = () => {
         <DialogTitle id="login-dialog-title">Login</DialogTitle>
         <form onSubmit={onSubmit}>
           <DialogContent>
-            {error && (
+            {apiErrors?.non_field_errors && (
               <Alert
                 severity="error"
                 css={css`
                   margin-bottom: 0.75rem;
                 `}
               >
-                {error.non_field_errors?.map(errorMsg => (
+                {apiErrors.non_field_errors?.map(errorMsg => (
                   <div key={errorMsg}>{errorMsg}</div>
                 ))}
               </Alert>
@@ -87,8 +87,8 @@ const LoginDialog = () => {
               id="username"
               label="Username"
               variant="outlined"
-              inputRef={register({ required: true })}
-              helperText={errors.username && "This field is required"}
+              inputRef={register({ required: "This field is required" })}
+              helperText={errors.username?.message}
               error={Boolean(errors.username)}
               fullWidth
             />
@@ -99,8 +99,8 @@ const LoginDialog = () => {
               label="Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: true })}
-              helperText={errors.password && "This field is required"}
+              inputRef={register({ required: "This field is required" })}
+              helperText={errors.password?.message}
               error={Boolean(errors.password)}
               fullWidth
             />

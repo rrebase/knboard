@@ -7,14 +7,16 @@ import { updateUser, updateAvatar } from "features/profile/ProfileSlice";
 
 interface InitialState {
   user: User | null;
-  loading: boolean;
-  error?: ValidationErrors;
+  loginLoading: boolean;
+  loginErrors?: ValidationErrors;
+  registerErrors?: ValidationErrors;
 }
 
 export const initialState: InitialState = {
   user: null,
-  loading: false,
-  error: undefined
+  loginLoading: false,
+  loginErrors: undefined,
+  registerErrors: undefined
 };
 
 interface ValidationErrors {
@@ -89,20 +91,19 @@ export const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(login.pending, state => {
-      state.loading = true;
+      state.loginLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.loading = false;
-      state.error = undefined;
+      state.loginLoading = false;
+      state.loginErrors = undefined;
     });
     builder.addCase(login.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.loginErrors = action.payload;
+      state.loginLoading = false;
     });
     builder.addCase(logout.fulfilled, state => {
       state.user = null;
-      state.error = undefined;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
       if (state.user) {
@@ -115,9 +116,12 @@ export const slice = createSlice({
         state.user.photo_url = action.payload.photo;
       }
     });
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.registerErrors = undefined;
+    });
     builder.addCase(register.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.registerErrors = action.payload;
     });
   }
 });

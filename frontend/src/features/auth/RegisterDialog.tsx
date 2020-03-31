@@ -29,7 +29,9 @@ interface FormData {
 const RegisterDialog = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
-  const apiErrors = useSelector((state: RootState) => state.auth.error);
+  const apiErrors = useSelector(
+    (state: RootState) => state.auth.registerErrors
+  );
   const [open, setOpen] = useState(false);
 
   React.useEffect(() => {
@@ -103,7 +105,7 @@ const RegisterDialog = () => {
               margin="dense"
               label="Username"
               variant="outlined"
-              inputRef={register({ required: true })}
+              inputRef={register({ required: "This field is required" })}
               helperText={errors.username?.message}
               error={Boolean(errors.username)}
               fullWidth
@@ -114,7 +116,7 @@ const RegisterDialog = () => {
               margin="dense"
               label="Email"
               variant="outlined"
-              inputRef={register({ required: true })}
+              inputRef={register({ required: "This field is required" })}
               helperText={errors.email?.message}
               error={Boolean(errors.email)}
               fullWidth
@@ -126,7 +128,7 @@ const RegisterDialog = () => {
               label="Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: true })}
+              inputRef={register({ required: "This field is required" })}
               helperText={errors.password1?.message}
               error={Boolean(errors.password1)}
               fullWidth
@@ -138,7 +140,7 @@ const RegisterDialog = () => {
               label="Confirm Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: true })}
+              inputRef={register({ required: "This field is required" })}
               helperText={errors.password2?.message}
               error={Boolean(errors.password2)}
               fullWidth
