@@ -146,7 +146,12 @@ const RegisterDialog = () => {
               fullWidth
             />
             <FormActions>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                data-testid="submit-register-btn"
+              >
                 Register
               </Button>
             </FormActions>

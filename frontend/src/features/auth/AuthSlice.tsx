@@ -3,7 +3,10 @@ import api, { API_LOGIN, API_LOGOUT, API_REGISTER } from "api";
 import { User } from "types";
 import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
 import { AxiosError } from "axios";
-import { updateUser, updateAvatar } from "features/profile/ProfileSlice";
+import {
+  updateUser,
+  updateAvatarFulfilled
+} from "features/profile/ProfileSlice";
 
 interface InitialState {
   user: User | null;
@@ -110,18 +113,18 @@ export const slice = createSlice({
         state.user.username = action.payload.username;
       }
     });
-    builder.addCase(updateAvatar.fulfilled, (state, action) => {
-      if (state.user) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        state.user.photo_url = action.payload.photo;
-      }
-    });
     builder.addCase(register.fulfilled, (state, action) => {
       state.user = action.payload;
       state.registerErrors = undefined;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.registerErrors = action.payload;
+    });
+    builder.addCase(updateAvatarFulfilled, (state, action) => {
+      if (state.user) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        state.user.photo_url = action.payload.photo;
+      }
     });
   }
 });

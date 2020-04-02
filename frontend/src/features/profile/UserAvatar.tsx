@@ -12,6 +12,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { updateAvatar } from "./ProfileSlice";
 
+const avatarBorderStyles = css`
+  cursor: pointer;
+  border: 2px solid #5195dd;
+  border-radius: 50%;
+`;
+
+const pulseStyles = css`
+  ${avatarBorderStyles}
+  animation: pulse 1.5s infinite;
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(104, 105, 246, 0.85);
+    }
+
+    70% {
+      box-shadow: 0 0 0 1em rgba(104, 105, 246, 0);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(104, 105, 246, 0);
+    }
+  }
+`;
+
 const Container = styled.div`
   margin: 2rem;
   text-align: center;
@@ -20,6 +45,8 @@ const Container = styled.div`
 const GridTitle = styled.h3`
   margin-top: 0;
   margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const GridFooter = styled.div`
@@ -38,13 +65,16 @@ const AvatarListContainer = styled.div`
 const UserAvatar = () => {
   const user = useSelector((state: RootState) => state.profile.userDetail);
   const avatars = useSelector((state: RootState) => state.profile.avatars);
+  const loading = useSelector(
+    (state: RootState) => state.profile.avatarLoading
+  );
   const dispatch = useDispatch();
   const popupState = usePopupState({
     variant: "popover",
     popupId: "avatarPopover"
   });
 
-  const handleChangeAvatar = (id: number) => {
+  const handleChangeAvatar = async (id: number) => {
     dispatch(updateAvatar(id));
   };
 
@@ -75,17 +105,23 @@ const UserAvatar = () => {
         `}
         variant="outlined"
         {...bindTrigger(popupState)}
+        data-testid="change-avatar"
       >
         Change
       </Button>
       <Popover
         {...bindPopover(popupState)}
         keepMounted
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <AvatarListContainer>
-          <GridTitle>Pick an Avatar</GridTitle>
+          <GridTitle>
+            <div>Pick an Avatar</div>
+            <Button size="small" onClick={() => popupState.close()}>
+              X
+            </Button>
+          </GridTitle>
           <Grid container>
             {avatars.map(avatar => (
               <Grid item xs={3} key={avatar.id}>
@@ -93,15 +129,15 @@ const UserAvatar = () => {
                   onClick={() => handleChangeAvatar(avatar.id)}
                   css={css`
                     &:hover {
-                      cursor: pointer;
-                      border: 2px solid #5195dd;
-                      border-radius: 50%;
+                      ${avatarBorderStyles}
                     }
+                    ${avatar.id === loading && pulseStyles}
                   `}
                   src={avatar.photo}
                   alt={avatar.name}
                   width={60}
                   height={60}
+                  data-testid={`avatar-${avatar.name}`}
                 />
               </Grid>
             ))}

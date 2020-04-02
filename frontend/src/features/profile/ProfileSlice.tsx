@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserDetail, Avatar } from "types";
 import api, { API_USERS, API_AVATARS } from "api";
-import { RootState } from "store";
+import { RootState, AppDispatch } from "store";
 import { createSuccessToast } from "features/toast/ToastSlice";
 
 export interface ValidationErrors extends Partial<UserDetail> {
@@ -41,18 +41,6 @@ export const updateUser = createAsyncThunk<
   }
 );
 
-export const updateAvatar = createAsyncThunk<Avatar, number>(
-  "profile/updateAvatarStatus",
-  async (avatarId, { dispatch, getState }) => {
-    const id = (getState() as RootState).auth.user?.id;
-    const response = await api.post(`${API_USERS}${id}/update_avatar/`, {
-      id: avatarId
-    });
-    dispatch(createSuccessToast("Avatar saved"));
-    return response.data;
-  }
-);
-
 export const fetchAvatarList = createAsyncThunk<Avatar[]>(
   "profile/fetchAvatarListStatus",
   async () => {
@@ -66,19 +54,34 @@ interface InitialState {
   userDetail: UserDetail | null;
   loading: boolean;
   apiErrors?: ValidationErrors;
+  avatarLoading: number | null;
 }
 
 export const initialState: InitialState = {
   avatars: [],
   userDetail: null,
   loading: false,
-  apiErrors: undefined
+  apiErrors: undefined,
+  avatarLoading: null
 };
 
 export const slice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    updateAvatarPending(state, action) {
+      state.avatarLoading = action.payload;
+    },
+    updateAvatarFulfilled(state, action) {
+      if (state.userDetail) {
+        state.userDetail.avatar = action.payload;
+      }
+      state.avatarLoading = null;
+    },
+    updateAvatarRejected(state) {
+      state.avatarLoading = null;
+    }
+  },
   extraReducers: builder => {
     builder.addCase(fetchUserDetail.fulfilled, (state, action) => {
       state.userDetail = action.payload;
@@ -97,14 +100,30 @@ export const slice = createSlice({
       state.apiErrors = action.payload;
       state.loading = false;
     });
-    builder.addCase(updateAvatar.fulfilled, (state, action) => {
-      if (state.userDetail) {
-        state.userDetail.avatar = action.payload;
-      }
-    });
   }
 });
 
-export const {} = slice.actions;
+export const {
+  updateAvatarPending,
+  updateAvatarFulfilled,
+  updateAvatarRejected
+} = slice.actions;
+
+export const updateAvatar = (avatarId: number) => async (
+  dispatch: AppDispatch,
+  getState: () => RootState
+) => {
+  dispatch(updateAvatarPending(avatarId));
+  try {
+    const id = getState().auth.user?.id;
+    const response = await api.post(`${API_USERS}${id}/update_avatar/`, {
+      id: avatarId
+    });
+    dispatch(updateAvatarFulfilled(response.data));
+    dispatch(createSuccessToast("Avatar saved"));
+  } catch (err) {
+    dispatch(updateAvatarRejected());
+  }
+};
 
 export default slice.reducer;
