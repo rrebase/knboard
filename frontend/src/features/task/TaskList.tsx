@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
-import { R50, T50, N30, N80A, N900 } from "colors";
+import { R50, T50, N30, N80A, N900 } from "utils/colors";
 import { grid } from "const";
 import { ITask } from "types";
 import {

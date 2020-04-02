@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
-import { N30, G50 } from "colors";
+import { N30, G50 } from "utils/colors";
 import { ITask } from "types";
 import {
   Draggable,

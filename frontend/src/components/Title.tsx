@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { grid } from "const";
-import { P100 } from "colors";
+import { P100 } from "utils/colors";
 
 export default styled.h4`
   padding: ${grid}px;

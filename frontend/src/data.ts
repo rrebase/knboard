@@ -2,7 +2,7 @@ import finnImg from "static/media/finn-min.png";
 import bmoImg from "static/media/bmo-min.png";
 import princessImg from "static/media/princess-min.png";
 import jakeImg from "static/media/jake-min.png";
-import { Y50, N400A, G50, B50, P50 } from "colors";
+import { Y50, N400A, G50, B50, P50 } from "utils/colors";
 import { ITask, Author, Id } from "types";
 
 export const jake: Author = {

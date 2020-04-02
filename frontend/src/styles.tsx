@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { borderRadius, imageSize, grid } from "const";
-import { N900 } from "colors";
+import { N900 } from "utils/colors";
 
 export const iconBoxStyles = css`
   cursor: pointer;

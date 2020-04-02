@@ -114,9 +114,6 @@ export const DN30 = "#1B2638";
 export const DN20 = "#121A29";
 export const DN10 = "#0E1624";
 
-// ATTENTION: update the tints if you update this
-export const DN0 = "#0D1424";
-
 // Each dark tint is made of DN0 and an alpha channel
 export const DN800A = "rgba(13, 20, 36, 0.06)";
 export const DN700A = "rgba(13, 20, 36, 0.14)";
