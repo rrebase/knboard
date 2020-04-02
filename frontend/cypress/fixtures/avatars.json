@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "photo": "http://localhost:8000/media/avatars/parrot.png",
+    "name": "parrot"
+  },
+  {
+    "id": 2,
+    "photo": "http://localhost:8000/media/avatars/duck.png",
+    "name": "duck"
+  },
+  {
+    "id": 3,
+    "photo": "http://localhost:8000/media/avatars/dog.png",
+    "name": "dog"
+  },
+  {
+    "id": 4,
+    "photo": "http://localhost:8000/media/avatars/horse.png",
+    "name": "horse"
+  },
+  {
+    "id": 5,
+    "photo": "http://localhost:8000/media/avatars/turtle.png",
+    "name": "turtle"
+  },
+  {
+    "id": 6,
+    "photo": "http://localhost:8000/media/avatars/leopard.png",
+    "name": "leopard"
+  },
+  {
+    "id": 7,
+    "photo": "http://localhost:8000/media/avatars/spider.png",
+    "name": "spider"
+  },
+  {
+    "id": 8,
+    "photo": "http://localhost:8000/media/avatars/starfish.png",
+    "name": "starfish"
+  },
+  {
+    "id": 9,
+    "photo": "http://localhost:8000/media/avatars/elephant.png",
+    "name": "elephant"
+  },
+  {
+    "id": 10,
+    "photo": "http://localhost:8000/media/avatars/dolphin.png",
+    "name": "dolphin"
+  },
+  {
+    "id": 11,
+    "photo": "http://localhost:8000/media/avatars/lion.png",
+    "name": "lion"
+  },
+  {
+    "id": 12,
+    "photo": "http://localhost:8000/media/avatars/camel.png",
+    "name": "camel"
+  },
+  {
+    "id": 13,
+    "photo": "http://localhost:8000/media/avatars/eagle.png",
+    "name": "eagle"
+  },
+  {
+    "id": 14,
+    "photo": "http://localhost:8000/media/avatars/flamingo.png",
+    "name": "flamingo"
+  },
+  {
+    "id": 15,
+    "photo": "http://localhost:8000/media/avatars/zebra.png",
+    "name": "zebra"
+  },
+  {
+    "id": 16,
+    "photo": "http://localhost:8000/media/avatars/tiger.png",
+    "name": "tiger"
+  },
+  {
+    "id": 17,
+    "photo": "http://localhost:8000/media/avatars/kangaroo.png",
+    "name": "kangaroo"
+  },
+  {
+    "id": 18,
+    "photo": "http://localhost:8000/media/avatars/sheep.png",
+    "name": "sheep"
+  },
+  {
+    "id": 19,
+    "photo": "http://localhost:8000/media/avatars/bird.png",
+    "name": "bird"
+  },
+  {
+    "id": 20,
+    "photo": "http://localhost:8000/media/avatars/shark.png",
+    "name": "shark"
+  },
+  {
+    "id": 21,
+    "photo": "http://localhost:8000/media/avatars/cow.png",
+    "name": "cow"
+  },
+  {
+    "id": 22,
+    "photo": "http://localhost:8000/media/avatars/panda.png",
+    "name": "panda"
+  },
+  {
+    "id": 23,
+    "photo": "http://localhost:8000/media/avatars/cheetah.png",
+    "name": "cheetah"
+  },
+  {
+    "id": 24,
+    "photo": "http://localhost:8000/media/avatars/gorilla.png",
+    "name": "gorilla"
+  },
+  {
+    "id": 25,
+    "photo": "http://localhost:8000/media/avatars/butterfly.png",
+    "name": "butterfly"
+  },
+  {
+    "id": 26,
+    "photo": "http://localhost:8000/media/avatars/dinosaur.png",
+    "name": "dinosaur"
+  },
+  {
+    "id": 27,
+    "photo": "http://localhost:8000/media/avatars/bee.png",
+    "name": "bee"
+  },
+  {
+    "id": 28,
+    "photo": "http://localhost:8000/media/avatars/hen.png",
+    "name": "hen"
+  },
+  {
+    "id": 29,
+    "photo": "http://localhost:8000/media/avatars/penguin.png",
+    "name": "penguin"
+  },
+  {
+    "id": 30,
+    "photo": "http://localhost:8000/media/avatars/mouse.png",
+    "name": "mouse"
+  },
+  {
+    "id": 31,
+    "photo": "http://localhost:8000/media/avatars/squirrel.png",
+    "name": "squirrel"
+  },
+  {
+    "id": 32,
+    "photo": "http://localhost:8000/media/avatars/cat.png",
+    "name": "cat"
+  },
+  {
+    "id": 33,
+    "photo": "http://localhost:8000/media/avatars/frog.png",
+    "name": "frog"
+  },
+  {
+    "id": 34,
+    "photo": "http://localhost:8000/media/avatars/dove.png",
+    "name": "dove"
+  },
+  {
+    "id": 35,
+    "photo": "http://localhost:8000/media/avatars/monkey.png",
+    "name": "monkey"
+  },
+  {
+    "id": 36,
+    "photo": "http://localhost:8000/media/avatars/bat.png",
+    "name": "bat"
+  },
+  {
+    "id": 37,
+    "photo": "http://localhost:8000/media/avatars/bug.png",
+    "name": "bug"
+  },
+  {
+    "id": 38,
+    "photo": "http://localhost:8000/media/avatars/giraffe.png",
+    "name": "giraffe"
+  },
+  {
+    "id": 39,
+    "photo": "http://localhost:8000/media/avatars/fox.png",
+    "name": "fox"
+  },
+  {
+    "id": 40,
+    "photo": "http://localhost:8000/media/avatars/koala.png",
+    "name": "koala"
+  },
+  {
+    "id": 41,
+    "photo": "http://localhost:8000/media/avatars/bear.png",
+    "name": "bear"
+  },
+  {
+    "id": 42,
+    "photo": "http://localhost:8000/media/avatars/fish.png",
+    "name": "fish"
+  },
+  {
+    "id": 43,
+    "photo": "http://localhost:8000/media/avatars/cobra.png",
+    "name": "cobra"
+  },
+  {
+    "id": 44,
+    "photo": "http://localhost:8000/media/avatars/crocodile.png",
+    "name": "crocodile"
+  }
+]
