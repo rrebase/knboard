@@ -94,7 +94,7 @@ class SortColumn(APIView):
     permission_classes = [IsAuthenticated]
 
     @transaction.atomic
-    def post(self, request, format=None):
+    def post(self, request, **kwargs):
         try:
             return sort_model(request, Column)
         except (
@@ -125,7 +125,7 @@ class SortTask(APIView):
             tasks.update(column=column)
 
     @transaction.atomic
-    def post(self, request, format=None):
+    def post(self, request, **kwargs):
         try:
             self.move_tasks(request)
             return sort_model(request, Task)
