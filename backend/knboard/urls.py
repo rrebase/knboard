@@ -36,7 +36,7 @@ urlpatterns = [
     url(r"^api/sort/task/", SortTask.as_view(), name="sort-task"),
     url(r"^api-auth/", include("rest_framework.urls")),
     url(r"^dj-rest-auth/", include("dj_rest_auth.urls")),
-    url(r'^dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    url(r"^dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
     path("tagauks/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
