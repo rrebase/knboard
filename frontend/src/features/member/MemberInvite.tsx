@@ -79,6 +79,7 @@ const MemberInvite = ({ boardId }: Props) => {
           onClick={handleClick}
           aria-controls="member-invite-menu"
           aria-haspopup="true"
+          data-testid="member-invite"
         >
           Invite
         </Button>

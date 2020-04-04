@@ -1,0 +1,6 @@
+[
+  { "id": 1, "name": "Internals" },
+  { "id": 2, "name": "Operating Systems" },
+  { "id": 3, "name": "Fundamentals of Computation" },
+  { "id": 4, "name": "Data Science" }
+]

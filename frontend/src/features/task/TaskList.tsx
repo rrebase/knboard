@@ -142,7 +142,7 @@ interface InnerListProps {
 const InnerList = ({ tasks, dropProvided, title }: InnerListProps) => (
   <Container>
     {title ? <Title>{title}</Title> : null}
-    <DropZone ref={dropProvided.innerRef}>
+    <DropZone data-testid="drop-zone" ref={dropProvided.innerRef}>
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>

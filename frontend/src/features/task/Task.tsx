@@ -174,7 +174,7 @@ const Task = ({ task: task, style, index }: Props) => {
           {...dragProvided.dragHandleProps}
           style={getStyle(dragProvided, style)}
           data-is-dragging={dragSnapshot.isDragging}
-          data-testid={task.id}
+          data-testid={`task-${task.id}`}
           data-index={index}
           aria-label={`${task.author ? task.author.name : "unassigned"} task ${
             task.title

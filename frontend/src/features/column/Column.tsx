@@ -48,7 +48,11 @@ const Column = ({
   return (
     <Draggable draggableId={title} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-        <Container ref={provided.innerRef} {...provided.draggableProps}>
+        <Container
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          data-testid={`col-${title}`}
+        >
           <Header isDragging={snapshot.isDragging}>
             <Title
               {...provided.dragHandleProps}

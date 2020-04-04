@@ -1,0 +1,75 @@
+{
+  "id": 1,
+  "name": "Internals",
+  "owner": {
+    "id": 1
+  },
+  "members": [
+    {
+      "id": 1,
+      "username": "testuser",
+      "email": "t@t.com",
+      "first_name": "Ragnar",
+      "last_name": "Rebase"
+    }
+  ],
+  "columns": [
+    {
+      "id": 3,
+      "title": "In progress",
+      "tasks": [
+        {
+          "id": 5,
+          "title": "Cookie Consent",
+          "description": "Add cookie consent functionality.",
+          "task_order": 3
+        },
+        {
+          "id": 4,
+          "title": "User settings",
+          "description": "Implement user settings.",
+          "task_order": 4
+        }
+      ],
+      "column_order": 1
+    },
+    {
+      "id": 1,
+      "title": "Backlog",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Implement Landing page",
+          "description": "Implement the landing page. Use figma designs provided by Steve.",
+          "task_order": 1
+        },
+        {
+          "id": 2,
+          "title": "Profile page detail view",
+          "description": "Implement the profile page detail view.",
+          "task_order": 2
+        }
+      ],
+      "column_order": 2
+    },
+    {
+      "id": 2,
+      "title": "Todo",
+      "tasks": [
+        {
+          "id": 3,
+          "title": "User friends",
+          "description": "Implement the user friends component. Building the API is not part of this task.",
+          "task_order": 5
+        }
+      ],
+      "column_order": 3
+    },
+    {
+      "id": 4,
+      "title": "Done",
+      "tasks": [],
+      "column_order": 4
+    }
+  ]
+}

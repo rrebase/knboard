@@ -11,6 +11,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { updateAvatar } from "./ProfileSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const avatarBorderStyles = css`
   cursor: pointer;
@@ -40,6 +42,10 @@ const pulseStyles = css`
 const Container = styled.div`
   margin: 2rem;
   text-align: center;
+`;
+
+const Text = styled.p`
+  margin: 0;
 `;
 
 const GridTitle = styled.h3`
@@ -117,9 +123,16 @@ const UserAvatar = () => {
       >
         <AvatarListContainer>
           <GridTitle>
-            <div>Pick an Avatar</div>
-            <Button size="small" onClick={() => popupState.close()}>
-              X
+            <Text>Pick an Avatar</Text>
+            <Button
+              size="small"
+              onClick={() => popupState.close()}
+              css={css`
+                min-width: 0;
+              `}
+              data-testid="close-avatar-picker"
+            >
+              <FontAwesomeIcon icon={faTimes} />
             </Button>
           </GridTitle>
           <Grid container>
