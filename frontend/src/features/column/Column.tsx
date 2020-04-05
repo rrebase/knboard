@@ -31,6 +31,7 @@ const Header = styled.div<{ isDragging: boolean }>`
 `;
 
 type Props = {
+  id: number;
   title: string;
   tasks: ITask[];
   index: number;
@@ -39,6 +40,7 @@ type Props = {
 };
 
 const Column = ({
+  id,
   title,
   tasks,
   index,
@@ -46,7 +48,7 @@ const Column = ({
   isCombineEnabled
 }: Props) => {
   return (
-    <Draggable draggableId={title} index={index}>
+    <Draggable draggableId={`col-${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <Container
           ref={provided.innerRef}
@@ -62,7 +64,7 @@ const Column = ({
             </Title>
           </Header>
           <TaskList
-            listId={title}
+            listId={id.toString()}
             listType="TASK"
             style={{
               backgroundColor: snapshot.isDragging ? G50 : null

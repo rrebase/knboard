@@ -58,7 +58,7 @@ def test_order_tasks_same_column(
         reverse("sort-task"),
         {
             "board": column.board.id,
-            "tasks": {column.title: [task3.id, task1.id, task2.id]},
+            "tasks": {column.id: [task3.id, task1.id, task2.id]},
             "order": [task3.id, task1.id, task2.id],
         },
     )
@@ -99,7 +99,7 @@ def test_order_tasks_between_two_columns(
         reverse("sort-task"),
         {
             "board": column1.board.id,
-            "tasks": {column1.title: [task1.id, task3.id], column2.title: [task4.id, task2.id, task5.id]},
+            "tasks": {column1.id: [task1.id, task3.id], column2.id: [task4.id, task2.id, task5.id]},
             "order": [task1.id, task3.id, task4.id, task2.id, task5.id],
         },
     )
@@ -126,7 +126,7 @@ def test_can_not_order_tasks_between_two_boards(
         reverse("sort-task"),
         {
             "board": board1.id,
-            "tasks": {board1_col.title: [], board2_col.title: [board1_task.id, board2_task.id]},
+            "tasks": {board1_col.id: [], board2_col.title: [board1_task.id, board2_task.id]},
             "order": [board1_task.id, board2_task.id],
         },
     )

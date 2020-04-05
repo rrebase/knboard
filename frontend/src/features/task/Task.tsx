@@ -160,7 +160,7 @@ const Task = ({ task: task, style, index }: Props) => {
   }
 
   return (
-    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+    <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
       {(
         dragProvided: DraggableProvided,
         dragSnapshot: DraggableStateSnapshot

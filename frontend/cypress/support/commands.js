@@ -85,7 +85,7 @@ Cypress.Commands.add("expectColumns", columns => {
 });
 
 Cypress.Commands.add("expectTasks", (column, tasks) => {
-  cy.droppable(column).within(() => {
+  cy.droppable(column.replace("col-", "")).within(() => {
     cy.findByTestId("drop-zone")
       .children()
       .each(($el, index) => {

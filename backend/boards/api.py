@@ -120,7 +120,7 @@ class SortTask(APIView):
         )
 
         for column_name, task_ids in tasks_by_column.items():
-            column = pre_columns.get(title=column_name)
+            column = pre_columns.get(id=column_name)
             tasks = pre_tasks.filter(pk__in=task_ids)
             tasks.update(column=column)
 

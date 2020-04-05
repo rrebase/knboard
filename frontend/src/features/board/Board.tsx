@@ -135,12 +135,11 @@ const Board = ({
         <Container ref={provided.innerRef} {...provided.droppableProps}>
           {columns.map((column: IColumn, index: number) => (
             <Column
-              key={column.title}
-              index={index}
+              key={column.id}
+              id={column.id}
               title={column.title}
-              tasks={tasksByColumn[column.title].map(
-                taskId => tasksById[taskId]
-              )}
+              index={index}
+              tasks={tasksByColumn[column.id].map(taskId => tasksById[taskId])}
               isScrollable={withScrollableColumns}
               isCombineEnabled={isCombineEnabled}
             />

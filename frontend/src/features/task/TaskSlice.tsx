@@ -49,7 +49,7 @@ export const slice = createSlice({
         for (const task of col.tasks) {
           byId[task.id] = task;
         }
-        byColumn[col.title] = col.tasks.map(t => t.id);
+        byColumn[col.id] = col.tasks.map(t => t.id);
       }
       state.byColumn = byColumn;
       state.byId = byId;
