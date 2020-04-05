@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { iconBoxStyles } from "styles";
 
 interface Props {
+  taskId: number;
   handleClick: () => void;
 }
 
@@ -25,10 +26,14 @@ const IconBox = styled.div`
   background: #f5f6f7;
 `;
 
-const EditButton = ({ handleClick }: Props) => (
+const EditButton = ({ handleClick, taskId }: Props) => (
   <Wrapper>
     <InnerWrapper>
-      <IconBox css={iconBoxStyles} onClick={handleClick}>
+      <IconBox
+        css={iconBoxStyles}
+        onClick={handleClick}
+        data-testid={`edit-task-${taskId}`}
+      >
         <FontAwesomeIcon icon={faPen} color="#999" />
       </IconBox>
     </InnerWrapper>

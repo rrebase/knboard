@@ -207,4 +207,59 @@ context("Board Detail", () => {
     cy.wait("@removeDave");
     cy.findByText("Removed daveice").should("be.visible");
   });
+
+  it("should successfully edit task title", () => {
+    const newTitle = "Admin page permissions";
+    cy.route("PATCH", "api/tasks/1/", {
+      title: newTitle
+    }).as("updateTaskTitle");
+
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+    cy.findByTestId("task-1")
+      .trigger("mouseover")
+      .within(() => {
+        cy.findByTestId("edit-task-1").click();
+      })
+      .then(() => {
+        cy.findByTestId("edit-text")
+          .clear()
+          .type("Admin page permissions{enter}");
+      });
+
+    cy.findByTestId("task-1")
+      .trigger("mouseover")
+      .within(() => {
+        cy.findByTestId("edit-task-1").click();
+      })
+      .then(() => {
+        cy.findByTestId("edit-text")
+          .clear()
+          .type("Setup linters");
+      })
+      .then(() => {
+        cy.findByText(/Save/i).click();
+      });
+  });
+
+  it("should cancel edit task", () => {
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+    cy.findByTestId("task-1")
+      .trigger("mouseover")
+      .within(() => {
+        cy.findByTestId("edit-task-1").click();
+      })
+      .then(() => {
+        cy.findByTestId("edit-cancel").click();
+      });
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+    cy.findByTestId("task-1")
+      .trigger("mouseover")
+      .within(() => {
+        cy.findByTestId("edit-task-1").click();
+      })
+      .then(() => {
+        cy.findByTestId("edit-text").type("{esc}");
+      });
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+  });
 });

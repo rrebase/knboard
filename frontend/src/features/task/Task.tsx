@@ -190,7 +190,9 @@ const Task = ({ task: task, style, index }: Props) => {
             <TextContent>{text}</TextContent>
             <TaskFooter task={task} />
           </Content>
-          {hover && <EditButton handleClick={() => setEditing(true)} />}
+          {hover && (
+            <EditButton taskId={task.id} handleClick={() => setEditing(true)} />
+          )}
         </Container>
       )}
     </Draggable>

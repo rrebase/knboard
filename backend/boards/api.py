@@ -89,6 +89,10 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return super().get_queryset().filter(column__board__members=user)
+
 
 class SortColumn(APIView):
     permission_classes = [IsAuthenticated]

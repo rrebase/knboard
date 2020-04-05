@@ -6,7 +6,7 @@ import { Avatar, Content, TaskFooter } from "./Task";
 import { N0 } from "utils/colors";
 import { taskContainerStyles } from "styles";
 import { useDispatch } from "react-redux";
-import { updateTask, deleteTask } from "features/task/TaskSlice";
+import { deleteTask, updateTaskTitle } from "features/task/TaskSlice";
 import { ITask } from "types";
 
 const Container = styled.div`
@@ -52,8 +52,7 @@ const TaskEditor = ({ task, setEditing, text, setText, adding }: Props) => {
   };
 
   const handleSave = () => {
-    const newTask: ITask = { ...task, title: text };
-    dispatch(updateTask(newTask));
+    dispatch(updateTaskTitle({ id: task.id, title: text }));
     setEditing(false);
   };
 
@@ -92,6 +91,7 @@ const TaskEditor = ({ task, setEditing, text, setText, adding }: Props) => {
             value={text}
             onChange={handleChange}
             className="edit-textarea"
+            data-testid="edit-text"
           />
         </Text>
         <TaskFooter task={task} />

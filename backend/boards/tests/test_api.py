@@ -364,3 +364,31 @@ def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
     assert response.status_code == 200
     assert len(board.members.all()) == 2
     assert leo.id not in list(map(lambda member: member.id, board.members.all()))
+
+
+def test_update_task(api_client, task_factory, steve, amy):
+    task = task_factory(title="Landing page design")
+    board = task.column.board
+    board.members.add(steve)
+    board.save()
+
+    new_title = "Admin page permissions"
+    update_title = lambda: api_client.patch(
+        reverse("task-detail", kwargs={"pk": task.id}), {"title": new_title}
+    )
+
+    # Not authenticated
+    response = update_title()
+    assert response.status_code == 401
+
+    # Amy not a member, doesn't know about the task
+    api_client.force_authenticate(user=amy)
+    response = update_title()
+    assert response.status_code == 404
+
+    # Steve is a board member, can update
+    api_client.force_authenticate(user=steve)
+    response = update_title()
+    task.refresh_from_db()
+    assert response.status_code == 200
+    assert task.title == new_title

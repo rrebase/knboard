@@ -48,7 +48,11 @@ const EditActions = ({
             Delete
           </Button>
         )}
-        <CancelIcon css={iconBoxStyles} onClick={handleCancel}>
+        <CancelIcon
+          css={iconBoxStyles}
+          onClick={handleCancel}
+          data-testid="edit-cancel"
+        >
           <FontAwesomeIcon icon={faTimes} color="#999" />
         </CancelIcon>
       </Actions>
