@@ -25,6 +25,7 @@ const MemberDetail = ({ member }: Props) => {
         }
       `}
       onClick={handleClick}
+      data-testid={`member-${member.id}`}
     >
       {member.username.charAt(0)}
     </Avatar>

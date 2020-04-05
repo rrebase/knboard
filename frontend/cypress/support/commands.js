@@ -66,6 +66,7 @@ Cypress.Commands.add("stubbedSetup", () => {
 const dragHandleDraggableId = "data-rbd-drag-handle-draggable-id";
 const draggableId = "data-rbd-draggable-id";
 const droppableId = "data-rbd-droppable-id";
+const testId = "data-testid";
 
 Cypress.Commands.add("draggable", id => {
   return cy.get(`[${dragHandleDraggableId}='${id}']`);
@@ -91,4 +92,12 @@ Cypress.Commands.add("expectTasks", (column, tasks) => {
         expect($el[0].attributes[draggableId].value).to.eq(tasks[index]);
       });
   });
+});
+
+Cypress.Commands.add("expectMembers", members => {
+  cy.findByTestId("member-group")
+    .children()
+    .each(($el, index) => {
+      expect($el[0].attributes[testId].value).to.eq(`member-${members[index]}`);
+    });
 });

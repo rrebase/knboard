@@ -41,6 +41,7 @@ const BoardBar = () => {
       <Name>{detail.name}</Name>
       <AvatarGroup
         max={3}
+        data-testid="member-group"
         css={css`
           margin-left: 1.5rem;
           & .MuiAvatarGroup-avatar {

@@ -11,6 +11,11 @@
       "email": "t@t.com",
       "first_name": "Ragnar",
       "last_name": "Rebase"
+    },
+    {
+      "id": 3,
+      "username": "daveice",
+      "email": "dave@ice.com"
     }
   ],
   "columns": [

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /// <reference types="cypress" />
-import * as keyCodes from "../util";
+import * as keyCodes from "../../util";
 
 context("Board List", () => {
   beforeEach(() => {
@@ -160,7 +161,50 @@ context("Board Detail", () => {
       });
   });
 
-  it.skip("should add member", () => {
+  it("should add new member", () => {
+    cy.route("GET", "/api/users/?excludemembers=1", "fixture:users.json").as(
+      "getUsers"
+    );
+    cy.route("POST", "api/boards/1/invite_member/", {
+      id: 2,
+      username: "steveapple1",
+      email: "steve@gmail.com",
+      first_name: "Steve",
+      last_name: "Apple"
+    }).as("inviteSteve");
+
     cy.findByTestId("member-invite").click();
+    cy.get("#user-search")
+      .focus()
+      .type("ste");
+    cy.wait("@getUsers");
+    cy.get("#user-search")
+      .trigger("keydown", { keyCode: keyCodes.arrowDown })
+      .trigger("keydown", { keyCode: keyCodes.enter });
+
+    cy.findByTestId("invite-selected").click();
+    cy.wait("@inviteSteve");
+    cy.findByText("Invited steveapple1");
+    cy.expectMembers(["3", "2", "1"]);
+  });
+
+  it("should remove member unless owner", () => {
+    cy.route("POST", "api/boards/1/remove_member/", {
+      id: 3,
+      username: "daveice",
+      email: "dave@ice.com"
+    }).as("removeDave");
+
+    cy.findByTestId("member-1").click();
+
+    cy.findByText("Owner of this board").should("be.visible");
+    cy.get(".MuiDialog-container").click("left");
+
+    cy.findByTestId("member-3").click();
+    cy.findByText(/Remove from board/i).click();
+    cy.findByText(/Remove member/i).click();
+
+    cy.wait("@removeDave");
+    cy.findByText("Removed daveice").should("be.visible");
   });
 });

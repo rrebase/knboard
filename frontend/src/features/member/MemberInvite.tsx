@@ -47,7 +47,7 @@ const MemberInvite = ({ boardId }: Props) => {
   const postInviteMember = async (username: string) => {
     try {
       const response = await api.post(
-        `${API_BOARDS}/${boardId}/invite_member/`,
+        `${API_BOARDS}${boardId}/invite_member/`,
         { username }
       );
       const newMember = response.data as BoardMember;
@@ -111,6 +111,7 @@ const MemberInvite = ({ boardId }: Props) => {
               width: 100%;
             `}
             onClick={handleClickInvite}
+            data-testid="invite-selected"
           >
             Invite
           </Button>
