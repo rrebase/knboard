@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
-import { R50, T50, N30, N80A, N900 } from "utils/colors";
+import { R50, T50, N30 } from "utils/colors";
 import { grid } from "const";
 import { ITask } from "types";
 import {
@@ -11,11 +10,7 @@ import {
 } from "react-beautiful-dnd";
 import Task from "./Task";
 import Title from "../../components/Title";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { css } from "@emotion/core";
-import { jake } from "data";
-import TaskEditor from "./TaskEditor";
+import AddTask from "./AddTask";
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,
@@ -93,46 +88,6 @@ const InnerTaskList = ({ tasks }: TaskListProps) => (
   </>
 );
 
-const AddCard = () => {
-  const [adding, setAdding] = React.useState<boolean>(false);
-  const newTask: ITask = { id: 999, title: "", author: jake, description: "" };
-
-  return (
-    <>
-      {adding ? (
-        <TaskEditor
-          task={newTask}
-          setEditing={() => null}
-          text=""
-          setText={() => null}
-          adding={false}
-        />
-      ) : (
-        <Button
-          css={css`
-            text-transform: inherit;
-            color: ${N80A};
-            padding: 4px 0;
-            margin-top: 6px;
-            margin-bottom: 6px;
-            &:hover {
-              color: ${N900};
-            }
-            .MuiButton-iconSizeMedium > *:first-of-type {
-              font-size: 12px;
-            }
-          `}
-          startIcon={<FontAwesomeIcon icon={faPlus} />}
-          fullWidth
-          onClick={() => setAdding(true)}
-        >
-          Add another card
-        </Button>
-      )}
-    </>
-  );
-};
-
 interface InnerListProps {
   dropProvided: DroppableProvided;
   tasks: ITask[];
@@ -146,7 +101,7 @@ const InnerList = ({ tasks, dropProvided, title }: InnerListProps) => (
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>
-    <AddCard />
+    <AddTask />
   </Container>
 );
 

@@ -54,9 +54,11 @@ class BoardOwnerSerializer(serializers.ModelSerializer):
 
 
 class BoardMemberSerializer(serializers.ModelSerializer):
+    avatar = AvatarSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name"]
+        fields = ["id", "username", "email", "first_name", "last_name", "avatar"]
 
 
 class TokenSerializer(serializers.ModelSerializer):

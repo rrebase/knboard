@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import TextareaAutosize from "react-textarea-autosize";
-import EditActions from "../../components/EditActions";
-import { Avatar, Content, TaskFooter } from "./Task";
+import EditActions from "./EditActions";
+import { Content, TaskFooter } from "./Task";
 import { N0 } from "utils/colors";
 import { taskContainerStyles } from "styles";
 import { useDispatch } from "react-redux";
@@ -80,9 +80,6 @@ const TaskEditor = ({ task, setEditing, text, setText, adding }: Props) => {
 
   return (
     <Container css={taskContainerStyles} onKeyDown={handleKeyDown}>
-      {task.author && (
-        <Avatar src={task.author.avatarUrl} alt={task.author.name} />
-      )}
       <Content>
         <Text>
           <TextareaAutosize

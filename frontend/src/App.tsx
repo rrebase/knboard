@@ -24,7 +24,7 @@ const AuthWrapper = () => {
 
   return (
     <Suspense fallback={<FullPageSpinner />}>
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {user ? <AuthenticatedApp key={user.id} /> : <UnauthenticatedApp />}
     </Suspense>
   );
 };

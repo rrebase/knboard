@@ -6,7 +6,7 @@ context("Board List", () => {
   beforeEach(() => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/", "fixture:board_list.json");
-    cy.visit("/boards");
+    cy.visit("/boards/");
   });
 
   it("should have list of boards and create new board", () => {
@@ -27,11 +27,32 @@ context("Board List", () => {
   });
 });
 
-context("Board Detail", () => {
+context("Board Detail (Member)", () => {
   beforeEach(() => {
     cy.stubbedSetup();
-    cy.route("GET", "/api/boards/1/", "fixture:board.json");
-    cy.visit("/b/1");
+    cy.route("GET", "/api/boards/2/", "fixture:os_board.json");
+    cy.visit("/b/2/");
+  });
+
+  it("should not see owner specific member invite & remove buttons", () => {
+    cy.findAllByTestId("member-invite").should("not.exist");
+
+    cy.findByTestId("member-2").click();
+    cy.findByText("Owner of this board").should("be.visible");
+    cy.findAllByText(/Remove from board/i).should("not.exist");
+    cy.closeDialog();
+
+    cy.findByTestId("member-1").click();
+    cy.findByText("Owner of this board").should("not.exist");
+    cy.findAllByText(/Remove from board/i).should("not.exist");
+  });
+});
+
+context("Board Detail (Owner)", () => {
+  beforeEach(() => {
+    cy.stubbedSetup();
+    cy.route("GET", "/api/boards/1/", "fixture:internals_board.json");
+    cy.visit("/b/1/");
   });
 
   it("should have all columns and tasks", () => {
@@ -198,7 +219,7 @@ context("Board Detail", () => {
     cy.findByTestId("member-1").click();
 
     cy.findByText("Owner of this board").should("be.visible");
-    cy.get(".MuiDialog-container").click("left");
+    cy.closeDialog();
 
     cy.findByTestId("member-3").click();
     cy.findByText(/Remove from board/i).click();

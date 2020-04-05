@@ -1,0 +1,42 @@
+{
+  "id": 2,
+  "name": "Operating Systems",
+  "owner": {
+    "id": 2
+  },
+  "members": [
+    {
+      "id": 1,
+      "username": "testuser",
+      "email": "t@t.com",
+      "first_name": "Ragnar",
+      "last_name": "Rebase"
+    },
+    {
+      "id": 2,
+      "username": "steveapple1",
+      "email": "steve@gmail.com"
+    }
+  ],
+  "columns": [
+    {
+      "id": 5,
+      "title": "Exams",
+      "tasks": [
+        {
+          "id": 5,
+          "title": "Security",
+          "description": "Fundamentals of Security.",
+          "task_order": 5
+        },
+        {
+          "id": 6,
+          "title": "Bash",
+          "description": "The basics of Bash.",
+          "task_order": 6
+        }
+      ],
+      "column_order": 5
+    }
+  ]
+}

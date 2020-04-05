@@ -108,7 +108,7 @@ const MemberInvite = ({ boardId }: Props) => {
             variant="contained"
             css={css`
               margin-top: 0.75rem;
-              width: 100%;
+              font-size: 0.625rem;
             `}
             onClick={handleClickInvite}
             data-testid="invite-selected"

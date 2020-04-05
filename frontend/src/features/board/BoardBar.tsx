@@ -10,6 +10,7 @@ import MemberInvite from "features/member/MemberInvite";
 import MemberDetail from "features/member/MemberDetail";
 import { memberSelectors } from "features/member/MemberSlice";
 import MemberDialog from "features/member/MemberDialog";
+import { currentBoardOwner } from "./BoardSlice";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -31,6 +32,9 @@ const BoardBar = () => {
   const error = useSelector((state: RootState) => state.board.detailError);
   const loading = useSelector((state: RootState) => state.board.detailLoading);
   const detail = useSelector((state: RootState) => state.board.detail);
+  const boardOwner = useSelector((state: RootState) =>
+    currentBoardOwner(state)
+  );
 
   if (loading || error || !detail) {
     return null;
@@ -55,7 +59,7 @@ const BoardBar = () => {
         ))}
       </AvatarGroup>
       <MemberDialog board={detail} />
-      <MemberInvite boardId={detail.id} />
+      {boardOwner && <MemberInvite boardId={detail.id} />}
     </Container>
   );
 };

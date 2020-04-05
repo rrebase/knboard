@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Board, IColumn, ITask } from "types";
 import api, { API_BOARDS } from "api";
+import { RootState } from "store";
 
 interface InitialState {
   detail: Board | null;
@@ -116,5 +117,12 @@ export const slice = createSlice({
 });
 
 export const { setCreateDialogOpen } = slice.actions;
+
+export const currentBoardOwner = (state: RootState) => {
+  return (
+    Boolean(state.auth.user) &&
+    state.board.detail?.owner.id === state.auth.user?.id
+  );
+};
 
 export default slice.reducer;

@@ -101,3 +101,7 @@ Cypress.Commands.add("expectMembers", members => {
       expect($el[0].attributes[testId].value).to.eq(`member-${members[index]}`);
     });
 });
+
+Cypress.Commands.add("closeDialog", () => {
+  cy.get(".MuiDialog-container").click("left");
+});

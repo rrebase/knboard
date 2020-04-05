@@ -26,6 +26,8 @@ const MemberDetail = ({ member }: Props) => {
       `}
       onClick={handleClick}
       data-testid={`member-${member.id}`}
+      src={member?.avatar?.photo}
+      alt={member?.avatar?.name}
     >
       {member.username.charAt(0)}
     </Avatar>

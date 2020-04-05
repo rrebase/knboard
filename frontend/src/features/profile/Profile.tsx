@@ -47,7 +47,7 @@ const Profile = () => {
   React.useEffect(() => {
     dispatch(fetchUserDetail());
     dispatch(fetchAvatarList());
-  }, []);
+  }, [userDetail?.id]);
 
   React.useEffect(() => {
     if (apiErrors) {

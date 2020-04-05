@@ -17,6 +17,7 @@ import {
   setDialogMember
 } from "features/member/MemberSlice";
 import { RootState } from "store";
+import { currentBoardOwner } from "features/board/BoardSlice";
 
 const Container = styled.div`
   display: flex;
@@ -51,8 +52,12 @@ const MemberDialog = ({ board }: Props) => {
   const dispatch = useDispatch();
   const memberId = useSelector((state: RootState) => state.member.dialogMember);
   const members = useSelector((state: RootState) => state.member.entities);
+  const boardOwner = useSelector((state: RootState) =>
+    currentBoardOwner(state)
+  );
   const [confirmDelete, setConfirmDelete] = useState(false);
   const member = memberId === null ? null : members[memberId];
+  const memberIsOwner = member?.id === board.owner.id;
   const open = member !== null;
 
   if (!member) {
@@ -138,9 +143,10 @@ const MemberDialog = ({ board }: Props) => {
               >
                 email: <b>{member.email}</b>
               </SecondaryText>
-              {member.id === board.owner.id ? (
+              {memberIsOwner && (
                 <Alert severity="info">Owner of this board</Alert>
-              ) : (
+              )}
+              {boardOwner && !memberIsOwner && (
                 <Button
                   size="small"
                   css={css`

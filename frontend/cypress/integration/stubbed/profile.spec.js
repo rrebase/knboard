@@ -5,7 +5,7 @@ context("Profile", () => {
     cy.stubbedSetup();
     cy.route("GET", "/api/users/1/", "fixture:testuser.json");
     cy.route("/api/avatars/", "fixture:avatars.json");
-    cy.visit("/profile");
+    cy.visit("/profile/");
   });
 
   it("should change username", () => {
