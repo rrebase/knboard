@@ -22,12 +22,13 @@ from django.conf.urls.static import static
 
 
 from accounts.api import UserViewSet, AvatarViewSet
-from boards.api import BoardViewSet, TaskViewSet, SortColumn, SortTask
+from boards.api import BoardViewSet, ColumnViewSet, TaskViewSet, SortColumn, SortTask
 
 router = routers.DefaultRouter()
 router.register(r"avatars", AvatarViewSet)
 router.register(r"users", UserViewSet)
 router.register(r"boards", BoardViewSet)
+router.register(r"columns", ColumnViewSet)
 router.register(r"tasks", TaskViewSet)
 
 urlpatterns = [

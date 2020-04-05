@@ -262,4 +262,20 @@ context("Board Detail", () => {
       });
     cy.findAllByTestId("edit–task-1").should("not.exist");
   });
+
+  it("should delete task", () => {
+    cy.route("DELETE", "api/tasks/1/", "").as("deleteTask");
+
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+    cy.findByTestId("task-1")
+      .trigger("mouseover")
+      .within(() => {
+        cy.findByTestId("edit-task-1").click();
+      })
+      .then(() => {
+        cy.findByText(/delete/i).click();
+      });
+    cy.wait("@deleteTask");
+    cy.findAllByTestId("edit–task-1").should("not.exist");
+  });
 });

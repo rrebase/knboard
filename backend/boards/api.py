@@ -15,6 +15,7 @@ from boards.permissions import IsOwner, IsOwnerForDangerousMethods
 from boards.serializers import (
     BoardSerializer,
     TaskSerializer,
+    ColumnSerializer,
     BoardDetailSerializer,
     MemberSerializer,
     BoardMemberSerializer,
@@ -92,6 +93,16 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return super().get_queryset().filter(column__board__members=user)
+
+
+class ColumnViewSet(viewsets.ModelViewSet):
+    queryset = Column.objects.all()
+    serializer_class = ColumnSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return super().get_queryset().filter(board__members=user)
 
 
 class SortColumn(APIView):
