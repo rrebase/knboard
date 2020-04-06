@@ -64,7 +64,7 @@ const ScrollContainer = styled.div`
 const Container = styled.div``;
 
 interface Props {
-  listId?: string;
+  columnId: number;
   listType?: string;
   tasks: ITask[];
   title?: string;
@@ -90,18 +90,24 @@ const InnerTaskList = ({ tasks }: TaskListProps) => (
 
 interface InnerListProps {
   dropProvided: DroppableProvided;
+  columnId: number;
   tasks: ITask[];
   title?: string;
 }
 
-const InnerList = ({ tasks, dropProvided, title }: InnerListProps) => (
+const InnerList = ({
+  columnId,
+  tasks,
+  dropProvided,
+  title
+}: InnerListProps) => (
   <Container>
     {title ? <Title>{title}</Title> : null}
     <DropZone data-testid="drop-zone" ref={dropProvided.innerRef}>
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>
-    <AddTask />
+    <AddTask columnId={columnId} />
   </Container>
 );
 
@@ -111,14 +117,14 @@ const TaskList = ({
   scrollContainerStyle,
   isDropDisabled,
   isCombineEnabled,
-  listId = "LIST",
+  columnId,
   listType,
   style,
   tasks: tasks,
   title
 }: Props) => (
   <Droppable
-    droppableId={listId}
+    droppableId={columnId.toString()}
     type={listType}
     ignoreContainerClipping={ignoreContainerClipping}
     isDropDisabled={isDropDisabled}
@@ -138,13 +144,19 @@ const TaskList = ({
         {internalScroll ? (
           <ScrollContainer style={scrollContainerStyle}>
             <InnerList
+              columnId={columnId}
               tasks={tasks}
               title={title}
               dropProvided={dropProvided}
             />
           </ScrollContainer>
         ) : (
-          <InnerList tasks={tasks} title={title} dropProvided={dropProvided} />
+          <InnerList
+            columnId={columnId}
+            tasks={tasks}
+            title={title}
+            dropProvided={dropProvided}
+          />
         )}
       </Wrapper>
     )}

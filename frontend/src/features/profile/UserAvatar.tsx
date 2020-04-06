@@ -86,22 +86,15 @@ const UserAvatar = () => {
 
   return (
     <Container>
-      {user?.avatar ? (
-        <img
-          src={user?.avatar?.photo}
-          alt={user?.avatar?.name}
-          width={96}
-          height={96}
-        />
-      ) : (
-        <Avatar
-          css={css`
-            height: 6rem;
-            width: 6rem;
-            font-size: 36px;
-          `}
-        />
-      )}
+      <Avatar
+        src={user?.avatar?.photo}
+        alt={user?.avatar?.name}
+        css={css`
+          height: 6rem;
+          width: 6rem;
+          font-size: 36px;
+        `}
+      />
       <Button
         css={css`
           text-transform: initial;

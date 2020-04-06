@@ -62,11 +62,13 @@ const UserMenu = () => {
           }
         `}
       >
-        {user?.photo_url ? (
-          <img src={user?.photo_url} alt="user-avatar" width={32} height={32} />
-        ) : (
-          <Avatar css={avatarStyles}>{user?.username.charAt(0)}</Avatar>
-        )}
+        <Avatar
+          css={avatarStyles}
+          src={user?.photo_url || ""}
+          alt="user-avatar"
+        >
+          {user?.username.charAt(0)}
+        </Avatar>
       </Button>
       <Menu
         id="user-menu"

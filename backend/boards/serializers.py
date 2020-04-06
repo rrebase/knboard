@@ -14,9 +14,11 @@ class BoardSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    column = serializers.PrimaryKeyRelatedField(queryset=Column.objects.all())
+
     class Meta:
         model = Task
-        fields = ["id", "title", "description", "task_order"]
+        fields = ["id", "title", "description", "task_order", "column"]
 
 
 class ColumnSerializer(serializers.ModelSerializer):

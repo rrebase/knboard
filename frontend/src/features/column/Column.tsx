@@ -64,7 +64,7 @@ const Column = ({
             </Title>
           </Header>
           <TaskList
-            listId={id.toString()}
+            columnId={id}
             listType="TASK"
             style={{
               backgroundColor: snapshot.isDragging ? G50 : null

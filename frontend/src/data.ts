@@ -52,7 +52,8 @@ export const tasks: ITask[] = [
     id: 1,
     title: "Sometimes life is scary and dark",
     description: "Sometimes life is scary and dark",
-    author: BMO
+    author: BMO,
+    column: 1
   },
   {
     id: 2,
@@ -60,38 +61,44 @@ export const tasks: ITask[] = [
       "Sucking at something is the first step towards being sorta good at something.",
     description:
       "Sucking at something is the first step towards being sorta good at something.",
-    author: jake
+    author: jake,
+    column: 2
   },
   {
     id: 3,
     title: "You got to focus on what's real, man",
     description: "You got to focus on what's real, man",
-    author: jake
+    author: jake,
+    column: 2
   },
   {
     id: 4,
     title: "Is that where creativity comes from? From sad biz?",
     description: "Is that where creativity comes from? From sad biz?",
-    author: finn
+    author: finn,
+    column: 3
   },
   {
     id: 5,
     title: "Homies help homies. Always",
     description: "Homies help homies. Always",
-    author: finn
+    author: finn,
+    column: 3
   },
   {
     id: 6,
     title: "Responsibility demands sacrifice",
     description: "Responsibility demands sacrifice",
-    author: princess
+    author: princess,
+    column: 4
   },
   {
     id: 7,
     title: "That's it! The answer was so simple, I was too smart to see it!",
     description:
       "That's it! The answer was so simple, I was too smart to see it!",
-    author: princess
+    author: princess,
+    column: 4
   },
   {
     id: 8,
@@ -99,32 +106,37 @@ export const tasks: ITask[] = [
       "People make mistakes. It's all a part of growing up and you never really stop growing",
     description:
       "People make mistakes. It's all a part of growing up and you never really stop growing",
-    author: finn
+    author: finn,
+    column: 5
   },
   {
     id: 9,
     title: "Don't you always call sweatpants 'give up on life pants,' Jake?",
     description:
       "Don't you always call sweatpants 'give up on life pants,' Jake?",
-    author: finn
+    author: finn,
+    column: 5
   },
   {
     id: 10,
     title: "I should not have drunk that much tea!",
     description: "I should not have drunk that much tea!",
-    author: princess
+    author: princess,
+    column: 6
   },
   {
     id: 11,
     title: "Please! I need the real you!",
     description: "Please! I need the real you!",
-    author: princess
+    author: princess,
+    column: 6
   },
   {
     id: 12,
     title: "Haven't slept for a solid 83 hours, but, yeah, I'm good.",
     description: "Haven't slept for a solid 83 hours, but, yeah, I'm good.",
-    author: princess
+    author: princess,
+    column: 6
   }
 ];
 

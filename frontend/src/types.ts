@@ -42,6 +42,11 @@ export interface ITask {
   title: string;
   description: string;
   author?: Author;
+  column: Id;
+}
+
+export interface NewTask extends Omit<ITask, "id"> {
+  column: Id;
 }
 
 export interface TasksByColumn {

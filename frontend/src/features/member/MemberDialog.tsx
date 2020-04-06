@@ -126,6 +126,8 @@ const MemberDialog = ({ board }: Props) => {
                 width: 6rem;
                 font-size: 36px;
               `}
+              src={member?.avatar?.photo}
+              alt={member?.avatar?.name}
             >
               {member.username.charAt(0)}
             </Avatar>
@@ -151,6 +153,7 @@ const MemberDialog = ({ board }: Props) => {
                   size="small"
                   css={css`
                     color: #333;
+                    font-size: 0.625rem;
                   `}
                   variant="outlined"
                   onClick={() => setConfirmDelete(true)}
