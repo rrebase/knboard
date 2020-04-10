@@ -1,6 +1,5 @@
 import { loadState, saveState } from "./utils/localStorage";
-import { configureStore } from "@reduxjs/toolkit";
-import { Action, combineReducers } from "@reduxjs/toolkit";
+import { Action, configureStore, combineReducers } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 
 import authReducer from "./features/auth/AuthSlice";

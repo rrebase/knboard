@@ -12,7 +12,7 @@ import TaskList from "features/task/TaskList";
 import Title from "components/Title";
 
 const Container = styled.div`
-  margin: ${grid}px;
+  margin: ${grid / 2}px;
   display: flex;
   flex-direction: column;
   border-top: 3px solid ${PRIMARY};

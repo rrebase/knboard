@@ -11,7 +11,7 @@ import MemberDetail from "features/member/MemberDetail";
 import { memberSelectors } from "features/member/MemberSlice";
 import MemberDialog from "features/member/MemberDialog";
 import { currentBoardOwner } from "./BoardSlice";
-import TaskDialog from "features/task/TaskDialog";
+import CreateTaskDialog from "features/task/CreateTaskDialog";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -61,7 +61,7 @@ const BoardBar = () => {
       </AvatarGroup>
       {boardOwner && <MemberInvite boardId={detail.id} />}
       <MemberDialog board={detail} />
-      <TaskDialog />
+      <CreateTaskDialog />
     </Container>
   );
 };

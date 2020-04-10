@@ -46,4 +46,7 @@ export const memberSelectors = memberAdapter.getSelectors(
   (state: RootState) => state.member
 );
 
+const { selectAll } = memberSelectors;
+export const selectAllMembers = selectAll;
+
 export default slice.reducer;

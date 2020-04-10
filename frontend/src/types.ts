@@ -10,7 +10,7 @@ export interface BoardMember {
   email: string;
   first_name: string;
   last_name: string;
-  avatar: Avatar;
+  avatar: Avatar | null;
 }
 
 export interface Board {
@@ -25,23 +25,10 @@ export interface IColumn {
   title: string;
 }
 
-export interface AuthorColors {
-  soft: string;
-  hard: string;
-}
-
-export interface Author {
-  id: Id;
-  name: string;
-  avatarUrl: string;
-  colors: AuthorColors;
-}
-
 export interface ITask {
   id: Id;
   title: string;
   description: string;
-  author?: Author;
   column: Id;
 }
 

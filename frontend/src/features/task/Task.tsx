@@ -1,24 +1,20 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ITask, AuthorColors } from "types";
+import { ITask } from "types";
 import {
   DraggableProvided,
   Draggable,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
 import { N30, N0, N70, PRIMARY } from "utils/colors";
-import { grid, borderRadius, imageSize } from "const";
+import { grid, imageSize } from "const";
 import TaskEditor from "features/task/TaskEditor";
 import EditButton from "./EditButton";
 import { taskContainerStyles } from "styles";
 
-const getBackgroundColor = (
-  isDragging: boolean,
-  isGroupedOver: boolean,
-  authorColors: AuthorColors
-) => {
+const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
   if (isDragging) {
-    return authorColors.soft;
+    return "orange";
   }
 
   if (isGroupedOver) {
@@ -28,35 +24,23 @@ const getBackgroundColor = (
   return N0;
 };
 
-const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
-  isDragging ? authorColors.hard : "transparent";
+const getBorderColor = (isDragging: boolean) =>
+  isDragging ? "orange" : "transparent";
 
 interface ContainerProps {
   isDragging: boolean;
   isGroupedOver: boolean;
-  colors?: AuthorColors;
 }
 
-const defaultColors = {
-  soft: "#eee",
-  hard: "#aaa"
-};
-
 const Container = styled.span<ContainerProps>`
-  border-color: ${props =>
-    getBorderColor(props.isDragging, props.colors || defaultColors)};
+  border-color: ${props => getBorderColor(props.isDragging)};
   background-color: ${props =>
-    getBackgroundColor(
-      props.isDragging,
-      props.isGroupedOver,
-      props.colors || defaultColors
-    )};
+    getBackgroundColor(props.isDragging, props.isGroupedOver)};
   box-shadow: ${({ isDragging }) =>
     isDragging ? `2px 2px 1px ${N70}` : "none"};
 
   &:focus {
-    border-color: ${props =>
-      props.colors ? props.colors.hard : defaultColors.hard};
+    border-color: #aaa;
   }
 `;
 
@@ -97,16 +81,6 @@ const Footer = styled.div`
   align-items: center;
 `;
 
-const Author = styled.small<any>`
-  color: ${props => props.colors.hard};
-  flex-grow: 0;
-  margin: 0;
-  background-color: ${props => props.colors.soft};
-  border-radius: ${borderRadius}px;
-  font-weight: normal;
-  padding: ${grid / 2}px;
-`;
-
 const TaskId = styled.small`
   flex-grow: 1;
   flex-shrink: 1;
@@ -129,9 +103,6 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
 export const TaskFooter = ({ task }: { task: ITask }) => (
   <Footer>
-    {task.author && (
-      <Author colors={task.author.colors}>{task.author.name}</Author>
-    )}
     <TaskId>id:{task.id}</TaskId>
   </Footer>
 );
@@ -171,7 +142,6 @@ const Task = ({ task: task, style, index }: Props) => {
         <Container
           isDragging={dragSnapshot.isDragging}
           isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-          colors={task.author ? task.author.colors : undefined}
           ref={dragProvided.innerRef}
           {...dragProvided.draggableProps}
           {...dragProvided.dragHandleProps}
@@ -179,16 +149,11 @@ const Task = ({ task: task, style, index }: Props) => {
           data-is-dragging={dragSnapshot.isDragging}
           data-testid={`task-${task.id}`}
           data-index={index}
-          aria-label={`${task.author ? task.author.name : "unassigned"} task ${
-            task.title
-          }`}
+          aria-label={`task ${task.title}`}
           onMouseEnter={beginHover}
           onMouseLeave={endHover}
           css={taskContainerStyles}
         >
-          {task.author && (
-            <Avatar src={task.author.avatarUrl} alt={task.author.name} />
-          )}
           <Content>
             <TextContent>{text}</TextContent>
             <TaskFooter task={task} />

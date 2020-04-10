@@ -37,6 +37,9 @@ export const columnSelectors = columnAdapter.getSelectors(
   (state: RootState) => state.column
 );
 
+const { selectAll } = columnSelectors;
+export const selectAllColumns = selectAll;
+
 /**
  * Post the new order of columns.
  * If the request fails, restore the previous order of columns.
@@ -45,7 +48,7 @@ export const updateColumns = (columns: IColumn[]): AppThunk => async (
   dispatch: AppDispatch,
   getState: () => RootState
 ) => {
-  const previousColumns = columnSelectors.selectAll(getState());
+  const previousColumns = selectAll(getState());
   try {
     dispatch(setColumns(columns));
     await api.post(API_SORT_COLUMNS, {
