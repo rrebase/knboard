@@ -22,6 +22,7 @@ export const iconBoxStyles = css`
 export const taskContainerStyles = css`
   border-radius: ${borderRadius}px;
   border: 2px solid transparent;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   padding: ${grid}px;
   min-height: ${imageSize}px;
@@ -33,6 +34,7 @@ export const taskContainerStyles = css`
   &:active {
     color: ${N900};
     text-decoration: none;
+    cursor: pointer;
   }
 
   &:focus {

@@ -6,7 +6,7 @@ import {
   Draggable,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
-import { N30, N0, N70 } from "utils/colors";
+import { N30, N0, N70, PRIMARY } from "utils/colors";
 import { grid, borderRadius, imageSize } from "const";
 import TaskEditor from "features/task/TaskEditor";
 import EditButton from "./EditButton";
@@ -86,6 +86,9 @@ const TextContent = styled.div`
   position: relative;
   padding-right: 14px;
   word-break: break-word;
+  color: ${PRIMARY};
+  font-weight: bold;
+  font-size: 12px;
 `;
 
 const Footer = styled.div`

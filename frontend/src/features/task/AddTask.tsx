@@ -6,11 +6,8 @@ import { ITask, Id } from "types";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";
-import { jake } from "data";
-import TaskEditor from "./TaskEditor";
 import { useDispatch } from "react-redux";
 import { setDialogOpen, setDialogColumn } from "./TaskSlice";
-import TaskDialog from "./TaskDialog";
 
 interface Props {
   columnId: Id;
@@ -18,7 +15,6 @@ interface Props {
 
 const AddTask = ({ columnId }: Props) => {
   const dispatch = useDispatch();
-  const [adding, setAdding] = React.useState<boolean>(false);
 
   const handleOnClick = () => {
     dispatch(setDialogColumn(columnId));

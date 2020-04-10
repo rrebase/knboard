@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
-import { N30, G50 } from "utils/colors";
+import { COLUMN_COLOR, G50, PRIMARY } from "utils/colors";
 import { ITask } from "types";
 import {
   Draggable,
@@ -15,6 +15,7 @@ const Container = styled.div`
   margin: ${grid}px;
   display: flex;
   flex-direction: column;
+  border-top: 3px solid ${PRIMARY};
 `;
 
 const Header = styled.div<{ isDragging: boolean }>`
@@ -23,7 +24,7 @@ const Header = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   border-top-left-radius: ${borderRadius}px;
   border-top-right-radius: ${borderRadius}px;
-  background-color: ${({ isDragging }) => (isDragging ? G50 : N30)};
+  background-color: ${({ isDragging }) => (isDragging ? G50 : COLUMN_COLOR)};
   transition: background-color 0.2s ease;
   &:hover {
     background-color: ${G50};
@@ -60,7 +61,8 @@ const Column = ({
               {...provided.dragHandleProps}
               aria-label={`${title} task list`}
             >
-              {title}
+              <div>{title}</div>
+              <div>{tasks.length}</div>
             </Title>
           </Header>
           <TaskList

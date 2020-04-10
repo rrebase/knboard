@@ -1,3 +1,14 @@
+// Palette
+export const PRIMARY = "#263590";
+
+// Priority
+export const PRIO1 = "#D74981";
+export const PRIO2 = "#666EEE";
+export const PRIO3 = "#69C0B6";
+
+// Custom
+export const COLUMN_COLOR = "#F1F1F6";
+
 // Reds
 export const R50 = "#FFEBE6";
 export const R75 = "#FFBDAD";

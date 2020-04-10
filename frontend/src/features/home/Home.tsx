@@ -27,7 +27,7 @@ const Home = () => {
             text-decoration: none;
             color: #333;
           `}
-          to="/boards"
+          to="/boards/"
         >
           View Boards
         </Link>

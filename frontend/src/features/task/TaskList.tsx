@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { R50, T50, N30 } from "utils/colors";
+import { R50, T50, COLUMN_COLOR } from "utils/colors";
 import { grid } from "const";
 import { ITask } from "types";
 import {
@@ -22,7 +22,7 @@ export const getBackgroundColor = (
   if (isDraggingFrom) {
     return T50;
   }
-  return N30;
+  return COLUMN_COLOR;
 };
 
 const Wrapper = styled.div<{
