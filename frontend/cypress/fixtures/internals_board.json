@@ -27,13 +27,17 @@
           "id": 5,
           "title": "Cookie Consent",
           "description": "Add cookie consent functionality.",
-          "task_order": 3
+          "task_order": 3,
+          "priority": "H",
+          "assignees": []
         },
         {
           "id": 4,
           "title": "User settings",
           "description": "Implement user settings.",
-          "task_order": 4
+          "task_order": 4,
+          "priority": "M",
+          "assignees": []
         }
       ],
       "column_order": 1
@@ -46,13 +50,17 @@
           "id": 1,
           "title": "Implement Landing page",
           "description": "Implement the landing page. Use figma designs provided by Steve.",
-          "task_order": 1
+          "task_order": 1,
+          "priority": "L",
+          "assignees": []
         },
         {
           "id": 2,
           "title": "Profile page detail view",
           "description": "Implement the profile page detail view.",
-          "task_order": 2
+          "task_order": 2,
+          "priority": "L",
+          "assignees": []
         }
       ],
       "column_order": 2
@@ -65,7 +73,9 @@
           "id": 3,
           "title": "User friends",
           "description": "Implement the user friends component. Building the API is not part of this task.",
-          "task_order": 5
+          "task_order": 5,
+          "priority": "L",
+          "assignees": []
         }
       ],
       "column_order": 3

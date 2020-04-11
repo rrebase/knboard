@@ -1,4 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { Priority } from "types";
+import { PRIO1, PRIO2, PRIO3 } from "utils/colors";
 
 export const LOCAL_STORAGE_KEY = "knboard-v12";
 export const TOAST_AUTO_HIDE_DURATION = 4000;
@@ -9,11 +11,6 @@ export const imageSize = 40;
 export const barHeight = 50;
 export const sidebarWidth = 120;
 
-export interface Priority {
-  value: "H" | "M" | "L";
-  label: "High" | "Medium" | "Low";
-}
-
 export const PRIORITY_1: Priority = { value: "H", label: "High" };
 export const PRIORITY_2: Priority = { value: "M", label: "Medium" };
 export const PRIORITY_3: Priority = { value: "L", label: "Low" };
@@ -23,6 +20,12 @@ export const PRIORITY_OPTIONS: Priority[] = [
   PRIORITY_2,
   PRIORITY_3
 ];
+
+export const PRIO_COLORS = {
+  H: PRIO1,
+  M: PRIO2,
+  L: PRIO3
+};
 
 export const QUILL_MODULES = {
   toolbar: [

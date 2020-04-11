@@ -17,21 +17,22 @@ const Home = () => {
       <div>
         <Thoughts width={300} height={300} />
       </div>
-      <Button
-        color="primary"
-        variant="outlined"
-        style={{ textTransform: "none" }}
+
+      <Link
+        css={css`
+          text-decoration: none;
+          color: #333;
+        `}
+        to="/boards/"
       >
-        <Link
-          css={css`
-            text-decoration: none;
-            color: #333;
-          `}
-          to="/boards/"
+        <Button
+          color="primary"
+          variant="outlined"
+          style={{ textTransform: "none" }}
         >
           View Boards
-        </Link>
-      </Button>
+        </Button>
+      </Link>
     </Container>
   );
 };

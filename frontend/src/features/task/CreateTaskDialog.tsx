@@ -23,12 +23,11 @@ import {
   QUILL_FORMATS,
   borderRadius,
   PRIORITY_OPTIONS,
-  PRIORITY_2,
-  Priority
+  PRIORITY_2
 } from "const";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
-import { BoardMember, IColumn } from "types";
+import { Priority, BoardMember, IColumn } from "types";
 
 const DialogTitle = styled.h3`
   color: ${PRIMARY};

@@ -27,13 +27,17 @@
           "id": 5,
           "title": "Security",
           "description": "Fundamentals of Security.",
-          "task_order": 5
+          "task_order": 5,
+          "priority": "low",
+          "assignees": []
         },
         {
           "id": 6,
           "title": "Bash",
           "description": "The basics of Bash.",
-          "task_order": 6
+          "task_order": 6,
+          "priority": "low",
+          "assignees": []
         }
       ],
       "column_order": 5

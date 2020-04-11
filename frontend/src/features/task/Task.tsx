@@ -1,16 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ITask } from "types";
+import { ITask, PriorityValue } from "types";
 import {
   DraggableProvided,
   Draggable,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
 import { N30, N0, N70, PRIMARY } from "utils/colors";
-import { grid, imageSize } from "const";
+import { grid, PRIO_COLORS } from "const";
 import TaskEditor from "features/task/TaskEditor";
 import EditButton from "./EditButton";
 import { taskContainerStyles } from "styles";
+import { AvatarGroup } from "@material-ui/lab";
+import { css } from "@emotion/core";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { Avatar } from "@material-ui/core";
 
 const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
   if (isDragging) {
@@ -44,15 +49,6 @@ const Container = styled.span<ContainerProps>`
   }
 `;
 
-export const Avatar = styled.img`
-  width: ${imageSize}px;
-  height: ${imageSize}px;
-  border-radius: 50%;
-  margin-right: ${grid}px;
-  flex-shrink: 0;
-  flex-grow: 0;
-`;
-
 export const Content = styled.div`
   /* flex child */
   flex-grow: 1;
@@ -77,18 +73,34 @@ const TextContent = styled.div`
 
 const Footer = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-top: ${grid}px;
   align-items: center;
 `;
 
+const Priority = styled.div<{ priority: PriorityValue }>`
+  padding: 2px 6px;
+  background-color: ${props => PRIO_COLORS[props.priority]};
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.5rem;
+  font-weight: bold;
+`;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TaskId = styled.small`
   flex-grow: 1;
   flex-shrink: 1;
   margin: 0;
   font-weight: normal;
   text-overflow: ellipsis;
-  text-align: right;
+  text-align: left;
+  font-weight: bold;
+  color: #aaa;
+  font-size: 8px;
 `;
+
+const Assignees = styled.div``;
 
 const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   if (!style) {
@@ -101,11 +113,51 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
   };
 };
 
-export const TaskFooter = ({ task }: { task: ITask }) => (
-  <Footer>
-    <TaskId>id:{task.id}</TaskId>
-  </Footer>
-);
+export const TaskFooter = ({ task }: { task: ITask }) => {
+  const membersByIds = useSelector((state: RootState) => state.member.entities);
+  const assignees = task.assignees.map(assigneeId => membersByIds[assigneeId]);
+
+  return (
+    <Footer>
+      <Priority priority={task.priority}>{task.priority}</Priority>
+      {assignees.length > 0 && (
+        <Assignees>
+          <AvatarGroup
+            max={3}
+            css={css`
+              & .MuiAvatarGroup-avatar {
+                height: 1.25rem;
+                width: 1.25rem;
+                font-size: 8px;
+                margin-left: -4px;
+                border: none;
+              }
+            `}
+          >
+            {assignees.map(assignee => (
+              <Avatar
+                key={assignee?.id}
+                css={css`
+                  height: 1.25rem;
+                  width: 1.25rem;
+                  font-size: 8px;
+                  margin-left: -12px;
+                  &:hover {
+                    cursor: pointer;
+                  }
+                `}
+                src={assignee?.avatar?.photo}
+                alt={assignee?.avatar?.name}
+              >
+                {assignee?.username.charAt(0)}
+              </Avatar>
+            ))}
+          </AvatarGroup>
+        </Assignees>
+      )}
+    </Footer>
+  );
+};
 
 interface Props {
   task: ITask;
@@ -156,6 +208,7 @@ const Task = ({ task: task, style, index }: Props) => {
         >
           <Content>
             <TextContent>{text}</TextContent>
+            <TaskId>id: {task.id}</TaskId>
             <TaskFooter task={task} />
           </Content>
           {hover && (

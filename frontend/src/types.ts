@@ -1,5 +1,3 @@
-import { Priority } from "const";
-
 export type Id = number;
 
 export interface BoardOwner {
@@ -28,17 +26,26 @@ export interface IColumn {
   board: Id;
 }
 
+export type PriorityValue = "H" | "M" | "L";
+
+export interface Priority {
+  value: PriorityValue;
+  label: "High" | "Medium" | "Low";
+}
+
 export interface ITask {
   id: Id;
   title: string;
   description: string;
-  assignees: BoardMember[];
-  priority: Priority;
+  assignees: Id[];
+  priority: PriorityValue;
   column: Id;
 }
 
-export interface NewTask extends Omit<ITask, "id"> {
+export interface NewTask extends Omit<ITask, "id" | "priority" | "assignees"> {
+  priority: Priority;
   column: Id;
+  assignees: BoardMember[];
 }
 
 export interface TasksByColumn {

@@ -24,7 +24,8 @@ export const slice = createSlice({
         state,
         action.payload.columns.map(column => ({
           id: column.id,
-          title: column.title
+          title: column.title,
+          board: action.payload.id
         }))
       );
     });
