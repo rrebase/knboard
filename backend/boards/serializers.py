@@ -15,21 +15,33 @@ class BoardSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     column = serializers.PrimaryKeyRelatedField(queryset=Column.objects.all())
-    assignees = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False)
+    assignees = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), many=True, required=False
+    )
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        board_members = validated_data['column'].board.members.all()
+        user = self.context["request"].user
+        board_members = validated_data["column"].board.members.all()
         if user not in board_members:
             raise serializers.ValidationError("Must be a member of the board!")
-        for assignee in validated_data['assignees']:
+        for assignee in validated_data["assignees"]:
             if assignee not in board_members:
-                raise serializers.ValidationError("Can't assign someone who isn't a board member!")
+                raise serializers.ValidationError(
+                    "Can't assign someone who isn't a board member!"
+                )
         return super().create(validated_data)
 
     class Meta:
         model = Task
-        fields = ["id", "title", "description", "priority", "assignees", "task_order", "column"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "priority",
+            "assignees",
+            "task_order",
+            "column",
+        ]
 
 
 class ColumnSerializer(serializers.ModelSerializer):
@@ -37,8 +49,8 @@ class ColumnSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        board_members = validated_data['board'].members.all()
+        user = self.context["request"].user
+        board_members = validated_data["board"].members.all()
         if user not in board_members:
             raise serializers.ValidationError("Must be a member of the board!")
         return super().create(validated_data)

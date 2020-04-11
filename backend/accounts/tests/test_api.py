@@ -38,7 +38,9 @@ def test_user_list_filters(api_client, steve, amy, leo):
     assert len(response.data) == 1
 
     search_uni_members_excluded = lambda search: api_client.get(
-        reverse_querystring("user-list", query_kwargs={"search": search, "excludemembers": uni_board.id})
+        reverse_querystring(
+            "user-list", query_kwargs={"search": search, "excludemembers": uni_board.id}
+        )
     )
     # Steve searches for new members of uni_board
     # He should only be able to search for Leo as Amy is already a member
@@ -79,9 +81,7 @@ def test_user_update(api_client, steve, amy):
 
 
 def test_user_detail(api_client, steve, amy):
-    get_steve = lambda: api_client.get(
-        reverse("user-detail", kwargs={"pk": steve.id})
-    )
+    get_steve = lambda: api_client.get(reverse("user-detail", kwargs={"pk": steve.id}))
 
     # Not authenticated
     response = get_steve()

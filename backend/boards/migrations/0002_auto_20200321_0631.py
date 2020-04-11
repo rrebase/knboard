@@ -9,19 +9,24 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('boards', '0001_initial'),
+        ("boards", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='board',
-            name='members',
+            model_name="board",
+            name="members",
             field=models.ManyToManyField(to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='board',
-            name='owner',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, related_name='boards', to=settings.AUTH_USER_MODEL),
+            model_name="board",
+            name="owner",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="boards",
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

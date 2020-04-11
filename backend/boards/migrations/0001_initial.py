@@ -9,40 +9,83 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Board',
+            name="Board",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Column',
+            name="Column",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('column_order', models.PositiveIntegerField(db_index=True, default=0, editable=False)),
-                ('board', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='columns', to='boards.Board')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                (
+                    "column_order",
+                    models.PositiveIntegerField(
+                        db_index=True, default=0, editable=False
+                    ),
+                ),
+                (
+                    "board",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="columns",
+                        to="boards.Board",
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['column_order'],
-            },
+            options={"ordering": ["column_order"],},
         ),
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('description', models.TextField()),
-                ('task_order', models.PositiveIntegerField(db_index=True, default=0, editable=False)),
-                ('column', adminsortable.fields.SortableForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tasks', to='boards.Column')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("description", models.TextField()),
+                (
+                    "task_order",
+                    models.PositiveIntegerField(
+                        db_index=True, default=0, editable=False
+                    ),
+                ),
+                (
+                    "column",
+                    adminsortable.fields.SortableForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tasks",
+                        to="boards.Column",
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['task_order'],
-            },
+            options={"ordering": ["task_order"],},
         ),
     ]

@@ -8,18 +8,24 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('boards', '0005_auto_20200406_1433'),
+        ("boards", "0005_auto_20200406_1433"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='assignees',
-            field=models.ManyToManyField(related_name='tasks', to=settings.AUTH_USER_MODEL),
+            model_name="task",
+            name="assignees",
+            field=models.ManyToManyField(
+                related_name="tasks", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='task',
-            name='priority',
-            field=models.CharField(choices=[('H', 'High'), ('M', 'Medium'), ('L', 'Low')], default='M', max_length=1),
+            model_name="task",
+            name="priority",
+            field=models.CharField(
+                choices=[("H", "High"), ("M", "Medium"), ("L", "Low")],
+                default="M",
+                max_length=1,
+            ),
         ),
     ]

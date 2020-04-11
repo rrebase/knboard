@@ -8,8 +8,10 @@ User = get_user_model()
 
 class Board(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='owned_boards')
-    members = models.ManyToManyField(User, related_name='boards')
+    owner = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="owned_boards"
+    )
+    members = models.ManyToManyField(User, related_name="boards")
 
     class Meta:
         ordering = ["id"]
@@ -17,7 +19,9 @@ class Board(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
         is_new = self.pk is None
         super().save(force_insert, force_update, using, update_fields)
         if is_new:
@@ -38,14 +42,16 @@ class Column(SortableMixin):
 
 class Task(SortableMixin):
     class Priority(models.TextChoices):
-        HIGH = 'H', 'High'
-        MEDIUM = 'M', 'Medium'
-        LOW = 'L', 'Low'
+        HIGH = "H", "High"
+        MEDIUM = "M", "Medium"
+        LOW = "L", "Low"
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    priority = models.CharField(max_length=1, choices=Priority.choices, default=Priority.MEDIUM)
-    assignees = models.ManyToManyField(User, related_name='tasks')
+    priority = models.CharField(
+        max_length=1, choices=Priority.choices, default=Priority.MEDIUM
+    )
+    assignees = models.ManyToManyField(User, related_name="tasks")
     column = SortableForeignKey(Column, related_name="tasks", on_delete=models.CASCADE)
     task_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 

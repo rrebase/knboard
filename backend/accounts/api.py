@@ -51,7 +51,7 @@ class UserViewSet(
 
     @action(detail=True, methods=["post"])
     def update_avatar(self, request, pk):
-        avatar_id = request.data.get('id')
+        avatar_id = request.data.get("id")
         avatar = Avatar.objects.get(id=avatar_id)
         user = self.get_object()
         user.avatar = avatar

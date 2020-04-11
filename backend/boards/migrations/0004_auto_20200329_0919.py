@@ -9,18 +9,24 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('boards', '0003_auto_20200322_1633'),
+        ("boards", "0003_auto_20200322_1633"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='board',
-            name='members',
-            field=models.ManyToManyField(related_name='boards', to=settings.AUTH_USER_MODEL),
+            model_name="board",
+            name="members",
+            field=models.ManyToManyField(
+                related_name="boards", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AlterField(
-            model_name='board',
-            name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='owned_boards', to=settings.AUTH_USER_MODEL),
+            model_name="board",
+            name="owner",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="owned_boards",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]
