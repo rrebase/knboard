@@ -25,6 +25,7 @@ export interface Board {
 export interface IColumn {
   id: number;
   title: string;
+  board: Id;
 }
 
 export interface ITask {

@@ -454,6 +454,31 @@ def test_update_column_title(api_client, column_factory, steve, amy):
     assert column.title == new_title
 
 
+def test_create_column(api_client, board_factory, steve, amy):
+    board = board_factory(name="Internals")
+    board.members.add(steve)
+    board.save()
+
+    column_data = {"title": "Send verification email on Regiser", "board": board.id}
+    create_column = lambda post_data: api_client.post(reverse("column-list"), post_data)
+
+    # Not authenticated
+    response = create_column(column_data)
+    assert response.status_code == 401
+
+    # Amy not a member
+    api_client.force_authenticate(user=amy)
+    response = create_column(column_data)
+    assert response.status_code == 400
+    assert response.data[0] == "Must be a member of the board!"
+
+    # Steve is a board member, can create
+    api_client.force_authenticate(user=steve)
+    response = create_column(column_data)
+    assert response.status_code == 201
+    assert Column.objects.filter(title=column_data["title"]).exists()
+
+
 def test_create_task(api_client, column_factory, steve, amy):
     column = column_factory(title="Blocked")
     board = column.board

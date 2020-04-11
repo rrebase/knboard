@@ -33,11 +33,19 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class ColumnSerializer(serializers.ModelSerializer):
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
     tasks = TaskSerializer(many=True, read_only=True)
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        board_members = validated_data['board'].members.all()
+        if user not in board_members:
+            raise serializers.ValidationError("Must be a member of the board!")
+        return super().create(validated_data)
 
     class Meta:
         model = Column
-        fields = ["id", "title", "tasks", "column_order"]
+        fields = ["id", "title", "tasks", "column_order", "board"]
 
 
 class BoardDetailSerializer(serializers.ModelSerializer):
