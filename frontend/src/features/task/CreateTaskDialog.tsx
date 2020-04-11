@@ -23,10 +23,12 @@ import {
   QUILL_FORMATS,
   borderRadius,
   PRIORITY_OPTIONS,
-  PRIORITY_2
+  PRIORITY_2,
+  Priority
 } from "const";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
+import { BoardMember, IColumn } from "types";
 
 const DialogTitle = styled.h3`
   color: ${PRIMARY};
@@ -48,23 +50,40 @@ const Footer = styled.div`
 const CreateTaskDialog = () => {
   const dispatch = useDispatch();
   const open = useSelector((state: RootState) => state.task.dialogOpen);
-  const columnId = useSelector((state: RootState) => state.task.dialogColumn);
-  const columns = useSelector((state: RootState) => selectAllColumns(state));
+  const defaultColumnId = useSelector(
+    (state: RootState) => state.task.dialogColumn
+  );
+  const columns: IColumn[] = useSelector((state: RootState) =>
+    selectAllColumns(state)
+  );
   const columnsById = useSelector((state: RootState) => state.column.entities);
   const members = useSelector((state: RootState) => selectAllMembers(state));
   const createLoading = useSelector(
     (state: RootState) => state.task.createLoading
   );
   const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("Describe the task...");
+  const [description, setDescription] = useState<string>(
+    "Describe the task..."
+  );
+  const [column, setColumn] = useState<IColumn | null>(null);
+  const [assignees, setAssignees] = useState<BoardMember[]>([]);
+  const [priority, setPriority] = useState<Priority | null>({
+    value: "M",
+    label: "Medium"
+  });
 
-  const clearFields = () => {
-    setTitle("");
-    setText("");
+  const setInitialValues = () => {
+    if (defaultColumnId) {
+      setColumn(columnsById[defaultColumnId] || null);
+      setTitle("");
+      setDescription("");
+      setAssignees([]);
+      setPriority(PRIORITY_2);
+    }
   };
 
   useEffect(() => {
-    clearFields();
+    setInitialValues();
   }, [open]);
 
   const handleClose = () => {
@@ -72,8 +91,14 @@ const CreateTaskDialog = () => {
   };
 
   const handleCreate = async () => {
-    if (columnId) {
-      const newTask = { title: title, description: text, column: columnId };
+    if (defaultColumnId && column && priority) {
+      const newTask = {
+        title: title,
+        description,
+        column: column.id,
+        assignees,
+        priority
+      };
       dispatch(createTask(newTask));
     }
   };
@@ -104,8 +129,8 @@ const CreateTaskDialog = () => {
           theme="snow"
           modules={QUILL_MODULES}
           formats={QUILL_FORMATS}
-          value={text}
-          onChange={setText}
+          value={description}
+          onChange={setDescription}
           placeholder="Describe the task here..."
           css={css`
             margin: 1rem 0;
@@ -132,7 +157,8 @@ const CreateTaskDialog = () => {
           renderInput={params => (
             <TextField {...params} label="Column" variant="outlined" />
           )}
-          defaultValue={columnId ? columnsById[columnId] : undefined}
+          value={column}
+          onChange={(_: any, value: IColumn | null) => setColumn(value)}
           disableClearable
           openOnFocus
           css={css`
@@ -147,6 +173,8 @@ const CreateTaskDialog = () => {
           size="small"
           options={members}
           getOptionLabel={option => option.username}
+          value={assignees}
+          onChange={(_event, value) => setAssignees(value)}
           renderOption={option => (
             <React.Fragment>
               <span>
@@ -195,10 +223,12 @@ const CreateTaskDialog = () => {
           id="priority-select"
           size="small"
           options={PRIORITY_OPTIONS}
+          getOptionLabel={option => option.label}
+          value={priority}
+          onChange={(_: any, value: Priority | null) => setPriority(value)}
           renderInput={params => (
             <TextField {...params} label="Priority" variant="outlined" />
           )}
-          defaultValue={PRIORITY_2}
           openOnFocus
           disableClearable
           css={css`

@@ -43,7 +43,11 @@ export const createTask = createAsyncThunk<
   }
 >("task/createTaskStatus", async (task, { dispatch, rejectWithValue }) => {
   try {
-    const response = await api.post(`${API_TASKS}`, task);
+    const response = await api.post(`${API_TASKS}`, {
+      ...task,
+      assignees: task.assignees.map(assignee => assignee.id),
+      priority: task.priority.value
+    });
     dispatch(createSuccessToast("Task created"));
     return response.data;
   } catch (err) {

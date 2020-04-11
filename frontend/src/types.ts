@@ -1,3 +1,5 @@
+import { Priority } from "const";
+
 export type Id = number;
 
 export interface BoardOwner {
@@ -29,6 +31,8 @@ export interface ITask {
   id: Id;
   title: string;
   description: string;
+  assignees: BoardMember[];
+  priority: Priority;
   column: Id;
 }
 

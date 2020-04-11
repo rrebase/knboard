@@ -9,11 +9,20 @@ export const imageSize = 40;
 export const barHeight = 50;
 export const sidebarWidth = 120;
 
-export const PRIORITY_1 = "High";
-export const PRIORITY_2 = "Medium";
-export const PRIORITY_3 = "Low";
+export interface Priority {
+  value: "H" | "M" | "L";
+  label: "High" | "Medium" | "Low";
+}
 
-export const PRIORITY_OPTIONS = [PRIORITY_1, PRIORITY_2, PRIORITY_3];
+export const PRIORITY_1: Priority = { value: "H", label: "High" };
+export const PRIORITY_2: Priority = { value: "M", label: "Medium" };
+export const PRIORITY_3: Priority = { value: "L", label: "Low" };
+
+export const PRIORITY_OPTIONS: Priority[] = [
+  PRIORITY_1,
+  PRIORITY_2,
+  PRIORITY_3
+];
 
 export const QUILL_MODULES = {
   toolbar: [

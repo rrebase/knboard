@@ -39,7 +39,7 @@ def test_order_columns(api_client_with_credentials, col_backlog, col_done):
 
 
 def test_order_tasks_same_column(
-        api_client_with_credentials, column_factory, task_factory
+    api_client_with_credentials, column_factory, task_factory
 ):
     """
     Order tasks (in one column):
@@ -70,7 +70,7 @@ def test_order_tasks_same_column(
 
 
 def test_order_tasks_between_two_columns(
-        api_client_with_credentials, board_factory, column_factory, task_factory
+    api_client_with_credentials, board_factory, column_factory, task_factory
 ):
     """
     Order tasks between two columns:
@@ -99,7 +99,10 @@ def test_order_tasks_between_two_columns(
         reverse("sort-task"),
         {
             "board": column1.board.id,
-            "tasks": {column1.id: [task1.id, task3.id], column2.id: [task4.id, task2.id, task5.id]},
+            "tasks": {
+                column1.id: [task1.id, task3.id],
+                column2.id: [task4.id, task2.id, task5.id],
+            },
             "order": [task1.id, task3.id, task4.id, task2.id, task5.id],
         },
     )
@@ -113,7 +116,7 @@ def test_order_tasks_between_two_columns(
 
 
 def test_can_not_order_tasks_between_two_boards(
-        api_client_with_credentials, board_factory, column_factory, task_factory
+    api_client_with_credentials, board_factory, column_factory, task_factory
 ):
     board1 = board_factory()
     board2 = board_factory()
@@ -126,7 +129,10 @@ def test_can_not_order_tasks_between_two_boards(
         reverse("sort-task"),
         {
             "board": board1.id,
-            "tasks": {board1_col.id: [], board2_col.title: [board1_task.id, board2_task.id]},
+            "tasks": {
+                board1_col.id: [],
+                board2_col.title: [board1_task.id, board2_task.id],
+            },
             "order": [board1_task.id, board2_task.id],
         },
     )
@@ -153,7 +159,7 @@ def test_order_duplicate(api_client_with_credentials, col_done):
     ],
 )
 def test_order_column_status_code(
-        post_data, expected_status_code, api_client_with_credentials, board
+    post_data, expected_status_code, api_client_with_credentials, board
 ):
     Column.objects.create(board=board, title="col1")
     Column.objects.create(board=board, title="col2")
@@ -400,7 +406,9 @@ def test_delete_task(api_client, task_factory, steve, amy):
     board.members.add(steve)
     board.save()
 
-    delete_task = lambda: api_client.delete(reverse("task-detail", kwargs={"pk": task.id}))
+    delete_task = lambda: api_client.delete(
+        reverse("task-detail", kwargs={"pk": task.id})
+    )
 
     # Not authenticated
     response = delete_task()
@@ -444,3 +452,44 @@ def test_update_column_title(api_client, column_factory, steve, amy):
     column.refresh_from_db()
     assert response.status_code == 200
     assert column.title == new_title
+
+
+def test_create_task(api_client, column_factory, steve, amy):
+    column = column_factory(title="Blocked")
+    board = column.board
+    board.members.add(steve)
+    board.save()
+
+    task_data = {
+        "title": "Send verification email on Regiser",
+        "description": "<p>Send a verification email when a new user registers. "
+        "Email template is provided by Dave.</p><p><br></p><p>Use our main SMTP provider.</p>",
+        "column": column.id,
+        "assignees": [steve.id],
+        "priority": "H",
+    }
+
+    create_task = lambda post_data: api_client.post(reverse("task-list"), post_data)
+
+    # Not authenticated
+    response = create_task(task_data)
+    assert response.status_code == 401
+
+    # Amy not a member
+    assert amy not in board.members.all()
+    api_client.force_authenticate(user=amy)
+    response = create_task(task_data)
+    assert response.status_code == 400
+    assert response.data[0] == "Must be a member of the board!"
+
+    # One of the assignees (amy) is not a member
+    api_client.force_authenticate(user=steve)
+    response = create_task({**task_data, "assignees": [steve.id, amy.id]})
+    assert response.status_code == 400
+    assert response.data[0] == "Can't assign someone who isn't a board member!"
+
+    # Steve is a board member, can create
+    api_client.force_authenticate(user=steve)
+    response = create_task(task_data)
+    assert response.status_code == 201
+    assert Task.objects.filter(title=task_data["title"]).exists()
