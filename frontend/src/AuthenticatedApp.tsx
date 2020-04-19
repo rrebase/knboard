@@ -1,5 +1,6 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, RouteProps } from "react-router-dom";
+import styled from "@emotion/styled";
 
 import Board from "features/board";
 import BoardList from "features/board/BoardList";
@@ -10,13 +11,12 @@ import Profile from "features/profile/Profile";
 import Sidebar from "features/sidebar/Sidebar";
 import PageError from "components/PageError";
 import { sidebarWidth } from "const";
-import styled from "@emotion/styled";
 
 const Main = styled.div`
   margin-left: ${sidebarWidth + 8}px;
 `;
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
+const Wrapper: React.FC = ({ children }) => (
   <>
     <Sidebar />
     <Main>
@@ -26,31 +26,29 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
   </>
 );
 
+const AppRoute = (props: RouteProps) => (
+  <Route {...props}>
+    <Wrapper>{props.children}</Wrapper>
+  </Route>
+);
+
 const AuthenticatedApp = () => {
   return (
     <Switch>
-      <Route exact path="/profile">
-        <Wrapper>
-          <Profile />
-        </Wrapper>
-      </Route>
-      <Route exact path="/boards">
-        <Wrapper>
-          <BoardList />
-        </Wrapper>
-      </Route>
-      <Route exact path="/b/:id">
-        <Wrapper>
-          <BoardBar />
-          <Board />
-        </Wrapper>
-      </Route>
+      <AppRoute exact path="/profile">
+        <Profile />
+      </AppRoute>
+      <AppRoute exact path="/boards">
+        <BoardList />
+      </AppRoute>
+      <AppRoute exact path="/b/:id">
+        <BoardBar />
+        <Board />
+      </AppRoute>
 
-      <Route exact path="/">
-        <Wrapper>
-          <Home />
-        </Wrapper>
-      </Route>
+      <AppRoute exact path="/">
+        <Home />
+      </AppRoute>
       <Route path="*">
         <PageError>Page not found.</PageError>
       </Route>
