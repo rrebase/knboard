@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket } from "@fortawesome/free-solid-svg-icons";
 import { PRIMARY } from "utils/colors";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import {
   QUILL_MODULES,
   QUILL_FORMATS,

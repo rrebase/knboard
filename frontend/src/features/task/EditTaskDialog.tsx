@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, Button, IconButton, TextField } from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setEditDialogOpen,
   deleteTask,
-  updateTasksByColumn
+  updateTasksByColumn,
+  updateTaskDescription
 } from "./TaskSlice";
 import styled from "@emotion/styled";
 import ReactQuill from "react-quill";
@@ -18,6 +19,7 @@ import { ReactComponent as TimesIcon } from "static/svg/times.svg";
 import { IColumn, TasksByColumn, Id } from "types";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { Autocomplete } from "@material-ui/lab";
+import { QUILL_MODULES, QUILL_FORMATS } from "const";
 
 const Content = styled.div`
   display: flex;
@@ -74,7 +76,15 @@ const EditTaskDialog = () => {
   const columnsById = useSelector((state: RootState) => state.column.entities);
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
+  const [description, setDescription] = useState<string>("");
+  const [writeable, setWriteable] = useState(false);
   const open = taskId !== null;
+
+  useEffect(() => {
+    if (taskId && tasksById[taskId]) {
+      setDescription(tasksById[taskId].description);
+    }
+  }, [open, taskId]);
 
   const findTaskColumnId = () => {
     for (const columnId in tasksByColumn) {
@@ -133,6 +143,15 @@ const EditTaskDialog = () => {
     handleClose();
   };
 
+  const handleDescriptionClick = () => {
+    setWriteable(true);
+  };
+
+  const handleSaveDescription = () => {
+    dispatch(updateTaskDescription({ id: taskId, description }));
+    setWriteable(false);
+  };
+
   return (
     <Dialog
       open={open}
@@ -160,12 +179,19 @@ const EditTaskDialog = () => {
         <Main>
           <Header>id: {task.id}</Header>
           <Title>{task.title}</Title>
-          <Description>
+          <Description
+            onClick={writeable ? () => null : handleDescriptionClick}
+            key={`${taskId}${writeable}`}
+            onBlur={handleSaveDescription}
+            data-testid="task-description"
+          >
             <ReactQuill
-              readOnly
+              readOnly={!writeable}
               theme="snow"
-              modules={{ toolbar: false }}
-              value={task.description}
+              modules={writeable ? QUILL_MODULES : { toolbar: false }}
+              formats={writeable ? QUILL_FORMATS : undefined}
+              value={description}
+              onChange={setDescription}
               css={css`
                 .ql-container {
                   border: none;
@@ -175,6 +201,20 @@ const EditTaskDialog = () => {
                 }
               `}
             />
+            {writeable && (
+              <Button
+                variant="contained"
+                data-testid="save-description"
+                onClick={handleSaveDescription}
+                color="primary"
+                size="small"
+                css={css`
+                  margin-top: 1rem;
+                `}
+              >
+                Save
+              </Button>
+            )}
           </Description>
         </Main>
         <Side>

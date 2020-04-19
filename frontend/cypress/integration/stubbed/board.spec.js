@@ -229,37 +229,16 @@ context("Board Detail (Owner)", () => {
     cy.findByText("Removed daveice").should("be.visible");
   });
 
-  it.skip("should successfully edit task title", () => {
+  it("should successfully edit task title", () => {
     const newTitle = "Admin page permissions";
     cy.route("PATCH", "api/tasks/1/", {
       title: newTitle
     }).as("updateTaskTitle");
 
-    cy.findAllByTestId("edit–task-1").should("not.exist");
-    cy.findByTestId("task-1")
-      .trigger("mouseover")
-      .within(() => {
-        cy.findByTestId("edit-task-1").click();
-      })
-      .then(() => {
-        cy.findByTestId("edit-text")
-          .clear()
-          .type("Admin page permissions{enter}");
-      });
-
-    cy.findByTestId("task-1")
-      .trigger("mouseover")
-      .within(() => {
-        cy.findByTestId("edit-task-1").click();
-      })
-      .then(() => {
-        cy.findByTestId("edit-text")
-          .clear()
-          .type("Setup linters");
-      })
-      .then(() => {
-        cy.findByText(/Save/i).click();
-      });
+    cy.findByTestId("task-1").click();
+    cy.findByTestId("task-description").click();
+    cy.findByTestId("save-description").click();
+    cy.findAllByTestId("save-description").should("not.exist");
   });
 
   it("should delete task", () => {

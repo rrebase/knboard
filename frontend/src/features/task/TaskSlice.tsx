@@ -37,6 +37,14 @@ export const updateTaskTitle = createAsyncThunk<
   return response.data;
 });
 
+export const updateTaskDescription = createAsyncThunk<
+  ITask,
+  { id: Id; description: string }
+>("task/updateTaskDescriptionStatus", async ({ id, description }) => {
+  const response = await api.patch(`${API_TASKS}${id}/`, { description });
+  return response.data;
+});
+
 interface CreateTaskResponse extends ITask {
   column: Id;
 }
@@ -101,6 +109,9 @@ export const slice = createSlice({
       state.byId = byId;
     });
     builder.addCase(updateTaskTitle.fulfilled, (state, action) => {
+      state.byId[action.payload.id] = action.payload;
+    });
+    builder.addCase(updateTaskDescription.fulfilled, (state, action) => {
       state.byId[action.payload.id] = action.payload;
     });
     builder.addCase(createTask.pending, state => {

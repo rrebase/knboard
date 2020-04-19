@@ -19,6 +19,7 @@ import { fetchBoardById } from "./BoardSlice";
 import Spinner from "components/Spinner";
 import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
+import "react-quill/dist/quill.snow.css";
 
 const ParentContainer = styled.div<{ height: string }>`
   height: ${({ height }) => height};
