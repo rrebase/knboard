@@ -4,7 +4,7 @@ import { css } from "@emotion/core";
 import { sidebarWidth } from "const";
 import styled from "@emotion/styled";
 import { ReactComponent as Logo } from "static/svg/logo.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 const Container = styled.div`
   height: 100%;
@@ -33,11 +33,20 @@ const linkStyles = css`
 `;
 
 const Sidebar = () => {
+  const history = useHistory();
+
   return (
     <Drawer anchor="left" variant="permanent">
       <Container>
         <TopArea>
-          <Logo />
+          <Logo
+            css={css`
+              &:hover {
+                cursor: pointer;
+              }
+            `}
+            onClick={() => history.push("/")}
+          />
         </TopArea>
         <List
           css={css`

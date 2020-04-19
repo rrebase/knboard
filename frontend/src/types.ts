@@ -39,7 +39,6 @@ export interface ITask {
   description: string;
   assignees: Id[];
   priority: PriorityValue;
-  column: Id;
 }
 
 export interface NewTask extends Omit<ITask, "id" | "priority" | "assignees"> {

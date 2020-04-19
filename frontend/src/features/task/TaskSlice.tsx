@@ -15,16 +15,18 @@ interface InitialState {
   byColumn: TasksByColumn;
   byId: TasksById;
   createLoading: boolean;
-  dialogOpen: boolean;
-  dialogColumn: Id | null;
+  createDialogOpen: boolean;
+  createDialogColumn: Id | null;
+  editDialogOpen: Id | null;
 }
 
 export const initialState: InitialState = {
   byColumn: {},
   byId: {},
   createLoading: false,
-  dialogOpen: false,
-  dialogColumn: null
+  createDialogOpen: false,
+  createDialogColumn: null,
+  editDialogOpen: null
 };
 
 export const updateTaskTitle = createAsyncThunk<
@@ -35,8 +37,12 @@ export const updateTaskTitle = createAsyncThunk<
   return response.data;
 });
 
+interface CreateTaskResponse extends ITask {
+  column: Id;
+}
+
 export const createTask = createAsyncThunk<
-  ITask,
+  CreateTaskResponse,
   NewTask,
   {
     rejectValue: string;
@@ -71,11 +77,14 @@ export const slice = createSlice({
     setTasksByColumn: (state, action: PayloadAction<TasksByColumn>) => {
       state.byColumn = action.payload;
     },
-    setDialogOpen: (state, action: PayloadAction<boolean>) => {
-      state.dialogOpen = action.payload;
+    setCreateDialogOpen: (state, action: PayloadAction<boolean>) => {
+      state.createDialogOpen = action.payload;
     },
-    setDialogColumn: (state, action: PayloadAction<Id>) => {
-      state.dialogColumn = action.payload;
+    setCreateDialogColumn: (state, action: PayloadAction<Id>) => {
+      state.createDialogColumn = action.payload;
+    },
+    setEditDialogOpen: (state, action: PayloadAction<Id | null>) => {
+      state.editDialogOpen = action.payload;
     }
   },
   extraReducers: builder => {
@@ -100,7 +109,7 @@ export const slice = createSlice({
     builder.addCase(createTask.fulfilled, (state, action) => {
       state.byId[action.payload.id] = action.payload;
       state.byColumn[action.payload.column].push(action.payload.id);
-      state.dialogOpen = false;
+      state.createDialogOpen = false;
       state.createLoading = false;
     });
     builder.addCase(createTask.rejected, state => {
@@ -121,8 +130,9 @@ export const slice = createSlice({
 
 export const {
   setTasksByColumn,
-  setDialogOpen,
-  setDialogColumn
+  setCreateDialogOpen,
+  setCreateDialogColumn,
+  setEditDialogOpen
 } = slice.actions;
 
 export const updateTasksByColumn = (

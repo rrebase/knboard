@@ -9,17 +9,17 @@ import {
 import { N30, N0, N70, PRIMARY } from "utils/colors";
 import { grid, PRIO_COLORS } from "const";
 import TaskEditor from "features/task/TaskEditor";
-import EditButton from "./EditButton";
 import { taskContainerStyles } from "styles";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { Avatar } from "@material-ui/core";
+import { setEditDialogOpen } from "./TaskSlice";
 
 const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
   if (isDragging) {
-    return "orange";
+    return "#eee";
   }
 
   if (isGroupedOver) {
@@ -166,12 +166,13 @@ interface Props {
 }
 
 const Task = ({ task: task, style, index }: Props) => {
+  const dispatch = useDispatch();
   const [text, setText] = React.useState<string>(task.title);
-  const [hover, setHover] = React.useState<boolean>(false);
   const [editing, setEditing] = React.useState<boolean>(false);
 
-  const beginHover = () => setHover(true);
-  const endHover = () => setHover(false);
+  const handleClick = () => {
+    dispatch(setEditDialogOpen(task.id));
+  };
 
   if (editing) {
     return (
@@ -202,8 +203,7 @@ const Task = ({ task: task, style, index }: Props) => {
           data-testid={`task-${task.id}`}
           data-index={index}
           aria-label={`task ${task.title}`}
-          onMouseEnter={beginHover}
-          onMouseLeave={endHover}
+          onClick={handleClick}
           css={taskContainerStyles}
         >
           <Content>
@@ -211,9 +211,6 @@ const Task = ({ task: task, style, index }: Props) => {
             <TaskId>id: {task.id}</TaskId>
             <TaskFooter task={task} />
           </Content>
-          {hover && (
-            <EditButton taskId={task.id} handleClick={() => setEditing(true)} />
-          )}
         </Container>
       )}
     </Draggable>

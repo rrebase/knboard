@@ -8,7 +8,7 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import Column from "features/column";
-import { TasksByColumn, Id, IColumn } from "types";
+import { IColumn } from "types";
 import reorder, { reorderTasks } from "utils/reorder";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ import { updateColumns, columnSelectors } from "features/column/ColumnSlice";
 import { useParams } from "react-router-dom";
 import { fetchBoardById } from "./BoardSlice";
 import Spinner from "components/Spinner";
-import { barHeight } from "const";
+import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
 
 const ParentContainer = styled.div<{ height: string }>`
@@ -28,7 +28,7 @@ const ParentContainer = styled.div<{ height: string }>`
 
 const Container = styled.div`
   min-height: calc(100vh - ${barHeight * 2}px);
-  min-width: 100vw;
+  min-width: calc(100vw - ${sidebarWidth});
   display: inline-flex;
   overflow-x: scroll;
   width: 100%;
@@ -53,9 +53,7 @@ const Board = ({
 }: Props) => {
   const loading = useSelector((state: RootState) => state.board.detailLoading);
   const error = useSelector((state: RootState) => state.board.detailError);
-  const columns = useSelector((state: RootState) =>
-    columnSelectors.selectAll(state)
-  );
+  const columns = useSelector(columnSelectors.selectAll);
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const dispatch = useDispatch();
@@ -68,25 +66,6 @@ const Board = ({
   }, [id]);
 
   const onDragEnd = (result: DropResult) => {
-    if (result.combine) {
-      if (result.type === "COLUMN") {
-        const shallow: IColumn[] = [...columns];
-        shallow.splice(result.source.index, 1);
-        dispatch(updateColumns(shallow));
-        return;
-      }
-
-      const column: Id[] = tasksByColumn[result.source.droppableId];
-      const withTaskRemoved: Id[] = [...column];
-      withTaskRemoved.splice(result.source.index, 1);
-      const newColumns: TasksByColumn = {
-        ...tasksByColumn,
-        [result.source.droppableId]: withTaskRemoved
-      };
-      dispatch(updateTasksByColumn(newColumns));
-      return;
-    }
-
     // dropped nowhere
     if (!result.destination) {
       return;
@@ -119,7 +98,6 @@ const Board = ({
       source,
       destination
     });
-
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
 
@@ -168,7 +146,7 @@ const Board = ({
         {containerHeight ? (
           <ParentContainer height={containerHeight}>{board}</ParentContainer>
         ) : (
-          board
+          <>{board}</>
         )}
       </DragDropContext>
     </>

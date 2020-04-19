@@ -10,7 +10,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
-import { setDialogOpen, createTask } from "./TaskSlice";
+import { setCreateDialogOpen, createTask } from "./TaskSlice";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,13 +48,11 @@ const Footer = styled.div`
 
 const CreateTaskDialog = () => {
   const dispatch = useDispatch();
-  const open = useSelector((state: RootState) => state.task.dialogOpen);
+  const open = useSelector((state: RootState) => state.task.createDialogOpen);
   const defaultColumnId = useSelector(
-    (state: RootState) => state.task.dialogColumn
+    (state: RootState) => state.task.createDialogColumn
   );
-  const columns: IColumn[] = useSelector((state: RootState) =>
-    selectAllColumns(state)
-  );
+  const columns: IColumn[] = useSelector(selectAllColumns);
   const columnsById = useSelector((state: RootState) => state.column.entities);
   const members = useSelector((state: RootState) => selectAllMembers(state));
   const createLoading = useSelector(
@@ -86,7 +84,7 @@ const CreateTaskDialog = () => {
   }, [open]);
 
   const handleClose = () => {
-    dispatch(setDialogOpen(false));
+    dispatch(setCreateDialogOpen(false));
   };
 
   const handleCreate = async () => {

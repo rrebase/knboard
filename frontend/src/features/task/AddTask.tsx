@@ -7,7 +7,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";
 import { useDispatch } from "react-redux";
-import { setDialogOpen, setDialogColumn } from "./TaskSlice";
+import { setCreateDialogColumn, setCreateDialogOpen } from "./TaskSlice";
 
 interface Props {
   columnId: Id;
@@ -17,8 +17,8 @@ const AddTask = ({ columnId }: Props) => {
   const dispatch = useDispatch();
 
   const handleOnClick = () => {
-    dispatch(setDialogColumn(columnId));
-    dispatch(setDialogOpen(true));
+    dispatch(setCreateDialogColumn(columnId));
+    dispatch(setCreateDialogOpen(true));
   };
 
   return (

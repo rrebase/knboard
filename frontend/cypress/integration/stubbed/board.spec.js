@@ -229,7 +229,7 @@ context("Board Detail (Owner)", () => {
     cy.findByText("Removed daveice").should("be.visible");
   });
 
-  it("should successfully edit task title", () => {
+  it.skip("should successfully edit task title", () => {
     const newTitle = "Admin page permissions";
     cy.route("PATCH", "api/tasks/1/", {
       title: newTitle
@@ -262,41 +262,36 @@ context("Board Detail (Owner)", () => {
       });
   });
 
-  it("should cancel edit task", () => {
-    cy.findAllByTestId("edit–task-1").should("not.exist");
-    cy.findByTestId("task-1")
-      .trigger("mouseover")
-      .within(() => {
-        cy.findByTestId("edit-task-1").click();
-      })
-      .then(() => {
-        cy.findByTestId("edit-cancel").click();
-      });
-    cy.findAllByTestId("edit–task-1").should("not.exist");
-    cy.findByTestId("task-1")
-      .trigger("mouseover")
-      .within(() => {
-        cy.findByTestId("edit-task-1").click();
-      })
-      .then(() => {
-        cy.findByTestId("edit-text").type("{esc}");
-      });
-    cy.findAllByTestId("edit–task-1").should("not.exist");
-  });
-
   it("should delete task", () => {
     cy.route("DELETE", "api/tasks/1/", "").as("deleteTask");
 
-    cy.findAllByTestId("edit–task-1").should("not.exist");
-    cy.findByTestId("task-1")
-      .trigger("mouseover")
+    cy.findByTestId("task-1").click();
+    cy.findByTestId("delete-task").click();
+    cy.wait("@deleteTask");
+    cy.findAllByTestId("task-1").should("not.exist");
+  });
+
+  it("should change task column through edit dialog", () => {
+    cy.route("POST", "/api/sort/task/", "").as("sortTasks");
+
+    cy.expectTasks("col-3", ["task-5", "task-4"]);
+    cy.expectTasks("col-1", ["task-1", "task-2"]).then(() => {
+      cy.findByTestId("task-1").click();
+    });
+
+    cy.findByTestId("edit-column")
       .within(() => {
-        cy.findByTestId("edit-task-1").click();
+        cy.get('button[aria-label="Open"]').click();
       })
       .then(() => {
-        cy.findByText(/delete/i).click();
+        cy.get(".MuiAutocomplete-popper").within(() => {
+          cy.findByText("In progress").click();
+        });
       });
-    cy.wait("@deleteTask");
-    cy.findAllByTestId("edit–task-1").should("not.exist");
+
+    cy.wait("@sortTasks").then(() => {
+      cy.expectTasks("col-3", ["task-1", "task-5", "task-4"]);
+      cy.expectTasks("col-1", ["task-2"]);
+    });
   });
 });

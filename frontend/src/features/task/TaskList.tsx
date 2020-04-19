@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { R50, T50, COLUMN_COLOR } from "utils/colors";
-import { grid } from "const";
+import { grid, barHeight } from "const";
 import { ITask } from "types";
 import {
   DroppableProvided,
@@ -11,6 +11,7 @@ import {
 import Task from "./Task";
 import Title from "../../components/Title";
 import AddTask from "./AddTask";
+import { css } from "@emotion/core";
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,
@@ -102,8 +103,15 @@ const InnerList = ({
   title
 }: InnerListProps) => (
   <Container>
-    {title ? <Title>{title}</Title> : null}
-    <DropZone data-testid="drop-zone" ref={dropProvided.innerRef}>
+    {title && <Title>{title}</Title>}
+    <DropZone
+      data-testid="drop-zone"
+      ref={dropProvided.innerRef}
+      css={css`
+        max-height: calc(100vh - ${barHeight * 5}px);
+        overflow-y: scroll;
+      `}
+    >
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>

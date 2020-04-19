@@ -12,6 +12,7 @@ import { memberSelectors } from "features/member/MemberSlice";
 import MemberDialog from "features/member/MemberDialog";
 import { currentBoardOwner } from "./BoardSlice";
 import CreateTaskDialog from "features/task/CreateTaskDialog";
+import EditTaskDialog from "features/task/EditTaskDialog";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -27,9 +28,7 @@ const Name = styled.div`
 `;
 
 const BoardBar = () => {
-  const members = useSelector((state: RootState) =>
-    memberSelectors.selectAll(state)
-  );
+  const members = useSelector(memberSelectors.selectAll);
   const error = useSelector((state: RootState) => state.board.detailError);
   const loading = useSelector((state: RootState) => state.board.detailLoading);
   const detail = useSelector((state: RootState) => state.board.detail);
@@ -61,6 +60,7 @@ const BoardBar = () => {
       </AvatarGroup>
       {boardOwner && <MemberInvite boardId={detail.id} />}
       <MemberDialog board={detail} />
+      <EditTaskDialog />
       <CreateTaskDialog />
     </Container>
   );
