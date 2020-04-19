@@ -33,6 +33,7 @@ export const taskContainerStyles = css`
   &:hover,
   &:active {
     color: ${N900};
+    background-color: #f5f5f5;
     text-decoration: none;
     cursor: pointer;
   }

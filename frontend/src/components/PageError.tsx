@@ -10,9 +10,9 @@ const paperStyles = css`
   margin-right: auto;
   font-size: 1.25rem;
   padding: 2rem;
-  border: 1px solid #999;
-  border-radius: 6px;
-  max-width: 300px;
+  border: 1px solid #bbb;
+  border-radius: 20px;
+  max-width: 400px;
 `;
 
 interface Props {

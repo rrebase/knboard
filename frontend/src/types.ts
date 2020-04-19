@@ -62,8 +62,8 @@ export interface User {
 export interface UserDetail {
   id: number;
   username: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   email: string;
   avatar: Avatar | null;
   date_joined: string;

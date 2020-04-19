@@ -8,6 +8,7 @@ export const PRIO3 = "#69C0B6";
 
 // Custom
 export const COLUMN_COLOR = "#F1F1F6";
+export const TASK_G = "#646e81";
 
 // Reds
 export const R50 = "#FFEBE6";
