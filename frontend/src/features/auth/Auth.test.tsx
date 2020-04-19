@@ -5,9 +5,9 @@ import Auth from "./Auth";
 import { API_LOGIN } from "api";
 import { login } from "./AuthSlice";
 
-it("should have knboard text", async () => {
+it("should have Knboard text", async () => {
   renderWithProviders(<Auth />);
-  expect(screen.getByText("knboard")).toBeVisible();
+  expect(screen.getByText("Knboard")).toBeVisible();
 });
 
 it("should login", async () => {

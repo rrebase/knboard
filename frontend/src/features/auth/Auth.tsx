@@ -22,7 +22,7 @@ const Auth = () => {
       <div>
         <Board width={200} height={200} />
       </div>
-      <Title>knboard</Title>
+      <Title>Knboard</Title>
       <div>
         <LoginDialog />
         <RegisterDialog />
