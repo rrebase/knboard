@@ -115,6 +115,37 @@ def test_order_tasks_between_two_columns(
     assert list(column2.tasks.all()) == [task4, task2, task5]
 
 
+def test_invalid_move_atomic(
+    api_client_with_credentials, board_factory, column_factory, task_factory
+):
+    board = board_factory()
+    col1 = column_factory(board=board)
+    col2 = column_factory(board=board)
+    col3 = column_factory(board=board)
+    col1_task = task_factory(column=col1, task_order=1)
+    col2_task = task_factory(column=col2, task_order=2)
+
+    response = api_client_with_credentials.post(
+        reverse("sort-task"),
+        {
+            "board": board.id,
+            "tasks": {
+                col1.id: [col1_task.id, col2_task.id],
+                col3.id: [col1_task.id, col2_task.id],
+            },
+            "order": [col1_task.id, col2_task.id],
+        },
+    )
+    assert response.status_code == 400
+    # State should remain the same
+    col1.refresh_from_db()
+    col2.refresh_from_db()
+    col3.refresh_from_db()
+    assert list(col1.tasks.all()) == [col1_task]
+    assert list(col2.tasks.all()) == [col2_task]
+    assert list(col3.tasks.all()) == []
+
+
 def test_can_not_order_tasks_between_two_boards(
     api_client_with_credentials, board_factory, column_factory, task_factory
 ):
@@ -131,7 +162,7 @@ def test_can_not_order_tasks_between_two_boards(
             "board": board1.id,
             "tasks": {
                 board1_col.id: [],
-                board2_col.title: [board1_task.id, board2_task.id],
+                board2_col.id: [board1_task.id, board2_task.id],
             },
             "order": [board1_task.id, board2_task.id],
         },

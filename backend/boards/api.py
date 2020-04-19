@@ -1,3 +1,4 @@
+from itertools import chain
 from django.db import transaction
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets, mixins
@@ -134,16 +135,21 @@ class SortTask(APIView):
             "columns"
         )
 
+        # Check for duplicate tasks
+        flat_tasks = list(chain.from_iterable(tasks_by_column.values()))
+        if len(flat_tasks) != len(set(flat_tasks)):
+            raise ValueError
+
         for column_name, task_ids in tasks_by_column.items():
             column = pre_columns.get(id=column_name)
             tasks = pre_tasks.filter(pk__in=task_ids)
             tasks.update(column=column)
 
-    @transaction.atomic
     def post(self, request, **kwargs):
         try:
-            self.move_tasks(request)
-            return sort_model(request, Task)
+            with transaction.atomic():
+                self.move_tasks(request)
+                return sort_model(request, Task)
         except (
             KeyError,
             IndexError,
