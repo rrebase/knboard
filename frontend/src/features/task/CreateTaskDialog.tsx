@@ -10,23 +10,27 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
-import { setCreateDialogOpen, createTask } from "./TaskSlice";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket } from "@fortawesome/free-solid-svg-icons";
+import MarkdownIt from "markdown-it";
+import MdEditor from "react-markdown-editor-lite";
+
+import { setCreateDialogOpen, createTask } from "./TaskSlice";
 import { PRIMARY } from "utils/colors";
-import ReactQuill from "react-quill";
 import {
-  QUILL_MODULES,
-  QUILL_FORMATS,
-  borderRadius,
   PRIORITY_OPTIONS,
-  PRIORITY_2
+  PRIORITY_2,
+  MD_EDITOR_PLUGINS,
+  MD_EDITOR_CONFIG
 } from "const";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
 import { Priority, BoardMember, IColumn } from "types";
+import { createMdEditorStyles } from "styles";
+
+const mdParser = new MarkdownIt();
 
 const DialogTitle = styled.h3`
   color: ${PRIMARY};
@@ -37,6 +41,11 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
+`;
+
+const EditorWrapper = styled.div`
+  margin: 1rem 0;
+  ${createMdEditorStyles(false)}
 `;
 
 const Footer = styled.div`
@@ -67,6 +76,10 @@ const CreateTaskDialog = () => {
     value: "M",
     label: "Medium"
   });
+
+  const handleEditorChange = ({ text }: any) => {
+    setDescription(text);
+  };
 
   const setInitialValues = () => {
     if (defaultColumnId) {
@@ -121,29 +134,15 @@ const CreateTaskDialog = () => {
           size="small"
         />
 
-        <ReactQuill
-          theme="snow"
-          modules={QUILL_MODULES}
-          formats={QUILL_FORMATS}
-          value={description}
-          onChange={setDescription}
-          placeholder="Describe the task here..."
-          css={css`
-            margin: 1rem 0;
-            .ql-toolbar {
-              border-top-left-radius: ${borderRadius}px;
-              border-top-right-radius: ${borderRadius}px;
-              border-bottom: 0;
-            }
-            .ql-container {
-              border-bottom-left-radius: ${borderRadius}px;
-              border-bottom-right-radius: ${borderRadius}px;
-            }
-            & .ql-editor {
-              min-height: 110px;
-            }
-          `}
-        />
+        <EditorWrapper>
+          <MdEditor
+            plugins={MD_EDITOR_PLUGINS}
+            config={MD_EDITOR_CONFIG}
+            value={description}
+            renderHTML={text => mdParser.render(text)}
+            onChange={handleEditorChange}
+          />
+        </EditorWrapper>
 
         <Autocomplete
           id="column-select"

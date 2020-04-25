@@ -229,16 +229,36 @@ context("Board Detail (Owner)", () => {
     cy.findByText("Removed daveice").should("be.visible");
   });
 
-  it("should successfully edit task title", () => {
-    const newTitle = "Admin page permissions";
-    cy.route("PATCH", "api/tasks/1/", {
-      title: newTitle
-    }).as("updateTaskTitle");
+  it("should successfully edit task description", () => {
+    cy.route("PATCH", "api/tasks/1/");
 
     cy.findByTestId("task-1").click();
     cy.findByTestId("task-description").click();
+    cy.get("#textarea").type(
+      "Implement the landing page.\n\n### Definition of Done\n" +
+        "- matches provided design\n- 💨 (smoke) tests"
+    );
     cy.findByTestId("save-description").click();
     cy.findAllByTestId("save-description").should("not.exist");
+    cy.findByText("Definition of Done").should("be.visible");
+  });
+
+  it("should cancel edit task description", () => {
+    cy.route("PATCH", "api/tasks/1/");
+    const initialTargetText = "Use figma designs provided by Steve.";
+    const draftText = "Draft text";
+
+    cy.findByTestId("task-1").click();
+    cy.findByText(initialTargetText).should("be.visible");
+    cy.findAllByText(draftText).should("not.exist");
+    cy.findByTestId("task-description").click();
+
+    cy.get("#textarea").type(draftText);
+    cy.findAllByText(draftText).should("exist");
+
+    cy.findByTestId("cancel-description").click();
+    cy.findByText(initialTargetText).should("be.visible");
+    cy.findAllByText(draftText).should("not.exist");
   });
 
   it("should delete task", () => {

@@ -49,7 +49,7 @@
         {
           "id": 1,
           "title": "Implement Landing page",
-          "description": "Implement the landing page. Use figma designs provided by Steve.",
+          "description": "Implement the landing page.\n\n**Use figma designs provided by Steve.**",
           "task_order": 1,
           "priority": "L",
           "assignees": []

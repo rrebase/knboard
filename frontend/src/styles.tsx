@@ -53,3 +53,76 @@ export const avatarStyles = css`
   font-size: 12px;
   margin-left: -4px;
 `;
+
+export const createMdEditorStyles = (editing: boolean) => css`
+  .rc-md-editor {
+    border-color: #c4c4c4;
+    border-radius: ${borderRadius}px;
+    height: 200px;
+
+    .rc-md-navigation {
+      border-top-left-radius: ${borderRadius}px;
+      border-top-right-radius: ${borderRadius}px;
+    }
+    .section-container {
+      border-bottom-left-radius: ${borderRadius}px;
+      border-bottom-right-radius: ${borderRadius}px;
+      ${editing ? "padding: 8px !important" : "padding: 0 !important"};
+      ${editing &&
+        `border-top-left-radius: ${borderRadius}px;
+      border-top-right-radius: ${borderRadius}px;`}
+    }
+  }
+`;
+
+export const descriptionStyles = css`
+  h1 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 0 0 12px;
+  }
+  h2 {
+    font-size: 20px;
+    line-height: 24px;
+    margin: 16px 0 8px;
+  }
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  ol,
+  ul {
+    margin: 8px 0;
+    padding: 0;
+
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+    padding-inline-start: 16px;
+  }
+  li {
+    margin-bottom: 0;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 10px;
+    line-height: 20px;
+  }
+  code {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    font-size: 85%;
+    padding: 2px 4px;
+  }
+`;

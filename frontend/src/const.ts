@@ -27,6 +27,30 @@ export const PRIO_COLORS = {
   L: PRIO3
 };
 
+export const MD_EDITOR_PLUGINS = [
+  "header",
+  "fonts",
+  "table",
+  "link",
+  "mode-toggle",
+  "full-screen"
+];
+
+export const MD_EDITOR_CONFIG = {
+  view: {
+    menu: true,
+    md: true,
+    html: false
+  },
+  canView: {
+    menu: true,
+    md: true,
+    html: true,
+    fullScreen: true,
+    hideMenu: false
+  }
+};
+
 export const QUILL_MODULES = {
   toolbar: [
     ["bold", "italic", "underline", "strike"],
