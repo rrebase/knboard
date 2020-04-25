@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { Priority } from "types";
+import { Priority, PriorityValue } from "types";
 import { PRIO1, PRIO2, PRIO3 } from "utils/colors";
 
 export const LOCAL_STORAGE_KEY = "knboard-v12";
@@ -20,6 +20,11 @@ export const PRIORITY_OPTIONS: Priority[] = [
   PRIORITY_2,
   PRIORITY_3
 ];
+
+export const PRIORITY_MAP = PRIORITY_OPTIONS.reduce((acc, curr) => {
+  acc[curr.value] = curr;
+  return acc;
+}, {} as Record<PriorityValue, Priority>);
 
 export const PRIO_COLORS = {
   H: PRIO1,

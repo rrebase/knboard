@@ -8,7 +8,6 @@ import {
 } from "react-beautiful-dnd";
 import { N30, N0, N70, PRIMARY } from "utils/colors";
 import { grid, PRIO_COLORS } from "const";
-import TaskEditor from "features/task/TaskEditor";
 import { taskContainerStyles } from "styles";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
@@ -119,7 +118,9 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
 
   return (
     <Footer>
-      <Priority priority={task.priority}>{task.priority}</Priority>
+      <Priority priority={task.priority} data-testid="task-priority">
+        {task.priority}
+      </Priority>
       {assignees.length > 0 && (
         <Assignees>
           <AvatarGroup
@@ -167,24 +168,10 @@ interface Props {
 
 const Task = ({ task: task, style, index }: Props) => {
   const dispatch = useDispatch();
-  const [text, setText] = React.useState<string>(task.title);
-  const [editing, setEditing] = React.useState<boolean>(false);
 
   const handleClick = () => {
     dispatch(setEditDialogOpen(task.id));
   };
-
-  if (editing) {
-    return (
-      <TaskEditor
-        task={task}
-        setEditing={setEditing}
-        text={text}
-        setText={setText}
-        adding={false}
-      />
-    );
-  }
 
   return (
     <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
@@ -207,7 +194,7 @@ const Task = ({ task: task, style, index }: Props) => {
           css={taskContainerStyles}
         >
           <Content>
-            <TextContent>{text}</TextContent>
+            <TextContent>{task.title}</TextContent>
             <TaskId>id: {task.id}</TaskId>
             <TaskFooter task={task} />
           </Content>

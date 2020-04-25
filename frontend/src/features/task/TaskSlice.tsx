@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { TasksByColumn, ITask, Id, NewTask } from "types";
+import { TasksByColumn, ITask, Id, NewTask, PriorityValue } from "types";
 import { fetchBoardById } from "features/board/BoardSlice";
 import { AppDispatch, AppThunk, RootState } from "store";
 import {
@@ -42,6 +42,20 @@ export const updateTaskDescription = createAsyncThunk<
   { id: Id; description: string }
 >("task/updateTaskDescriptionStatus", async ({ id, description }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, { description });
+  return response.data;
+});
+
+interface PatchFiels {
+  title: string;
+  description: string;
+  priority: PriorityValue;
+}
+
+export const patchTask = createAsyncThunk<
+  ITask,
+  { id: Id; fields: Partial<PatchFiels> }
+>("task/patchTaskStatus", async ({ id, fields }) => {
+  const response = await api.patch(`${API_TASKS}${id}/`, fields);
   return response.data;
 });
 
@@ -112,6 +126,9 @@ export const slice = createSlice({
       state.byId[action.payload.id] = action.payload;
     });
     builder.addCase(updateTaskDescription.fulfilled, (state, action) => {
+      state.byId[action.payload.id] = action.payload;
+    });
+    builder.addCase(patchTask.fulfilled, (state, action) => {
       state.byId[action.payload.id] = action.payload;
     });
     builder.addCase(createTask.pending, state => {

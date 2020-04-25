@@ -125,7 +125,7 @@ const CreateTaskDialog = () => {
 
         <TextField
           autoFocus
-          id="task-title"
+          id="create-task-title"
           label="Short Title"
           value={title}
           onChange={e => setTitle(e.target.value)}
@@ -145,7 +145,7 @@ const CreateTaskDialog = () => {
         </EditorWrapper>
 
         <Autocomplete
-          id="column-select"
+          id="create-column-select"
           size="small"
           options={columns}
           getOptionLabel={option => option.title}
@@ -164,7 +164,7 @@ const CreateTaskDialog = () => {
         <Autocomplete
           multiple
           filterSelectedOptions
-          id="assignee-select"
+          id="create-assignee-select"
           size="small"
           options={members}
           getOptionLabel={option => option.username}
@@ -215,7 +215,7 @@ const CreateTaskDialog = () => {
         />
 
         <Autocomplete
-          id="priority-select"
+          id="create-priority-select"
           size="small"
           options={PRIORITY_OPTIONS}
           getOptionLabel={option => option.label}

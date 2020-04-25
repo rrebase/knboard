@@ -229,8 +229,22 @@ context("Board Detail (Owner)", () => {
     cy.findByText("Removed daveice").should("be.visible");
   });
 
+  it("should successfully edit task title via blur and enter", () => {
+    cy.route("PATCH", "api/tasks/1/", "");
+
+    cy.findByTestId("task-1").click();
+    cy.findByTestId("task-title")
+      .click()
+      .clear()
+      .type("Fresh");
+    cy.findByText("Description").click();
+    cy.findByText("Fresh").should("be.visible");
+    cy.findByText("Fresh").type(" one{enter}");
+    cy.findByText("Fresh one").should("be.visible");
+  });
+
   it("should successfully edit task description", () => {
-    cy.route("PATCH", "api/tasks/1/");
+    cy.route("PATCH", "api/tasks/1/", "");
 
     cy.findByTestId("task-1").click();
     cy.findByTestId("task-description").click();
@@ -243,8 +257,31 @@ context("Board Detail (Owner)", () => {
     cy.findByText("Definition of Done").should("be.visible");
   });
 
+  it("should successfully edit task priority", () => {
+    cy.fixture("internals_board").then(board => {
+      const task = board.columns[1].tasks[0];
+      const updatedTask = { ...task, priority: "H" };
+      cy.route("PATCH", `api/tasks/${task.id}/`, updatedTask);
+
+      cy.findByTestId(`task-${task.id}`).click();
+      cy.findByTestId("edit-priority")
+        .within(() => {
+          cy.get('button[aria-label="Open"]').click();
+        })
+        .then(() => {
+          cy.get(".MuiAutocomplete-popper").within(() => {
+            cy.findByText("High").click();
+          });
+        });
+      cy.findByTestId("close-dialog").click();
+      cy.findByTestId(`task-${task.id}`).within(() => {
+        cy.findByTestId("task-priority").should("have.text", "H");
+      });
+    });
+  });
+
   it("should cancel edit task description", () => {
-    cy.route("PATCH", "api/tasks/1/");
+    cy.route("PATCH", "api/tasks/1/", "");
     const initialTargetText = "Use figma designs provided by Steve.";
     const draftText = "Draft text";
 

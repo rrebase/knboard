@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Dialog, Button, IconButton, TextField } from "@material-ui/core";
+import {
+  Dialog,
+  Button,
+  IconButton,
+  TextField,
+  TextareaAutosize
+} from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setEditDialogOpen,
   deleteTask,
   updateTasksByColumn,
-  updateTaskDescription
+  updateTaskDescription,
+  updateTaskTitle,
+  patchTask
 } from "./TaskSlice";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
@@ -20,13 +28,18 @@ import {
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
 import { ReactComponent as TimesIcon } from "static/svg/times.svg";
-import { IColumn, TasksByColumn, Id } from "types";
+import { IColumn, TasksByColumn, Id, Priority } from "types";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
-import { MD_EDITOR_PLUGINS } from "const";
+import {
+  MD_EDITOR_PLUGINS,
+  borderRadius,
+  PRIORITY_OPTIONS,
+  PRIORITY_MAP
+} from "const";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
@@ -64,15 +77,25 @@ const Title = styled.div`
   margin-bottom: 1rem;
   color: ${PRIMARY};
   font-size: 1rem;
-  h3 {
+  textarea {
+    color: ${PRIMARY};
+    font-weight: bold;
     font-size: 20px;
-    margin: 0 0 0 0.75rem;
+    width: 100%;
+    margin: 0 2rem 0 0.75rem;
+    border: none;
+    resize: none;
+    &:focus {
+      outline: none;
+      border-radius: ${borderRadius}px;
+      box-shadow: inset 0 0 0 2px ${PRIMARY};
+    }
   }
 `;
 
 const EditorWrapper = styled.div<{ editing: boolean }>`
   margin: 1rem 0;
-  margin-right: 1rem;
+  margin-right: 2rem;
   ${props => createMdEditorStyles(props.editing)};
 
   .rc-md-editor {
@@ -114,8 +137,10 @@ const EditTaskDialog = () => {
   const columnsById = useSelector((state: RootState) => state.column.entities);
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("Describe the task...");
   const [editingDescription, setEditingDescription] = useState(false);
+  const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<MdEditor>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -124,8 +149,15 @@ const EditTaskDialog = () => {
   useEffect(() => {
     if (taskId && tasksById[taskId]) {
       setDescription(tasksById[taskId].description);
+      setTitle(tasksById[taskId].title);
     }
   }, [open, taskId]);
+
+  const handleSaveTitle = () => {
+    if (taskId) {
+      dispatch(updateTaskTitle({ id: taskId, title }));
+    }
+  };
 
   const handleSaveDescription = () => {
     if (taskId) {
@@ -188,9 +220,21 @@ const EditTaskDialog = () => {
   const task = tasksById[taskId];
   const column = columnsById[columnId];
 
+  const handleTitleKeyDown = (e: React.KeyboardEvent) => {
+    // Enter
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      titleTextAreaRef?.current?.blur();
+    }
+  };
+
   const handleClose = () => {
     dispatch(setEditDialogOpen(null));
     setEditingDescription(false);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTitle(e.target.value);
   };
 
   const handleColumnChange = (_: any, value: IColumn | null) => {
@@ -215,6 +259,12 @@ const EditTaskDialog = () => {
     };
     dispatch(updateTasksByColumn(updatedTasksByColumn));
     handleClose();
+  };
+
+  const handlePriorityChange = (_: any, priority: Priority | null) => {
+    if (priority) {
+      dispatch(patchTask({ id: taskId, fields: { priority: priority.value } }));
+    }
   };
 
   const handleNotImplemented = () => {
@@ -252,6 +302,7 @@ const EditTaskDialog = () => {
             size="small"
             onClick={handleClose}
             aria-label="close"
+            data-testid="close-dialog"
             css={css`
               height: 2.5rem;
               width: 2.5rem;
@@ -266,7 +317,14 @@ const EditTaskDialog = () => {
           <Header>id: {task.id}</Header>
           <Title>
             <FontAwesomeIcon icon={faBolt} />
-            <h3>{task.title}</h3>
+            <TextareaAutosize
+              ref={titleTextAreaRef}
+              value={title}
+              onChange={handleTitleChange}
+              onBlur={handleSaveTitle}
+              onKeyDown={handleTitleKeyDown}
+              data-testid="task-title"
+            />
           </Title>
           <DescriptionHeader>
             <FontAwesomeIcon icon={faAlignLeft} />
@@ -360,6 +418,24 @@ const EditTaskDialog = () => {
             data-testid="edit-column"
             css={css`
               width: 100%;
+            `}
+          />
+          <Autocomplete
+            id="priority-select"
+            size="small"
+            options={PRIORITY_OPTIONS}
+            getOptionLabel={option => option.label}
+            value={PRIORITY_MAP[task.priority]}
+            onChange={handlePriorityChange}
+            renderInput={params => (
+              <TextField {...params} label="Priority" variant="outlined" />
+            )}
+            openOnFocus
+            disableClearable
+            data-testid="edit-priority"
+            css={css`
+              width: 100%;
+              margin-top: 1rem;
               margin-bottom: 2rem;
             `}
           />
