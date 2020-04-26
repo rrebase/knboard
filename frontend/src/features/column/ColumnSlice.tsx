@@ -1,12 +1,40 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createEntityAdapter,
+  createAsyncThunk
+} from "@reduxjs/toolkit";
 import { fetchBoardById } from "features/board/BoardSlice";
-import { IColumn } from "types";
-import api, { API_SORT_COLUMNS } from "api";
+import { IColumn, Id } from "types";
+import api, { API_SORT_COLUMNS, API_COLUMNS } from "api";
 import {
   createSuccessToast,
   createErrorToast
 } from "features/toast/ToastSlice";
 import { RootState, AppDispatch, AppThunk } from "store";
+
+export const addColumn = createAsyncThunk<IColumn, number>(
+  "column/addColumnStatus",
+  async boardId => {
+    const response = await api.post(`${API_COLUMNS}`, {
+      board: boardId,
+      title: "new column",
+      tasks: []
+    });
+    return response.data;
+  }
+);
+
+interface PatchFields {
+  title: string;
+}
+
+export const patchColumn = createAsyncThunk<
+  IColumn,
+  { id: Id; fields: Partial<PatchFields> }
+>("column/patchColumnStatus", async ({ id, fields }) => {
+  const response = await api.patch(`${API_COLUMNS}${id}/`, fields);
+  return response.data;
+});
 
 const columnAdapter = createEntityAdapter<IColumn>({});
 
@@ -28,6 +56,15 @@ export const slice = createSlice({
           board: action.payload.id
         }))
       );
+    });
+    builder.addCase(addColumn.fulfilled, (state, action) => {
+      columnAdapter.addOne(state, action.payload);
+    });
+    builder.addCase(patchColumn.fulfilled, (state, action) => {
+      columnAdapter.updateOne(state, {
+        id: action.payload.id,
+        changes: { title: action.payload.title }
+      });
     });
   }
 });

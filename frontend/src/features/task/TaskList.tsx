@@ -9,7 +9,6 @@ import {
   Droppable
 } from "react-beautiful-dnd";
 import Task from "./Task";
-import Title from "../../components/Title";
 import AddTask from "./AddTask";
 import { css } from "@emotion/core";
 
@@ -93,17 +92,10 @@ interface InnerListProps {
   dropProvided: DroppableProvided;
   columnId: number;
   tasks: ITask[];
-  title?: string;
 }
 
-const InnerList = ({
-  columnId,
-  tasks,
-  dropProvided,
-  title
-}: InnerListProps) => (
+const InnerList = ({ columnId, tasks, dropProvided }: InnerListProps) => (
   <Container>
-    {title && <Title>{title}</Title>}
     <DropZone
       data-testid="drop-zone"
       ref={dropProvided.innerRef}
@@ -128,8 +120,7 @@ const TaskList = ({
   columnId,
   listType,
   style,
-  tasks: tasks,
-  title
+  tasks: tasks
 }: Props) => (
   <Droppable
     droppableId={columnId.toString()}
@@ -154,7 +145,6 @@ const TaskList = ({
             <InnerList
               columnId={columnId}
               tasks={tasks}
-              title={title}
               dropProvided={dropProvided}
             />
           </ScrollContainer>
@@ -162,7 +152,6 @@ const TaskList = ({
           <InnerList
             columnId={columnId}
             tasks={tasks}
-            title={title}
             dropProvided={dropProvided}
           />
         )}

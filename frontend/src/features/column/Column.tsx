@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
 import { COLUMN_COLOR, G50, PRIMARY } from "utils/colors";
@@ -9,7 +9,10 @@ import {
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
 import TaskList from "features/task/TaskList";
-import Title from "components/Title";
+import ColumnTitle from "components/ColumnTitle";
+import { TextareaAutosize } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { patchColumn } from "./ColumnSlice";
 
 const Container = styled.div`
   margin: ${grid / 2}px;
@@ -48,6 +51,36 @@ const Column = ({
   isScrollable,
   isCombineEnabled
 }: Props) => {
+  const dispatch = useDispatch();
+  const [pendingTitle, setPendingTitle] = useState<string>(title);
+  const [editing, setEditing] = useState<boolean>(false);
+  const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent) => {
+    // Enter
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if (pendingTitle.length > 0) {
+        titleTextAreaRef?.current?.blur();
+      }
+    }
+  };
+
+  const handleSaveTitle = () => {
+    if (pendingTitle.length > 0) {
+      setEditing(false);
+      dispatch(patchColumn({ id, fields: { title: pendingTitle } }));
+    }
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPendingTitle(e.target.value);
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    e.target.select();
+  };
+
   return (
     <Draggable draggableId={`col-${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -57,13 +90,30 @@ const Column = ({
           data-testid={`col-${title}`}
         >
           <Header isDragging={snapshot.isDragging}>
-            <Title
+            <ColumnTitle
               {...provided.dragHandleProps}
               aria-label={`${title} task list`}
+              onClick={() => setEditing(true)}
+              data-testid="column-title"
             >
-              <div>{title}</div>
+              {editing ? (
+                <div>
+                  <TextareaAutosize
+                    ref={titleTextAreaRef}
+                    value={pendingTitle}
+                    onChange={handleTitleChange}
+                    onBlur={handleSaveTitle}
+                    onKeyDown={handleTitleKeyDown}
+                    data-testid="column-title-textarea"
+                    onFocus={handleFocus}
+                    autoFocus
+                  />
+                </div>
+              ) : (
+                <div>{pendingTitle}</div>
+              )}
               <div>{tasks.length}</div>
-            </Title>
+            </ColumnTitle>
           </Header>
           <TaskList
             columnId={id}

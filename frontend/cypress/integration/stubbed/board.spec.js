@@ -82,6 +82,45 @@ context("Board Detail (Owner)", () => {
     cy.findByText(colTitle4).should("be.visible");
   });
 
+  it("should edit column title if not empty", () => {
+    cy.route("PATCH", "/api/columns/3/", "");
+    const colTitle = "In progress";
+    const newColTitle = "Ongoing";
+
+    cy.findAllByText(newColTitle).should("not.exist");
+    cy.findByText(colTitle).should("be.visible");
+
+    cy.findByTestId(`col-${colTitle}`).within(() => {
+      cy.findAllByTestId("column-title-textarea").should("not.exist");
+      cy.findByTestId("column-title").click();
+
+      cy.findByTestId("column-title-textarea")
+        .clear()
+        .type("{enter}")
+        .should("be.visible");
+
+      cy.findByTestId("column-title-textarea").type(`${newColTitle}{enter}`);
+      cy.findByTestId("column-title").should("be.visible");
+    });
+
+    cy.findAllByText(colTitle).should("not.exist");
+    cy.findByText(newColTitle).should("be.visible");
+  });
+
+  it("should add column", () => {
+    const newColumn = {
+      id: 5,
+      title: "new column",
+      tasks: [],
+      column_order: 5,
+      board: 1
+    };
+    cy.route("POST", "/api/columns/", newColumn);
+    cy.findByTestId("add-col").click();
+    cy.get('[data-rbd-droppable-id="board"]').scrollTo("right");
+    cy.findByText(newColumn.title).should("be.visible");
+  });
+
   it("should move column successfully", () => {
     cy.route("POST", "/api/sort/column/", "").as("sortColumns");
     cy.expectColumns(["col-3", "col-1", "col-2", "col-4"]);
