@@ -19,11 +19,9 @@ export default styled.h4`
     outline: 2px solid ${P100};
     outline-offset: 2px;
   }
-
   textarea {
     color: ${PRIMARY};
     font-weight: bold;
-    font-size: 20px;
     width: 100%;
     margin: 0 2rem 0 0.75rem;
     border: none;

@@ -82,29 +82,41 @@ context("Board Detail (Owner)", () => {
     cy.findByText(colTitle4).should("be.visible");
   });
 
-  it("should edit column title if not empty", () => {
-    cy.route("PATCH", "/api/columns/3/", "");
-    const colTitle = "In progress";
-    const newColTitle = "Ongoing";
+  it("should edit column title if not empty & cancel via esc", () => {
+    cy.fixture("internals_board").then(board => {
+      const colTitle = "In progress";
+      const newColTitle = "Ongoing";
+      const newColumn = board.columns.find(c => c.id === 3);
+      cy.route("PATCH", "/api/columns/3/", {
+        ...newColumn,
+        title: newColTitle
+      });
 
-    cy.findAllByText(newColTitle).should("not.exist");
-    cy.findByText(colTitle).should("be.visible");
+      cy.findAllByText(newColTitle).should("not.exist");
+      cy.findByText(colTitle).should("be.visible");
 
-    cy.findByTestId(`col-${colTitle}`).within(() => {
-      cy.findAllByTestId("column-title-textarea").should("not.exist");
-      cy.findByTestId("column-title").click();
+      cy.findByTestId(`col-${colTitle}`).within(() => {
+        cy.findAllByTestId("column-title-textarea").should("not.exist");
+        cy.findByTestId("column-title").click();
 
-      cy.findByTestId("column-title-textarea")
-        .clear()
-        .type("{enter}")
-        .should("be.visible");
+        cy.findByTestId("column-title-textarea")
+          .clear()
+          .type("{enter}")
+          .should("be.visible");
 
-      cy.findByTestId("column-title-textarea").type(`${newColTitle}{enter}`);
-      cy.findByTestId("column-title").should("be.visible");
+        cy.findByTestId("column-title-textarea").type(`${newColTitle}{enter}`);
+        cy.findByTestId("column-title").should("be.visible");
+      });
+      cy.findAllByText(colTitle).should("not.exist");
+      cy.findByText(newColTitle).should("be.visible");
+
+      cy.findByTestId(`col-${newColTitle}`).within(() => {
+        cy.findByTestId("column-title").click();
+        cy.findByTestId("column-title-textarea").type("Cancelled title{esc}");
+        cy.findAllByTestId("column-title-textarea").should("not.exist");
+      });
+      cy.findByText(newColTitle).should("be.visible");
     });
-
-    cy.findAllByText(colTitle).should("not.exist");
-    cy.findByText(newColTitle).should("be.visible");
   });
 
   it("should add column", () => {

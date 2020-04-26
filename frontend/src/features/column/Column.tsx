@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
 import { COLUMN_COLOR, G50, PRIMARY } from "utils/colors";
@@ -56,6 +56,12 @@ const Column = ({
   const [editing, setEditing] = useState<boolean>(false);
   const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  useEffect(() => {
+    if (!editing && title === pendingTitle) {
+      titleTextAreaRef?.current?.blur();
+    }
+  }, [pendingTitle, editing]);
+
   const handleTitleKeyDown = (e: React.KeyboardEvent) => {
     // Enter
     if (e.keyCode === 13) {
@@ -64,12 +70,21 @@ const Column = ({
         titleTextAreaRef?.current?.blur();
       }
     }
+    // Escape
+    if (e.keyCode === 27) {
+      e.preventDefault();
+      setPendingTitle(title);
+      setEditing(false);
+      // blur via useEffect
+    }
   };
 
   const handleSaveTitle = () => {
-    if (pendingTitle.length > 0) {
+    if (editing && pendingTitle.length > 0) {
       setEditing(false);
-      dispatch(patchColumn({ id, fields: { title: pendingTitle } }));
+      if (pendingTitle !== title) {
+        dispatch(patchColumn({ id, fields: { title: pendingTitle } }));
+      }
     }
   };
 
