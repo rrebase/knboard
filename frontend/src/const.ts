@@ -56,6 +56,36 @@ export const MD_EDITOR_CONFIG = {
   }
 };
 
+export const MD_EDITING_CONFIG = {
+  view: {
+    menu: false,
+    md: true,
+    html: false
+  },
+  canView: {
+    menu: false,
+    md: true,
+    html: false,
+    fullScreen: false,
+    hideMenu: false
+  }
+};
+
+export const MD_READ_ONLY_CONFIG = {
+  view: {
+    menu: false,
+    md: false,
+    html: true
+  },
+  canView: {
+    menu: false,
+    md: false,
+    html: true,
+    fullScreen: false,
+    hideMenu: false
+  }
+};
+
 export const QUILL_MODULES = {
   toolbar: [
     ["bold", "italic", "underline", "strike"],
@@ -95,3 +125,7 @@ export const theme = createMuiTheme({
     }
   }
 });
+
+export const modalPopperIndex = theme.zIndex.modal + 100;
+export const modalPopperAutocompleteIndex = modalPopperIndex + 100;
+export const modalPopperWidth = 300;

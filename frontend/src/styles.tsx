@@ -119,10 +119,11 @@ export const descriptionStyles = css`
     margin-bottom: 10px;
     line-height: 20px;
   }
+  pre {
+    padding: 10px 16px;
+    line-height: 16px;
+  }
   code {
-    background-color: #f0f0f0;
-    border-radius: 3px;
-    font-size: 85%;
-    padding: 2px 4px;
+    font-size: 12px;
   }
 `;

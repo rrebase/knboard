@@ -29,31 +29,16 @@ export const initialState: InitialState = {
   editDialogOpen: null
 };
 
-export const updateTaskTitle = createAsyncThunk<
-  ITask,
-  { id: Id; title: string }
->("task/updateTaskTitleStatus", async ({ id, title }) => {
-  const response = await api.patch(`${API_TASKS}${id}/`, { title });
-  return response.data;
-});
-
-export const updateTaskDescription = createAsyncThunk<
-  ITask,
-  { id: Id; description: string }
->("task/updateTaskDescriptionStatus", async ({ id, description }) => {
-  const response = await api.patch(`${API_TASKS}${id}/`, { description });
-  return response.data;
-});
-
-interface PatchFiels {
+interface PatchFields {
   title: string;
   description: string;
   priority: PriorityValue;
+  assignees: Id[];
 }
 
 export const patchTask = createAsyncThunk<
   ITask,
-  { id: Id; fields: Partial<PatchFiels> }
+  { id: Id; fields: Partial<PatchFields> }
 >("task/patchTaskStatus", async ({ id, fields }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, fields);
   return response.data;
@@ -121,12 +106,6 @@ export const slice = createSlice({
       }
       state.byColumn = byColumn;
       state.byId = byId;
-    });
-    builder.addCase(updateTaskTitle.fulfilled, (state, action) => {
-      state.byId[action.payload.id] = action.payload;
-    });
-    builder.addCase(updateTaskDescription.fulfilled, (state, action) => {
-      state.byId[action.payload.id] = action.payload;
     });
     builder.addCase(patchTask.fulfilled, (state, action) => {
       state.byId[action.payload.id] = action.payload;

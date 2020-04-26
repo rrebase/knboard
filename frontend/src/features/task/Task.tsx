@@ -143,9 +143,6 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
                   width: 1.25rem;
                   font-size: 8px;
                   margin-left: -12px;
-                  &:hover {
-                    cursor: pointer;
-                  }
                 `}
                 src={assignee?.avatar?.photo}
                 alt={assignee?.avatar?.name}

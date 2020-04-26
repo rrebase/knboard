@@ -12,8 +12,6 @@ import {
   setEditDialogOpen,
   deleteTask,
   updateTasksByColumn,
-  updateTaskDescription,
-  updateTaskTitle,
   patchTask
 } from "./TaskSlice";
 import styled from "@emotion/styled";
@@ -34,11 +32,14 @@ import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
+import TaskAssignees from "./TaskAssignees";
 import {
   MD_EDITOR_PLUGINS,
   borderRadius,
   PRIORITY_OPTIONS,
-  PRIORITY_MAP
+  PRIORITY_MAP,
+  MD_EDITING_CONFIG,
+  MD_READ_ONLY_CONFIG
 } from "const";
 
 const mdParser = new MarkdownIt({ breaks: true });
@@ -133,8 +134,8 @@ const DescriptionActions = styled.div`
 const EditTaskDialog = () => {
   const dispatch = useDispatch();
   const columns: IColumn[] = useSelector(selectAllColumns);
-  const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const columnsById = useSelector((state: RootState) => state.column.entities);
+  const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const [title, setTitle] = useState("");
@@ -155,13 +156,13 @@ const EditTaskDialog = () => {
 
   const handleSaveTitle = () => {
     if (taskId) {
-      dispatch(updateTaskTitle({ id: taskId, title }));
+      dispatch(patchTask({ id: taskId, fields: { title } }));
     }
   };
 
   const handleSaveDescription = () => {
     if (taskId) {
-      dispatch(updateTaskDescription({ id: taskId, description }));
+      dispatch(patchTask({ id: taskId, fields: { description } }));
       setEditingDescription(false);
     }
   };
@@ -331,44 +332,19 @@ const EditTaskDialog = () => {
             <h3>Description</h3>
           </DescriptionHeader>
           <Description
-            onClick={editingDescription ? undefined : handleDescriptionClick}
             key={`${taskId}${editingDescription}`}
             data-testid="task-description"
           >
-            <EditorWrapper editing={editingDescription} ref={wrapperRef}>
+            <EditorWrapper
+              onClick={editingDescription ? undefined : handleDescriptionClick}
+              editing={editingDescription}
+              ref={wrapperRef}
+            >
               <MdEditor
                 ref={editorRef}
                 plugins={MD_EDITOR_PLUGINS}
                 config={
-                  editingDescription
-                    ? {
-                        view: {
-                          menu: false,
-                          md: true,
-                          html: false
-                        },
-                        canView: {
-                          menu: false,
-                          md: true,
-                          html: false,
-                          fullScreen: false,
-                          hideMenu: false
-                        }
-                      }
-                    : {
-                        view: {
-                          menu: false,
-                          md: false,
-                          html: true
-                        },
-                        canView: {
-                          menu: false,
-                          md: false,
-                          html: true,
-                          fullScreen: false,
-                          hideMenu: false
-                        }
-                      }
+                  editingDescription ? MD_EDITING_CONFIG : MD_READ_ONLY_CONFIG
                 }
                 value={description}
                 renderHTML={text => mdParser.render(text)}
@@ -403,6 +379,7 @@ const EditTaskDialog = () => {
           </Description>
         </Main>
         <Side>
+          <TaskAssignees task={task} />
           <Autocomplete
             id="column-select"
             size="small"
