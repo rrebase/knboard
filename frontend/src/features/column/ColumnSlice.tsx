@@ -8,7 +8,8 @@ import { IColumn, Id } from "types";
 import api, { API_SORT_COLUMNS, API_COLUMNS } from "api";
 import {
   createSuccessToast,
-  createErrorToast
+  createErrorToast,
+  createInfoToast
 } from "features/toast/ToastSlice";
 import { RootState, AppDispatch, AppThunk } from "store";
 
@@ -35,6 +36,15 @@ export const patchColumn = createAsyncThunk<
   const response = await api.patch(`${API_COLUMNS}${id}/`, fields);
   return response.data;
 });
+
+export const deleteColumn = createAsyncThunk<Id, Id>(
+  "column/deleteColumnStatus",
+  async (id, { dispatch }) => {
+    await api.delete(`${API_COLUMNS}${id}/`);
+    dispatch(createInfoToast("Column deleted"));
+    return id;
+  }
+);
 
 const columnAdapter = createEntityAdapter<IColumn>({});
 
@@ -65,6 +75,9 @@ export const slice = createSlice({
         id: action.payload.id,
         changes: { title: action.payload.title }
       });
+    });
+    builder.addCase(deleteColumn.fulfilled, (state, action) => {
+      columnAdapter.removeOne(state, action.payload);
     });
   }
 });

@@ -8,7 +8,7 @@ import {
   createInfoToast
 } from "features/toast/ToastSlice";
 import api, { API_SORT_TASKS, API_TASKS } from "api";
-import { addColumn } from "features/column/ColumnSlice";
+import { addColumn, deleteColumn } from "features/column/ColumnSlice";
 
 type TasksById = Record<string, ITask>;
 
@@ -135,6 +135,9 @@ export const slice = createSlice({
     });
     builder.addCase(addColumn.fulfilled, (state, action) => {
       state.byColumn[action.payload.id] = [];
+    });
+    builder.addCase(deleteColumn.fulfilled, (state, action) => {
+      delete state.byColumn[action.payload];
     });
   }
 });

@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius, Key } from "const";
-import { P100, PRIMARY } from "utils/colors";
-import { TextareaAutosize } from "@material-ui/core";
+import { P100, PRIMARY, TASK_G as ACTION_G } from "utils/colors";
+import { TextareaAutosize, Button, Popover } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Id } from "types";
-import { patchColumn } from "features/column/ColumnSlice";
+import { patchColumn, deleteColumn } from "features/column/ColumnSlice";
+import { css } from "@emotion/core";
 
 const Container = styled.h4`
   padding: ${grid}px;
@@ -45,6 +46,9 @@ const InputTitle = styled.div``;
 
 const RegularTitle = styled.div`
   width: 190px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Extra = styled.div`
@@ -53,8 +57,8 @@ const Extra = styled.div`
 
 const Count = styled.div``;
 
-const Options = styled.div`
-  margin-left: 0.5rem;
+const OptionsContent = styled.div`
+  padding: 1rem;
 `;
 
 interface Props {
@@ -65,6 +69,9 @@ interface Props {
 
 const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
   const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
   const [pendingTitle, setPendingTitle] = useState<string>(title);
   const [editing, setEditing] = useState<boolean>(false);
   const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -107,6 +114,22 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
     e.target.select();
   };
 
+  const handleOptionsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleOptionsClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteColumn(id));
+    handleOptionsClose();
+  };
+
+  const open = Boolean(anchorEl);
+  const popoverId = open ? `col-${id}options-popover` : undefined;
+
   return (
     <Container {...props}>
       {editing ? (
@@ -129,9 +152,47 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
       )}
       <Extra>
         <Count>{tasksCount}</Count>
-        <Options>
+        <Button
+          onClick={handleOptionsClick}
+          data-testid="col-options"
+          css={css`
+            margin-left: 0.25rem;
+            min-width: 0;
+            padding: 2px 8px;
+          `}
+        >
           <FontAwesomeIcon icon={faEllipsisV} />
-        </Options>
+        </Button>
+        <Popover
+          id={popoverId}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleOptionsClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+        >
+          <OptionsContent>
+            <Button
+              startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
+              onClick={handleDelete}
+              data-testid="delete-column"
+              size="small"
+              css={css`
+                font-size: 12px;
+                font-weight: bold;
+                color: ${ACTION_G};
+              `}
+            >
+              Delete column
+            </Button>
+          </OptionsContent>
+        </Popover>
       </Extra>
     </Container>
   );

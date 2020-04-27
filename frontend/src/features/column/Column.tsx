@@ -29,6 +29,9 @@ const Header = styled.div<{ isDragging: boolean }>`
   &:hover {
     background-color: ${G50};
   }
+  [data-rbd-drag-handle-context-id="0"] {
+    cursor: initial;
+  }
 `;
 
 type Props = {

@@ -133,6 +133,22 @@ context("Board Detail (Owner)", () => {
     cy.findByText(newColumn.title).should("be.visible");
   });
 
+  it("should delete column", () => {
+    cy.fixture("internals_board").then(board => {
+      const columnToDelete = board.columns[0];
+      cy.route("DELETE", `/api/columns/${columnToDelete.id}/`, "");
+
+      cy.findByText(columnToDelete.title).should("be.visible");
+
+      cy.findByTestId(`col-${columnToDelete.title}`).within(() => {
+        cy.findByTestId("col-options").click();
+      });
+      cy.findByTestId("delete-column").click();
+
+      cy.findAllByText(columnToDelete.title).should("not.exist");
+    });
+  });
+
   it("should move column successfully", () => {
     cy.route("POST", "/api/sort/column/", "").as("sortColumns");
     cy.expectColumns(["col-3", "col-1", "col-2", "col-4"]);
