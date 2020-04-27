@@ -39,7 +39,8 @@ import {
   PRIORITY_OPTIONS,
   PRIORITY_MAP,
   MD_EDITING_CONFIG,
-  MD_READ_ONLY_CONFIG
+  MD_READ_ONLY_CONFIG,
+  Key
 } from "const";
 
 const mdParser = new MarkdownIt({ breaks: true });
@@ -222,8 +223,7 @@ const EditTaskDialog = () => {
   const column = columnsById[columnId];
 
   const handleTitleKeyDown = (e: React.KeyboardEvent) => {
-    // Enter
-    if (e.keyCode === 13) {
+    if (e.keyCode === Key.Enter) {
       e.preventDefault();
       titleTextAreaRef?.current?.blur();
     }

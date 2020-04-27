@@ -129,3 +129,8 @@ export const theme = createMuiTheme({
 export const modalPopperIndex = theme.zIndex.modal + 100;
 export const modalPopperAutocompleteIndex = modalPopperIndex + 100;
 export const modalPopperWidth = 300;
+
+export enum Key {
+  Enter = 13,
+  Escape = 27
+}
