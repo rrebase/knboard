@@ -37,3 +37,8 @@ it("should login", async () => {
   expect(actions[1].type).toEqual(login.fulfilled.type);
   expect(actions[1].payload).toEqual(credentials);
 });
+
+it("should have Knboard text", async () => {
+  renderWithProviders(<Auth />);
+  expect(screen.getByText("Expected to fail")).toBeVisible();
+});
