@@ -12,7 +12,7 @@ jobs:
       - run: yarn install
       - run: yarn test
 orbs:
-  node: circleci/node@x.y
+  node: circleci/node@2.0.3
 version: 2.1
 workflows:
   test_my_app:
