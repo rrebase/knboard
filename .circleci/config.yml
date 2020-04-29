@@ -2,9 +2,9 @@ jobs:
   install-node-example:
     docker:
       - image: 'cimg/base:stable'
-    working_directory: ~/frontend
     steps:
-      - checkout
+      - checkout:
+          path: frontend
       - node/install:
           install-yarn: true
           node-version: latest
