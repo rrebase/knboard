@@ -25,7 +25,7 @@ jobs:
           name: Run Jest tests
           command: yarn --cwd frontend test:ci
           environment:
-            JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
+            JEST_JUNIT_OUTPUT_DIR: './reports/junit/js-test-results.xml'
       - store_artifacts:
           path: reports
       - store_test_results:
