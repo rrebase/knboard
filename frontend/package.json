@@ -63,6 +63,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit",
     "test:coverage": "yarn test --watchAll false --coverage",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "lint:fix": "yarn lint --quiet --fix",
