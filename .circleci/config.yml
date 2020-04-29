@@ -4,14 +4,14 @@ jobs:
       - image: 'cimg/base:stable'
     working_directory: ~/project/frontend
     steps:
+      - checkout:
+          path: ~/project
       - node/install:
           install-yarn: true
           node-version: latest
       - run: node --version
       - run: npm --version
       - run: yarn --version
-      - checkout:
-          path: ~/project
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
