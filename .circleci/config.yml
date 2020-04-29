@@ -1,19 +1,15 @@
 jobs:
-  install-node-example:
+  simple-jest-tests:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - checkout
       - node/install:
-          install-yarn: true
-          node-version: latest
+        install-yarn: true
+        node-version: latest
       - run: node --version
-      - run:
-        name: Install packages with Yarn
-        command: yarn --cwd frontend install
-      - run:
-        name: Install JUnit coverage reporter
-        command: yarn --cwd frontend add --dev jest-junit
+      - run: yarn --cwd frontend install
+      - run: yarn --cwd frontend add --dev jest-junit
       - run:
         name: Run tests with JUnit as reporter
         command: yarn --cwd frontend test:ci
@@ -25,4 +21,4 @@ version: 2.1
 workflows:
   test_my_app:
     jobs:
-      - install-node-example
+      - simple-jest-tests
