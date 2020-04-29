@@ -1,14 +1,11 @@
 jobs:
-  install-node-example:
+  test:
     docker:
-      - image: 'cimg/base:stable'
+      - image: circleci/node:lts
     working_directory: ~/project/frontend
     steps:
       - checkout:
           path: ~/project
-      - node/install:
-          install-yarn: true
-          node-version: latest
       - run: node --version
       - run: npm --version
       - run: yarn --version
@@ -18,13 +15,15 @@ jobs:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
-      - run: yarn
+      - run:
+          name: Install dependencies
+          command: yarn --frozen-lockfile
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
-          name: Run Jest tests
+          name: Run Unit Tests
           command: yarn --cwd frontend test:ci
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
@@ -35,7 +34,8 @@ jobs:
 orbs:
   node: circleci/node@2.0.3
 version: 2.1
+
 workflows:
-  test_my_app:
+  default:
     jobs:
-      - install-node-example
+      - test
