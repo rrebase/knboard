@@ -16,6 +16,10 @@ jobs:
           command: yarn --cwd frontend test:ci
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
+      - store_artifacts:
+          path: ./test-results/junit
+      - store_test_results:
+          path: ./test-results
 orbs:
   node: circleci/node@2.0.3
 version: 2.1
