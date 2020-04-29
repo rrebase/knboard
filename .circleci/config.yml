@@ -1,0 +1,17 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@2.0.3
+
+jobs:
+  build:
+    executor:
+      name: node/default
+      tag: "12"
+
+    steps:
+      - checkout
+      - node/with-cache
+        steps:
+          - run yarn install
+      - run yarn test

@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: django.Dockerfile
+    image: knboard_django
+    expose:
+      - "8000"
+    volumes:
+      - "django-static:/app/static"
+      - "/var/log/knboard:/var/log/knboard"
+      - "./backend/settings:/app/settings"
+    depends_on:
+      - postgres
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    image: knboard_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "django-static:/usr/share/nginx/django-static"
+      - "./production/nginx/nginx.conf:/etc/nginx/nginx.conf"
+    depends_on:
+      - django
+
+  postgres:
+    image: postgres:12
+    expose:
+      - "5432"
+    volumes:
+      - "/var/lib/postgresql/knboard:/var/lib/postgresql/data"
+
+volumes:
+  django-static:

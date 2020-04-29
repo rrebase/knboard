@@ -38,7 +38,7 @@ urlpatterns = [
     url(r"^api-auth/", include("rest_framework.urls")),
     url(r"^dj-rest-auth/", include("dj_rest_auth.urls")),
     url(r"^dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("tagauks/", admin.site.urls),
+    path("backdoor/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
