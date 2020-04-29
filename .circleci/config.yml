@@ -10,6 +10,7 @@ jobs:
           node-version: latest
       - run: node --version
       - run: yarn --cwd frontend install
+      - run: yarn --cwd frontend add jest-junit
       - run: yarn --cwd frontend test:ci
 orbs:
   node: circleci/node@2.0.3
