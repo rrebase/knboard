@@ -9,8 +9,8 @@ jobs:
           install-yarn: true
           node-version: latest
       - run: node --version
-      - run: yarn install
-      - run: yarn test
+      - run: yarn --cwd frontend install
+      - run: yarn --cwd frontend test:ci
 orbs:
   node: circleci/node@2.0.3
 version: 2.1
