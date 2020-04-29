@@ -8,6 +8,8 @@ jobs:
       - node/install:
           install-yarn: true
           node-version: latest
+      - run: pwd
+      - run: ls
       - run: node --version
       - run: yarn install
       - run: yarn test
