@@ -8,8 +8,17 @@ jobs:
           install-yarn: true
           node-version: latest
       - run: node --version
-      - run: yarn --cwd frontend install
-      - run: yarn --cwd frontend test
+      - run:
+        name: Install packages with Yarn
+        command: yarn --cwd frontend install
+      - run:
+        name: Install JUnit coverage reporter
+        command: yarn --cwd frontend add --dev jest-junit
+      - run:
+        name: Run tests with JUnit as reporter
+        command: yarn --cwd frontend test:ci
+        environment:
+          JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
 orbs:
   node: circleci/node@2.0.3
 version: 2.1
