@@ -1,17 +1,20 @@
-version: 2.1
-
-orbs:
-  node: circleci/node@2.0.3
-
 jobs:
-  build:
-    executor:
-      name: node/default
-      tag: "12"
-
+  install-node-example:
+    docker:
+      - image: 'cimg/base:stable'
+    working_directory: frontend
     steps:
       - checkout
-      - node/with-cache
-        steps:
-          - run yarn install
-      - run yarn test
+      - node/install:
+          install-yarn: true
+          node-version: latest
+      - run: node --version
+      - run: yarn install
+      - run: yarn test
+orbs:
+  node: circleci/node@x.y
+version: 2.1
+workflows:
+  test_my_app:
+    jobs:
+      - install-node-example
