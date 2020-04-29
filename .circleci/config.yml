@@ -17,9 +17,9 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
       - store_artifacts:
-          path: ./test-results/junit
+          path: reports
       - store_test_results:
-          path: ./test-results
+          path: reports/junit
 orbs:
   node: circleci/node@2.0.3
 version: 2.1
