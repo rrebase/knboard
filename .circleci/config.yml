@@ -4,8 +4,8 @@ jobs:
       - image: 'cimg/base:stable'
     working_directory: ~/project
     steps:
-      - checkout:
-          path: frontend
+      - checkout
+      - run: cd frontend
       - node/install:
           install-yarn: true
           node-version: latest
@@ -19,8 +19,8 @@ jobs:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn --cwd frontend install
-      - run: yarn --cwd frontend add jest-junit
+      - run: yarn install
+      - run: yarn add jest-junit
       - run:
           name: Run Jest tests
           command: yarn --cwd frontend test:ci
