@@ -2,7 +2,7 @@ jobs:
   install-node-example:
     docker:
       - image: 'cimg/base:stable'
-    working_directory: frontend
+    working_directory: ~/frontend
     steps:
       - checkout
       - node/install:
