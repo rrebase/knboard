@@ -2,13 +2,23 @@ jobs:
   install-node-example:
     docker:
       - image: 'cimg/base:stable'
-    working_directory: ~/project/frontend
+    working_directory: ~/project
     steps:
-      - checkout
+      - checkout:
+          path: frontend
       - node/install:
           install-yarn: true
           node-version: latest
-      - run: node --version
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run: yarn --cwd frontend install
       - run: yarn --cwd frontend add jest-junit
       - run:
