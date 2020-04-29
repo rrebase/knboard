@@ -15,12 +15,11 @@ jobs:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
+      - run: yarn
       - save_cache:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install
-      - run: yarn add jest-junit
       - run:
           name: Run Jest tests
           command: yarn --cwd frontend test:ci
