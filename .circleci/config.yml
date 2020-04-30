@@ -1,5 +1,10 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@2.0.3
+
 jobs:
-  test:
+  jest:
     docker:
       - image: circleci/node:lts
     working_directory: ~/project/frontend
@@ -31,11 +36,44 @@ jobs:
           path: reports
       - store_test_results:
           path: reports/junit
-orbs:
-  node: circleci/node@2.0.3
-version: 2.1
+
+  pytest:
+    docker:
+      - image: circleci/python:3.8
+          environment:
+            PIPENV_VENV_IN_PROJECT: true
+            DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+      - image: circleci/postgres:12
+          environment:
+            POSTGRES_USER: root
+            POSTGRES_DB: circle_test
+    working_directory: ~/project/backend
+    steps:
+      - checkout:
+          path: ~/project
+      - run: python --version
+      - run:
+          command: |  # use pipenv to install dependencies
+            sudo pip install pipenv
+            pipenv install
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+      - run:
+          command: |
+            pipenv run python manage.py test
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
+
+
 
 workflows:
   default:
     jobs:
-      - test
+      - jest
