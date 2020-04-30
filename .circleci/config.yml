@@ -78,7 +78,7 @@ workflows:
       - jest
       - pytest
       - cypress/install:
-          cache_key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+          cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
           yarn: true
           working_directory: frontend/
       - cypress/run:
