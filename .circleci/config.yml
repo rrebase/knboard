@@ -4,6 +4,19 @@ orbs:
   cypress: cypress-io/cypress@1
 
 jobs:
+  prepare:
+    steps:
+      - run:
+          name:  Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - cc-test-reporter
+
   jest:
     docker:
       - image: circleci/node:lts
@@ -11,6 +24,8 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - attach_workspace:
+          at: ~/project/tmp
       - run: node --version
       - run: npm --version
       - run: yarn --version
@@ -29,13 +44,19 @@ jobs:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Run Unit Tests
-          command: yarn --cwd frontend test:ci
+          command: |
+          yarn test:ci
+          ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
       - store_artifacts:
           path: reports
       - store_test_results:
           path: reports/junit
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - codeclimate.frontend.json
 
   pytest:
     docker:
@@ -72,9 +93,23 @@ jobs:
       - store_artifacts:
           path: test-results
 
+  upload-coverage:
+    context: knboard
+    environment:
+      - CC_TEST_REPORTER_ID: CODECLIMATE_TEST_REPORTER_ID
+    steps:
+      - attach_workspace:
+          at: ~/repo/tmp
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+
 workflows:
   default:
     jobs:
+      - prepare
       - jest
       - pytest
       - cypress/install:
@@ -91,3 +126,7 @@ workflows:
           start: yarn start
           wait-on: 'http://localhost:3000'
           store_artifacts: true
+      - upload-coverage:
+          requires:
+             - jest
+             - pytest
