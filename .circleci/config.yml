@@ -84,6 +84,7 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+          cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
           no-workspace: true
           yarn: true
           working_directory: frontend
