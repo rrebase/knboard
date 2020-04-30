@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@2.0.3
+  cypress: cypress-io/cypress@1
 
 jobs:
   jest:
@@ -77,3 +77,9 @@ workflows:
     jobs:
       - jest
       - pytest
+      - cypress/run
+          yarn: true
+          working_directory: frontend
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          store_artifacts: true
