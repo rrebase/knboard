@@ -94,7 +94,6 @@ jobs:
           path: test-results
 
   upload-coverage:
-    context: knboard
     environment:
       - CC_TEST_REPORTER_ID: CODECLIMATE_TEST_REPORTER_ID
     steps:
@@ -127,6 +126,7 @@ workflows:
           wait-on: 'http://localhost:3000'
           store_artifacts: true
       - upload-coverage:
+          context: knboard
           requires:
              - jest
              - pytest
