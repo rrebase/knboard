@@ -65,14 +65,12 @@ jobs:
             - "/usr/local/lib/python3.6/site-packages"
       - run:
           command: |
-            pipenv run pytest
+            mkdir test-results
+            pipenv run pytest --junitxml=test-results/junit.xml
       - store_test_results:
           path: test-results
       - store_artifacts:
           path: test-results
-          destination: tr1
-
-
 
 workflows:
   default:
