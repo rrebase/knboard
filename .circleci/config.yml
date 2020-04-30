@@ -77,8 +77,15 @@ workflows:
     jobs:
       - jest
       - pytest
+      - cypress/install:
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/package.json"
+            }}
       - cypress/run:
           yarn: true
+          cache-key: >-
+            cache-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/package.json"
+            }}
           working_directory: frontend
           start: yarn start
           wait-on: 'http://localhost:3000'
