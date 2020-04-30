@@ -77,3 +77,4 @@ workflows:
   default:
     jobs:
       - jest
+      - pytest
