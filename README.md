@@ -1,6 +1,6 @@
 <h1 align="center">Knboard</h1>
 
-<div align="center">🚀 Built with React & Django</div>
+<div align="center">Built with React & Django</div>
 
 ## Quality 💪
 
@@ -8,20 +8,20 @@
 - Tested with Jest, Pytest and Cypress
 - Continuous Integration
 
-## Modern stack
+## Modern stack 💎
 
 ### Frontend
 
+- Typescript
 - React with only functional components and hooks
-- Redux with Redux Toolkit
-- IntelliSense with Typescript
+- Redux Toolkit
 - Unit tests with Jest and React Testing Library
-- Built & styled with Material-UI and Emotion
+- Components & styling with Material-UI and Emotion
 
 ### Backend
 
 - Django REST framework for a powerful API
-- Django ORM for data management
+- Django ORM for interacting with the database
 - PostgreSQL
 - Unit tests with Pytest
 
