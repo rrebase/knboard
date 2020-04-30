@@ -45,8 +45,8 @@ jobs:
       - run:
           name: Run Unit Tests
           command: |
-          yarn test:ci
-          ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
+            yarn test:ci
+            ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
       - store_artifacts:
@@ -75,7 +75,7 @@ jobs:
           path: ~/project
       - run: python --version
       - run:
-          command: |  # use pipenv to install dependencies
+          command: |
             sudo pip install pipenv
             pipenv install
       - save_cache:

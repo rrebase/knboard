@@ -2,6 +2,11 @@
 
 <div align="center">Built with React & Django</div>
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CircleCI](https://circleci.com/gh/rrebase/knboard.svg?style=svg)](https://circleci.com/gh/rrebase/knboard)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1dc1d840640dad52e38f/maintainability)](https://codeclimate.com/github/rrebase/knboard/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1dc1d840640dad52e38f/test_coverage)](https://codeclimate.com/github/rrebase/knboard/test_coverage)
+
 ## Quality 💪
 
 - Auto formatted with Prettier and Black
@@ -36,8 +41,8 @@
 
 - Code samples for blog posts
 - Implementing Auto DevOps
-- Playing with tools that have open source friendly pricing
-- New styling approach with Emotion
+- Playing with tools that are free for open source
+- Styling with Emotion
 
 ## Features ✨
 
