@@ -148,9 +148,9 @@ workflows:
                 at: ~/project/tmp
             - dlreporter
             - run:
-                name: Create
+                name: Format and save coverage
                 command: |
-                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
+                  ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.integration.json coverage/lcov.info
       - upload-coverage:
           requires:
              - jest
