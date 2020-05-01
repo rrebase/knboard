@@ -11,19 +11,6 @@ executors:
       CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
 
 jobs:
-  prepare:
-    steps:
-      - run:
-          name:  Download cc-test-reporter
-          command: |
-            mkdir -p tmp/
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-            chmod +x ./tmp/cc-test-reporter
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - cc-test-reporter
-
   jest:
     docker:
       - image: circleci/node:lts
@@ -115,7 +102,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - prepare
       - jest
       - pytest
       - cypress/install:
