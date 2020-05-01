@@ -151,6 +151,10 @@ workflows:
                 name: Format and save coverage
                 command: |
                   ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
+            - persist_to_workspace:
+                root: tmp
+                paths:
+                  - codeclimate.cypress.json
       - upload-coverage:
           requires:
              - jest
