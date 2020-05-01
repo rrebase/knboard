@@ -140,7 +140,7 @@ workflows:
           no-workspace: true
           yarn: true
           working_directory: frontend
-          start: yarn start
+          start: yarn start:ci
           wait-on: 'http://localhost:3000'
           store_artifacts: true
           post-steps:
