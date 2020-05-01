@@ -88,8 +88,8 @@ jobs:
       - run:
           command: |
             mkdir test-results
-            pipenv run pytest --cov=accounts --cov=boards --cov-report html --junitxml=test-results/junit.xml
-            ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json 
+            pipenv run pytest --cov=accounts --cov=boards --cov-report xml --junitxml=test-results/junit.xml
+            ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json
       - store_test_results:
           path: test-results
       - store_artifacts:
