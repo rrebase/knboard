@@ -106,7 +106,7 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.frontend.json
+            ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.frontend.json
 
 workflows:
   version: 2
