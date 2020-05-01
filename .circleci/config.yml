@@ -120,7 +120,7 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ./tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
+            ./tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 3 -o ./codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
 
 workflows:
@@ -143,6 +143,11 @@ workflows:
           start: yarn start
           wait-on: 'http://localhost:3000'
           store_artifacts: true
+          post-steps:
+            - run:
+                name: Create
+                command: |
+                  ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.cypress.json coverage/frontend/lcov.info
       - upload-coverage:
           requires:
              - jest
