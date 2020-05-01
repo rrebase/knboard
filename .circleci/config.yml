@@ -3,13 +3,6 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 
-executors:
-  default:
-    docker:
-      - image: cypress/base:12.16.1
-    environment:
-      CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
-
 jobs:
   jest:
     docker:
@@ -97,7 +90,10 @@ jobs:
 
   upload-coverage:
     docker:
-      - image: cypress/base:12.16.1
+      - image: circleci/node:lts
+    environment:
+      CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
+    working_directory: ~/project/tmp
     steps:
       - attach_workspace:
           at: ~/project/tmp
@@ -114,6 +110,7 @@ jobs:
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 
 workflows:
+  version: 2
   default:
     jobs:
       - jest
@@ -133,7 +130,6 @@ workflows:
           wait-on: 'http://localhost:3000'
           store_artifacts: true
       - upload-coverage:
-          context: knboard
           requires:
              - jest
              - pytest
