@@ -88,6 +88,8 @@ jobs:
           path: test-results
 
   upload-coverage:
+    docker:
+      - image: cypress/base:12.16.1
     environment:
       - CC_TEST_REPORTER_ID: CODECLIMATE_TEST_REPORTER_ID
     steps:
