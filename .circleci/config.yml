@@ -37,7 +37,7 @@ jobs:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - attach_workspace:
-          at: ~/repo/tmp
+          at: ~/project/tmp
       - run:
           name:  Download cc-test-reporter
           command: |
@@ -102,7 +102,7 @@ jobs:
       - CC_TEST_REPORTER_ID: CODECLIMATE_TEST_REPORTER_ID
     steps:
       - attach_workspace:
-          at: ~/repo/tmp
+          at: ~/project/tmp
       - run:
           name: Upload coverage results to Code Climate
           command: |
