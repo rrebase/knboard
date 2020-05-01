@@ -86,8 +86,8 @@ jobs:
             - "/usr/local/lib/python3.8/site-packages"
       - dlreporter
       - run:
+          name: Run pytest with coverage
           command: |
-            name: Run pytest with coverage
             mkdir test-results
             pipenv run pytest --cov=accounts --cov=boards --cov-report xml --junitxml=test-results/junit.xml
             ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json
