@@ -43,7 +43,7 @@ jobs:
           at: ~/project/tmp
       - dlreporter
       - run:
-          name: Run Unit Tests
+          name: Run jest with coverage
           command: |
             yarn test:ci
             ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
@@ -87,6 +87,7 @@ jobs:
       - dlreporter
       - run:
           command: |
+            name: Run pytest with coverage
             mkdir test-results
             pipenv run pytest --cov=accounts --cov=boards --cov-report xml --junitxml=test-results/junit.xml
             ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json
@@ -113,7 +114,8 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.frontend.json
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
 
 workflows:
   version: 2
