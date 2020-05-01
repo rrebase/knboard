@@ -5,7 +5,6 @@ orbs:
 
 commands:
   dlreporter:
-    description: "Download reporter"
     steps:
       - run:
           name:  Download cc-test-reporter
@@ -13,7 +12,6 @@ commands:
             mkdir -p tmp/
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
-
 
 jobs:
   jest:
@@ -90,7 +88,8 @@ jobs:
       - run:
           command: |
             mkdir test-results
-            pipenv run pytest --junitxml=test-results/junit.xml
+            pipenv run pytest --cov=accounts --cov=boards --cov-report html --junitxml=test-results/junit.xml
+            ./tmp/cc-test-reporter -o tmp/codeclimate.backend.json
       - store_test_results:
           path: test-results
       - store_artifacts:
