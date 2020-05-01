@@ -150,7 +150,7 @@ workflows:
             - run:
                 name: Format and save coverage
                 command: |
-                  ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.integration.json coverage/lcov.info
+                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
       - upload-coverage:
           requires:
              - jest
