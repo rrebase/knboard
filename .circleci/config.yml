@@ -3,6 +3,13 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 
+executors:
+  default:
+    docker:
+      - image: cypress/base:12.16.1
+    environment:
+      CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
+
 jobs:
   prepare:
     steps:
