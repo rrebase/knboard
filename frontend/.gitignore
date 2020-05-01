@@ -1,5 +1,7 @@
 node_modules/
+.nyc_output/
 coverage/
+junit.xml
 cypress/screenshots/
 *.log
 Experiment.tsx
