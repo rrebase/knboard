@@ -129,20 +129,20 @@ workflows:
     jobs:
       - jest
       - pytest
-#      - cypress/install:
-#          cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
-#          yarn: true
-#          working_directory: frontend/
-#      - cypress/run:
-#          requires:
-#            - cypress/install
-#          cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
-#          no-workspace: true
-#          yarn: true
-#          working_directory: frontend
-#          start: yarn start
-#          wait-on: 'http://localhost:3000'
-#          store_artifacts: true
+      - cypress/install:
+          # cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+          yarn: true
+          working_directory: frontend/
+      - cypress/run:
+          requires:
+            - cypress/install
+          # cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+          no-workspace: true
+          yarn: true
+          working_directory: frontend
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          store_artifacts: true
       - upload-coverage:
           requires:
              - jest
