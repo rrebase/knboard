@@ -98,11 +98,15 @@ jobs:
   upload-coverage:
     docker:
       - image: cypress/base:12.16.1
-    environment:
-      - CC_TEST_REPORTER_ID: CODECLIMATE_TEST_REPORTER_ID
     steps:
       - attach_workspace:
           at: ~/project/tmp
+      - run:
+          name:  Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
       - run:
           name: Upload coverage results to Code Climate
           command: |
