@@ -62,6 +62,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "start:ci": "env CI=true craco start",
     "build": "craco build",
     "test": "craco test",
     "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit",
