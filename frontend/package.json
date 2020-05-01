@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.8.7",
     "@craco/craco": "5.6.3",
+    "@cypress/instrument-cra": "^1.1.1",
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
@@ -62,7 +63,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:ci": "env CI=true craco start",
+    "start:ci": "craco -r @cypress/instrument-cra start",
     "build": "craco build",
     "test": "craco test",
     "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit",
