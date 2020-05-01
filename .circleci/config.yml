@@ -36,6 +36,8 @@ jobs:
           paths:
             - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - attach_workspace:
+          at: ~/repo/tmp
       - run:
           name:  Download cc-test-reporter
           command: |
