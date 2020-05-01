@@ -144,10 +144,13 @@ workflows:
           wait-on: 'http://localhost:3000'
           store_artifacts: true
           post-steps:
+            - attach_workspace:
+                at: ~/project/tmp
+            - dlreporter
             - run:
                 name: Create
                 command: |
-                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/frontend/coverage/clover.xml
+                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
       - upload-coverage:
           requires:
              - jest
