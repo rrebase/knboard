@@ -147,7 +147,7 @@ workflows:
             - run:
                 name: Create
                 command: |
-                  ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.cypress.json frontend/coverage/lcov.info
+                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json coverage/clover.xml
       - upload-coverage:
           requires:
              - jest
