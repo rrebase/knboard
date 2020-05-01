@@ -84,6 +84,8 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.8/site-packages"
+      - attach_workspace:
+          at: ~/project/tmp
       - dlreporter
       - run:
           name: Run pytest with coverage
@@ -95,6 +97,10 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-results
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - codeclimate.backend.json
 
   upload-coverage:
     docker:
