@@ -108,8 +108,10 @@ jobs:
       - image: circleci/node:lts
     environment:
       CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
-    working_directory: ~/project/tmp
+    working_directory: ~/project/frontend
     steps:
+      - checkout:
+          path: ~/project
       - attach_workspace:
           at: ~/project/tmp
       - run:
@@ -118,19 +120,19 @@ jobs:
             mkdir -p tmp/
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
-      - run: npm install -g nyc
       - run:
           name: Upload coverage results to Code Climate
           command: |
             mkdir reports
-            cp cypress-coverage-final.json reports/from-cypress.json
-            cp jest-coverage-final.json reports/from-jest.json
-            nyc merge reports
+            cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
+            cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
+            yarn nyc merge reports
+            mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
-            nyc report --report --reporter lcov --report-dir combined-coverage
-            ./tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
-            ./tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
+            yarn nyc report --report --reporter lcov --report-dir combined-coverage
+            ~/project/tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
+            ~/project/tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
+            ~/project/tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
 
 workflows:
   version: 2
