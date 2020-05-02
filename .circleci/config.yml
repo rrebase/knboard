@@ -131,6 +131,7 @@ jobs:
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
             cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
+            sed -i 's/\/home\/circleci/\/root/g' reports/from-jest.json
             cp ~/project/tmp/codeclimate.backend.json .
             yarn nyc merge reports
             mkdir .nyc_output
