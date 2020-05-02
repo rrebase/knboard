@@ -120,14 +120,13 @@ jobs:
             mkdir -p tmp/
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
+      - run: yarn --frozen-lockfile
       - run:
           name: Upload coverage results to Code Climate
           command: |
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
             cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
-            pwd
-            cd ~/project/frontend
             yarn nyc merge reports
             mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
@@ -161,11 +160,6 @@ workflows:
             - attach_workspace:
                 at: ~/project/tmp
             - run: cp ~/project/frontend/cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
-#            - dlreporter
-#            - run:
-#                name: Format and save coverage
-#                command: |
-#                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
             - persist_to_workspace:
                 root: tmp
                 paths:
