@@ -122,7 +122,7 @@ jobs:
             chmod +x ./tmp/cc-test-reporter
       - run: yarn --frozen-lockfile
       - run:
-          name: Upload coverage results to Code Climate
+          name: Merge jest and cypress coverage reports
           command: |
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
@@ -133,8 +133,12 @@ jobs:
             mv coverage.json .nyc_output/out.json
             yarn nyc report --report --reporter lcov --report-dir combined-coverage
             tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
+      - run:
+          name: Sum and Upload coverage results to Code Climate
+          command: |
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
+      - run: zip -r combined-coverage.zip combined-coverage
       - store_artifacts:
           path: combined-coverage
 
