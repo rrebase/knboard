@@ -26,6 +26,7 @@ const Container = styled.div`
 
 const PrimaryText = styled.h3`
   margin-top: 0;
+  word-break: break-all;
 `;
 
 const Main = styled.div`
@@ -37,6 +38,7 @@ const SecondaryText = styled.p`
   margin: 0;
   font-size: 14px;
   color: #777;
+  word-break: break-all;
 `;
 
 const ConfirmAction = styled.div`

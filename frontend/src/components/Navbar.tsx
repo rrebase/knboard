@@ -1,11 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faTh } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
-import { css } from "@emotion/core";
 import { barHeight } from "const";
 import UserMenu from "./UserMenu";
+import { faRocket } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   min-height: ${barHeight}px;
@@ -40,18 +38,7 @@ const Navbar = () => {
     <Container>
       <Item>
         <Icons>
-          <NavLink
-            to="/"
-            exact
-            css={css`
-              margin-right: 0.75rem;
-            `}
-          >
-            <FontAwesomeIcon icon={faHome} />
-          </NavLink>
-          <NavLink exact to="/boards">
-            <FontAwesomeIcon icon={faTh} />
-          </NavLink>
+          <FontAwesomeIcon icon={faRocket} />
         </Icons>
       </Item>
       <Item>Knboard</Item>
