@@ -44,9 +44,8 @@ jobs:
       - dlreporter
       - run:
           name: Run jest with coverage
-          command: |
-            yarn test:ci
-            ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
+          command: yarn test:ci
+#           ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
       - store_artifacts:
@@ -56,7 +55,7 @@ jobs:
       - persist_to_workspace:
           root: tmp
           paths:
-            - codeclimate.frontend.json
+            - ~/project/frontend/jest-coverage/jest-coverage-final.json
 
   pytest:
     docker:
@@ -117,10 +116,18 @@ jobs:
             mkdir -p tmp/
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
+      - run: npm install -g nyc
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ./tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 3 -o ./codeclimate.total.json
+            mkdir reports
+            cp cypress-coverage-final.json reports/from-cypress.json
+            cp jest-coverage-final.json reports/from-jest.json
+            nyc merge reports
+            mv coverage.json .nyc_output/out.json
+            nyc report --report --reporter lcov --report-dir combined-coverage
+            ./tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
+            ./tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
 
 workflows:
@@ -146,15 +153,15 @@ workflows:
           post-steps:
             - attach_workspace:
                 at: ~/project/tmp
-            - dlreporter
-            - run:
-                name: Format and save coverage
-                command: |
-                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
+#            - dlreporter
+#            - run:
+#                name: Format and save coverage
+#                command: |
+#                  ./tmp/cc-test-reporter format-coverage -t clover -o tmp/codeclimate.cypress.json ~/project/frontend/coverage/clover.xml
             - persist_to_workspace:
                 root: tmp
                 paths:
-                  - codeclimate.cypress.json
+                  - ~/project/frontend/cypress-coverage/cypress-coverage-final.json
       - upload-coverage:
           requires:
              - jest
