@@ -127,14 +127,16 @@ jobs:
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
             cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
+            cp ~/project/tmp/codeclimate.backend.json .
             yarn nyc merge reports
             mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
             yarn nyc report --report --reporter lcov --report-dir combined-coverage
             tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
-            cp ../tmp/codeclimate.backend.json .
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
+      - store_artifacts:
+          path: combined-coverage
 
 workflows:
   version: 2
