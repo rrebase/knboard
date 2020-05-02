@@ -7,22 +7,24 @@ import {
   axiosMock
 } from "utils/testHelpers";
 import { API_USERS } from "api";
+import { User, UserDetail } from "types";
 
 /* eslint-disable @typescript-eslint/camelcase */
-const steveDetail = {
+const steveDetail: UserDetail = {
   id: 1,
   username: "steve",
   first_name: "Steve",
   last_name: "Apple",
   email: "steve@gmail.com",
-  avatar: "",
+  avatar: null,
   date_joined: new Date().toISOString()
 };
 
-const steveAuthUser = {
+const steveAuthUser: User = {
   key: "627a1758dff1cdde4f52578b0b6fdbf7b1c6d9b6",
   id: 1,
-  username: "steve"
+  username: "steve",
+  photo_url: null
 };
 
 it("should handle null userDetail", () => {

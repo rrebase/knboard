@@ -9,8 +9,11 @@ import {
 import { fetchAllBoards } from "./BoardSlice";
 import { API_BOARDS } from "api";
 import boardReducer from "features/board/BoardSlice";
+import { Board } from "types";
 
-const boards = [{ id: 1, name: "Internals" }];
+const boards: Board[] = [
+  { id: 1, name: "Internals", owner: { id: 1 }, members: [] }
+];
 
 it("should fetch and render board list", async () => {
   axiosMock.onGet(API_BOARDS).reply(200, boards);

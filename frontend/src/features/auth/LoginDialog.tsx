@@ -10,10 +10,11 @@ import {
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "./AuthSlice";
+import { login, clearErrors } from "./AuthSlice";
 import { RootState } from "store";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
+import Close from "components/Close";
 
 const FormActions = styled.div`
   margin-top: 1rem;
@@ -39,6 +40,7 @@ const LoginDialog = () => {
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(clearErrors());
   };
 
   const onSubmit = handleSubmit(({ username, password }) => {
@@ -59,6 +61,7 @@ const LoginDialog = () => {
       <Dialog
         open={open}
         onClose={handleClose}
+        keepMounted={false}
         aria-labelledby="login-dialog-title"
         css={css`
           & .MuiDialog-paper {
@@ -68,6 +71,7 @@ const LoginDialog = () => {
         maxWidth="xs"
         fullWidth
       >
+        <Close onClose={handleClose} />
         <DialogTitle id="login-dialog-title">Login</DialogTitle>
         <form onSubmit={onSubmit}>
           <DialogContent>
