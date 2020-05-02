@@ -1,5 +1,0 @@
-node_modules/
-coverage/
-cypress/screenshots/
-*.log
-Experiment.tsx

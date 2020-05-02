@@ -11,6 +11,9 @@ __pycache__/
 
 # Unit test / coverage reports
 htmlcov/
+reports/
+test-results/
+*coverage/
 .tox/
 .coverage
 .coverage.*
@@ -22,6 +25,9 @@ coverage.xml
 .nyc_output
 coverage
 lib-cov
+junit.xml
+
+cypress/screenshots/
 
 # Translations
 *.mo
@@ -104,3 +110,6 @@ node_modules/
 
 # Session
 Session.vim
+
+# Experimental files
+Experiment.tsx

@@ -1,0 +1,176 @@
+version: 2.1
+
+orbs:
+  cypress: cypress-io/cypress@1
+
+commands:
+  dlreporter:
+    steps:
+      - run:
+          name:  Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+
+jobs:
+  jest:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/project/frontend
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project/tmp
+      - run: node --version
+      - run: npm --version
+      - run: yarn --version
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - run:
+          name: Install dependencies
+          command: yarn --frozen-lockfile
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - attach_workspace:
+          at: ~/project/tmp
+      - dlreporter
+      - run:
+          name: Run jest with coverage
+          command: |
+            yarn test:ci
+            cp jest-coverage/coverage-final.json tmp/jest-coverage-final.json
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
+      - store_artifacts:
+          path: reports
+      - store_test_results:
+          path: reports/junit
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - jest-coverage-final.json
+
+  pytest:
+    docker:
+      - image: circleci/python:3.8
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+      - image: circleci/postgres:12
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+    working_directory: ~/project/backend
+    steps:
+      - checkout:
+          path: ~/project
+      - run: python --version
+      - run:
+          command: |
+            sudo pip install pipenv
+            pipenv install
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.8/site-packages"
+      - attach_workspace:
+          at: ~/project/tmp
+      - dlreporter
+      - run:
+          name: Run pytest with coverage
+          command: |
+            mkdir test-results
+            pipenv run pytest --cov=accounts --cov=boards --cov-report=html --cov-report=xml --junitxml=test-results/junit.xml
+            ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: htmlcov
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - codeclimate.backend.json
+
+  upload-coverage:
+    docker:
+      - image: circleci/node:lts
+    environment:
+      CC_TEST_REPORTER_ID: a19da03aeca04b61b6d65b92e0e8a412ebdaa13d6b2bd12a22cdf4a1e0ecc3fc
+    working_directory: ~/project/frontend
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project/tmp
+      - run:
+          name:  Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+      - run:
+          name: Install instanbul cli
+          command: |
+            rm package.json
+            rm yarn.lock
+            yarn add nyc
+      - run:
+          name: Merge jest and cypress coverage reports
+          command: |
+            mkdir reports
+            cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
+            cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
+            sed -i "s/\/root/\/home\/circleci/g" reports/from-cypress.json
+            cp ~/project/tmp/codeclimate.backend.json .
+            yarn nyc merge reports
+            mkdir .nyc_output
+            mv coverage.json .nyc_output/out.json
+            yarn nyc report --report --reporter lcov --report-dir jest-cypress
+            tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json jest-cypress/lcov.info
+      - run:
+          name: Sum and Upload coverage results to Code Climate
+          command: |
+            tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
+            tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
+      - store_artifacts:
+          path: jest-cypress
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - jest
+      - pytest
+      - cypress/run:
+          cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+          no-workspace: true
+          yarn: true
+          working_directory: frontend
+          start: yarn start:ci
+          wait-on: "http://localhost:3000"
+          store_artifacts: true
+          post-steps:
+            - attach_workspace:
+                at: ~/project/tmp
+            - run:
+                name: Copy coverage to workspace
+                command: cp ~/project/frontend/cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
+            - persist_to_workspace:
+                root: tmp
+                paths:
+                  cypress-coverage-final.json
+      - upload-coverage:
+          requires:
+             - jest
+             - pytest
+             - cypress/run
