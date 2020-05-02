@@ -10,10 +10,10 @@ class Command(BaseCommand):
     help = "Load board with a lot of tasks for benchmarking"
 
     def add_arguments(self, parser):
-        parser.add_argument('-f', '--force', required=False, type=bool)
+        parser.add_argument("-f", "--force", required=False, type=bool)
 
     def handle(self, *args, **options):
-        force = options['force']
+        force = options["force"]
 
         if not settings.DEBUG:
             raise CommandError("Command not meant for production")

@@ -14,7 +14,7 @@ commands:
             chmod +x ./tmp/cc-test-reporter
 
 jobs:
-  jest:
+  frontend:
     docker:
       - image: circleci/node:lts
     working_directory: ~/project/frontend
@@ -40,6 +40,9 @@ jobs:
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - attach_workspace:
           at: ~/project/tmp
+      - run:
+          name: Check quality with eslint
+          command: yarn lint:ci
       - dlreporter
       - run:
           name: Run jest with coverage
@@ -57,7 +60,7 @@ jobs:
           paths:
             - jest-coverage-final.json
 
-  pytest:
+  backend:
     docker:
       - image: circleci/python:3.8
         environment:
@@ -85,6 +88,9 @@ jobs:
             - "/usr/local/lib/python3.8/site-packages"
       - attach_workspace:
           at: ~/project/tmp
+      - run:
+          name: Check formatting with black
+          command: pipenv run black --exclude .venv . --check
       - dlreporter
       - run:
           name: Run pytest with coverage
@@ -149,8 +155,8 @@ workflows:
   version: 2
   default:
     jobs:
-      - jest
-      - pytest
+      - frontend
+      - backend
       - cypress/run:
           cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
           no-workspace: true
@@ -171,6 +177,6 @@ workflows:
                   cypress-coverage-final.json
       - upload-coverage:
           requires:
-             - jest
-             - pytest
+             - frontend
+             - backend
              - cypress/run

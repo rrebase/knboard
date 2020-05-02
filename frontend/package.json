@@ -71,6 +71,7 @@
     "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit --coverageDirectory=jest-coverage",
     "test:coverage": "yarn test --coverage --watchAll=false --coverageDirectory=jest-coverage",
     "lint": "eslint '*/**/*.{ts,tsx}'",
+    "lint:ci": "yarn lint --max-warnings=1",
     "lint:fix": "yarn lint --quiet --fix",
     "cypress:open": "cypress open"
   },
