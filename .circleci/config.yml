@@ -146,7 +146,8 @@ jobs:
           name: Zip combined-coverage for storing to artifacts
           command: zip -r combined-coverage.zip combined-coverage
       - store_artifacts:
-          path: combined-coverage.zip
+          path: combined-coverage
+          destination: combined-coverage
 
 workflows:
   version: 2
