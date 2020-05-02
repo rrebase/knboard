@@ -67,8 +67,8 @@
     "start:ci": "craco -r @cypress/instrument-cra start",
     "build": "craco build",
     "test": "craco test",
-    "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit",
-    "test:coverage": "yarn test --watchAll false --coverage",
+    "test:ci": "craco test --ci --coverage --reporters=default --reporters=jest-junit --coverageDirectory=jest-coverage",
+    "test:coverage": "yarn test --coverage --watchAll=false --coverageDirectory=jest-coverage",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "lint:fix": "yarn lint --quiet --fix",
     "cypress:open": "cypress open"
@@ -90,6 +90,7 @@
   },
   "proxy": "http://localhost:8000",
   "nyc": {
+    "report-dir": "cypress-coverage",
     "exclude": [
       "cypress"
     ]

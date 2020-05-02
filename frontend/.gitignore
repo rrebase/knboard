@@ -1,6 +1,6 @@
 node_modules/
 .nyc_output/
-coverage/
+*coverage/
 junit.xml
 cypress/screenshots/
 *.log
