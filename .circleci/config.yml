@@ -126,6 +126,8 @@ jobs:
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
             cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
+            pwd
+            cd ~/project/frontend
             yarn nyc merge reports
             mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
