@@ -47,7 +47,6 @@ jobs:
           command: |
             yarn test:ci
             cp jest-coverage/coverage-final.json tmp/jest-coverage-final.json
-#           ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/frontend/lcov.info
           environment:
             JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
       - store_artifacts:
@@ -120,7 +119,9 @@ jobs:
             mkdir -p tmp/
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
-      - run: yarn --frozen-lockfile
+      - run:
+          name: Install dependencies
+          command: yarn --frozen-lockfile
       - run:
           name: Merge jest and cypress coverage reports
           command: |
@@ -138,9 +139,11 @@ jobs:
           command: |
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
-      - run: zip -r combined-coverage.zip combined-coverage
+      - run:
+          name: Zip combined-coverage for storing to artifacts
+          command: zip -r combined-coverage.zip combined-coverage
       - store_artifacts:
-          path: combined-coverage
+          path: combined-coverage.zip
 
 workflows:
   version: 2
@@ -165,7 +168,9 @@ workflows:
           post-steps:
             - attach_workspace:
                 at: ~/project/tmp
-            - run: cp ~/project/frontend/cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
+            - run:
+                name: Copy coverage to workspace
+                command: cp ~/project/frontend/cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
             - persist_to_workspace:
                 root: tmp
                 paths:
