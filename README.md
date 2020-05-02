@@ -1,7 +1,7 @@
 <h1 align="center">Knboard</h1>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome][prs-badge]][prs]
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 [![CircleCI](https://circleci.com/gh/rrebase/knboard.svg?style=svg)](https://circleci.com/gh/rrebase/knboard)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1dc1d840640dad52e38f/maintainability)](https://codeclimate.com/github/rrebase/knboard/maintainability)
