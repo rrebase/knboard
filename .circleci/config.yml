@@ -91,12 +91,12 @@ jobs:
           name: Run pytest with coverage
           command: |
             mkdir test-results
-            pipenv run pytest --cov=accounts --cov=boards --cov-report xml --junitxml=test-results/junit.xml
+            pipenv run pytest --cov=accounts --cov=boards --cov-report=html --cov-report=xml --junitxml=test-results/junit.xml
             ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json
       - store_test_results:
           path: test-results
       - store_artifacts:
-          path: test-results
+          path: htmlcov
       - persist_to_workspace:
           root: tmp
           paths:
@@ -136,17 +136,15 @@ jobs:
             yarn nyc merge reports
             mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
-            yarn nyc report --report --reporter lcov --report-dir combined-coverage
-            tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json combined-coverage/lcov.info
+            yarn nyc report --report --reporter lcov --report-dir jest-cypress-report
+            tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json jest-cypress-report/lcov.info
       - run:
           name: Sum and Upload coverage results to Code Climate
           command: |
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
-            cp -r reports combined-coverage
       - store_artifacts:
-          path: combined-coverage
-          destination: combined-coverage
+          path: jest-cypress-report
 
 workflows:
   version: 2
