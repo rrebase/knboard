@@ -155,7 +155,7 @@ workflows:
           post-steps:
             - attach_workspace:
                 at: ~/project/tmp
-            - run: cp cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
+            - run: cp ~/project/frontend/cypress-coverage/coverage-final.json tmp/cypress-coverage-final.json
 #            - dlreporter
 #            - run:
 #                name: Format and save coverage
