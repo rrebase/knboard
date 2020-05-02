@@ -142,9 +142,7 @@ jobs:
           command: |
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
-      - run:
-          name: Zip combined-coverage for storing to artifacts
-          command: zip -r combined-coverage.zip combined-coverage
+            cp -r reports combined-coverage
       - store_artifacts:
           path: combined-coverage
           destination: combined-coverage
