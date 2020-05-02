@@ -120,8 +120,11 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
             chmod +x ./tmp/cc-test-reporter
       - run:
-          name: Install dependencies
-          command: yarn --frozen-lockfile
+          name: Install instanbul cli
+          command: |
+            rm package.json
+            rm yarn.lock
+            yarn add nyc
       - run:
           name: Merge jest and cypress coverage reports
           command: |
