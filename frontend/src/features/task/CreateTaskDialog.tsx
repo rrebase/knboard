@@ -126,6 +126,7 @@ const CreateTaskDialog = () => {
         <TextField
           autoFocus
           id="create-task-title"
+          data-testid="create-task-title"
           label="Short Title"
           value={title}
           onChange={e => setTitle(e.target.value)}
@@ -247,6 +248,7 @@ const CreateTaskDialog = () => {
           size="small"
           onClick={handleCreate}
           disabled={createLoading}
+          data-testid="task-create"
         >
           Create Task
         </Button>

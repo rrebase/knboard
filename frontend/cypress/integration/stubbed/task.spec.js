@@ -9,6 +9,24 @@ context("Task", () => {
     cy.visit("/b/1/");
   });
 
+  it("should create task", () => {
+    const taskTitle = "Improve CI";
+    cy.route("POST", "api/tasks/", {
+      title: taskTitle,
+      description: "",
+      column: 1,
+      assignees: [],
+      priority: "M"
+    });
+
+    cy.findAllByText("Add another card")
+      .first()
+      .click();
+    cy.findByTestId("create-task-title").type(taskTitle);
+    cy.findByTestId("task-create").click();
+    cy.findByText(taskTitle).should("be.visible");
+  });
+
   it("should move task down successfully", () => {
     cy.route("POST", "/api/sort/task/", "").as("sortTasks");
 
@@ -82,20 +100,6 @@ context("Task", () => {
     cy.findByText("Fresh").should("be.visible");
     cy.findByText("Fresh").type(" one{enter}");
     cy.findByText("Fresh one").should("be.visible");
-  });
-
-  it("should successfully edit task description", () => {
-    cy.route("PATCH", "api/tasks/1/", "");
-
-    cy.findByTestId("task-1").click();
-    cy.findByTestId("task-description").click();
-    cy.get("#textarea").type(
-      "Implement the landing page.\n\n### Definition of Done\n" +
-        "- matches provided design\n- 💨 (smoke) tests"
-    );
-    cy.findByTestId("save-description").click();
-    cy.findAllByTestId("save-description").should("not.exist");
-    cy.findByText("Definition of Done").should("be.visible");
   });
 
   it("should successfully edit task priority", () => {
