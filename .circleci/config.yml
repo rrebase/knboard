@@ -28,7 +28,6 @@ jobs:
       - run: yarn --version
       - restore_cache:
           keys:
-            # when lock file changes, use increasingly general patterns to restore cache
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
@@ -48,7 +47,7 @@ jobs:
             yarn test:ci
             cp jest-coverage/coverage-final.json tmp/jest-coverage-final.json
           environment:
-            JEST_JUNIT_OUTPUT_DIR: 'reports/junit/js-test-results.xml'
+            JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
       - store_artifacts:
           path: reports
       - store_test_results:
@@ -131,20 +130,20 @@ jobs:
             mkdir reports
             cp ~/project/tmp/cypress-coverage-final.json reports/from-cypress.json
             cp ~/project/tmp/jest-coverage-final.json reports/from-jest.json
-            sed -i 's/\/root/\/home\/circleci/g' reports/from-cypress.json
+            sed -i "s/\/root/\/home\/circleci/g" reports/from-cypress.json
             cp ~/project/tmp/codeclimate.backend.json .
             yarn nyc merge reports
             mkdir .nyc_output
             mv coverage.json .nyc_output/out.json
-            yarn nyc report --report --reporter lcov --report-dir jest-cypress-report
-            tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json jest-cypress-report/lcov.info
+            yarn nyc report --report --reporter lcov --report-dir jest-cypress
+            tmp/cc-test-reporter format-coverage -t lcov -o codeclimate.jest-cypress.json jest-cypress/lcov.info
       - run:
           name: Sum and Upload coverage results to Code Climate
           command: |
             tmp/cc-test-reporter sum-coverage ./codeclimate.*.json -p 2 -o ./codeclimate.total.json
             tmp/cc-test-reporter upload-coverage -i ./codeclimate.total.json
       - store_artifacts:
-          path: jest-cypress-report
+          path: jest-cypress
 
 workflows:
   version: 2
@@ -158,7 +157,7 @@ workflows:
           yarn: true
           working_directory: frontend
           start: yarn start:ci
-          wait-on: 'http://localhost:3000'
+          wait-on: "http://localhost:3000"
           store_artifacts: true
           post-steps:
             - attach_workspace:
