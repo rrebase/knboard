@@ -10,9 +10,10 @@ import {
 import { Alert } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import { register as registerUser } from "./AuthSlice";
+import { register as registerUser, clearErrors } from "./AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
+import Close from "components/Close";
 
 const FormActions = styled.div`
   margin-top: 1rem;
@@ -49,6 +50,7 @@ const RegisterDialog = () => {
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(clearErrors());
   };
 
   const onSubmit = handleSubmit(fields => {
@@ -67,6 +69,7 @@ const RegisterDialog = () => {
             background-color: #e2e3e6;
           }
         `}
+        data-testid="open-register-btn"
         onClick={handleOpen}
       >
         Register
@@ -74,6 +77,7 @@ const RegisterDialog = () => {
       <Dialog
         open={open}
         onClose={handleClose}
+        keepMounted={false}
         aria-labelledby="register-dialog-title"
         css={css`
           & .MuiDialog-paper {
@@ -83,6 +87,7 @@ const RegisterDialog = () => {
         maxWidth="xs"
         fullWidth
       >
+        <Close onClose={handleClose} />
         <DialogTitle id="register-dialog-title">Register</DialogTitle>
         <form onSubmit={onSubmit}>
           <DialogContent>

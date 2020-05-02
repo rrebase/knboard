@@ -31,6 +31,8 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
 
+  // TODO: Currently user object is saved to LocalStore and user is
+  // considered logged in if exists, but exipred sessions aren't dealt with
   saveState({
     auth: {
       ...authInitialState,

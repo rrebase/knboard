@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Dialog,
-  Button,
-  IconButton,
-  TextField,
-  TextareaAutosize
-} from "@material-ui/core";
+import { Dialog, Button, TextField, TextareaAutosize } from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -25,7 +19,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
-import { ReactComponent as TimesIcon } from "static/svg/times.svg";
 import { IColumn, TasksByColumn, Id, Priority } from "types";
 import { selectAllColumns } from "features/column/ColumnSlice";
 import { Autocomplete } from "@material-ui/lab";
@@ -42,18 +35,13 @@ import {
   MD_READ_ONLY_CONFIG,
   Key
 } from "const";
+import Close from "components/Close";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
 const Content = styled.div`
   display: flex;
   padding: 2rem;
-`;
-
-const Close = styled.div`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
 `;
 
 const Main = styled.div`
@@ -298,22 +286,7 @@ const EditTaskDialog = () => {
       `}
     >
       <Content>
-        <Close>
-          <IconButton
-            size="small"
-            onClick={handleClose}
-            aria-label="close"
-            data-testid="close-dialog"
-            css={css`
-              height: 2.5rem;
-              width: 2.5rem;
-              color: ${TASK_G};
-              padding: 0.75rem;
-            `}
-          >
-            <TimesIcon />
-          </IconButton>
-        </Close>
+        <Close onClose={handleClose} />
         <Main>
           <Header>id: {task.id}</Header>
           <Title>
