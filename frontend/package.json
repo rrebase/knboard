@@ -48,6 +48,7 @@
     "material-ui-popup-state": "^1.5.3",
     "mutationobserver-shim": "^0.3.3",
     "node-sass": "4.13.1",
+    "nyc": "^15.0.1",
     "prettier": "1.19.1",
     "react": "16.13.0",
     "react-beautiful-dnd": "13.0.0",
