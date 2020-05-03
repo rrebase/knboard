@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
 import { screen, fireEvent, act } from "@testing-library/react";
 import {
@@ -7,7 +8,14 @@ import {
 } from "utils/testHelpers";
 import Auth from "./Auth";
 import { API_LOGIN, API_REGISTER } from "api";
-import { login, register, clearErrors } from "./AuthSlice";
+import authReducer, { login, register, clearErrors, logout } from "./AuthSlice";
+import { User } from "types";
+
+export const steveAuthUser: User = {
+  id: 1,
+  username: "steve",
+  photo_url: null
+};
 
 it("should have Knboard text", async () => {
   renderWithProviders(<Auth />);
@@ -124,4 +132,132 @@ it("should show register api errors", async () => {
   });
   expect(mockStore.getActions()).toHaveLength(1);
   expect(mockStore.getActions()[0].type === clearErrors.type);
+});
+
+describe("AuthSlice", () => {
+  const loginErrors = { non_field_errors: ["Invalid credentials."] };
+  const registerErrors = { non_field_errors: ["Passwords don't match."] };
+
+  it("should clear errors", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      loginErrors,
+      registerErrors
+    };
+    const expected = {
+      ...rootInitialState.auth,
+      loginErrors: undefined,
+      registerErrors: undefined
+    };
+
+    expect(authReducer(initial, { type: clearErrors.type })).toEqual(expected);
+  });
+
+  it("should set login loading", () => {
+    const initial = rootInitialState.auth;
+    const result = {
+      ...rootInitialState.auth,
+      loginLoading: true
+    };
+
+    expect(authReducer(initial, { type: login.pending.type })).toEqual(result);
+  });
+
+  it("should set user on login fulfilled", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      user: null,
+      loginLoading: true,
+      loginErrors
+    };
+    const result = {
+      ...rootInitialState.auth,
+      user: steveAuthUser,
+      loginLoading: false,
+      loginErrors: undefined
+    };
+
+    expect(
+      authReducer(initial, {
+        type: login.fulfilled.type,
+        payload: steveAuthUser
+      })
+    ).toEqual(result);
+  });
+
+  it("should set error on login rejected", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      loginLoading: true,
+      loginErrors: undefined
+    };
+    const result = {
+      ...rootInitialState.auth,
+      loginLoading: false,
+      loginErrors
+    };
+
+    expect(
+      authReducer(initial, {
+        type: login.rejected.type,
+        payload: loginErrors
+      })
+    ).toEqual(result);
+  });
+
+  it("should set user to null on fulfilled and rejected logout", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      user: steveAuthUser
+    };
+    const result = {
+      ...rootInitialState.auth,
+      user: null
+    };
+
+    expect(authReducer(initial, { type: logout.fulfilled.type })).toEqual(
+      result
+    );
+    expect(authReducer(initial, { type: logout.rejected.type })).toEqual(
+      result
+    );
+  });
+
+  it("should set user on login fulfilled", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      user: null,
+      registerErrors
+    };
+    const result = {
+      ...rootInitialState.auth,
+      user: steveAuthUser,
+      registerErrors: undefined
+    };
+
+    expect(
+      authReducer(initial, {
+        type: register.fulfilled.type,
+        payload: steveAuthUser
+      })
+    ).toEqual(result);
+  });
+
+  it("should set error on register rejected", () => {
+    const initial = {
+      ...rootInitialState.auth,
+      registerErrors: undefined
+    };
+    const result = {
+      ...rootInitialState.auth,
+      registerErrors
+    };
+
+    expect(
+      authReducer(initial, {
+        type: register.rejected.type,
+        payload: registerErrors
+      })
+    ).toEqual(result);
+  });
 });

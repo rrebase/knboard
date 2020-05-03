@@ -81,9 +81,10 @@ export const logout = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       await api.post(API_LOGOUT);
-      dispatch(createInfoToast("Logged out"));
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
+    } finally {
+      dispatch(createInfoToast("Logged out"));
     }
   }
 );
@@ -111,6 +112,9 @@ export const slice = createSlice({
       state.loginLoading = false;
     });
     builder.addCase(logout.fulfilled, state => {
+      state.user = null;
+    });
+    builder.addCase(logout.rejected, state => {
       state.user = null;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
