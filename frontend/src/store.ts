@@ -9,8 +9,8 @@ import boardReducer from "./features/board/BoardSlice";
 import columnReducer from "./features/column/ColumnSlice";
 import taskReducer from "./features/task/TaskSlice";
 import memberReducer from "./features/member/MemberSlice";
-
 import authInitialState from "./features/auth/AuthSlice";
+import { setupInterceptors } from "api";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -30,9 +30,6 @@ const store = configureStore({
 
 store.subscribe(() => {
   const state = store.getState();
-
-  // TODO: Currently user object is saved to LocalStore and user is
-  // considered logged in if exists, but exipred sessions aren't dealt with
   saveState({
     auth: {
       ...authInitialState,
@@ -40,6 +37,8 @@ store.subscribe(() => {
     }
   });
 });
+
+setupInterceptors(store);
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppThunk = ThunkAction<void, RootState, null, Action<string>>;

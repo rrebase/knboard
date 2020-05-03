@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import FullPageSpinner from "components/FullPageSpinner";
 import Toast from "features/toast/Toast";
-
 import { theme } from "./const";
 import store, { RootState } from "./store";
 
