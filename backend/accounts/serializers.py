@@ -68,7 +68,9 @@ class TokenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TokenModel
-        fields = ("key", "id", "username", "photo_url")
+        # Include field "key" once frontend actually uses token auth
+        # instead of the current session auth
+        fields = ("id", "username", "photo_url")
 
     def get_photo_url(self, obj):
         if not obj.user.avatar:

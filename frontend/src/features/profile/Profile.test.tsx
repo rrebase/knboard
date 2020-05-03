@@ -21,7 +21,6 @@ const steveDetail: UserDetail = {
 };
 
 const steveAuthUser: User = {
-  key: "627a1758dff1cdde4f52578b0b6fdbf7b1c6d9b6",
   id: 1,
   username: "steve",
   photo_url: null

@@ -52,7 +52,6 @@ export interface TasksByColumn {
 }
 
 export interface User {
-  key: string;
   id: number;
   username: string;
   photo_url: string | null;
