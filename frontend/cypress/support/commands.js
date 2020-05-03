@@ -28,7 +28,6 @@ Cypress.Commands.add("stubbedSetup", () => {
     JSON.stringify({
       auth: {
         user: {
-          key: "7b324ec07e049bc7e81a5a40c0606a07bc30f82c",
           id: 1,
           username: "testuser",
           photo_url: null

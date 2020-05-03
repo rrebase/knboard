@@ -53,6 +53,7 @@ const UserMenu = () => {
         aria-controls="user-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        data-testid="user-menu"
         css={css`
           min-width: 1.5rem;
           padding: 0;
