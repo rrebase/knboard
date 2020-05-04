@@ -67,7 +67,6 @@ export const createMdEditorStyles = (editing: boolean) => css`
     .section-container {
       border-bottom-left-radius: ${borderRadius}px;
       border-bottom-right-radius: ${borderRadius}px;
-      ${editing ? "padding: 8px !important" : "padding: 0 !important"};
       ${editing &&
         `border-top-left-radius: ${borderRadius}px;
       border-top-right-radius: ${borderRadius}px;`}

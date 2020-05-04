@@ -1,6 +1,7 @@
 // Palette
 export const PRIMARY = "#263590";
-export const SECONDARY = "#89DAFF";
+export const PRIMARY_MAIN = "#5e68ed";
+export const SECONDARY_MAIN = "#89DAFF";
 
 // Priority
 export const PRIO1 = "#D74981";

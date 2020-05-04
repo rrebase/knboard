@@ -15,7 +15,7 @@ import {
   faTrash,
   faLock,
   faAlignLeft,
-  faBolt
+  faCube
 } from "@fortawesome/free-solid-svg-icons";
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
@@ -72,7 +72,7 @@ const Title = styled.div`
     font-weight: bold;
     font-size: 20px;
     width: 100%;
-    margin: 0 2rem 0 0.75rem;
+    margin: 0 2rem 0 0.375rem;
     border: none;
     resize: none;
     &:focus {
@@ -96,7 +96,8 @@ const EditorWrapper = styled.div<{ editing: boolean }>`
         `
         outline: none;
         box-shadow: inset 0 0 0 2px ${PRIMARY};
-        `};
+      `};
+      padding: ${props => (props.editing ? "8px" : "0px")} !important;
       &.input {
         line-height: 20px;
       }
@@ -290,7 +291,7 @@ const EditTaskDialog = () => {
         <Main>
           <Header>id: {task.id}</Header>
           <Title>
-            <FontAwesomeIcon icon={faBolt} />
+            <FontAwesomeIcon icon={faCube} />
             <TextareaAutosize
               ref={titleTextAreaRef}
               value={title}

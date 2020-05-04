@@ -1,6 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 import { Priority, PriorityValue } from "types";
-import { PRIO1, PRIO2, PRIO3, PRIMARY, SECONDARY } from "utils/colors";
+import { PRIO1, PRIO2, PRIO3, PRIMARY_MAIN } from "utils/colors";
+import { grey } from "@material-ui/core/colors";
 
 export const LOCAL_STORAGE_KEY = "knboard-v12";
 export const TOAST_AUTO_HIDE_DURATION = 4000;
@@ -107,19 +108,20 @@ export const QUILL_FORMATS = [
 
 export const theme = createMuiTheme({
   palette: {
+    type: "light",
     primary: {
-      main: PRIMARY
+      main: PRIMARY_MAIN
     },
     secondary: {
-      main: SECONDARY
+      main: grey[900]
     }
-  },
-  transitions: {
-    create: () => "none"
   },
   props: {
     MuiButtonBase: {
       disableRipple: true
+    },
+    MuiDialog: {
+      transitionDuration: 100
     }
   },
   overrides: {

@@ -66,6 +66,7 @@ const CreateTaskDialog = () => {
   const createLoading = useSelector(
     (state: RootState) => state.task.createLoading
   );
+  const [titleTouched, setTitleTouched] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>(
     "Describe the task..."
@@ -84,6 +85,7 @@ const CreateTaskDialog = () => {
   const setInitialValues = () => {
     if (defaultColumnId) {
       setColumn(columnsById[defaultColumnId] || null);
+      setTitleTouched(false);
       setTitle("");
       setDescription("");
       setAssignees([]);
@@ -100,6 +102,7 @@ const CreateTaskDialog = () => {
   };
 
   const handleCreate = async () => {
+    setTitleTouched(true);
     if (defaultColumnId && column && priority) {
       const newTask = {
         title: title,
@@ -133,6 +136,8 @@ const CreateTaskDialog = () => {
           variant="outlined"
           fullWidth
           size="small"
+          onBlur={() => setTitleTouched(true)}
+          error={titleTouched && !title}
         />
 
         <EditorWrapper>
