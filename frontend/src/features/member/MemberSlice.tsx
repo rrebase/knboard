@@ -23,7 +23,7 @@ export const slice = createSlice({
   name: "member",
   initialState,
   reducers: {
-    addBoardMember: memberAdapter.addOne,
+    addBoardMembers: memberAdapter.addMany,
     removeBoardMember: memberAdapter.removeOne,
     setDialogMember: (state, action: PayloadAction<number | null>) => {
       state.dialogMember = action.payload;
@@ -37,7 +37,7 @@ export const slice = createSlice({
 });
 
 export const {
-  addBoardMember,
+  addBoardMembers,
   removeBoardMember,
   setDialogMember
 } = slice.actions;

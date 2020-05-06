@@ -113,7 +113,8 @@ export const theme = createMuiTheme({
       main: PRIMARY_MAIN
     },
     secondary: {
-      main: grey[900]
+      light: grey[700],
+      main: "#FDB915"
     }
   },
   props: {

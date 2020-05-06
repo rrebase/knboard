@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  TextField,
-  Button,
-  CircularProgress,
-  Chip,
-  Avatar
-} from "@material-ui/core";
+import { Dialog, TextField, Button, CircularProgress } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -29,6 +22,8 @@ import { selectAllColumns } from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
 import { Priority, BoardMember, IColumn } from "types";
 import { createMdEditorStyles } from "styles";
+import AvatarTag from "components/AvatarTag";
+import AvatarOption from "components/AvatarOption";
 
 const mdParser = new MarkdownIt();
 
@@ -130,7 +125,7 @@ const CreateTaskDialog = () => {
           autoFocus
           id="create-task-title"
           data-testid="create-task-title"
-          label="Short Title"
+          label="Title"
           value={title}
           onChange={e => setTitle(e.target.value)}
           variant="outlined"
@@ -176,39 +171,15 @@ const CreateTaskDialog = () => {
           getOptionLabel={option => option.username}
           value={assignees}
           onChange={(_event, value) => setAssignees(value)}
-          renderOption={option => (
-            <React.Fragment>
-              <span>
-                <Avatar
-                  alt={option?.avatar?.name}
-                  src={option?.avatar?.photo}
-                />
-              </span>
-              <span
-                css={css`
-                  margin-left: 0.5rem;
-                `}
-              >
-                {option.username}
-              </span>
-            </React.Fragment>
-          )}
+          renderOption={option => <AvatarOption option={option} />}
           renderInput={params => (
             <TextField {...params} label="Assignees" variant="outlined" />
           )}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip
+              <AvatarTag
                 key={option.id}
-                avatar={
-                  <Avatar
-                    alt={option?.avatar?.name}
-                    src={option?.avatar?.photo}
-                  />
-                }
-                variant="outlined"
-                label={option.username}
-                size="small"
+                option={option}
                 {...getTagProps({ index })}
               />
             ))

@@ -10,7 +10,7 @@ export const setupInterceptors = (store: any) => {
     response => response,
     error => {
       // Handle expired sessions
-      if (error.response.status === 401) {
+      if (error.response && error.response.status === 401) {
         store.dispatch(logout());
       }
       return Promise.reject(error);
@@ -30,5 +30,6 @@ export const API_TASKS = "/api/tasks/";
 export const API_SORT_COLUMNS = "/api/sort/column/";
 export const API_SORT_TASKS = "/api/sort/task/";
 export const API_USERS = "/api/users/";
+export const API_SEARCH_USERS = "/api/u/search/";
 
 export default axios;

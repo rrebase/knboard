@@ -67,12 +67,18 @@ class BoardViewSet(
         permission_classes=[IsAuthenticated, IsOwner],
     )
     def invite_member(self, request, pk):
-        new_member = self.get_member()
-        if not new_member:
+        users_ids = self.request.data.get("users")
+        if not users_ids:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-        self.get_object().members.add(new_member)
-        return Response(data=BoardMemberSerializer(instance=new_member).data)
+        new_members = User.objects.filter(id__in=users_ids)
+        if len(new_members) != len(users_ids):
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        self.get_object().members.add(*new_members)
+        return Response(
+            data=BoardMemberSerializer(instance=new_members, many=True).data
+        )
 
     @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
     def remove_member(self, request, pk):

@@ -61,6 +61,7 @@
     "redux": "4.0.5",
     "redux-mock-store": "1.5.4",
     "typescript": "~3.8.3",
+    "use-debounce": "^3.4.2",
     "uuidv4": "6.0.6"
   },
   "scripts": {
