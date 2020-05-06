@@ -26,6 +26,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email"]
 
 
+class UserSearchSerializer(serializers.ModelSerializer):
+    avatar = AvatarSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "avatar"]
+
+
 class UserDetailSerializer(serializers.ModelSerializer):
     avatar = AvatarSerializer(read_only=True)
 

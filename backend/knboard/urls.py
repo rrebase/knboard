@@ -21,7 +21,7 @@ from rest_framework import routers
 from django.conf.urls.static import static
 
 
-from accounts.api import UserViewSet, AvatarViewSet
+from accounts.api import UserViewSet, UserSearchView, AvatarViewSet
 from boards.api import BoardViewSet, ColumnViewSet, TaskViewSet, SortColumn, SortTask
 
 router = routers.DefaultRouter()
@@ -32,12 +32,13 @@ router.register(r"columns", ColumnViewSet)
 router.register(r"tasks", TaskViewSet)
 
 urlpatterns = [
-    url(r"^api/", include(router.urls)),
-    url(r"^api/sort/column/", SortColumn.as_view(), name="sort-column"),
-    url(r"^api/sort/task/", SortTask.as_view(), name="sort-task"),
-    url(r"^api-auth/", include("rest_framework.urls")),
-    url(r"^dj-rest-auth/", include("dj_rest_auth.urls")),
-    url(r"^dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("api/", include(router.urls)),
+    path("api/u/search/", UserSearchView.as_view(), name="user-search"),
+    path("api/sort/column/", SortColumn.as_view(), name="sort-column"),
+    path("api/sort/task/", SortTask.as_view(), name="sort-task"),
+    path("api-auth/", include("rest_framework.urls")),
+    path("dj-rest-auth/", include("dj_rest_auth.urls")),
+    path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
     path("backdoor/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
