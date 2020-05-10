@@ -22,7 +22,14 @@ from django.conf.urls.static import static
 
 
 from accounts.api import UserViewSet, UserSearchView, AvatarViewSet
-from boards.api import BoardViewSet, ColumnViewSet, LabelViewSet, TaskViewSet, SortColumn, SortTask
+from boards.api import (
+    BoardViewSet,
+    ColumnViewSet,
+    LabelViewSet,
+    TaskViewSet,
+    SortColumn,
+    SortTask,
+)
 
 router = routers.DefaultRouter()
 router.register(r"avatars", AvatarViewSet)
