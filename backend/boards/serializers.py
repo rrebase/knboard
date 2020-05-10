@@ -7,6 +7,13 @@ from .models import Board, Task, Column, Label
 User = get_user_model()
 
 
+class BoardModelSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        if self.context["request"].user not in validated_data["board"].members.all():
+            raise serializers.ValidationError("Must be a member of the board!")
+        return super().create(validated_data)
+
+
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
@@ -44,27 +51,17 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
 
 
-class ColumnSerializer(serializers.ModelSerializer):
+class ColumnSerializer(BoardModelSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
     tasks = TaskSerializer(many=True, read_only=True)
-
-    def create(self, validated_data):
-        if self.context["request"].user not in validated_data["board"].members.all():
-            raise serializers.ValidationError("Must be a member of the board!")
-        return super().create(validated_data)
 
     class Meta:
         model = Column
         fields = ["id", "title", "tasks", "column_order", "board"]
 
 
-class LabelSerializer(serializers.ModelSerializer):
+class LabelSerializer(BoardModelSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
-
-    def create(self, validated_data):
-        if self.context["request"].user not in validated_data["board"].members.all():
-            raise serializers.ValidationError("Must be a member of the board!")
-        return super().create(validated_data)
 
     class Meta:
         model = Label
