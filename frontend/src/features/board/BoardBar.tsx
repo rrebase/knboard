@@ -18,7 +18,6 @@ import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Experiment1 from "features/task/Experiment1";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -106,7 +105,6 @@ const BoardBar = () => {
       <MemberDialog board={detail} />
       <EditTaskDialog />
       <CreateTaskDialog />
-      <Experiment1 />
     </Container>
   );
 };
