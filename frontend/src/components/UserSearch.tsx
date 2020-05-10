@@ -45,12 +45,18 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
     const source = api.CancelToken.source();
 
     const fetchData = async () => {
-      const response = await api(
-        `${API_SEARCH_USERS}?board=${boardId}&search=${inputValue}`,
-        { cancelToken: source.token }
-      );
-      setLoading(false);
-      setOptions(response.data);
+      try {
+        const response = await api(
+          `${API_SEARCH_USERS}?board=${boardId}&search=${inputValue}`,
+          { cancelToken: source.token }
+        );
+        setLoading(false);
+        setOptions(response.data);
+      } catch (err) {
+        if (!api.isCancel(err)) {
+          console.error(err);
+        }
+      }
     };
 
     if (inputValue === "") {
@@ -100,6 +106,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
       renderInput={params => (
         <TextField
           {...params}
+          autoFocus
           label="Search username"
           variant="outlined"
           onChange={handleInputChange}

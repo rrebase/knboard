@@ -27,7 +27,7 @@ coverage
 lib-cov
 junit.xml
 
-cypress/screenshots/
+*/screenshots/*
 
 # Translations
 *.mo
@@ -112,4 +112,5 @@ node_modules/
 Session.vim
 
 # Experimental files
-Experiment.tsx
+Experiment*.tsx
+

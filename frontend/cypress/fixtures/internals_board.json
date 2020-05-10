@@ -10,14 +10,19 @@
       "username": "testuser",
       "email": "t@t.com",
       "first_name": "Ragnar",
-      "last_name": "Rebase"
+      "last_name": "Rebase",
+      "avatar": null
     },
     {
       "id": 3,
       "username": "daveice",
-      "email": "dave@ice.com"
+      "email": "dave@ice.com",
+      "first_name": "Dave",
+      "last_name": "Ice",
+      "avatar": null
     }
   ],
+  "labels": [],
   "columns": [
     {
       "id": 3,
@@ -29,7 +34,8 @@
           "description": "Add cookie consent functionality.",
           "task_order": 3,
           "priority": "H",
-          "assignees": []
+          "assignees": [],
+          "column": 3
         },
         {
           "id": 4,
@@ -37,7 +43,8 @@
           "description": "Implement user settings.",
           "task_order": 4,
           "priority": "M",
-          "assignees": []
+          "assignees": [],
+          "column": 3
         }
       ],
       "column_order": 1
@@ -52,7 +59,8 @@
           "description": "Implement the landing page.\n\n**Use figma designs provided by Steve.**",
           "task_order": 1,
           "priority": "L",
-          "assignees": []
+          "assignees": [],
+          "column": 1
         },
         {
           "id": 2,
@@ -60,7 +68,8 @@
           "description": "Implement the profile page detail view.",
           "task_order": 2,
           "priority": "L",
-          "assignees": []
+          "assignees": [],
+          "column": 1
         }
       ],
       "column_order": 2
@@ -75,7 +84,8 @@
           "description": "Implement the user friends component. Building the API is not part of this task.",
           "task_order": 5,
           "priority": "L",
-          "assignees": []
+          "assignees": [],
+          "column": 2
         }
       ],
       "column_order": 3

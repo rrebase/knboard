@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Board, IColumn, ITask } from "types";
+import { Board, IColumn, ITask, Label } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
 
@@ -33,6 +33,7 @@ interface ColumnsResponse extends IColumn {
 
 interface BoardDetailResponse extends Board {
   columns: ColumnsResponse[];
+  labels: Label[];
 }
 
 export const fetchAllBoards = createAsyncThunk<Board[]>(

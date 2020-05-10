@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 
-from boards.models import Board, Task, Column
+from boards.models import Board, Task, Column, Label
 from boards.permissions import IsOwner, IsOwnerForDangerousMethods
 from boards.serializers import (
     BoardSerializer,
@@ -20,6 +20,7 @@ from boards.serializers import (
     BoardDetailSerializer,
     MemberSerializer,
     BoardMemberSerializer,
+    LabelSerializer,
 )
 
 User = get_user_model()
@@ -92,7 +93,13 @@ class BoardViewSet(
         return Response(data=BoardMemberSerializer(instance=member).data)
 
 
-class TaskViewSet(viewsets.ModelViewSet):
+class TaskViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
@@ -102,9 +109,31 @@ class TaskViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(column__board__members=user)
 
 
-class ColumnViewSet(viewsets.ModelViewSet):
+class ColumnViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
     queryset = Column.objects.all()
     serializer_class = ColumnSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return super().get_queryset().filter(board__members=user)
+
+
+class LabelViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    queryset = Label.objects.all()
+    serializer_class = LabelSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

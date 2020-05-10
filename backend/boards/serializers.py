@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
-from .models import Board, Task, Column
+from .models import Board, Task, Column, Label
 
 User = get_user_model()
 
@@ -49,9 +49,7 @@ class ColumnSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
-        user = self.context["request"].user
-        board_members = validated_data["board"].members.all()
-        if user not in board_members:
+        if self.context["request"].user not in validated_data["board"].members.all():
             raise serializers.ValidationError("Must be a member of the board!")
         return super().create(validated_data)
 
@@ -60,14 +58,28 @@ class ColumnSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "tasks", "column_order", "board"]
 
 
+class LabelSerializer(serializers.ModelSerializer):
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
+
+    def create(self, validated_data):
+        if self.context["request"].user not in validated_data["board"].members.all():
+            raise serializers.ValidationError("Must be a member of the board!")
+        return super().create(validated_data)
+
+    class Meta:
+        model = Label
+        fields = ["id", "name", "color", "board"]
+
+
 class BoardDetailSerializer(serializers.ModelSerializer):
     columns = ColumnSerializer(many=True, read_only=True)
     owner = BoardOwnerSerializer(read_only=True)
     members = BoardMemberSerializer(many=True, read_only=True)
+    labels = LabelSerializer(many=True, read_only=True)
 
     class Meta:
         model = Board
-        fields = ["id", "name", "owner", "members", "columns"]
+        fields = ["id", "name", "owner", "members", "columns", "labels"]
 
 
 class MemberSerializer(serializers.Serializer):

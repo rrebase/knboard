@@ -10,14 +10,19 @@
       "username": "testuser",
       "email": "t@t.com",
       "first_name": "Ragnar",
-      "last_name": "Rebase"
+      "last_name": "Rebase",
+      "avatar": null
     },
     {
       "id": 2,
       "username": "steveapple1",
-      "email": "steve@gmail.com"
+      "email": "steve@gmail.com",
+      "first_name": "Steve",
+      "last_name": "Apple",
+      "avatar": null
     }
   ],
+  "labels": [],
   "columns": [
     {
       "id": 5,
@@ -28,16 +33,18 @@
           "title": "Security",
           "description": "Fundamentals of Security.",
           "task_order": 5,
-          "priority": "low",
-          "assignees": []
+          "priority": "L",
+          "assignees": [],
+          "column": 5
         },
         {
           "id": 6,
           "title": "Bash",
           "description": "The basics of Bash.",
           "task_order": 6,
-          "priority": "low",
-          "assignees": []
+          "priority": "L",
+          "assignees": [],
+          "column": 5
         }
       ],
       "column_order": 5

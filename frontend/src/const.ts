@@ -3,7 +3,7 @@ import { Priority, PriorityValue } from "types";
 import { PRIO1, PRIO2, PRIO3, PRIMARY_MAIN } from "utils/colors";
 import { grey } from "@material-ui/core/colors";
 
-export const LOCAL_STORAGE_KEY = "knboard-v12";
+export const LOCAL_STORAGE_KEY = "knboard-data";
 export const TOAST_AUTO_HIDE_DURATION = 4000;
 
 export const grid = 8;
@@ -138,6 +138,8 @@ export const theme = createMuiTheme({
 
 export const modalPopperIndex = theme.zIndex.modal + 100;
 export const modalPopperAutocompleteIndex = modalPopperIndex + 100;
+export const modalPopperAutocompleteModalIndex =
+  modalPopperAutocompleteIndex + 100;
 export const modalPopperWidth = 300;
 
 export enum Key {

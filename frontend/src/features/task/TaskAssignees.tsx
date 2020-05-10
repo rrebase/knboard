@@ -101,7 +101,7 @@ const TaskAssignees = ({ task }: Props) => {
   const [pendingAssignees, setPendingAssignees] = useState<BoardMember[]>([]);
   const members = useSelector(selectAllMembers);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const assignees = task.assignees.map(id => membersById[id]!);
+  const assignees = task.assignees.map(id => membersById[id]!).filter(Boolean);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setPendingAssignees(assignees);
