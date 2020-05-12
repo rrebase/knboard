@@ -1,7 +1,12 @@
 // Palette
 export const PRIMARY = "#263590";
-export const PRIMARY_MAIN = "#5e68ed";
+export const PRIMARY_MAIN = "#5E68ED";
 export const SECONDARY_MAIN = "#89DAFF";
+export const DANGER = "#E25241";
+
+// Contrast
+export const WHITE = "#FFFFFF";
+export const BLACK = "#000000";
 
 // Priority
 export const PRIO1 = "#D74981";
@@ -9,6 +14,7 @@ export const PRIO2 = "#666EEE";
 export const PRIO3 = "#69C0B6";
 
 // Custom
+export const FOCUS_BOX_SHADOW = "#98a2de";
 export const COLUMN_COLOR = "#F1F1F6";
 export const TASK_G = "#646e81";
 
@@ -146,3 +152,30 @@ export const DN40A = "rgba(13, 20, 36, 0.89)";
 export const DN30A = "rgba(13, 20, 36, 0.92)";
 export const DN20A = "rgba(13, 20, 36, 0.95)";
 export const DN10A = "rgba(13, 20, 36, 0.97)";
+
+export const getContrastColor = (hexColor: string) => {
+  if (hexColor[0] === "#") {
+    hexColor = hexColor.slice(1);
+  }
+
+  if (hexColor.length === 3) {
+    hexColor = hexColor
+      .split("")
+      .map(h => h + h)
+      .join("");
+  }
+
+  const r = parseInt(hexColor.substr(0, 2), 16);
+  const g = parseInt(hexColor.substr(2, 2), 16);
+  const b = parseInt(hexColor.substr(4, 2), 16);
+
+  // Calculate contrast using YIQ ratio
+  return (r * 299 + g * 587 + b * 114) / 1000 >= 128 ? BLACK : WHITE;
+};
+
+export const getRandomHexColor = () => {
+  const newColor = (
+    "000000" + Math.floor(0x1000000 * Math.random()).toString(16)
+  ).slice(-6);
+  return `#${newColor}`;
+};

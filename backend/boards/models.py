@@ -48,6 +48,11 @@ class Label(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name", "board"], name="unique_name_board")
+        ]
+
 
 class Task(SortableMixin):
     class Priority(models.TextChoices):

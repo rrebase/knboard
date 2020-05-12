@@ -17,7 +17,10 @@ import { Button } from "@material-ui/core";
 import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCog } from "@fortawesome/free-solid-svg-icons";
+import Experiment from "features/task/Experiment2";
+import { setDialogOpen } from "features/label/LabelSlice";
+import LabelsDialog from "features/label/LabelsDialog";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -63,6 +66,10 @@ const BoardBar = () => {
     dispatch(addColumn(detail.id));
   };
 
+  const handleEditLabels = () => {
+    dispatch(setDialogOpen(true));
+  };
+
   return (
     <Container>
       <Items>
@@ -93,6 +100,21 @@ const BoardBar = () => {
               .MuiButton-iconSizeSmall > *:first-of-type {
                 font-size: 12px;
               }
+              margin-right: 0.5rem;
+            `}
+            onClick={handleEditLabels}
+            startIcon={<FontAwesomeIcon icon={faCog} />}
+            data-testid="open-labels-dialog"
+          >
+            Edit labels
+          </Button>
+          <Button
+            size="small"
+            css={css`
+              color: ${PRIMARY};
+              .MuiButton-iconSizeSmall > *:first-of-type {
+                font-size: 12px;
+              }
             `}
             onClick={handleAddColumn}
             startIcon={<FontAwesomeIcon icon={faPlus} />}
@@ -105,6 +127,8 @@ const BoardBar = () => {
       <MemberDialog board={detail} />
       <EditTaskDialog />
       <CreateTaskDialog />
+      <LabelsDialog />
+      <Experiment />
     </Container>
   );
 };
