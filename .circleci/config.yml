@@ -6,7 +6,7 @@ orbs:
 executors:
   with-chrome:
     docker:
-      - image: 'cypress/browsers:chrome69'
+      - image: 'cypress/browsers:chrome76'
 
 commands:
   dlreporter:
