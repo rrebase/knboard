@@ -14,3 +14,4 @@ django-debug-toolbar-request-history==0.1.1
 Pillow==7.0.0
 django-allauth==0.41.0
 black==19.10b0
+pre-commit==2.4.0

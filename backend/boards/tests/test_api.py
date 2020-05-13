@@ -551,7 +551,9 @@ def test_create_task(api_client, column_factory, steve, amy):
     assert Task.objects.filter(title=task_data["title"]).exists()
 
 
-def test_only_board_members_see_labels(api_client, board_factory, label_factory, steve, amy):
+def test_only_board_members_see_labels(
+    api_client, board_factory, label_factory, steve, amy
+):
     board = board_factory(name="Internals")
     board.members.add(steve)
     board.save()

@@ -2,7 +2,13 @@ import pytest
 import uuid
 from pytest_factoryboy import register
 
-from boards.tests.factories import UserFactory, BoardFactory, ColumnFactory, TaskFactory, LabelFactory
+from boards.tests.factories import (
+    UserFactory,
+    BoardFactory,
+    ColumnFactory,
+    TaskFactory,
+    LabelFactory,
+)
 
 register(UserFactory)
 register(BoardFactory)
