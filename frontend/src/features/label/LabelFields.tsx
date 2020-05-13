@@ -62,6 +62,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
         <IconButton
           size="small"
           onClick={setRandomColor}
+          data-testid="random-color"
           css={css`
             height: 2.25rem;
             width: 2.25rem;

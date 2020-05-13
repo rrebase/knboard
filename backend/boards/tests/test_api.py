@@ -549,3 +549,22 @@ def test_create_task(api_client, column_factory, steve, amy):
     response = create_task(task_data)
     assert response.status_code == 201
     assert Task.objects.filter(title=task_data["title"]).exists()
+
+
+def test_only_board_members_see_labels(api_client, board_factory, label_factory, steve, amy):
+    board = board_factory(name="Internals")
+    board.members.add(steve)
+    board.save()
+
+    label = label_factory(name="Documentation", board=board)
+    get_label = lambda: api_client.get(reverse("label-detail", kwargs={"pk": label.id}))
+
+    # Steve is a board member, can get label
+    api_client.force_authenticate(user=steve)
+    response = get_label()
+    assert response.status_code == 200
+
+    # Amy is a not a board member, doesn't know about the label
+    api_client.force_authenticate(user=amy)
+    response = get_label()
+    assert response.status_code == 404

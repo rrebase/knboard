@@ -10,7 +10,12 @@ import LabelsDialog from "./LabelsDialog";
 import user from "@testing-library/user-event";
 import { API_LABELS } from "api";
 import { Label } from "types";
-import { createLabel, deleteLabel, patchLabel } from "./LabelSlice";
+import labelReducer, {
+  createLabel,
+  deleteLabel,
+  patchLabel,
+  setDialogOpen
+} from "./LabelSlice";
 import { createInfoToast } from "features/toast/ToastSlice";
 
 const boardDetail = {
@@ -148,7 +153,7 @@ it("should edit a label", async () => {
   );
 });
 
-it("should cancel label editing", async () => {
+it("should not save invalid and cancel label editing", async () => {
   const { mockStore } = renderWithProviders(<LabelsDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
@@ -163,6 +168,12 @@ it("should cancel label editing", async () => {
   fireEvent.change(screen.getByLabelText("Label name"), {
     target: { value: "New" }
   });
+  fireEvent.change(screen.getByLabelText("Color"), {
+    target: { value: "#invalid" }
+  });
+  fireEvent.click(screen.getByText(/Save/i));
+  fireEvent.click(screen.getByTestId("random-color"));
+  waitFor(() => expect(screen.getByLabelText("Color")).not.toEqual("#invalid"));
   fireEvent.click(screen.getByText(/Cancel/i));
   expect(screen.queryByText(/Save/i)).toBeNull();
   expect(screen.getByText(docLabel.name)).toBeVisible();
@@ -210,4 +221,71 @@ it("should search from multiple labels", async () => {
   expect(screen.getByText("0 labels")).toBeVisible();
   expect(screen.queryByText(docLabel.name)).toBeNull();
   expect(screen.queryByText(designLabel.name)).toBeNull();
+});
+
+describe("LabelSlice", () => {
+  it("should set dialog state", () => {
+    const initial = rootInitialState.label;
+    const result = {
+      ...rootInitialState.label,
+      dialogOpen: true
+    };
+    expect(
+      labelReducer(initial, { type: setDialogOpen.type, payload: true })
+    ).toEqual(result);
+  });
+
+  it("should add label", () => {
+    const initial = rootInitialState.label;
+    const result = {
+      ...rootInitialState.label,
+      ids: [docLabel.id],
+      entities: { [docLabel.id]: docLabel }
+    };
+    expect(
+      labelReducer(initial, {
+        type: createLabel.fulfilled.type,
+        payload: docLabel
+      })
+    ).toEqual(result);
+  });
+
+  it("should update label", () => {
+    const updatedName = "Fresh";
+    const initial = {
+      ...rootInitialState.label,
+      ids: [docLabel.id],
+      entities: { [docLabel.id]: docLabel }
+    };
+    const result = {
+      ...rootInitialState.label,
+      ids: [docLabel.id],
+      entities: { [docLabel.id]: { ...docLabel, name: updatedName } }
+    };
+    expect(
+      labelReducer(initial, {
+        type: patchLabel.fulfilled.type,
+        payload: { id: docLabel.id, color: docLabel.color, name: updatedName }
+      })
+    ).toEqual(result);
+  });
+
+  it("should delete label", () => {
+    const initial = {
+      ...rootInitialState.label,
+      ids: [docLabel.id],
+      entities: { [docLabel.id]: docLabel }
+    };
+    const result = {
+      ...rootInitialState.label,
+      ids: [],
+      entities: {}
+    };
+    expect(
+      labelReducer(initial, {
+        type: deleteLabel.fulfilled.type,
+        payload: docLabel.id
+      })
+    ).toEqual(result);
+  });
 });

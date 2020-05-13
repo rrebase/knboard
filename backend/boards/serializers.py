@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from rest_framework import serializers
+from rest_framework.validators import ValidationError
 
 from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
 from .models import Board, Task, Column, Label
@@ -62,6 +64,12 @@ class ColumnSerializer(BoardModelSerializer):
 
 class LabelSerializer(BoardModelSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
+
+    def update(self, instance, validated_data):
+        try:
+            return super().update(instance, validated_data)
+        except IntegrityError:
+            raise ValidationError("Label already exists")
 
     class Meta:
         model = Label

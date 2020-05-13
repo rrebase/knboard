@@ -47,6 +47,13 @@ const Name = styled.div`
   color: #6869f6;
 `;
 
+const buttonStyles = css`
+  color: ${PRIMARY};
+  .MuiButton-iconSizeSmall > *:first-of-type {
+    font-size: 12px;
+  }
+`;
+
 const BoardBar = () => {
   const dispatch = useDispatch();
   const members = useSelector(memberSelectors.selectAll);
@@ -95,10 +102,7 @@ const BoardBar = () => {
           <Button
             size="small"
             css={css`
-              color: ${PRIMARY};
-              .MuiButton-iconSizeSmall > *:first-of-type {
-                font-size: 12px;
-              }
+              ${buttonStyles}
               margin-right: 0.5rem;
             `}
             onClick={handleEditLabels}
@@ -110,10 +114,7 @@ const BoardBar = () => {
           <Button
             size="small"
             css={css`
-              color: ${PRIMARY};
-              .MuiButton-iconSizeSmall > *:first-of-type {
-                font-size: 12px;
-              }
+              ${buttonStyles}
             `}
             onClick={handleAddColumn}
             startIcon={<FontAwesomeIcon icon={faPlus} />}

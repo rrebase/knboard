@@ -8,7 +8,8 @@ import { Label, Id } from "types";
 import { fetchBoardById } from "features/board/BoardSlice";
 import { RootState } from "store";
 import api, { API_LABELS } from "api";
-import { createInfoToast } from "features/toast/ToastSlice";
+import { createInfoToast, createErrorToast } from "features/toast/ToastSlice";
+import { AxiosError } from "axios";
 
 export const createLabel = createAsyncThunk<Label, Omit<Label, "id">>(
   "label/createLabelStatus",
@@ -22,11 +23,23 @@ export const createLabel = createAsyncThunk<Label, Omit<Label, "id">>(
 export const patchLabel = createAsyncThunk<
   Label,
   { id: Id; fields: Partial<Label> }
->("label/patchLabelStatus", async ({ id, fields }, { dispatch }) => {
-  const response = await api.patch(`${API_LABELS}${id}/`, fields);
-  dispatch(createInfoToast("Label updated"));
-  return response.data;
-});
+>(
+  "label/patchLabelStatus",
+  async ({ id, fields }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.patch(`${API_LABELS}${id}/`, fields);
+      dispatch(createInfoToast("Label updated"));
+      return response.data;
+    } catch (err) {
+      const error: AxiosError = err;
+      if (!error.response) {
+        throw err;
+      }
+      dispatch(createErrorToast(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const deleteLabel = createAsyncThunk<Id, Id>(
   "label/deleteLabelStatus",
