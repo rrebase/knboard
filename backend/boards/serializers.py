@@ -1,10 +1,19 @@
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from rest_framework import serializers
+from rest_framework.validators import ValidationError
 
 from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
-from .models import Board, Task, Column
+from .models import Board, Task, Column, Label
 
 User = get_user_model()
+
+
+class BoardModelSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        if self.context["request"].user not in validated_data["board"].members.all():
+            raise serializers.ValidationError("Must be a member of the board!")
+        return super().create(validated_data)
 
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -44,30 +53,38 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
 
 
-class ColumnSerializer(serializers.ModelSerializer):
+class ColumnSerializer(BoardModelSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
     tasks = TaskSerializer(many=True, read_only=True)
-
-    def create(self, validated_data):
-        user = self.context["request"].user
-        board_members = validated_data["board"].members.all()
-        if user not in board_members:
-            raise serializers.ValidationError("Must be a member of the board!")
-        return super().create(validated_data)
 
     class Meta:
         model = Column
         fields = ["id", "title", "tasks", "column_order", "board"]
 
 
+class LabelSerializer(BoardModelSerializer):
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
+
+    def update(self, instance, validated_data):
+        try:
+            return super().update(instance, validated_data)
+        except IntegrityError:
+            raise ValidationError("Label already exists")
+
+    class Meta:
+        model = Label
+        fields = ["id", "name", "color", "board"]
+
+
 class BoardDetailSerializer(serializers.ModelSerializer):
     columns = ColumnSerializer(many=True, read_only=True)
     owner = BoardOwnerSerializer(read_only=True)
     members = BoardMemberSerializer(many=True, read_only=True)
+    labels = LabelSerializer(many=True, read_only=True)
 
     class Meta:
         model = Board
-        fields = ["id", "name", "owner", "members", "columns"]
+        fields = ["id", "name", "owner", "members", "columns", "labels"]
 
 
 class MemberSerializer(serializers.Serializer):

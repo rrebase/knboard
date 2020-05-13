@@ -40,6 +40,20 @@ class Column(SortableMixin):
         return f"{self.title}"
 
 
+class Label(models.Model):
+    name = models.CharField(max_length=255)
+    color = models.CharField(max_length=7)
+    board = models.ForeignKey("Board", related_name="labels", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name", "board"], name="unique_name_board")
+        ]
+
+
 class Task(SortableMixin):
     class Priority(models.TextChoices):
         HIGH = "H", "High"

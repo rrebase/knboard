@@ -11,16 +11,18 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 
-from boards.models import Board, Task, Column
-from boards.permissions import IsOwner, IsOwnerForDangerousMethods
-from boards.serializers import (
+from .models import Board, Task, Column, Label
+from .permissions import IsOwner, IsOwnerForDangerousMethods
+from .serializers import (
     BoardSerializer,
     TaskSerializer,
     ColumnSerializer,
     BoardDetailSerializer,
     MemberSerializer,
     BoardMemberSerializer,
+    LabelSerializer,
 )
+from .viewsets import ModelDetailViewSet
 
 User = get_user_model()
 
@@ -67,12 +69,18 @@ class BoardViewSet(
         permission_classes=[IsAuthenticated, IsOwner],
     )
     def invite_member(self, request, pk):
-        new_member = self.get_member()
-        if not new_member:
+        users_ids = self.request.data.get("users")
+        if not users_ids:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-        self.get_object().members.add(new_member)
-        return Response(data=BoardMemberSerializer(instance=new_member).data)
+        new_members = User.objects.filter(id__in=users_ids)
+        if len(new_members) != len(users_ids):
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        self.get_object().members.add(*new_members)
+        return Response(
+            data=BoardMemberSerializer(instance=new_members, many=True).data
+        )
 
     @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
     def remove_member(self, request, pk):
@@ -86,7 +94,7 @@ class BoardViewSet(
         return Response(data=BoardMemberSerializer(instance=member).data)
 
 
-class TaskViewSet(viewsets.ModelViewSet):
+class TaskViewSet(ModelDetailViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
@@ -96,9 +104,19 @@ class TaskViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(column__board__members=user)
 
 
-class ColumnViewSet(viewsets.ModelViewSet):
+class ColumnViewSet(ModelDetailViewSet):
     queryset = Column.objects.all()
     serializer_class = ColumnSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return super().get_queryset().filter(board__members=user)
+
+
+class LabelViewSet(ModelDetailViewSet):
+    queryset = Label.objects.all()
+    serializer_class = LabelSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

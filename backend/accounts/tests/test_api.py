@@ -7,51 +7,58 @@ from boards.utils import reverse_querystring
 User = get_user_model()
 
 
-def test_user_list(api_client, steve, amy, leo):
-    get_user_list = lambda: api_client.get(reverse("user-list"))
+@pytest.mark.parametrize(
+    "query_kwargs,expected_status_code,expected_results_len",
+    [
+        ({}, 400, 0),
+        ({"search": "steve"}, 400, 0),
+        ({"board": "1"}, 200, 0),
+        ({"board": "", "search": "ste"}, 400, 0),
+        ({"board": "1", "search": ""}, 200, 0),
+        ({"board": "1", "search": "st"}, 200, 0),
+        ({"board": "a", "search": "ste"}, 400, 0),
+        ({"board": "1", "search": "ste"}, 200, 0),
+        ({"board": "2", "search": "ste"}, 200, 1),
+    ],
+)
+def test_user_search(
+    query_kwargs,
+    expected_status_code,
+    expected_results_len,
+    api_client,
+    board_factory,
+    steve,
+    amy,
+):
+    board1 = board_factory(id=1, owner=steve)
+    board1.members.add(steve)
 
-    # Not authenticated
-    response = get_user_list()
-    assert response.status_code == 401
+    board2 = board_factory(id=2, owner=amy)
+    board2.members.add(amy)
 
-    # Can read all users
     api_client.force_authenticate(user=steve)
-    response = get_user_list()
-    assert response.status_code == 200
-    assert len(response.data) == 3
-    assert sorted(list(map(lambda user: user["id"], response.data))) == sorted(
-        [steve.id, amy.id, leo.id]
-    )
-
-
-def test_user_list_filters(api_client, steve, amy, leo):
-    uni_board = Board.objects.create(name="University", owner=steve)
-    uni_board.members.add(steve)
-    uni_board.members.add(amy)
-    api_client.force_authenticate(user=steve)
-
-    # Can search users
     response = api_client.get(
-        reverse_querystring("user-list", query_kwargs={"search": amy.username})
+        reverse_querystring("user-search", query_kwargs=query_kwargs)
     )
-    assert response.status_code == 200
-    assert len(response.data) == 1
+    assert response.status_code == expected_status_code
+    if response.status_code == 200:
+        assert len(response.data) == expected_results_len
 
-    search_uni_members_excluded = lambda search: api_client.get(
+
+def test_user_search_limit(api_client, board_factory, user_factory, steve):
+    board = board_factory()
+    board.members.add(steve)
+    for i in range(10):
+        user_factory(username=f"dave{i}")
+
+    api_client.force_authenticate(user=steve)
+    response = api_client.get(
         reverse_querystring(
-            "user-list", query_kwargs={"search": search, "excludemembers": uni_board.id}
+            "user-search", query_kwargs={"board": str(board.id), "search": "dave"}
         )
     )
-    # Steve searches for new members of uni_board
-    # He should only be able to search for Leo as Amy is already a member
-    # and thus she should be excluded from the list
-    response = search_uni_members_excluded(leo.username)
     assert response.status_code == 200
-    assert len(response.data) == 1
-
-    response = search_uni_members_excluded(amy.username)
-    assert response.status_code == 200
-    assert len(response.data) == 0
+    assert len(response.data) == 8
 
 
 def test_user_update(api_client, steve, amy):
@@ -92,7 +99,7 @@ def test_user_detail(api_client, steve, amy):
     response = get_steve()
     assert response.status_code == 200
 
-    # Amy can get Steve detail
+    # Amy can't get Steve detail
     api_client.force_authenticate(user=amy)
     response = get_steve()
-    assert response.status_code == 200
+    assert response.status_code == 403

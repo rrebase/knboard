@@ -13,6 +13,13 @@ export interface BoardMember {
   avatar: Avatar | null;
 }
 
+export interface Label {
+  id: number;
+  name: string;
+  color: string;
+  board: Id;
+}
+
 export interface Board {
   id: number;
   name: string;

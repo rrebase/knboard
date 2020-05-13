@@ -83,21 +83,26 @@ context("Board Detail (Owner)", () => {
   });
 
   it("should add new member", () => {
-    cy.route("GET", "/api/users/?excludemembers=1", "fixture:users.json").as(
-      "getUsers"
-    );
-    cy.route("POST", "api/boards/1/invite_member/", {
-      id: 2,
-      username: "steveapple1",
-      email: "steve@gmail.com",
-      first_name: "Steve",
-      last_name: "Apple"
-    }).as("inviteSteve");
+    const searchQuery = "ste";
+    cy.route(
+      "GET",
+      `/api/u/search/?board=1&search=${searchQuery}`,
+      "fixture:users.json"
+    ).as("getUsers");
+    cy.route("POST", "api/boards/1/invite_member/", [
+      {
+        id: 2,
+        username: "steveapple1",
+        email: "steve@gmail.com",
+        first_name: "Steve",
+        last_name: "Apple"
+      }
+    ]).as("inviteSteve");
 
     cy.findByTestId("member-invite").click();
     cy.get("#user-search")
       .focus()
-      .type("ste");
+      .type(searchQuery);
     cy.wait("@getUsers");
     cy.get("#user-search")
       .trigger("keydown", { keyCode: keyCodes.arrowDown })

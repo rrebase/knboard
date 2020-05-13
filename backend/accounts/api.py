@@ -8,9 +8,17 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.pagination import PageNumberPagination
 
-from .serializers import AvatarSerializer, UserSerializer, UserDetailSerializer
-from .permissions import IsSelfForUpdate
+from .serializers import (
+    AvatarSerializer,
+    UserSerializer,
+    UserDetailSerializer,
+    UserSearchSerializer,
+)
+from .permissions import IsSelf
 
 User = get_user_model()
 
@@ -20,29 +28,25 @@ class ExcludeBoardMembersFilter(filters.BaseFilterBackend):
     Filter that only shows members that are not a member of board.
     """
 
-    filter_param = "excludemembers"
+    result_limit = 8
+    filter_param = "board"
 
     def filter_queryset(self, request, queryset, view):
         board_id = request.query_params.get(self.filter_param)
         try:
             board = Board.objects.get(id=board_id)
-        except Board.DoesNotExist:
+        except (Board.DoesNotExist, ValueError):
             return queryset
 
-        return queryset.exclude(id__in=board.members.all())
+        return queryset.exclude(id__in=board.members.all())[: self.result_limit]
 
 
 class UserViewSet(
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.ListModelMixin,
-    GenericViewSet,
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericViewSet,
 ):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated, IsSelfForUpdate]
-    filter_backends = [filters.SearchFilter, ExcludeBoardMembersFilter]
-    search_fields = ["username"]
+    permission_classes = [IsAuthenticated, IsSelf]
 
     def get_serializer_class(self):
         if self.action == "retrieve" or self.action == "update":
@@ -57,6 +61,31 @@ class UserViewSet(
         user.avatar = avatar
         user.save()
         return Response(AvatarSerializer(instance=avatar).data)
+
+
+class UserSearchView(ListAPIView):
+    queryset = User.objects.filter(is_active=True).all()
+    serializer_class = UserSearchSerializer
+    filter_backends = [filters.SearchFilter, ExcludeBoardMembersFilter]
+    permission_classes = [IsAuthenticated]
+    search_fields = ["username"]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Don't want to make scraping users too easy.
+        So there are some limits for this search endpoint.
+        1) The search must have at least 3 characters
+        2) A fixed low amount of users are returned at most
+        """
+        params = request.query_params
+        board_id = params.get("board", "")
+        search = params.get("search", "")
+        if not board_id.isdigit() or not Board.objects.filter(id=board_id).exists():
+            return Response(status=HTTP_400_BAD_REQUEST)
+        if len(search) < 3:
+            return Response([])
+
+        return super().get(request, *args, **kwargs)
 
 
 class AvatarViewSet(ReadOnlyModelViewSet):

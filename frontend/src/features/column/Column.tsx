@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { grid, borderRadius } from "const";
-import { COLUMN_COLOR, G50, PRIMARY } from "utils/colors";
+import { COLUMN_COLOR, PRIMARY } from "utils/colors";
 import { ITask } from "types";
 import {
   Draggable,
@@ -24,11 +24,8 @@ const Header = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   border-top-left-radius: ${borderRadius}px;
   border-top-right-radius: ${borderRadius}px;
-  background-color: ${({ isDragging }) => (isDragging ? G50 : COLUMN_COLOR)};
+  background-color: ${COLUMN_COLOR};
   transition: background-color 0.2s ease;
-  &:hover {
-    background-color: ${G50};
-  }
   [data-rbd-drag-handle-context-id="0"] {
     cursor: initial;
   }
@@ -72,9 +69,6 @@ const Column = ({
           <TaskList
             columnId={id}
             listType="TASK"
-            style={{
-              backgroundColor: snapshot.isDragging ? G50 : null
-            }}
             tasks={tasks}
             internalScroll={isScrollable}
             isCombineEnabled={Boolean(isCombineEnabled)}

@@ -323,35 +323,35 @@ def test_board_invite_member(api_client, board_factory, steve, leo, amy):
     # Initially there are two members
     assert len(board.members.all()) == 2
 
-    send_invite = lambda username: api_client.post(
-        reverse("board-invite-member", kwargs={"pk": board.id}), {"username": username}
+    send_invite = lambda users_ids: api_client.post(
+        reverse("board-invite-member", kwargs={"pk": board.id}), {"users": users_ids}
     )
 
     # Not authenticated
-    response = send_invite(amy.username)
+    response = send_invite([amy.id])
     assert response.status_code == 401
     assert len(board.members.all()) == 2
 
     # Leo is not an owner and should not be able to invite others
     api_client.force_authenticate(user=leo)
-    response = send_invite(amy.username)
+    response = send_invite([amy.id])
     assert response.status_code == 403
     assert len(board.members.all()) == 2
 
     # Steve as the owner should be able to successfully invite Amy
     api_client.force_authenticate(user=steve)
-    response = send_invite(amy.username)
+    response = send_invite([amy.id])
     assert response.status_code == 200
     assert len(board.members.all()) == 3
     assert amy.id in list(map(lambda member: member.id, board.members.all()))
 
     # Should handle adding an existing member
-    response = send_invite(steve.username)
+    response = send_invite([steve.id])
     assert response.status_code == 200
     assert len(board.members.all()) == 3
 
     # Should handle adding non existant user
-    response = send_invite("notvalidusername")
+    response = send_invite([-1])
     assert response.status_code == 400
     assert len(board.members.all()) == 3
 
@@ -549,3 +549,24 @@ def test_create_task(api_client, column_factory, steve, amy):
     response = create_task(task_data)
     assert response.status_code == 201
     assert Task.objects.filter(title=task_data["title"]).exists()
+
+
+def test_only_board_members_see_labels(
+    api_client, board_factory, label_factory, steve, amy
+):
+    board = board_factory(name="Internals")
+    board.members.add(steve)
+    board.save()
+
+    label = label_factory(name="Documentation", board=board)
+    get_label = lambda: api_client.get(reverse("label-detail", kwargs={"pk": label.id}))
+
+    # Steve is a board member, can get label
+    api_client.force_authenticate(user=steve)
+    response = get_label()
+    assert response.status_code == 200
+
+    # Amy is a not a board member, doesn't know about the label
+    api_client.force_authenticate(user=amy)
+    response = get_label()
+    assert response.status_code == 404

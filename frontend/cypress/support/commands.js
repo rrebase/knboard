@@ -11,7 +11,7 @@ Cypress.Commands.add("e2eLogin", () => {
     }
   }).then(response => {
     localStorage.setItem(
-      "knboard-v12",
+      "knboard-data",
       JSON.stringify({
         auth: {
           user: response.body
@@ -24,7 +24,7 @@ Cypress.Commands.add("e2eLogin", () => {
 Cypress.Commands.add("stubbedSetup", () => {
   cy.server({ force404: true });
   localStorage.setItem(
-    "knboard-v12",
+    "knboard-data",
     JSON.stringify({
       auth: {
         user: {

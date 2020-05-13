@@ -135,7 +135,7 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
               }
             `}
           >
-            {assignees.map(assignee => (
+            {assignees.filter(Boolean).map(assignee => (
               <Avatar
                 key={assignee?.id}
                 css={css`

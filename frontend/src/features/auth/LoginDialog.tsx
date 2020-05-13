@@ -5,7 +5,8 @@ import {
   TextField,
   Dialog,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Grow
 } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
@@ -76,16 +77,18 @@ const LoginDialog = () => {
         <form onSubmit={onSubmit}>
           <DialogContent>
             {apiErrors?.non_field_errors && (
-              <Alert
-                severity="error"
-                css={css`
-                  margin-bottom: 0.75rem;
-                `}
-              >
-                {apiErrors.non_field_errors?.map(errorMsg => (
-                  <div key={errorMsg}>{errorMsg}</div>
-                ))}
-              </Alert>
+              <Grow in timeout={100}>
+                <Alert
+                  severity="error"
+                  css={css`
+                    margin-bottom: 0.75rem;
+                  `}
+                >
+                  {apiErrors.non_field_errors?.map(errorMsg => (
+                    <div key={errorMsg}>{errorMsg}</div>
+                  ))}
+                </Alert>
+              </Grow>
             )}
             <TextField
               autoFocus

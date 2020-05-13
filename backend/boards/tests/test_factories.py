@@ -26,3 +26,9 @@ def test_column_factory(column_factory):
 def test_task_factory(task_factory):
     task = task_factory()
     assert re.match(r"task\d+", task.title)
+
+
+def test_label_factory(label_factory):
+    label = label_factory()
+    assert re.match(r"label\d+", label.name)
+    assert re.match(r"#\w{6}", label.color)

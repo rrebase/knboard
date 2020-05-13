@@ -8,6 +8,7 @@ import toastReducer from "./features/toast/ToastSlice";
 import boardReducer from "./features/board/BoardSlice";
 import columnReducer from "./features/column/ColumnSlice";
 import taskReducer from "./features/task/TaskSlice";
+import labelReducer from "./features/label/LabelSlice";
 import memberReducer from "./features/member/MemberSlice";
 import authInitialState from "./features/auth/AuthSlice";
 import { setupInterceptors } from "api";
@@ -19,7 +20,8 @@ export const rootReducer = combineReducers({
   board: boardReducer,
   column: columnReducer,
   task: taskReducer,
-  member: memberReducer
+  member: memberReducer,
+  label: labelReducer
 });
 
 const store = configureStore({

@@ -2,21 +2,21 @@
   {
     "id": 2,
     "username": "steveapple1",
-    "email": "steve@gmail.com"
+    "avatar": null
   },
   {
     "id": 3,
     "username": "daveice",
-    "email": "dave@ice.com"
+    "avatar": null
   },
   {
     "id": 4,
     "username": "timwoodstock",
-    "email": "tim@gmail.com"
+    "avatar": null
   },
   {
     "id": 5,
     "username": "stenwood55",
-    "email": "sten@gmail.com"
+    "avatar": null
   }
 ]

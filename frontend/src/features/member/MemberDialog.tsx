@@ -106,6 +106,10 @@ const MemberDialog = ({ board }: Props) => {
                 onClick={() => setConfirmDelete(false)}
                 css={css`
                   box-shadow: none;
+                  &.MuiFab-sizeSmall {
+                    width: 32px;
+                    height: 32px;
+                  }
                 `}
               >
                 <FontAwesomeIcon icon={faAngleLeft} color="#555" />
@@ -115,6 +119,9 @@ const MemberDialog = ({ board }: Props) => {
                 color="secondary"
                 variant="contained"
                 onClick={handleRemoveMember}
+                css={css`
+                  font-size: 0.625rem;
+                `}
               >
                 Remove member
               </Button>

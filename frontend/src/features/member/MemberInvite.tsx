@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { Button, Popover } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import UserSearch from "components/UserSearch";
+import UserSearch, { UserOption } from "components/UserSearch";
 import api, { API_BOARDS } from "api";
 import { useDispatch } from "react-redux";
 import {
@@ -10,7 +10,7 @@ import {
   createSuccessToast
 } from "features/toast/ToastSlice";
 import { BoardMember } from "types";
-import { addBoardMember } from "features/member/MemberSlice";
+import { addBoardMembers } from "features/member/MemberSlice";
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;
@@ -23,7 +23,7 @@ const Content = styled.div`
 const Description = styled.p`
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 `;
 
@@ -32,8 +32,8 @@ interface Props {
 }
 
 const MemberInvite = ({ boardId }: Props) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const inputEl = useRef<HTMLInputElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [tagsValue, setTagsValue] = useState<UserOption[]>([]);
   const dispatch = useDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,27 +44,28 @@ const MemberInvite = ({ boardId }: Props) => {
     setAnchorEl(null);
   };
 
-  const postInviteMember = async (username: string) => {
+  const postInviteMember = async (users: number[]) => {
     try {
       const response = await api.post(
         `${API_BOARDS}${boardId}/invite_member/`,
-        { username }
+        { users }
       );
-      const newMember = response.data as BoardMember;
-      dispatch(addBoardMember(newMember));
-      dispatch(createSuccessToast(`Invited ${newMember.username}`));
+      const newMembers = response.data as BoardMember[];
+      dispatch(addBoardMembers(newMembers));
+      dispatch(
+        createSuccessToast(
+          `Invited ${newMembers.map(m => m.username).join(", ")}`
+        )
+      );
       handleClose();
+      setTagsValue([]);
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
     }
   };
 
-  const handleClickInvite = async () => {
-    const inputElem = inputEl?.current;
-    if (inputElem) {
-      const username = inputElem.value;
-      postInviteMember(username);
-    }
+  const handleClickInvite = () => {
+    postInviteMember(tagsValue.map(v => v.id));
   };
 
   return (
@@ -101,8 +102,12 @@ const MemberInvite = ({ boardId }: Props) => {
         transitionDuration={0}
       >
         <Content>
-          <Description>Invite to Board</Description>
-          <UserSearch inputEl={inputEl} boardId={boardId} />
+          <Description>Invite to this board</Description>
+          <UserSearch
+            boardId={boardId}
+            tagsValue={tagsValue}
+            setTagsValue={setTagsValue}
+          />
           <Button
             color="primary"
             variant="contained"
@@ -112,6 +117,7 @@ const MemberInvite = ({ boardId }: Props) => {
             `}
             onClick={handleClickInvite}
             data-testid="invite-selected"
+            disabled={tagsValue.length === 0}
           >
             Invite
           </Button>

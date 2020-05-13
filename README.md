@@ -22,6 +22,7 @@
 - Redux Toolkit
 - Unit tests with Jest and React Testing Library
 - Components & styling with Material-UI and Emotion
+- Drag & Drop by react-beautiful-dnd
 
 ### Backend
 

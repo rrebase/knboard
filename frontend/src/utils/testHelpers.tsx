@@ -13,6 +13,7 @@ import { initialState as boardInitialState } from "features/board/BoardSlice";
 import { initialState as columnInitialState } from "features/column/ColumnSlice";
 import { initialState as taskInitialState } from "features/task/TaskSlice";
 import { initialState as memberInitialState } from "features/member/MemberSlice";
+import { initialState as labelInitialState } from "features/label/LabelSlice";
 import { MemoryRouter } from "react-router-dom";
 import { RootState } from "store";
 
@@ -23,7 +24,8 @@ export const rootInitialState = {
   board: boardInitialState,
   column: columnInitialState,
   task: taskInitialState,
-  member: memberInitialState
+  member: memberInitialState,
+  label: labelInitialState
 };
 
 export const axiosMock = new MockAdapter(axios);
