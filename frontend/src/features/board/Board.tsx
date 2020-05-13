@@ -51,7 +51,7 @@ const Board = ({
   isCombineEnabled,
   withScrollableColumns
 }: Props) => {
-  const loading = useSelector((state: RootState) => state.board.detailLoading);
+  const detail = useSelector((state: RootState) => state.board.detail);
   const error = useSelector((state: RootState) => state.board.detailError);
   const columns = useSelector(columnSelectors.selectAll);
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
@@ -128,15 +128,17 @@ const Board = ({
     </Droppable>
   );
 
-  if (loading) {
-    return <Spinner loading={loading} />;
+  const detailDataExists = detail?.id.toString() === id;
+
+  if (!detailDataExists) {
+    return <Spinner loading={!detailDataExists} />;
   }
 
   if (error) {
     return <PageError>{error}</PageError>;
   }
 
-  if (!loading && columns.length === 0) {
+  if (columns.length === 0) {
     return <EmptyBoard>This board is empty.</EmptyBoard>;
   }
 

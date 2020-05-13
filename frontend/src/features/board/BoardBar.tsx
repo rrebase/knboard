@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faCog } from "@fortawesome/free-solid-svg-icons";
 import { setDialogOpen } from "features/label/LabelSlice";
 import LabelsDialog from "features/label/LabelsDialog";
+import { useParams } from "react-router-dom";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -58,13 +59,14 @@ const BoardBar = () => {
   const dispatch = useDispatch();
   const members = useSelector(memberSelectors.selectAll);
   const error = useSelector((state: RootState) => state.board.detailError);
-  const loading = useSelector((state: RootState) => state.board.detailLoading);
   const detail = useSelector((state: RootState) => state.board.detail);
   const boardOwner = useSelector((state: RootState) =>
     currentBoardOwner(state)
   );
+  const { id } = useParams();
+  const detailDataExists = detail?.id.toString() === id;
 
-  if (loading || error || !detail) {
+  if (!detailDataExists || error || !detail) {
     return null;
   }
 
