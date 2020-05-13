@@ -18,7 +18,6 @@ import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faCog } from "@fortawesome/free-solid-svg-icons";
-import Experiment from "features/task/Experiment2";
 import { setDialogOpen } from "features/label/LabelSlice";
 import LabelsDialog from "features/label/LabelsDialog";
 
@@ -128,7 +127,6 @@ const BoardBar = () => {
       <EditTaskDialog />
       <CreateTaskDialog />
       <LabelsDialog />
-      <Experiment />
     </Container>
   );
 };

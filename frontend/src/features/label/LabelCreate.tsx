@@ -3,7 +3,7 @@ import LabelFields from "./LabelFields";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { useForm, FormContext } from "react-hook-form";
-import { createLabel } from "./LabelSlice";
+import { createLabel, selectAllLabels } from "./LabelSlice";
 import { getRandomHexColor } from "utils/colors";
 import styled from "@emotion/styled";
 
@@ -23,12 +23,17 @@ interface DialogFormData {
 const LabelCreate = ({ setCreating }: Props) => {
   const dispatch = useDispatch();
   const boardId = useSelector((state: RootState) => state.board.detail?.id);
+  const labels = useSelector(selectAllLabels);
   const methods = useForm<DialogFormData>({
     defaultValues: { name: "", color: getRandomHexColor() },
     mode: "onChange"
   });
 
   const onSubmit = methods.handleSubmit(({ name, color }) => {
+    if (labels.map(label => label.name).includes(name)) {
+      methods.setError("name", "Label already exists");
+      return;
+    }
     if (boardId) {
       dispatch(createLabel({ name, color, board: boardId }));
       setCreating(false);
@@ -38,7 +43,11 @@ const LabelCreate = ({ setCreating }: Props) => {
   return (
     <FormContext {...methods}>
       <Container>
-        <LabelFields onSubmit={onSubmit} setActive={setCreating} />
+        <LabelFields
+          fieldsId="create"
+          onSubmit={onSubmit}
+          setActive={setCreating}
+        />
       </Container>
     </FormContext>
   );

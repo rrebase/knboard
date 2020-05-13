@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Chip, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { patchLabel } from "./LabelSlice";
+import { patchLabel, deleteLabel } from "./LabelSlice";
 import { css } from "@emotion/core";
 import { Label } from "types";
 import { getContrastColor } from "utils/colors";
@@ -55,6 +55,16 @@ const LabelRow = ({ label }: RowProps) => {
     }
   });
 
+  const handleDelete = () => {
+    if (
+      window.confirm(
+        "Are you sure? Deleting a label will remove it from all tasks."
+      )
+    ) {
+      dispatch(deleteLabel(label.id));
+    }
+  };
+
   return (
     <RowDiv>
       <Flex
@@ -65,7 +75,9 @@ const LabelRow = ({ label }: RowProps) => {
       >
         <Chip
           variant="outlined"
+          data-testid={`label${label.id}`}
           css={css`
+            overflow: auto;
             background-color: ${label.color};
             color: ${getContrastColor(label.color)};
             .MuiChip-label {
@@ -74,18 +86,39 @@ const LabelRow = ({ label }: RowProps) => {
           `}
           label={label.name}
         />
-        {!editing && (
+        <Flex>
+          {!editing && (
+            <Button
+              size="small"
+              onClick={() => setEditing(true)}
+              css={css`
+                margin-left: 0.5rem;
+                font-size: 0.675rem;
+              `}
+            >
+              Edit
+            </Button>
+          )}
           <Button
             size="small"
-            variant="outlined"
-            onClick={() => setEditing(true)}
+            onClick={handleDelete}
+            css={css`
+              margin-left: 0.5rem;
+              font-size: 0.675rem;
+            `}
           >
-            Edit
+            Delete
           </Button>
-        )}
+        </Flex>
       </Flex>
       <FormContext {...methods}>
-        {editing && <LabelFields onSubmit={onSubmit} setActive={setEditing} />}
+        {editing && (
+          <LabelFields
+            fieldsId={label.id.toString()}
+            onSubmit={onSubmit}
+            setActive={setEditing}
+          />
+        )}
       </FormContext>
     </RowDiv>
   );

@@ -19,11 +19,12 @@ const Actions = styled.div`
 `;
 
 interface Props {
+  fieldsId: string;
   onSubmit: () => void;
   setActive: (active: boolean) => void;
 }
 
-const LabelFields = ({ onSubmit, setActive }: Props) => {
+const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
   const {
     register,
     setValue,
@@ -46,6 +47,7 @@ const LabelFields = ({ onSubmit, setActive }: Props) => {
         `}
       >
         <TextField
+          id={`${fieldsId}label-name`}
           autoFocus
           size="small"
           label="Label name"
@@ -80,6 +82,7 @@ const LabelFields = ({ onSubmit, setActive }: Props) => {
           <FontAwesomeIcon icon={faRedoAlt} size="sm" />
         </IconButton>
         <TextField
+          id={`${fieldsId}label-color`}
           size="small"
           label="Color"
           variant="outlined"

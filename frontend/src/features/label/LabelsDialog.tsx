@@ -39,6 +39,10 @@ const LabelsDialog = () => {
   const [searchValue, setSearchValue] = useState("");
   const [creating, setCreating] = useState(false);
 
+  const filteredLabels = labels.filter(label =>
+    label.name.toLowerCase().match(searchValue.trim().toLowerCase())
+  );
+
   const handleClose = () => {
     dispatch(setDialogOpen(false));
   };
@@ -54,7 +58,9 @@ const LabelsDialog = () => {
             ${creating && "margin-bottom: 1rem;"}
           `}
         >
-          <LabelCount>{labels.length} labels</LabelCount>
+          <LabelCount>
+            {filteredLabels.length} label{filteredLabels.length !== 1 && "s"}
+          </LabelCount>
           <div>
             <TextField
               value={searchValue}
@@ -88,16 +94,9 @@ const LabelsDialog = () => {
         </Flex>
         {creating && <LabelCreate setCreating={setCreating} />}
         <Table>
-          {labels
-            .filter(label =>
-              label.name.toLowerCase().match(searchValue.trim().toLowerCase())
-            )
-            .map(label => (
-              <LabelRow
-                key={label.id + label.color + label.name}
-                label={label}
-              />
-            ))}
+          {filteredLabels.map(label => (
+            <LabelRow key={label.id + label.color + label.name} label={label} />
+          ))}
         </Table>
       </Container>
     </Dialog>
