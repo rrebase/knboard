@@ -3,6 +3,11 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 
+executors:
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:chrome69'
+
 commands:
   dlreporter:
     steps:
@@ -159,6 +164,7 @@ workflows:
       - frontend
       - backend
       - cypress/run:
+          executor: with-chrome
           cache-key: v1-cypress-{{ arch }}-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
           no-workspace: true
           yarn: true
