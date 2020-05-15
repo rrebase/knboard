@@ -65,6 +65,7 @@ class Task(SortableMixin):
     priority = models.CharField(
         max_length=1, choices=Priority.choices, default=Priority.MEDIUM
     )
+    labels = models.ManyToManyField(Label, related_name="tasks")
     assignees = models.ManyToManyField(User, related_name="tasks")
     column = SortableForeignKey(Column, related_name="tasks", on_delete=models.CASCADE)
     task_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
