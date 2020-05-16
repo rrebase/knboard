@@ -103,7 +103,7 @@ context("Task", () => {
     cy.findByText("Fresh one").should("be.visible");
   });
 
-  it.only("should successfully edit task priority", () => {
+  it("should successfully edit task priority", () => {
     cy.fixture("internals_board").then(board => {
       const task = board.columns[1].tasks[0];
       const updatedTask = { ...task, priority: "H" };
