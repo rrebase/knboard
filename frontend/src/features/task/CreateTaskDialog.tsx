@@ -179,6 +179,8 @@ const CreateTaskDialog = () => {
         <Autocomplete
           multiple
           filterSelectedOptions
+          disableClearable
+          openOnFocus
           id="create-assignee-select"
           size="small"
           options={members}
@@ -198,7 +200,6 @@ const CreateTaskDialog = () => {
               />
             ))
           }
-          disableClearable
           css={css`
             width: 100%;
             margin-top: 1rem;
@@ -229,6 +230,7 @@ const CreateTaskDialog = () => {
           size="small"
           filterSelectedOptions
           autoHighlight
+          openOnFocus
           options={labelsOptions}
           getOptionLabel={option => option.name}
           value={labels}

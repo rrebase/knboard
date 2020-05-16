@@ -66,7 +66,7 @@ const LabelRow = ({ label }: RowProps) => {
   };
 
   return (
-    <RowDiv>
+    <RowDiv data-testid={`row-${label.id}`}>
       <Flex
         css={css`
           ${editing && "margin-bottom: 1rem;"}

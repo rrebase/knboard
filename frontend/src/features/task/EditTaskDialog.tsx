@@ -400,6 +400,7 @@ const EditTaskDialog = () => {
           <Autocomplete
             id="priority-select"
             size="small"
+            blurOnSelect
             options={PRIORITY_OPTIONS}
             getOptionLabel={option => option.label}
             value={PRIORITY_MAP[task.priority]}
@@ -418,9 +419,12 @@ const EditTaskDialog = () => {
           <Autocomplete
             multiple
             id="labels-select"
+            data-testid="edit-labels"
             size="small"
             filterSelectedOptions
             autoHighlight
+            openOnFocus
+            blurOnSelect
             options={labels}
             getOptionLabel={option => option.name}
             value={
@@ -470,6 +474,7 @@ const EditTaskDialog = () => {
               font-size: 12px;
               font-weight: bold;
               color: ${TASK_G};
+              margin-bottom: 1rem;
             `}
           >
             Delete task

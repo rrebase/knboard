@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ITask } from "types";
+import { ITask, BoardMember } from "types";
 import {
   DraggableProvided,
   Draggable,
@@ -67,6 +67,7 @@ const TextContent = styled.div`
 `;
 
 const Footer = styled.div`
+  height: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -105,7 +106,9 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
 export const TaskFooter = ({ task }: { task: ITask }) => {
   const membersByIds = useSelector(selectMembersEntities);
-  const assignees = task.assignees.map(assigneeId => membersByIds[assigneeId]);
+  const assignees = task.assignees.map(
+    assigneeId => membersByIds[assigneeId]
+  ) as BoardMember[];
 
   return (
     <Footer>
@@ -126,19 +129,19 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
               }
             `}
           >
-            {assignees.filter(Boolean).map(assignee => (
+            {assignees.map(assignee => (
               <Avatar
-                key={assignee?.id}
+                key={assignee.id}
                 css={css`
                   height: 1.25rem;
                   width: 1.25rem;
                   font-size: 8px;
                   margin-left: -12px;
                 `}
-                src={assignee?.avatar?.photo}
-                alt={assignee?.avatar?.name}
+                src={assignee.avatar?.photo}
+                alt={assignee.avatar?.name}
               >
-                {assignee?.username.charAt(0)}
+                {assignee.username.charAt(0)}
               </Avatar>
             ))}
           </AvatarGroup>

@@ -13,16 +13,21 @@ const Container = styled.div`
 
 interface Props {
   onClose: () => void;
+  onPopper?: boolean;
 }
 
-const Close = ({ onClose }: Props) => {
+const Close = ({ onClose, onPopper }: Props) => {
   return (
-    <Container>
+    <Container
+      css={css`
+        ${onPopper && "top: 0.5rem; right: 0.5rem;"}
+      `}
+    >
       <IconButton
         size="small"
         onClick={onClose}
         aria-label="close"
-        data-testid="close-dialog"
+        data-testid={onPopper ? "close-popper" : "close-dialog"}
         css={css`
           height: 2.5rem;
           width: 2.5rem;

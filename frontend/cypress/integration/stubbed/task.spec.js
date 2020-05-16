@@ -180,4 +180,60 @@ context("Task", () => {
       cy.expectTasks("col-1", ["task-2"]);
     });
   });
+
+  it("should add a label", () => {
+    cy.fixture("internals_board").then(board => {
+      const label = board.labels[0];
+      const task = board.columns[1].tasks[0];
+      cy.route("PATCH", `/api/tasks/${task.id}/`, {
+        ...task,
+        labels: [label.id]
+      }).as("patchTask");
+
+      cy.findByTestId(`task-${task.id}`).click();
+      cy.findByTestId("edit-labels")
+        .within(() => {
+          cy.get('button[aria-label="Open"]').click();
+        })
+        .then(() => {
+          cy.get(".MuiAutocomplete-popper").within(() => {
+            cy.findByText(label.name).click();
+          });
+        });
+      cy.wait("@patchTask").then(() => {
+        cy.findByTestId("close-dialog")
+          .click()
+          .then(() => {
+            cy.findByText(label.name).should("be.visible");
+          });
+      });
+    });
+  });
+
+  it("should assign a member to task", () => {
+    cy.fixture("internals_board").then(board => {
+      const member = board.members[0];
+      const task = board.columns[1].tasks[0];
+      cy.route("PATCH", `/api/tasks/${task.id}/`, {
+        ...task,
+        assignees: [member.id]
+      }).as("patchTask");
+
+      cy.findByTestId(`task-${task.id}`).click();
+      cy.findByTestId("open-edit-assignees").click();
+      cy.get(".MuiAutocomplete-popper").within(() => {
+        cy.findByText(member.username).click();
+      });
+      cy.findByTestId("close-popper").click();
+      cy.wait("@patchTask").then(() => {
+        cy.findByTestId("close-dialog")
+          .click()
+          .then(() => {
+            cy.findByTestId("task-1").within(() => {
+              cy.findByText(member.username[0]).should("be.visible");
+            });
+          });
+      });
+    });
+  });
 });

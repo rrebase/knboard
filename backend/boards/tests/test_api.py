@@ -352,9 +352,13 @@ def test_board_invite_member(api_client, board_factory, steve, leo, amy):
     assert len(board.members.all()) == 3
 
 
-def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
+def test_board_remove_member(
+    api_client, board_factory, column_factory, task_factory, steve, leo, amy, mike
+):
     board = board_factory(owner=steve)
     board.members.set([steve, leo, amy])
+    column = column_factory(board=board)
+    task = task_factory(column=column)
 
     # Initially there are two members
     assert len(board.members.all()) == 3
@@ -390,11 +394,14 @@ def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
     assert response.status_code == 400
     assert len(board.members.all()) == 3
 
-    # Steve can remove Leo
+    # Steve can remove Leo, should also remove Leo from tasks
+    task.assignees.set([leo])
+    assert len(task.assignees.all()) == 1
     response = remove_member(leo.username)
     assert response.status_code == 200
     assert len(board.members.all()) == 2
     assert leo.id not in list(map(lambda member: member.id, board.members.all()))
+    assert len(task.assignees.all()) == 0
 
 
 def test_update_task_title(api_client, task_factory, steve, amy):

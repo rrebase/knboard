@@ -4,9 +4,9 @@ import {
   Avatar,
   Popper,
   Button,
-  InputBase,
   PopperProps,
-  Popover
+  Popover,
+  TextField
 } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { PRIMARY } from "utils/colors";
@@ -17,22 +17,22 @@ import {
   selectAllMembers,
   selectMembersEntities
 } from "features/member/MemberSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { patchTask } from "./TaskSlice";
 import {
   modalPopperIndex,
   modalPopperAutocompleteIndex,
-  borderRadius,
   modalPopperWidth
 } from "const";
+import AvatarOption from "components/AvatarOption";
+import AvatarTag from "components/AvatarTag";
+import Close from "components/Close";
 
 const Container = styled.div`
   margin-bottom: 1rem;
 `;
 
 const ContentTitle = styled.h3`
-  margin: 0.5rem;
+  margin: 0.5rem 1rem;
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: normal;
@@ -44,25 +44,16 @@ const Content = styled.div`
   width: ${modalPopperWidth}px;
 `;
 
+const popperXSpacing = 16;
+
 const AutocompletePopper = (props: PopperProps) => (
   <Popper
     {...props}
-    style={{ zIndex: modalPopperAutocompleteIndex, width: modalPopperWidth }}
+    style={{
+      zIndex: modalPopperAutocompleteIndex,
+      width: modalPopperWidth - popperXSpacing * 2
+    }}
     placement="bottom-start"
-    css={css`
-      .MuiPaper-rounded {
-        border-radius: 0;
-      }
-
-      .MuiAutocomplete-option {
-        &[data-focus="true"] {
-          background-color: rgba(0, 0, 0, 0.04) !important;
-        }
-        &[aria-selected="true"] {
-          background-color: initial;
-        }
-      }
-    `}
   />
 );
 
@@ -77,34 +68,17 @@ const List = styled.div`
   margin: 0.5rem 0;
 `;
 
-const Option = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #ccc;
-  p {
-    display: block;
-    color: #333;
-    margin: 4px 12px;
-  }
-`;
-
 interface Props {
   task: ITask;
 }
 
-// I don't really like the way this component behaves with focus
-// TODO: Use a chip based approach like it's done it CreateTaskDialog
 const TaskAssignees = ({ task }: Props) => {
   const dispatch = useDispatch();
   const membersById = useSelector(selectMembersEntities);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [pendingAssignees, setPendingAssignees] = useState<BoardMember[]>([]);
   const members = useSelector(selectAllMembers);
-  const assignees = task.assignees
-    .map(id => membersById[id])
-    .filter(Boolean) as BoardMember[];
+  const assignees = task.assignees.map(id => membersById[id]) as BoardMember[];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setPendingAssignees(assignees);
@@ -112,14 +86,22 @@ const TaskAssignees = ({ task }: Props) => {
   };
 
   const handleClose = () => {
-    dispatch(
-      patchTask({
-        id: task.id,
-        fields: { assignees: pendingAssignees.map(member => member.id) }
-      })
-    );
-    if (anchorEl) {
-      anchorEl.focus();
+    const currentIds = assignees.map(a => a.id);
+    const pendingIds = pendingAssignees.map(member => member.id);
+    if (
+      !(
+        pendingIds.length === currentIds.length &&
+        pendingIds
+          .sort()
+          .every((value, index) => value === currentIds.sort()[index])
+      )
+    ) {
+      dispatch(
+        patchTask({
+          id: task.id,
+          fields: { assignees: pendingIds }
+        })
+      );
     }
     setAnchorEl(null);
   };
@@ -145,23 +127,25 @@ const TaskAssignees = ({ task }: Props) => {
               {assignee.username.charAt(0)}
             </Avatar>
           </div>
-          <div>{assignee?.username}</div>
+          <div>{assignee.username}</div>
         </List>
       ))}
       <Button
         size="small"
         onClick={handleClick}
+        data-testid="open-edit-assignees"
         css={css`
           color: ${PRIMARY};
           font-size: 0.7rem;
         `}
       >
-        + Add
+        Change
       </Button>
       <Popover
         id={popoverId}
         open={open}
         anchorEl={anchorEl}
+        transitionDuration={0}
         style={{ zIndex: modalPopperIndex }}
         onClose={handleClose}
         css={css`
@@ -171,66 +155,43 @@ const TaskAssignees = ({ task }: Props) => {
         `}
       >
         <Content>
+          <Close onClose={handleClose} onPopper />
           <ContentTitle>Assigned board members</ContentTitle>
           <Autocomplete
-            open={open}
             multiple
+            filterSelectedOptions
+            disableClearable
             disableCloseOnSelect
+            openOnFocus
             PopperComponent={AutocompletePopper}
-            value={pendingAssignees}
-            renderTags={() => null}
-            onChange={(_, newValue) => setPendingAssignees(newValue)}
-            noOptionsText="No members"
-            renderOption={(option, { selected }) => (
-              <Option>
-                <div>
-                  <Avatar
-                    css={css`
-                      height: 2rem;
-                      width: 2rem;
-                      margin-right: 0.5rem;
-                    `}
-                    src={option.avatar?.photo}
-                    alt={option.avatar?.name}
-                  >
-                    {option.username.charAt(0)}
-                  </Avatar>
-                </div>
-                <p>{option.username}</p>
-                <div
-                  css={css`
-                    visibility: ${selected ? "visibile" : "hidden"};
-                  `}
-                >
-                  <FontAwesomeIcon icon={faCheck} />
-                </div>
-              </Option>
-            )}
+            id="assignee-select"
+            data-testid="edit-assignees"
+            size="small"
             options={members}
             getOptionLabel={option => option.username}
+            value={pendingAssignees}
+            onChange={(_event, value) => setPendingAssignees(value)}
+            renderOption={option => <AvatarOption option={option} />}
             renderInput={params => (
-              <InputBase
-                ref={params.InputProps.ref}
-                inputProps={params.inputProps}
+              <TextField
+                {...params}
                 autoFocus
-                placeholder="Search members"
-                css={css`
-                  width: 100%;
-                  padding: 10px 0;
-                  border-bottom: 1px solid #dfe2e5;
-                  & input {
-                    margin: 0 0.5rem;
-                    border-radius: ${borderRadius}px;
-                    border: 1px solid #ced4da;
-                    font-size: 0.75rem;
-                    padding: 6px 6px;
-                    &:focus {
-                      border-color: #1111ee;
-                    }
-                  }
-                `}
+                label="Assignees"
+                variant="outlined"
               />
             )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <AvatarTag
+                  key={option.id}
+                  option={option}
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
+            css={css`
+              padding: 1rem ${popperXSpacing}px;
+            `}
           />
         </Content>
       </Popover>
