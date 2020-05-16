@@ -35,6 +35,7 @@
           "task_order": 5,
           "priority": "L",
           "assignees": [],
+          "labels": [],
           "column": 5
         },
         {
@@ -44,6 +45,7 @@
           "task_order": 6,
           "priority": "L",
           "assignees": [],
+          "labels": [],
           "column": 5
         }
       ],

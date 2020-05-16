@@ -109,7 +109,7 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
 
   return (
     <Footer>
-      <CardIcon>
+      <CardIcon data-testid="task-priority">
         <FontAwesomeIcon icon={faCube} color={PRIO_COLORS[task.priority]} />
       </CardIcon>
       {assignees.length > 0 && (

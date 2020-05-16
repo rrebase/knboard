@@ -16,6 +16,7 @@ context("Task", () => {
       description: "",
       column: 1,
       assignees: [],
+      labels: [],
       priority: "M"
     });
 
@@ -102,7 +103,7 @@ context("Task", () => {
     cy.findByText("Fresh one").should("be.visible");
   });
 
-  it("should successfully edit task priority", () => {
+  it.only("should successfully edit task priority", () => {
     cy.fixture("internals_board").then(board => {
       const task = board.columns[1].tasks[0];
       const updatedTask = { ...task, priority: "H" };
@@ -120,7 +121,11 @@ context("Task", () => {
         });
       cy.findByTestId("close-dialog").click();
       cy.findByTestId(`task-${task.id}`).within(() => {
-        cy.findByTestId("task-priority").should("have.text", "H");
+        cy.get("[data-testid='task-priority'] svg").should(
+          "have.css",
+          "color",
+          "rgb(255, 170, 170)"
+        );
       });
     });
   });
