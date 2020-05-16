@@ -201,8 +201,7 @@ def test_order_column_status_code(
 
 def test_board_list(api_client, steve, amy, leo):
     uni_board = Board.objects.create(name="University", owner=steve)
-    uni_board.members.add(steve)
-    uni_board.members.add(amy)
+    uni_board.members.set([steve, amy])
     get_board_list = lambda: api_client.get(reverse("board-list"))
 
     # Not authenticated
@@ -230,8 +229,7 @@ def test_board_list(api_client, steve, amy, leo):
 
 def test_board_detail(api_client, steve, amy, leo):
     uni_board = Board.objects.create(name="University", owner=steve)
-    uni_board.members.add(steve)
-    uni_board.members.add(amy)
+    uni_board.members.set([steve, amy])
     get_uni_board_detail = lambda: api_client.get(
         reverse("board-detail", kwargs={"pk": uni_board.id})
     )
@@ -260,8 +258,7 @@ def test_board_detail(api_client, steve, amy, leo):
 
 def test_board_delete(api_client, steve, amy, leo):
     uni_board = Board.objects.create(name="University", owner=steve)
-    uni_board.members.add(steve)
-    uni_board.members.add(amy)
+    uni_board.members.set([steve, amy])
     delete_uni_board = lambda: api_client.delete(
         reverse("board-detail", kwargs={"pk": uni_board.id})
     )
@@ -317,8 +314,7 @@ def test_board_create(api_client, steve, amy):
 
 def test_board_invite_member(api_client, board_factory, steve, leo, amy):
     board = board_factory(owner=steve)
-    board.members.add(leo)
-    board.save()
+    board.members.set([leo, steve])
 
     # Initially there are two members
     assert len(board.members.all()) == 2
@@ -356,11 +352,13 @@ def test_board_invite_member(api_client, board_factory, steve, leo, amy):
     assert len(board.members.all()) == 3
 
 
-def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
+def test_board_remove_member(
+    api_client, board_factory, column_factory, task_factory, steve, leo, amy, mike
+):
     board = board_factory(owner=steve)
-    board.members.add(leo)
-    board.members.add(amy)
-    board.save()
+    board.members.set([steve, leo, amy])
+    column = column_factory(board=board)
+    task = task_factory(column=column)
 
     # Initially there are two members
     assert len(board.members.all()) == 3
@@ -396,18 +394,20 @@ def test_board_remove_member(api_client, board_factory, steve, leo, amy, mike):
     assert response.status_code == 400
     assert len(board.members.all()) == 3
 
-    # Steve can remove Leo
+    # Steve can remove Leo, should also remove Leo from tasks
+    task.assignees.set([leo])
+    assert len(task.assignees.all()) == 1
     response = remove_member(leo.username)
     assert response.status_code == 200
     assert len(board.members.all()) == 2
     assert leo.id not in list(map(lambda member: member.id, board.members.all()))
+    assert len(task.assignees.all()) == 0
 
 
 def test_update_task_title(api_client, task_factory, steve, amy):
     task = task_factory(title="Landing page design")
     board = task.column.board
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     new_title = "Admin page permissions"
     update_title = lambda: api_client.patch(
@@ -434,8 +434,7 @@ def test_update_task_title(api_client, task_factory, steve, amy):
 def test_delete_task(api_client, task_factory, steve, amy):
     task = task_factory()
     board = task.column.board
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     delete_task = lambda: api_client.delete(
         reverse("task-detail", kwargs={"pk": task.id})
@@ -460,8 +459,7 @@ def test_delete_task(api_client, task_factory, steve, amy):
 def test_update_column_title(api_client, column_factory, steve, amy):
     column = column_factory(title="On Hold")
     board = column.board
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     new_title = "Ready"
     update_column_title = lambda: api_client.patch(
@@ -487,8 +485,7 @@ def test_update_column_title(api_client, column_factory, steve, amy):
 
 def test_create_column(api_client, board_factory, steve, amy):
     board = board_factory(name="Internals")
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     column_data = {"title": "Send verification email on Regiser", "board": board.id}
     create_column = lambda post_data: api_client.post(reverse("column-list"), post_data)
@@ -513,14 +510,14 @@ def test_create_column(api_client, board_factory, steve, amy):
 def test_create_task(api_client, column_factory, steve, amy):
     column = column_factory(title="Blocked")
     board = column.board
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     task_data = {
         "title": "Send verification email on Regiser",
         "description": "<p>Send a verification email when a new user registers. "
         "Email template is provided by Dave.</p><p><br></p><p>Use our main SMTP provider.</p>",
         "column": column.id,
+        "labels": [],
         "assignees": [steve.id],
         "priority": "H",
     }
@@ -555,8 +552,7 @@ def test_only_board_members_see_labels(
     api_client, board_factory, label_factory, steve, amy
 ):
     board = board_factory(name="Internals")
-    board.members.add(steve)
-    board.save()
+    board.members.set([steve])
 
     label = label_factory(name="Documentation", board=board)
     get_label = lambda: api_client.get(reverse("label-detail", kwargs={"pk": label.id}))
@@ -570,3 +566,55 @@ def test_only_board_members_see_labels(
     api_client.force_authenticate(user=amy)
     response = get_label()
     assert response.status_code == 404
+
+
+def test_add_labels_to_task(
+    api_client, board_factory, column_factory, task_factory, label_factory, steve, amy
+):
+    board1 = board_factory()
+    board1.members.set([steve])
+    board2 = board_factory()
+    column1 = column_factory(board=board1)
+    label1 = label_factory(board=board1)
+    label2 = label_factory(board=board2)
+    task1 = task_factory(column=column1)
+
+    add_labels = lambda labels: api_client.patch(
+        reverse("task-detail", kwargs={"pk": task1.id}), {"labels": labels}
+    )
+
+    # Can't add a label when not a member
+    api_client.force_authenticate(user=amy)
+    response = add_labels([label1.id])
+    task1.refresh_from_db()
+    assert response.status_code == 404
+    assert len(task1.labels.all()) == 0
+
+    # Can't add a label from a different board
+    api_client.force_authenticate(user=steve)
+    response = add_labels([label1.id, label2.id])
+    task1.refresh_from_db()
+    assert response.status_code == 400
+    assert response.data[0] == "Can't set a label that doesn't belong to the board!"
+    assert len(task1.labels.all()) == 0
+
+    # Can add a label of this board as member
+    api_client.force_authenticate(user=steve)
+    response = add_labels([label1.id])
+    task1.refresh_from_db()
+    assert response.status_code == 200
+    assert [label.id for label in task1.labels.all()] == [label1.id]
+
+
+def test_label_names_unique_per_board(
+    api_client, board_factory, label_factory, steve, amy
+):
+    board = board_factory()
+    board.members.set([steve])
+    label1 = label_factory(board=board, name="Hotfix")
+    label_factory(board=board, name="Bug")
+    api_client.force_authenticate(user=steve)
+    response = api_client.patch(
+        reverse("label-detail", kwargs={"pk": label1.id}), {"name": "Bug"}
+    )
+    assert response.status_code == 400

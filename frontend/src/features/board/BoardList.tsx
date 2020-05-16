@@ -9,6 +9,7 @@ import { RootState } from "store";
 import { css, SerializedStyles } from "@emotion/core";
 import { Link } from "react-router-dom";
 import NewBoardDialog from "./NewBoardDialog";
+import Spinner from "components/Spinner";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -98,11 +99,16 @@ const Card = ({ cardCss, to, children }: CardProps) => {
 
 const BoardList = () => {
   const dispatch = useDispatch();
-  const boards = useSelector((state: RootState) => state.board.entities);
+  const loading = useSelector((state: RootState) => state.board.fetchLoading);
+  const boards = useSelector((state: RootState) => state.board.all);
 
   React.useEffect(() => {
     dispatch(fetchAllBoards());
   }, []);
+
+  if (loading && boards.length === 0) {
+    <Spinner loading={loading} />;
+  }
 
   return (
     <Container maxWidth="sm">

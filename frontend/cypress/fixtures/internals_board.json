@@ -22,7 +22,12 @@
       "avatar": null
     }
   ],
-  "labels": [],
+  "labels": [
+    { "board": 1, "color": "#3298dc", "id": 1, "name": "Info" },
+    { "board": 1, "color": "#00D1B2", "id": 2, "name": "Wontfix" },
+    { "board": 1, "color": "#3298dc", "id": 3, "name": "Enhancement" },
+    { "board": 1, "color": "#ffdd57", "id": 4, "name": "Invalid" }
+  ],
   "columns": [
     {
       "id": 3,
@@ -35,6 +40,7 @@
           "task_order": 3,
           "priority": "H",
           "assignees": [],
+          "labels": [],
           "column": 3
         },
         {
@@ -44,6 +50,7 @@
           "task_order": 4,
           "priority": "M",
           "assignees": [],
+          "labels": [],
           "column": 3
         }
       ],
@@ -60,6 +67,7 @@
           "task_order": 1,
           "priority": "L",
           "assignees": [],
+          "labels": [],
           "column": 1
         },
         {
@@ -68,7 +76,8 @@
           "description": "Implement the profile page detail view.",
           "task_order": 2,
           "priority": "L",
-          "assignees": [],
+          "assignees": [3],
+          "labels": [],
           "column": 1
         }
       ],
@@ -85,6 +94,7 @@
           "task_order": 5,
           "priority": "L",
           "assignees": [],
+          "labels": [3],
           "column": 2
         }
       ],

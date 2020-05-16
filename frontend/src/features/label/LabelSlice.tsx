@@ -93,7 +93,9 @@ export const labelSelectors = labelAdapter.getSelectors(
   (state: RootState) => state.label
 );
 
-const { selectAll } = labelSelectors;
-export const selectAllLabels = selectAll;
+export const {
+  selectAll: selectAllLabels,
+  selectEntities: selectLabelEntities
+} = labelSelectors;
 
 export default slice.reducer;

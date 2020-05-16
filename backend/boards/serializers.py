@@ -24,20 +24,44 @@ class BoardSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     column = serializers.PrimaryKeyRelatedField(queryset=Column.objects.all())
+    labels = serializers.PrimaryKeyRelatedField(
+        queryset=Label.objects.all(), many=True, required=False
+    )
     assignees = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), many=True, required=False
     )
 
+    def extra_validation(self, board=None, labels=None, assignees=None, user=None):
+        if labels and board:
+            for label in labels:
+                if label.board != board:
+                    raise serializers.ValidationError(
+                        "Can't set a label that doesn't belong to the board!"
+                    )
+        if assignees and board:
+            for assignee in assignees:
+                if assignee not in board.members.all():
+                    raise serializers.ValidationError(
+                        "Can't assign someone who isn't a board member!"
+                    )
+        if user and user not in board.members.all():
+            raise serializers.ValidationError("Must be a member of the board!")
+
+    def update(self, instance, validated_data):
+        labels = validated_data.get("labels")
+        assignees = validated_data.get("assignees")
+        board = instance.column.board
+        self.extra_validation(board=board, labels=labels, assignees=assignees)
+        return super().update(instance, validated_data)
+
     def create(self, validated_data):
         user = self.context["request"].user
-        board_members = validated_data["column"].board.members.all()
-        if user not in board_members:
-            raise serializers.ValidationError("Must be a member of the board!")
-        for assignee in validated_data["assignees"]:
-            if assignee not in board_members:
-                raise serializers.ValidationError(
-                    "Can't assign someone who isn't a board member!"
-                )
+        board = validated_data["column"].board
+        labels = validated_data["labels"]
+        assignees = validated_data["assignees"]
+        self.extra_validation(
+            board=board, labels=labels, assignees=assignees, user=user
+        )
         return super().create(validated_data)
 
     class Meta:
@@ -47,6 +71,7 @@ class TaskSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "priority",
+            "labels",
             "assignees",
             "task_order",
             "column",

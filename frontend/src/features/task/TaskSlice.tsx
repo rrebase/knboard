@@ -9,6 +9,8 @@ import {
 } from "features/toast/ToastSlice";
 import api, { API_SORT_TASKS, API_TASKS } from "api";
 import { addColumn, deleteColumn } from "features/column/ColumnSlice";
+import { deleteLabel } from "features/label/LabelSlice";
+import { removeBoardMember } from "features/member/MemberSlice";
 
 type TasksById = Record<string, ITask>;
 
@@ -34,14 +36,16 @@ interface PatchFields {
   title: string;
   description: string;
   priority: PriorityValue;
+  labels: Id[];
   assignees: Id[];
 }
 
 export const patchTask = createAsyncThunk<
   ITask,
   { id: Id; fields: Partial<PatchFields> }
->("task/patchTaskStatus", async ({ id, fields }) => {
+>("task/patchTaskStatus", async ({ id, fields }, { dispatch }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, fields);
+  dispatch(createSuccessToast("Task saved"));
   return response.data;
 });
 
@@ -57,11 +61,7 @@ export const createTask = createAsyncThunk<
   }
 >("task/createTaskStatus", async (task, { dispatch, rejectWithValue }) => {
   try {
-    const response = await api.post(`${API_TASKS}`, {
-      ...task,
-      assignees: task.assignees.map(assignee => assignee.id),
-      priority: task.priority.value
-    });
+    const response = await api.post(`${API_TASKS}`, task);
     dispatch(createSuccessToast("Task created"));
     return response.data;
   } catch (err) {
@@ -138,6 +138,22 @@ export const slice = createSlice({
     });
     builder.addCase(deleteColumn.fulfilled, (state, action) => {
       delete state.byColumn[action.payload];
+    });
+    builder.addCase(deleteLabel.fulfilled, (state, action) => {
+      const deletedLabelId = action.payload;
+      for (const taskId in state.byId) {
+        const task = state.byId[taskId];
+        task.labels = task.labels.filter(labelId => labelId !== deletedLabelId);
+      }
+    });
+    builder.addCase(removeBoardMember, (state, action) => {
+      const deletedMemberId = action.payload;
+      for (const taskId in state.byId) {
+        const task = state.byId[taskId];
+        task.assignees = task.assignees.filter(
+          assigneeId => assigneeId !== deletedMemberId
+        );
+      }
     });
   }
 });

@@ -2,10 +2,11 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Board, IColumn, ITask, Label } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
+import { logout } from "features/auth/AuthSlice";
 
 interface InitialState {
   detail: Board | null;
-  entities: Board[];
+  all: Board[];
   fetchLoading: boolean;
   fetchError: string | null;
   createDialogOpen: boolean;
@@ -17,7 +18,7 @@ interface InitialState {
 
 export const initialState: InitialState = {
   detail: null,
-  entities: [],
+  all: [],
   fetchLoading: false,
   fetchError: null,
   createDialogOpen: false,
@@ -80,7 +81,7 @@ export const slice = createSlice({
       state.fetchLoading = true;
     });
     builder.addCase(fetchAllBoards.fulfilled, (state, action) => {
-      state.entities = action.payload;
+      state.all = action.payload;
       state.fetchError = null;
       state.fetchLoading = false;
     });
@@ -105,7 +106,7 @@ export const slice = createSlice({
       state.createLoading = true;
     });
     builder.addCase(createBoard.fulfilled, (state, action) => {
-      state.entities.push(action.payload);
+      state.all.push(action.payload);
       state.createError = null;
       state.createLoading = false;
       state.createDialogOpen = false;
@@ -113,6 +114,10 @@ export const slice = createSlice({
     builder.addCase(createBoard.rejected, (state, action) => {
       state.createError = action.payload as string;
       state.createLoading = false;
+    });
+    builder.addCase(logout.fulfilled, state => {
+      state.all = [];
+      state.detail = null;
     });
   }
 });

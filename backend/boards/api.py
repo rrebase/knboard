@@ -91,6 +91,8 @@ class BoardViewSet(
             return Response(status=HTTP_400_BAD_REQUEST)
 
         board.members.remove(member)
+        for task in Task.objects.filter(column__board=board):
+            task.assignees.remove(member)
         return Response(data=BoardMemberSerializer(instance=member).data)
 
 

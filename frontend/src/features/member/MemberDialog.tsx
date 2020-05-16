@@ -14,7 +14,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeBoardMember,
-  setDialogMember
+  setDialogMember,
+  selectMembersEntities
 } from "features/member/MemberSlice";
 import { RootState } from "store";
 import { currentBoardOwner } from "features/board/BoardSlice";
@@ -53,7 +54,7 @@ interface Props {
 const MemberDialog = ({ board }: Props) => {
   const dispatch = useDispatch();
   const memberId = useSelector((state: RootState) => state.member.dialogMember);
-  const members = useSelector((state: RootState) => state.member.entities);
+  const members = useSelector(selectMembersEntities);
   const boardOwner = useSelector((state: RootState) =>
     currentBoardOwner(state)
   );

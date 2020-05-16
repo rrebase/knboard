@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Dialog, Button, TextField, TextareaAutosize } from "@material-ui/core";
+import {
+  Dialog,
+  Button,
+  TextField,
+  TextareaAutosize,
+  Chip
+} from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -19,8 +25,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
-import { IColumn, TasksByColumn, Id, Priority } from "types";
-import { selectAllColumns } from "features/column/ColumnSlice";
+import { IColumn, TasksByColumn, Id, Priority, Label } from "types";
+import {
+  selectAllColumns,
+  selectColumnsEntities
+} from "features/column/ColumnSlice";
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
@@ -36,12 +45,17 @@ import {
   Key
 } from "const";
 import Close from "components/Close";
+import {
+  selectAllLabels,
+  selectLabelEntities
+} from "features/label/LabelSlice";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
 const Content = styled.div`
   display: flex;
   padding: 2rem;
+  height: 600px;
 `;
 
 const Main = styled.div`
@@ -50,7 +64,8 @@ const Main = styled.div`
 
 const Side = styled.div`
   margin-top: 2rem;
-  width: 200px;
+  max-width: 200px;
+  min-width: 200px;
 `;
 
 const Header = styled.div`
@@ -123,8 +138,10 @@ const DescriptionActions = styled.div`
 
 const EditTaskDialog = () => {
   const dispatch = useDispatch();
-  const columns: IColumn[] = useSelector(selectAllColumns);
-  const columnsById = useSelector((state: RootState) => state.column.entities);
+  const columns = useSelector(selectAllColumns);
+  const labels = useSelector(selectAllLabels);
+  const labelsById = useSelector(selectLabelEntities);
+  const columnsById = useSelector(selectColumnsEntities);
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
@@ -274,6 +291,15 @@ const EditTaskDialog = () => {
     setDescription(text);
   };
 
+  const handleLabelsChange = (newLabels: Label[]) => {
+    dispatch(
+      patchTask({
+        id: taskId,
+        fields: { labels: newLabels.map(label => label.id) }
+      })
+    );
+  };
+
   return (
     <Dialog
       open={open}
@@ -374,6 +400,7 @@ const EditTaskDialog = () => {
           <Autocomplete
             id="priority-select"
             size="small"
+            blurOnSelect
             options={PRIORITY_OPTIONS}
             getOptionLabel={option => option.label}
             value={PRIORITY_MAP[task.priority]}
@@ -384,6 +411,42 @@ const EditTaskDialog = () => {
             openOnFocus
             disableClearable
             data-testid="edit-priority"
+            css={css`
+              width: 100%;
+              margin-top: 1rem;
+            `}
+          />
+          <Autocomplete
+            multiple
+            id="labels-select"
+            data-testid="edit-labels"
+            size="small"
+            filterSelectedOptions
+            autoHighlight
+            openOnFocus
+            blurOnSelect
+            options={labels}
+            getOptionLabel={option => option.name}
+            value={
+              tasksById[taskId].labels.map(
+                labelId => labelsById[labelId]
+              ) as Label[]
+            }
+            onChange={(_, newLabels) => handleLabelsChange(newLabels)}
+            renderInput={params => (
+              <TextField {...params} label="Labels" variant="outlined" />
+            )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  size="small"
+                  key={option.id}
+                  variant="outlined"
+                  label={option.name}
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
             css={css`
               width: 100%;
               margin-top: 1rem;
@@ -411,6 +474,7 @@ const EditTaskDialog = () => {
               font-size: 12px;
               font-weight: bold;
               color: ${TASK_G};
+              margin-bottom: 1rem;
             `}
           >
             Delete task

@@ -89,7 +89,7 @@ context("Board Detail (Owner)", () => {
       `/api/u/search/?board=1&search=${searchQuery}`,
       "fixture:users.json"
     ).as("getUsers");
-    cy.route("POST", "api/boards/1/invite_member/", [
+    cy.route("POST", "/api/boards/1/invite_member/", [
       {
         id: 2,
         username: "steveapple1",
@@ -115,7 +115,7 @@ context("Board Detail (Owner)", () => {
   });
 
   it("should remove member unless owner", () => {
-    cy.route("POST", "api/boards/1/remove_member/", {
+    cy.route("POST", "/api/boards/1/remove_member/", {
       id: 3,
       username: "daveice",
       email: "dave@ice.com"
@@ -132,5 +132,23 @@ context("Board Detail (Owner)", () => {
 
     cy.wait("@removeDave");
     cy.findByText("Removed daveice").should("be.visible");
+  });
+
+  it("should delete a label from all tasks", () => {
+    cy.fixture("internals_board").then(board => {
+      const labelToDelete = board.labels[2];
+      cy.route("DELETE", `/api/labels/${labelToDelete.id}/`, "").as(
+        "deleteLabel"
+      );
+      cy.findByText(labelToDelete.name).should("be.visible");
+      cy.findByText(/Edit labels/i).click();
+      cy.findByTestId(`row-${labelToDelete.id}`).within(() => {
+        cy.findByText(/Delete/i).click();
+      });
+      cy.wait("@deleteLabel").then(() => {
+        cy.findByTestId("close-dialog").click();
+        cy.findByText(labelToDelete.name).should("not.be.visible");
+      });
+    });
   });
 });

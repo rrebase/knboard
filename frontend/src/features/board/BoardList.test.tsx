@@ -19,7 +19,7 @@ it("should fetch and render board list", async () => {
   axiosMock.onGet(API_BOARDS).reply(200, boards);
   const { mockStore } = renderWithProviders(<BoardList />, {
     ...rootInitialState,
-    board: { ...rootInitialState.board, entities: boards }
+    board: { ...rootInitialState.board, all: boards }
   });
 
   expect(screen.getByText(/My boards/i)).toBeVisible();
@@ -60,13 +60,13 @@ it("should set boards on success", () => {
   const boards = [{ id: 1, name: "Internals" }];
   expect(
     boardReducer(
-      { ...rootInitialState.board, fetchLoading: true, entities: [] },
+      { ...rootInitialState.board, fetchLoading: true, all: [] },
       { type: fetchAllBoards.fulfilled, payload: boards }
     )
   ).toEqual({
     ...rootInitialState.board,
     fetchLoading: false,
-    entities: boards
+    all: boards
   });
 });
 

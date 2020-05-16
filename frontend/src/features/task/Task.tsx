@@ -1,20 +1,23 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ITask, PriorityValue } from "types";
+import { ITask, BoardMember } from "types";
 import {
   DraggableProvided,
   Draggable,
   DraggableStateSnapshot
 } from "react-beautiful-dnd";
 import { N30, N0, N70, PRIMARY } from "utils/colors";
-import { grid, PRIO_COLORS } from "const";
+import { PRIO_COLORS } from "const";
 import { taskContainerStyles } from "styles";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
 import { Avatar } from "@material-ui/core";
 import { setEditDialogOpen } from "./TaskSlice";
+import TaskLabels from "./TaskLabels";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCube } from "@fortawesome/free-solid-svg-icons";
+import { selectMembersEntities } from "features/member/MemberSlice";
 
 const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
   if (isDragging) {
@@ -49,16 +52,9 @@ const Container = styled.span<ContainerProps>`
 `;
 
 export const Content = styled.div`
-  /* flex child */
-  flex-grow: 1;
-  /*
-    Needed to wrap text in ie11
-    https://stackoverflow.com/questions/35111090/why-ie11-doesnt-wrap-the-text-in-flexbox
-  */
-  flex-basis: 100%;
-  /* flex parent */
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const TextContent = styled.div`
@@ -71,19 +67,15 @@ const TextContent = styled.div`
 `;
 
 const Footer = styled.div`
+  height: 20px;
   display: flex;
   justify-content: space-between;
-  margin-top: ${grid}px;
   align-items: center;
 `;
 
-const Priority = styled.div<{ priority: PriorityValue }>`
-  padding: 2px 6px;
-  background-color: ${props => PRIO_COLORS[props.priority]};
-  color: #fff;
-  border-radius: 20px;
-  font-size: 0.5rem;
-  font-weight: bold;
+const CardIcon = styled.div`
+  display: flex;
+  font-size: 0.75rem;
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -113,14 +105,16 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 };
 
 export const TaskFooter = ({ task }: { task: ITask }) => {
-  const membersByIds = useSelector((state: RootState) => state.member.entities);
-  const assignees = task.assignees.map(assigneeId => membersByIds[assigneeId]);
+  const membersByIds = useSelector(selectMembersEntities);
+  const assignees = task.assignees.map(
+    assigneeId => membersByIds[assigneeId]
+  ) as BoardMember[];
 
   return (
     <Footer>
-      <Priority priority={task.priority} data-testid="task-priority">
-        {task.priority}
-      </Priority>
+      <CardIcon data-testid="task-priority">
+        <FontAwesomeIcon icon={faCube} color={PRIO_COLORS[task.priority]} />
+      </CardIcon>
       {assignees.length > 0 && (
         <Assignees>
           <AvatarGroup
@@ -135,19 +129,19 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
               }
             `}
           >
-            {assignees.filter(Boolean).map(assignee => (
+            {assignees.map(assignee => (
               <Avatar
-                key={assignee?.id}
+                key={assignee.id}
                 css={css`
                   height: 1.25rem;
                   width: 1.25rem;
                   font-size: 8px;
                   margin-left: -12px;
                 `}
-                src={assignee?.avatar?.photo}
-                alt={assignee?.avatar?.name}
+                src={assignee.avatar?.photo}
+                alt={assignee.avatar?.name}
               >
-                {assignee?.username.charAt(0)}
+                {assignee.username.charAt(0)}
               </Avatar>
             ))}
           </AvatarGroup>
@@ -193,6 +187,7 @@ const Task = ({ task: task, style, index }: Props) => {
           <Content>
             <TextContent>{task.title}</TextContent>
             <TaskId>id: {task.id}</TaskId>
+            <TaskLabels task={task} />
             <TaskFooter task={task} />
           </Content>
         </Container>
