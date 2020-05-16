@@ -9,9 +9,9 @@ export const WHITE = "#FFFFFF";
 export const BLACK = "#000000";
 
 // Priority
-export const PRIO1 = "#D74981";
-export const PRIO2 = "#666EEE";
-export const PRIO3 = "#69C0B6";
+export const PRIO1 = "#FAA";
+export const PRIO2 = "#CCC";
+export const PRIO3 = "#ADA";
 
 // Custom
 export const FOCUS_BOX_SHADOW = "#98a2de";
@@ -170,7 +170,7 @@ export const getContrastColor = (hexColor: string) => {
   const b = parseInt(hexColor.substr(4, 2), 16);
 
   // Calculate contrast using YIQ ratio
-  return (r * 299 + g * 587 + b * 114) / 1000 >= 128 ? BLACK : WHITE;
+  return (r * 299 + g * 587 + b * 114) / 1000 >= 178 ? BLACK : WHITE;
 };
 
 export const getRandomHexColor = () => {

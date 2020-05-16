@@ -44,14 +44,13 @@ export interface ITask {
   id: Id;
   title: string;
   description: string;
+  labels: Id[];
   assignees: Id[];
   priority: PriorityValue;
 }
 
-export interface NewTask extends Omit<ITask, "id" | "priority" | "assignees"> {
-  priority: Priority;
+export interface NewTask extends Omit<ITask, "id"> {
   column: Id;
-  assignees: BoardMember[];
 }
 
 export interface TasksByColumn {

@@ -34,14 +34,16 @@ interface PatchFields {
   title: string;
   description: string;
   priority: PriorityValue;
+  labels: Id[];
   assignees: Id[];
 }
 
 export const patchTask = createAsyncThunk<
   ITask,
   { id: Id; fields: Partial<PatchFields> }
->("task/patchTaskStatus", async ({ id, fields }) => {
+>("task/patchTaskStatus", async ({ id, fields }, { dispatch }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, fields);
+  dispatch(createSuccessToast("Task saved"));
   return response.data;
 });
 
@@ -57,11 +59,7 @@ export const createTask = createAsyncThunk<
   }
 >("task/createTaskStatus", async (task, { dispatch, rejectWithValue }) => {
   try {
-    const response = await api.post(`${API_TASKS}`, {
-      ...task,
-      assignees: task.assignees.map(assignee => assignee.id),
-      priority: task.priority.value
-    });
+    const response = await api.post(`${API_TASKS}`, task);
     dispatch(createSuccessToast("Task created"));
     return response.data;
   } catch (err) {

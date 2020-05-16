@@ -12,9 +12,11 @@ import { css } from "@emotion/core";
 import { PRIMARY } from "utils/colors";
 import { BoardMember, ITask } from "types";
 import { Autocomplete } from "@material-ui/lab";
-import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAllMembers } from "features/member/MemberSlice";
+import {
+  selectAllMembers,
+  selectMembersEntities
+} from "features/member/MemberSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { patchTask } from "./TaskSlice";
@@ -96,12 +98,13 @@ interface Props {
 // TODO: Use a chip based approach like it's done it CreateTaskDialog
 const TaskAssignees = ({ task }: Props) => {
   const dispatch = useDispatch();
-  const membersById = useSelector((state: RootState) => state.member.entities);
+  const membersById = useSelector(selectMembersEntities);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [pendingAssignees, setPendingAssignees] = useState<BoardMember[]>([]);
   const members = useSelector(selectAllMembers);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const assignees = task.assignees.map(id => membersById[id]!).filter(Boolean);
+  const assignees = task.assignees
+    .map(id => membersById[id])
+    .filter(Boolean) as BoardMember[];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setPendingAssignees(assignees);

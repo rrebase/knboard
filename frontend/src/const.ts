@@ -11,6 +11,7 @@ export const borderRadius = 4;
 export const imageSize = 40;
 export const barHeight = 50;
 export const sidebarWidth = 120;
+export const taskWidth = 250;
 
 export const PRIORITY_1: Priority = { value: "H", label: "High" };
 export const PRIORITY_2: Priority = { value: "M", label: "Medium" };

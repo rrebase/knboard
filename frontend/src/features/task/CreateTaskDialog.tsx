@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, TextField, Button, CircularProgress } from "@material-ui/core";
+import {
+  Dialog,
+  TextField,
+  Button,
+  CircularProgress,
+  Chip
+} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,12 +24,16 @@ import {
   MD_EDITOR_PLUGINS,
   MD_EDITOR_CONFIG
 } from "const";
-import { selectAllColumns } from "features/column/ColumnSlice";
+import {
+  selectAllColumns,
+  selectColumnsEntities
+} from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
-import { Priority, BoardMember, IColumn } from "types";
+import { Priority, BoardMember, IColumn, Label } from "types";
 import { createMdEditorStyles } from "styles";
 import AvatarTag from "components/AvatarTag";
 import AvatarOption from "components/AvatarOption";
+import { selectAllLabels } from "features/label/LabelSlice";
 
 const mdParser = new MarkdownIt();
 
@@ -51,13 +61,14 @@ const Footer = styled.div`
 
 const CreateTaskDialog = () => {
   const dispatch = useDispatch();
+  const labelsOptions = useSelector(selectAllLabels);
+  const columns: IColumn[] = useSelector(selectAllColumns);
+  const columnsById = useSelector(selectColumnsEntities);
+  const members = useSelector(selectAllMembers);
   const open = useSelector((state: RootState) => state.task.createDialogOpen);
   const defaultColumnId = useSelector(
     (state: RootState) => state.task.createDialogColumn
   );
-  const columns: IColumn[] = useSelector(selectAllColumns);
-  const columnsById = useSelector((state: RootState) => state.column.entities);
-  const members = useSelector((state: RootState) => selectAllMembers(state));
   const createLoading = useSelector(
     (state: RootState) => state.task.createLoading
   );
@@ -72,6 +83,7 @@ const CreateTaskDialog = () => {
     value: "M",
     label: "Medium"
   });
+  const [labels, setLabels] = useState<Label[]>([]);
 
   const handleEditorChange = ({ text }: any) => {
     setDescription(text);
@@ -85,6 +97,7 @@ const CreateTaskDialog = () => {
       setDescription("");
       setAssignees([]);
       setPriority(PRIORITY_2);
+      setLabels([]);
     }
   };
 
@@ -100,11 +113,12 @@ const CreateTaskDialog = () => {
     setTitleTouched(true);
     if (defaultColumnId && column && priority) {
       const newTask = {
-        title: title,
+        title,
         description,
         column: column.id,
-        assignees,
-        priority
+        labels: labels.map(l => l.id),
+        assignees: assignees.map(a => a.id),
+        priority: priority.value
       };
       dispatch(createTask(newTask));
     }
@@ -206,6 +220,36 @@ const CreateTaskDialog = () => {
           css={css`
             width: 100%;
             margin-top: 1rem;
+          `}
+        />
+
+        <Autocomplete
+          multiple
+          id="create-labels-select"
+          size="small"
+          filterSelectedOptions
+          autoHighlight
+          options={labelsOptions}
+          getOptionLabel={option => option.name}
+          value={labels}
+          onChange={(_, newLabels) => setLabels(newLabels)}
+          renderInput={params => (
+            <TextField {...params} label="Labels" variant="outlined" />
+          )}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip
+                size="small"
+                key={option.id}
+                variant="outlined"
+                label={option.name}
+                {...getTagProps({ index })}
+              />
+            ))
+          }
+          css={css`
+            margin-top: 1rem;
+            width: 100%;
           `}
         />
       </Content>

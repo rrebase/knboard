@@ -6,7 +6,8 @@ import {
   TASK_G,
   getContrastColor,
   getRandomHexColor,
-  DANGER
+  DANGER,
+  BLACK
 } from "utils/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
@@ -73,7 +74,8 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
             color: ${Boolean(errors.color)
               ? DANGER
               : getContrastColor(pendingColor)};
-            border: 1px solid #ccc;
+            border: ${getContrastColor(pendingColor) === BLACK &&
+              "1px solid #ccc"};
             &:hover {
               background-color: ${pendingColor};
             }

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Chip, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { patchLabel, deleteLabel } from "./LabelSlice";
 import { css } from "@emotion/core";
 import { Label } from "types";
-import { getContrastColor } from "utils/colors";
 import { useForm, FormContext } from "react-hook-form";
 import { borderRadius } from "const";
 import Flex from "components/Flex";
 import LabelFields from "./LabelFields";
+import LabelChip from "components/LabelChip";
 
 const RowDiv = styled.div`
   padding: 0.5rem;
@@ -73,19 +73,7 @@ const LabelRow = ({ label }: RowProps) => {
           transition: all 0.1s ease-in-out;
         `}
       >
-        <Chip
-          variant="outlined"
-          data-testid={`label${label.id}`}
-          css={css`
-            overflow: auto;
-            background-color: ${label.color};
-            color: ${getContrastColor(label.color)};
-            .MuiChip-label {
-              font-weight: bold;
-            }
-          `}
-          label={label.name}
-        />
+        <LabelChip label={label} />
         <Flex>
           {!editing && (
             <Button

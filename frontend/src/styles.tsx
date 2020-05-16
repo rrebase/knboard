@@ -22,7 +22,7 @@ export const iconBoxStyles = css`
 export const taskContainerStyles = css`
   border-radius: ${borderRadius}px;
   border: 2px solid transparent;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(10, 30, 60, 0.25);
   box-sizing: border-box;
   padding: ${grid}px;
   min-height: ${imageSize}px;
