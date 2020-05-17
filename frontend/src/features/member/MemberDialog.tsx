@@ -60,7 +60,7 @@ const MemberDialog = ({ board }: Props) => {
   );
   const [confirmDelete, setConfirmDelete] = useState(false);
   const member = memberId === null ? null : members[memberId];
-  const memberIsOwner = member?.id === board.owner.id;
+  const memberIsOwner = member?.id === board.owner;
   const open = member !== null;
 
   if (!member) {

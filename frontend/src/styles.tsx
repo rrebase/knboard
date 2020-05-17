@@ -2,6 +2,18 @@ import { css } from "@emotion/core";
 import { borderRadius, imageSize, grid } from "const";
 import { N900 } from "utils/colors";
 
+export const boardCardBaseStyles = css`
+  position: relative;
+  display: block;
+  height: 100px;
+  border-radius: 6px;
+  padding: 0.5rem;
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export const iconBoxStyles = css`
   cursor: pointer;
   width: 24px;

@@ -17,7 +17,7 @@ import { Button } from "@material-ui/core";
 import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faCog } from "@fortawesome/free-solid-svg-icons";
+import { faColumns, faCog } from "@fortawesome/free-solid-svg-icons";
 import { setDialogOpen } from "features/label/LabelSlice";
 import LabelsDialog from "features/label/LabelsDialog";
 import { useParams } from "react-router-dom";
@@ -119,7 +119,7 @@ const BoardBar = () => {
               ${buttonStyles}
             `}
             onClick={handleAddColumn}
-            startIcon={<FontAwesomeIcon icon={faPlus} />}
+            startIcon={<FontAwesomeIcon icon={faColumns} />}
             data-testid="add-col"
           >
             Add List

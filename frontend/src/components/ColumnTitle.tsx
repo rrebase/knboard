@@ -58,7 +58,7 @@ const Extra = styled.div`
 const Count = styled.div``;
 
 const OptionsContent = styled.div`
-  padding: 1rem;
+  padding: 0.75rem;
 `;
 
 interface Props {
@@ -123,8 +123,14 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteColumn(id));
-    handleOptionsClose();
+    if (
+      window.confirm(
+        "Are you sure? Deleting the column will also delete related tasks and this cannot be undone."
+      )
+    ) {
+      dispatch(deleteColumn(id));
+      handleOptionsClose();
+    }
   };
 
   const open = Boolean(anchorEl);

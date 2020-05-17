@@ -61,6 +61,9 @@ context("Column", () => {
   });
 
   it("should delete column", () => {
+    const stub = cy.stub();
+    stub.onFirstCall().returns(true);
+    cy.on("window:confirm", stub);
     cy.fixture("internals_board").then(board => {
       const columnToDelete = board.columns[0];
       cy.route("DELETE", `/api/columns/${columnToDelete.id}/`, "");

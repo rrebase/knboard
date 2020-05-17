@@ -10,7 +10,7 @@ context("Board List", () => {
   });
 
   it("should have list of boards and create new board", () => {
-    cy.findByText("My boards").should("be.visible");
+    cy.findByText("All Boards").should("be.visible");
 
     cy.findByText("Internals").should("be.visible");
     cy.findByText("Operating Systems").should("be.visible");

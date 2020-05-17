@@ -8,11 +8,28 @@ import {
   TextField,
   Button
 } from "@material-ui/core";
-import { newCardStyles } from "./BoardList";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoard, setCreateDialogOpen } from "./BoardSlice";
 import { RootState } from "store";
 import { Alert } from "@material-ui/lab";
+import { css } from "@emotion/core";
+import { boardCardBaseStyles } from "styles";
+
+const openBtnStyles = css`
+  ${boardCardBaseStyles}
+  background-color: #e0e2e5;
+  color: #333;
+  width: 100%;
+  font-size: 0.7rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #d0d2d5;
+  }
+`;
 
 const NewBoardDialog = () => {
   const dispatch = useDispatch();
@@ -35,7 +52,7 @@ const NewBoardDialog = () => {
 
   return (
     <div>
-      <Button css={newCardStyles} onClick={handleOpen}>
+      <Button css={openBtnStyles} onClick={handleOpen}>
         Create new board
       </Button>
       <Dialog

@@ -12,6 +12,9 @@ context("Task", () => {
   it("should create task", () => {
     const taskTitle = "Improve CI";
     cy.route("POST", "api/tasks/", {
+      id: 100,
+      created: "2020-05-17T08:26:51.806330Z",
+      modified: "2020-05-17T09:02:10.724890Z",
       title: taskTitle,
       description: "",
       column: 1,
@@ -149,6 +152,9 @@ context("Task", () => {
   });
 
   it("should delete task", () => {
+    const stub = cy.stub();
+    stub.onFirstCall().returns(true);
+    cy.on("window:confirm", stub);
     cy.route("DELETE", "api/tasks/1/", "").as("deleteTask");
 
     cy.findByTestId("task-1").click();

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Tooltip } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBoards } from "./BoardSlice";
 import { RootState } from "store";
@@ -10,6 +10,8 @@ import { css, SerializedStyles } from "@emotion/core";
 import { Link } from "react-router-dom";
 import NewBoardDialog from "./NewBoardDialog";
 import Spinner from "components/Spinner";
+import { boardCardBaseStyles } from "styles";
+import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -37,59 +39,51 @@ const Fade = styled.div`
   top: 0;
 `;
 
-const boardCardBaseStyles = css`
-  position: relative;
-  display: block;
-  height: 100px;
+const OwnerBadge = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 10px;
+  background-color: #ffbe47;
+  color: #fff;
+  padding: 4px 6px;
   border-radius: 6px;
-  padding: 0.5rem;
-  text-decoration: none;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const boardCardStyles = css`
   ${boardCardBaseStyles}
-  background-color: #42afaf;
+  background-color: #a2abf9;
   color: #fff;
-`;
-
-export const newCardStyles = css`
-  ${boardCardBaseStyles}
-  background-color: #e0e2e5;
-  color: #333;
-  width: 100%;
-  font-size: 0.7rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: #d0d2d5;
-  }
 `;
 
 interface CardProps {
   cardCss: SerializedStyles;
   to: string;
+  isOwner: boolean;
   children: React.ReactNode;
 }
 
-const Card = ({ cardCss, to, children }: CardProps) => {
+const Card = ({ cardCss, to, isOwner, children }: CardProps) => {
   const [hover, setHover] = React.useState(false);
 
   return (
-    <Grid
-      item
-      xs={4}
-      key="new-board"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{ position: "relative" }}
-    >
-      <Link css={cardCss} to={to}>
+    <Grid item xs={4} key="new-board" style={{ position: "relative" }}>
+      {isOwner && (
+        <Tooltip title="Owner of this board" placement="top" arrow>
+          <OwnerBadge>
+            <FontAwesomeIcon icon={faUserAlt} />
+          </OwnerBadge>
+        </Tooltip>
+      )}
+      <Link
+        css={cardCss}
+        to={to}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
         {hover && <Fade data-testid="fade" />}
         {children}
       </Link>
@@ -101,6 +95,7 @@ const BoardList = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.board.fetchLoading);
   const boards = useSelector((state: RootState) => state.board.all);
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
 
   React.useEffect(() => {
     dispatch(fetchAllBoards());
@@ -115,7 +110,7 @@ const BoardList = () => {
       <BoardsSection>
         <Title>
           <FontAwesomeIcon icon={faUser} />
-          <TitleText>My boards</TitleText>
+          <TitleText>All Boards</TitleText>
         </Title>
         <Cards>
           <Grid container spacing={2}>
@@ -124,6 +119,7 @@ const BoardList = () => {
                 key={board.id}
                 cardCss={boardCardStyles}
                 to={`/b/${board.id}`}
+                isOwner={board.owner === userId}
               >
                 {board.name}
               </Card>

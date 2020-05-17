@@ -17,9 +17,11 @@ class BoardModelSerializer(serializers.ModelSerializer):
 
 
 class BoardSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Board
-        fields = ["id", "name"]
+        fields = ["id", "name", "owner"]
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -68,6 +70,8 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = [
             "id",
+            "created",
+            "modified",
             "title",
             "description",
             "priority",
@@ -102,8 +106,8 @@ class LabelSerializer(BoardModelSerializer):
 
 
 class BoardDetailSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(read_only=True)
     columns = ColumnSerializer(many=True, read_only=True)
-    owner = BoardOwnerSerializer(read_only=True)
     members = BoardMemberSerializer(many=True, read_only=True)
     labels = LabelSerializer(many=True, read_only=True)
 

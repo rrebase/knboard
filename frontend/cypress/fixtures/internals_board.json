@@ -1,9 +1,7 @@
 {
   "id": 1,
   "name": "Internals",
-  "owner": {
-    "id": 1
-  },
+  "owner": 1,
   "members": [
     {
       "id": 1,
@@ -35,6 +33,8 @@
       "tasks": [
         {
           "id": 5,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "Cookie Consent",
           "description": "Add cookie consent functionality.",
           "task_order": 3,
@@ -45,6 +45,8 @@
         },
         {
           "id": 4,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "User settings",
           "description": "Implement user settings.",
           "task_order": 4,
@@ -62,6 +64,8 @@
       "tasks": [
         {
           "id": 1,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "Implement Landing page",
           "description": "Implement the landing page.\n\n**Use figma designs provided by Steve.**",
           "task_order": 1,
@@ -72,6 +76,8 @@
         },
         {
           "id": 2,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "Profile page detail view",
           "description": "Implement the profile page detail view.",
           "task_order": 2,
@@ -89,6 +95,8 @@
       "tasks": [
         {
           "id": 3,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "User friends",
           "description": "Implement the user friends component. Building the API is not part of this task.",
           "task_order": 5,

@@ -22,7 +22,7 @@ it("should fetch and render board list", async () => {
     board: { ...rootInitialState.board, all: boards }
   });
 
-  expect(screen.getByText(/My boards/i)).toBeVisible();
+  expect(screen.getByText(/All Boards/i)).toBeVisible();
   expect(screen.getByText(/Create new board/i)).toBeVisible();
 
   await screen.findByText("Internals");

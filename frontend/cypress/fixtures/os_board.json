@@ -1,9 +1,7 @@
 {
   "id": 2,
   "name": "Operating Systems",
-  "owner": {
-    "id": 2
-  },
+  "owner": 2,
   "members": [
     {
       "id": 1,
@@ -30,6 +28,8 @@
       "tasks": [
         {
           "id": 5,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "Security",
           "description": "Fundamentals of Security.",
           "task_order": 5,
@@ -40,6 +40,8 @@
         },
         {
           "id": 6,
+          "created": "2020-05-17T08:26:51.806330Z",
+          "modified": "2020-05-17T09:02:10.724890Z",
           "title": "Bash",
           "description": "The basics of Bash.",
           "task_order": 6,

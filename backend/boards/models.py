@@ -2,6 +2,7 @@ from adminsortable.fields import SortableForeignKey
 from adminsortable.models import SortableMixin
 from django.contrib.auth import get_user_model
 from django.db import models
+from model_utils.models import TimeStampedModel
 
 User = get_user_model()
 
@@ -54,7 +55,7 @@ class Label(models.Model):
         ]
 
 
-class Task(SortableMixin):
+class Task(SortableMixin, TimeStampedModel):
     class Priority(models.TextChoices):
         HIGH = "H", "High"
         MEDIUM = "M", "Medium"

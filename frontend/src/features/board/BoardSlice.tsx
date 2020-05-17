@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Board, IColumn, ITask, Label } from "types";
+import { Board, IColumn, ITask, Label, NanoBoard } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
 import { logout } from "features/auth/AuthSlice";
 
 interface InitialState {
   detail: Board | null;
-  all: Board[];
+  all: NanoBoard[];
   fetchLoading: boolean;
   fetchError: string | null;
   createDialogOpen: boolean;
@@ -127,7 +127,7 @@ export const { setCreateDialogOpen } = slice.actions;
 export const currentBoardOwner = (state: RootState) => {
   return (
     Boolean(state.auth.user) &&
-    state.board.detail?.owner.id === state.auth.user?.id
+    state.board.detail?.owner === state.auth.user?.id
   );
 };
 
