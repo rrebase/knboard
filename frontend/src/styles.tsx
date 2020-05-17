@@ -70,7 +70,7 @@ export const createMdEditorStyles = (editing: boolean) => css`
   .rc-md-editor {
     border-color: #c4c4c4;
     border-radius: ${borderRadius}px;
-    height: 200px;
+    min-height: 240px;
 
     .rc-md-navigation {
       border-top-left-radius: ${borderRadius}px;
@@ -136,5 +136,8 @@ export const descriptionStyles = css`
   }
   code {
     font-size: 12px;
+  }
+  blockquote p {
+    margin: 0;
   }
 `;

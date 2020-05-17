@@ -40,13 +40,18 @@ const Items = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow-x: scroll;
 `;
 
 const Left = styled.div`
+  white-space: nowrap;
   display: flex;
+  margin-right: 1rem;
 `;
 
-const Right = styled.div``;
+const Right = styled.div`
+  white-space: nowrap;
+`;
 
 const Name = styled.div`
   color: #6869f6;

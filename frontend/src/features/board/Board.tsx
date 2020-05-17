@@ -130,12 +130,12 @@ const Board = ({
 
   const detailDataExists = detail?.id.toString() === id;
 
-  if (!detailDataExists) {
-    return <Spinner loading={!detailDataExists} />;
-  }
-
   if (error) {
     return <PageError>{error}</PageError>;
+  }
+
+  if (!detailDataExists) {
+    return <Spinner loading={!detailDataExists} />;
   }
 
   if (columns.length === 0) {

@@ -52,6 +52,7 @@ const MemberListDialog = () => {
 
   const handleClose = () => {
     dispatch(setMemberListOpen(false));
+    setSearchValue("");
   };
 
   const handleClick = (memberId: number) => {

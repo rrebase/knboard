@@ -16,3 +16,4 @@ django-allauth==0.41.0
 black==19.10b0
 pre-commit==2.4.0
 django-model-utils==4.0.0
+shortuuid==1.0.1

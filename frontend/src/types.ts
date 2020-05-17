@@ -75,6 +75,7 @@ export interface UserDetail {
   email: string;
   avatar: Avatar | null;
   date_joined: string;
+  is_guest: boolean;
 }
 
 export interface Avatar {

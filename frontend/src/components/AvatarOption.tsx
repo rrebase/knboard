@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 
 const Username = styled.span`
   margin-left: 0.5rem;
+  word-break: break-all;
 `;
 
 interface Option {

@@ -49,7 +49,7 @@ const InputTitle = styled.div`
   align-items: center;
 `;
 
-const RegularTitle = styled.h3`
+const RegularTitle = styled.div`
   margin: 0;
   font-size: 14px;
   align-self: center;
@@ -62,6 +62,7 @@ const RegularTitle = styled.h3`
 
 const Extra = styled.div`
   display: flex;
+  align-items: flex-start;
 `;
 
 const Count = styled.div``;
@@ -174,6 +175,7 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
             margin-left: 0.25rem;
             min-width: 0;
             padding: 2px 8px;
+            height: 22px;
           `}
         >
           <FontAwesomeIcon icon={faEllipsisV} />

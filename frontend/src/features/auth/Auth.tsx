@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { ReactComponent as Board } from "static/svg/board.svg";
 import LoginDialog from "./LoginDialog";
 import RegisterDialog from "./RegisterDialog";
+import EnterAsGuest from "./EnterAsGuest";
 
 const Container = styled.div`
   margin-top: 150px;
@@ -16,6 +17,10 @@ const Title = styled.h1`
   margin-bottom: 0.75rem;
 `;
 
+const Separator = styled.div`
+  margin-top: 1rem;
+`;
+
 const Auth = () => {
   return (
     <Container>
@@ -27,6 +32,8 @@ const Auth = () => {
         <LoginDialog />
         <RegisterDialog />
       </div>
+      <Separator>or</Separator>
+      <EnterAsGuest />
     </Container>
   );
 };

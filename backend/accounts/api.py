@@ -1,8 +1,12 @@
+import uuid
+import shortuuid
+from dj_rest_auth.registration.views import RegisterView
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import filters
 from accounts.models import Avatar
+from boards.demo import create_demo_board, get_random_avatar
 from boards.models import Board
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
@@ -10,7 +14,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.status import HTTP_400_BAD_REQUEST
-from rest_framework.pagination import PageNumberPagination
 
 from .serializers import (
     AvatarSerializer,
@@ -92,3 +95,26 @@ class AvatarViewSet(ReadOnlyModelViewSet):
     serializer_class = AvatarSerializer
     queryset = Avatar.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+class GuestRegistration(RegisterView):
+    def create(self, request, *args, **kwargs):
+        password = str(uuid.uuid4())
+        guest_id = str(shortuuid.uuid())[:10]
+        request.data.update(
+            {
+                "username": f"Guest-{guest_id}",
+                "email": f"{guest_id}@guest.com",
+                "password1": password,
+                "password2": password,
+            }
+        )
+        return super().create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        user = super().perform_create(serializer)
+        user.is_guest = True
+        user.avatar = get_random_avatar()
+        user.save()
+        create_demo_board(user)
+        return user

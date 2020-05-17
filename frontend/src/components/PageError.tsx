@@ -1,18 +1,14 @@
 import React from "react";
-import { Paper } from "@material-ui/core";
-import { css } from "@emotion/core";
+import { Alert } from "@material-ui/lab";
+import styled from "@emotion/styled";
 
-const paperStyles = css`
+const Container = styled.div`
   margin-top: 10rem;
   display: flex;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
   font-size: 1.25rem;
-  padding: 2rem;
-  border: 1px solid #bbb;
-  border-radius: 20px;
-  max-width: 400px;
 `;
 
 interface Props {
@@ -20,9 +16,11 @@ interface Props {
 }
 
 const PageError = ({ children }: Props) => (
-  <Paper elevation={1} css={paperStyles}>
-    {children}
-  </Paper>
+  <Container>
+    <Alert severity="warning" variant="outlined">
+      {children}
+    </Alert>
+  </Container>
 );
 
 export default PageError;

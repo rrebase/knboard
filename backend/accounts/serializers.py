@@ -3,6 +3,8 @@ from pathlib import Path
 
 from rest_framework import serializers
 from dj_rest_auth.models import TokenModel
+from rest_framework.validators import UniqueValidator
+
 from .models import Avatar
 
 
@@ -36,6 +38,9 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
 class UserDetailSerializer(serializers.ModelSerializer):
     avatar = AvatarSerializer(read_only=True)
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all())], required=False
+    )
 
     class Meta:
         model = User
@@ -47,6 +52,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "email",
             "avatar",
             "date_joined",
+            "is_guest",
         ]
         read_only_fields = [
             "id",

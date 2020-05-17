@@ -79,6 +79,8 @@ export const slice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchAllBoards.pending, state => {
       state.fetchLoading = true;
+      state.fetchError = null;
+      state.detailError = undefined;
     });
     builder.addCase(fetchAllBoards.fulfilled, (state, action) => {
       state.all = action.payload;

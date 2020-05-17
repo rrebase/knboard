@@ -33,7 +33,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
+import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import TaskAssignees from "./TaskAssignees";
 import {
   MD_EDITOR_PLUGINS,
@@ -51,6 +51,7 @@ import {
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
 
+MdEditor.use(Plugins.AutoResize, { min: 200, max: 600 });
 const mdParser = new MarkdownIt({ breaks: true });
 
 const Content = styled.div`
@@ -410,6 +411,7 @@ const EditTaskDialog = () => {
             id="priority-select"
             size="small"
             blurOnSelect
+            autoHighlight
             options={PRIORITY_OPTIONS}
             getOptionLabel={option => option.label}
             value={PRIORITY_MAP[task.priority]}

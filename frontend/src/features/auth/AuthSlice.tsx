@@ -1,11 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { API_LOGIN, API_LOGOUT, API_REGISTER } from "api";
+import api, {
+  API_LOGIN,
+  API_LOGOUT,
+  API_REGISTER,
+  API_GUEST_REGISTER
+} from "api";
 import { User } from "types";
 import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
 import { AxiosError } from "axios";
 import {
   updateUser,
-  updateAvatarFulfilled
+  updateAvatarFulfilled,
+  resetProfile
 } from "features/profile/ProfileSlice";
 
 interface InitialState {
@@ -52,6 +58,20 @@ export const register = createAsyncThunk<
   }
 });
 
+export const guestRegister = createAsyncThunk<User>(
+  "auth/guestRegisterStatus",
+  async (_, { dispatch }) => {
+    try {
+      const response = await api.post(API_GUEST_REGISTER);
+      return response.data;
+    } catch (e) {
+      dispatch(
+        createErrorToast("Failed to enter as a guest, try again later.")
+      );
+    }
+  }
+);
+
 interface LoginProps {
   username: string;
   password: string;
@@ -84,6 +104,7 @@ export const logout = createAsyncThunk(
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
     } finally {
+      dispatch(resetProfile());
       dispatch(createInfoToast("Logged out"));
     }
   }
@@ -128,6 +149,9 @@ export const slice = createSlice({
     });
     builder.addCase(register.rejected, (state, action) => {
       state.registerErrors = action.payload;
+    });
+    builder.addCase(guestRegister.fulfilled, (state, action) => {
+      state.user = action.payload;
     });
     builder.addCase(updateAvatarFulfilled, (state, action) => {
       if (state.user) {

@@ -18,7 +18,8 @@ const steveDetail: UserDetail = {
   last_name: "Apple",
   email: "steve@gmail.com",
   avatar: null,
-  date_joined: new Date().toISOString()
+  date_joined: new Date().toISOString(),
+  is_guest: false
 };
 
 it("should handle null userDetail", () => {
@@ -88,4 +89,20 @@ it("should show validation error for email field", async () => {
     fireEvent.click(screen.getByTestId("profile-save"));
   });
   expect(screen.getByText(/invalid email/i)).toBeVisible();
+});
+
+it("should show warning for guest", async () => {
+  renderWithProviders(<Profile />, {
+    ...rootInitialState,
+    auth: {
+      ...rootInitialState.auth,
+      user: steveAuthUser
+    },
+    profile: {
+      ...rootInitialState.profile,
+      userDetail: { ...steveDetail, is_guest: true }
+    }
+  });
+
+  expect(screen.getByText("Warning")).toBeVisible();
 });

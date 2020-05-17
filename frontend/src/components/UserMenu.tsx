@@ -14,6 +14,9 @@ const Username = styled.div`
   text-align: center;
   border-bottom: 1px solid #ccc;
   padding-bottom: 0.5rem;
+  max-width: 200px;
+  word-break: break-all;
+  padding: 0.25rem 1rem 0.5rem 1rem;
   &:focus {
     outline: none;
   }

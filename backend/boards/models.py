@@ -55,12 +55,13 @@ class Label(models.Model):
         ]
 
 
-class Task(SortableMixin, TimeStampedModel):
-    class Priority(models.TextChoices):
-        HIGH = "H", "High"
-        MEDIUM = "M", "Medium"
-        LOW = "L", "Low"
+class Priority(models.TextChoices):
+    HIGH = "H", "High"
+    MEDIUM = "M", "Medium"
+    LOW = "L", "Low"
 
+
+class Task(SortableMixin, TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     priority = models.CharField(
