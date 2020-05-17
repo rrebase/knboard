@@ -17,6 +17,7 @@ export const PRIO3 = "#ADA";
 export const FOCUS_BOX_SHADOW = "#98a2de";
 export const COLUMN_COLOR = "#F1F1F6";
 export const TASK_G = "#646e81";
+export const OWNER_COLOR = "#ffbe47";
 
 // Reds
 export const R50 = "#FFEBE6";

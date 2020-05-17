@@ -8,7 +8,6 @@ import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
 import MemberInvite from "features/member/MemberInvite";
 import MemberDetail from "features/member/MemberDetail";
-import { memberSelectors } from "features/member/MemberSlice";
 import MemberDialog from "features/member/MemberDialog";
 import { currentBoardOwner } from "./BoardSlice";
 import CreateTaskDialog from "features/task/CreateTaskDialog";
@@ -19,8 +18,13 @@ import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faColumns, faCog } from "@fortawesome/free-solid-svg-icons";
 import { setDialogOpen } from "features/label/LabelSlice";
-import LabelsDialog from "features/label/LabelsDialog";
+import LabelDialog from "features/label/LabelDialog";
 import { useParams } from "react-router-dom";
+import {
+  selectAllMembers,
+  setMemberListOpen
+} from "features/member/MemberSlice";
+import MemberListDialog from "features/member/MemberList";
 
 const Container = styled.div`
   height: ${barHeight}px;
@@ -57,12 +61,10 @@ const buttonStyles = css`
 
 const BoardBar = () => {
   const dispatch = useDispatch();
-  const members = useSelector(memberSelectors.selectAll);
+  const members = useSelector(selectAllMembers);
   const error = useSelector((state: RootState) => state.board.detailError);
   const detail = useSelector((state: RootState) => state.board.detail);
-  const boardOwner = useSelector((state: RootState) =>
-    currentBoardOwner(state)
-  );
+  const boardOwner = useSelector(currentBoardOwner);
   const { id } = useParams();
   const detailDataExists = detail?.id.toString() === id;
 
@@ -92,10 +94,22 @@ const BoardBar = () => {
                 ${avatarStyles}
                 border: none;
               }
+              &:hover {
+                cursor: pointer;
+              }
             `}
+            onClick={(e: any) => {
+              if (e.target.classList.contains("MuiAvatarGroup-avatar")) {
+                dispatch(setMemberListOpen(true));
+              }
+            }}
           >
             {members.map(member => (
-              <MemberDetail key={member.id} member={member} />
+              <MemberDetail
+                key={member.id}
+                member={member}
+                isOwner={detail.owner === member.id}
+              />
             ))}
           </AvatarGroup>
           {boardOwner && <MemberInvite boardId={detail.id} />}
@@ -127,9 +141,10 @@ const BoardBar = () => {
         </Right>
       </Items>
       <MemberDialog board={detail} />
+      <MemberListDialog />
       <EditTaskDialog />
       <CreateTaskDialog />
-      <LabelsDialog />
+      <LabelDialog />
     </Container>
   );
 };

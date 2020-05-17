@@ -11,6 +11,7 @@ import NewBoardDialog from "./NewBoardDialog";
 import Spinner from "components/Spinner";
 import { boardCardBaseStyles } from "styles";
 import { faUserAlt, faTh } from "@fortawesome/free-solid-svg-icons";
+import { OWNER_COLOR } from "utils/colors";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -47,7 +48,7 @@ const OwnerBadge = styled.div`
   font-weight: bold;
   text-transform: uppercase;
   font-size: 10px;
-  background-color: #ffbe47;
+  background-color: ${OWNER_COLOR};
   color: #fff;
   padding: 4px 6px;
   border-radius: 6px;

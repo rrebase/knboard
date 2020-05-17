@@ -32,7 +32,7 @@ const Table = styled.div`
   margin: 1rem 0.5rem;
 `;
 
-const LabelsDialog = () => {
+const LabelDialog = () => {
   const dispatch = useDispatch();
   const open = useSelector((state: RootState) => state.label.dialogOpen);
   const labels = useSelector(selectAllLabels);
@@ -103,4 +103,4 @@ const LabelsDialog = () => {
   );
 };
 
-export default LabelsDialog;
+export default LabelDialog;

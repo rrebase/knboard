@@ -6,7 +6,7 @@ import {
   renderWithProviders,
   axiosMock
 } from "utils/testHelpers";
-import LabelsDialog from "./LabelsDialog";
+import LabelDialog from "./LabelDialog";
 import user from "@testing-library/user-event";
 import { API_LABELS } from "api";
 import { Label } from "types";
@@ -42,12 +42,12 @@ const docLabel: Label = {
 };
 
 it("should not show dialog", async () => {
-  renderWithProviders(<LabelsDialog />);
+  renderWithProviders(<LabelDialog />);
   expect(screen.queryByText(/Edit labels/i)).toBeNull();
 });
 
 it("should dispatch createLabel", async () => {
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: { ...rootInitialState.label, dialogOpen: true }
@@ -84,7 +84,7 @@ it("should dispatch createLabel", async () => {
 it("should have one label and dispatch deleteLabel", async () => {
   axiosMock.onDelete(`${API_LABELS}${docLabel.id}/`).reply(204);
   window.confirm = jest.fn().mockImplementation(() => true);
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -114,7 +114,7 @@ it("should have one label and dispatch deleteLabel", async () => {
 
 it("should edit a label", async () => {
   axiosMock.onPatch(`${API_LABELS}${docLabel.id}/`).reply(200);
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -152,7 +152,7 @@ it("should edit a label", async () => {
 });
 
 it("should not save invalid and cancel label editing", async () => {
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -181,7 +181,7 @@ it("should not save invalid and cancel label editing", async () => {
 
 it("should search from multiple labels", async () => {
   const designLabel = { ...docLabel, id: docLabel.id + 1, name: "Design" };
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {

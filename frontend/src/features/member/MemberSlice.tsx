@@ -13,10 +13,12 @@ const memberAdapter = createEntityAdapter<BoardMember>({
 
 interface ExtraInitialState {
   dialogMember: number | null;
+  memberListOpen: boolean;
 }
 
 export const initialState = memberAdapter.getInitialState<ExtraInitialState>({
-  dialogMember: null
+  dialogMember: null,
+  memberListOpen: false
 });
 
 export const slice = createSlice({
@@ -27,6 +29,9 @@ export const slice = createSlice({
     removeBoardMember: memberAdapter.removeOne,
     setDialogMember: (state, action: PayloadAction<number | null>) => {
       state.dialogMember = action.payload;
+    },
+    setMemberListOpen: (state, action: PayloadAction<boolean>) => {
+      state.memberListOpen = action.payload;
     }
   },
   extraReducers: builder => {
@@ -39,16 +44,18 @@ export const slice = createSlice({
 export const {
   addBoardMembers,
   removeBoardMember,
-  setDialogMember
+  setDialogMember,
+  setMemberListOpen
 } = slice.actions;
 
-export const memberSelectors = memberAdapter.getSelectors(
+const memberSelectors = memberAdapter.getSelectors(
   (state: RootState) => state.member
 );
 
 export const {
   selectAll: selectAllMembers,
-  selectEntities: selectMembersEntities
+  selectEntities: selectMembersEntities,
+  selectTotal: selectMembersTotal
 } = memberSelectors;
 
 export default slice.reducer;
