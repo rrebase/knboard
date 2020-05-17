@@ -1,8 +1,13 @@
 import React from "react";
-import { screen, fireEvent } from "@testing-library/react";
-import { rootInitialState, renderWithProviders } from "utils/testHelpers";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  rootInitialState,
+  renderWithProviders,
+  axiosMock
+} from "utils/testHelpers";
 import NewBoardDialog from "./NewBoardDialog";
 import { createBoard } from "./BoardSlice";
+import { API_BOARDS } from "api";
 
 it("should not show dialog", async () => {
   renderWithProviders(<NewBoardDialog />);
@@ -10,6 +15,9 @@ it("should not show dialog", async () => {
 });
 
 it("should show dialog", async () => {
+  axiosMock
+    .onPost(API_BOARDS)
+    .reply(201, { id: 50, name: "Recipes", owner: 1 });
   const { mockStore } = renderWithProviders(<NewBoardDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, createDialogOpen: true }
@@ -20,5 +28,17 @@ it("should show dialog", async () => {
   });
   fireEvent.click(screen.getByTestId("create-board-btn"));
 
-  expect(mockStore.getActions()[0].type).toEqual(createBoard.pending.type);
+  await waitFor(() =>
+    expect(
+      mockStore
+        .getActions()
+        .map(a => a.type)
+        .includes(createBoard.fulfilled.type)
+    ).toBe(true)
+  );
+
+  expect(mockStore.getActions().map(a => a.type)).toEqual([
+    createBoard.pending.type,
+    createBoard.fulfilled.type
+  ]);
 });

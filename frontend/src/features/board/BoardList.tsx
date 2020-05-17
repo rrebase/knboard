@@ -1,17 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { Container, Grid, Tooltip } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBoards } from "./BoardSlice";
 import { RootState } from "store";
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles, keyframes } from "@emotion/core";
 import { Link } from "react-router-dom";
 import NewBoardDialog from "./NewBoardDialog";
 import Spinner from "components/Spinner";
 import { boardCardBaseStyles } from "styles";
-import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
+import { faUserAlt, faTh } from "@fortawesome/free-solid-svg-icons";
 
 const BoardsSection = styled.div`
   margin-top: 2rem;
@@ -20,10 +19,11 @@ const BoardsSection = styled.div`
 const Title = styled.div`
   font-size: 20px;
   margin-bottom: 1rem;
+  color: #333;
 `;
 
 const TitleText = styled.span`
-  margin-left: 1rem;
+  margin-left: 0.75rem;
   font-size: 18px;
 `;
 
@@ -66,11 +66,32 @@ interface CardProps {
   children: React.ReactNode;
 }
 
+const scaleUp = keyframes`
+    0% {
+        transform: scale(1.0);
+    }
+    100% {
+        transform: scale(1.05);
+    }
+`;
+
+const animationStyles = css`
+  animation: 0.2s ${scaleUp} forwards;
+`;
+
 const Card = ({ cardCss, to, isOwner, children }: CardProps) => {
   const [hover, setHover] = React.useState(false);
 
   return (
-    <Grid item xs={4} key="new-board" style={{ position: "relative" }}>
+    <Grid
+      item
+      xs={4}
+      key="new-board"
+      css={css`
+        position: relative;
+        ${hover && animationStyles}
+      `}
+    >
       {isOwner && (
         <Tooltip title="Owner of this board" placement="top" arrow>
           <OwnerBadge>
@@ -109,7 +130,7 @@ const BoardList = () => {
     <Container maxWidth="sm">
       <BoardsSection>
         <Title>
-          <FontAwesomeIcon icon={faUser} />
+          <FontAwesomeIcon icon={faTh} />
           <TitleText>All Boards</TitleText>
         </Title>
         <Cards>

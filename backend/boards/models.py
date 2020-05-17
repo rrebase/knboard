@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class Board(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT, related_name="owned_boards"
     )

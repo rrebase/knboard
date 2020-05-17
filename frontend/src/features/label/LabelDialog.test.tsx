@@ -21,9 +21,7 @@ import { createInfoToast } from "features/toast/ToastSlice";
 const boardDetail = {
   id: 1,
   name: "Math",
-  owner: {
-    id: 1
-  },
+  owner: 1,
   members: [
     {
       id: 1,
