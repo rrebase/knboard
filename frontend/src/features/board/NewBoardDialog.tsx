@@ -32,13 +32,15 @@ const openBtnStyles = css`
   }
 `;
 
+interface FormData {
+  name: string;
+}
+
 const NewBoardDialog = () => {
   const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.board.createError);
   const open = useSelector((state: RootState) => state.board.createDialogOpen);
-  const { register, handleSubmit, errors, reset } = useForm<{
-    name: string;
-  }>();
+  const { register, handleSubmit, errors, reset } = useForm<FormData>();
 
   const handleOpen = () => {
     reset();
@@ -95,7 +97,6 @@ const NewBoardDialog = () => {
             <Button
               onClick={onSubmit}
               color="primary"
-              disabled={name === ""}
               data-testid="create-board-btn"
             >
               Create Board
