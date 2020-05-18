@@ -1,15 +1,14 @@
 from itertools import chain
-from django.db import transaction
+
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, mixins
+from django.db import transaction
+from rest_framework import mixins
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN, HTTP_200_OK
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.decorators import action
 
 from .models import Board, Task, Column, Label
 from .permissions import IsOwner, IsOwnerForDangerousMethods

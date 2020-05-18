@@ -1,5 +1,6 @@
 import factory
 from django.contrib.auth import get_user_model
+
 from boards.models import Board, Column, Task, Label
 
 User = get_user_model()

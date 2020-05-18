@@ -4,7 +4,7 @@ import "@testing-library/cypress/add-commands";
 Cypress.Commands.add("e2eLogin", () => {
   cy.request({
     method: "POST",
-    url: "http://localhost:3000/dj-rest-auth/login/",
+    url: "http://localhost:3000/auth/login/",
     body: {
       username: "t@t.com",
       password: "test"

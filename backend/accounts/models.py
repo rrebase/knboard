@@ -1,12 +1,17 @@
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser, UnicodeUsernameValidator
+import os
+
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import UnicodeUsernameValidator
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Avatar(models.Model):
     photo = models.ImageField(upload_to="avatars")
+
+    def __str__(self):
+        return os.path.basename(self.photo.name)
 
 
 class User(AbstractUser):
@@ -23,6 +28,7 @@ class User(AbstractUser):
     avatar = models.ForeignKey(
         "Avatar", null=True, blank=True, on_delete=models.PROTECT
     )
+    is_guest = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-id"]

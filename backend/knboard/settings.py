@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     # "debug_toolbar",
@@ -172,3 +173,4 @@ SITE_ID = 1
 
 # Allauth
 ACCOUNT_EMAIL_VERIFICATION = None
+ACCOUNT_UNIQUE_EMAIL = True

@@ -1,0 +1,6 @@
+exclude_patterns:
+- "**/node_modules/"
+- "**/migrations/"
+- "**/tests/"
+- "**/*.test.*"
+- "**/*.spec.*"

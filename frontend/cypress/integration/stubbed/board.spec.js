@@ -10,7 +10,7 @@ context("Board List", () => {
   });
 
   it("should have list of boards and create new board", () => {
-    cy.findByText("My boards").should("be.visible");
+    cy.findByText("All Boards").should("be.visible");
 
     cy.findByText("Internals").should("be.visible");
     cy.findByText("Operating Systems").should("be.visible");
@@ -19,7 +19,8 @@ context("Board List", () => {
 
     cy.route("POST", "/api/boards/", "fixture:board_create.json");
     cy.findByText(/Create new board/i).click();
-    cy.findByTestId("create-board-btn").should("be.disabled");
+    cy.findByText(/^Create board$/i).click();
+    cy.findByText("This field is required").should("be.visible");
     cy.findByLabelText("Board name").type("Physics");
     cy.findByTestId("create-board-btn").click();
 

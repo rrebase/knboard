@@ -13,15 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
 from rest_framework import routers
-from django.conf.urls.static import static
 
-
-from accounts.api import UserViewSet, UserSearchView, AvatarViewSet
+from accounts.api import UserViewSet, UserSearchView, AvatarViewSet, GuestRegistration
 from boards.api import (
     BoardViewSet,
     ColumnViewSet,
@@ -45,8 +43,9 @@ urlpatterns = [
     path("api/sort/column/", SortColumn.as_view(), name="sort-column"),
     path("api/sort/task/", SortTask.as_view(), name="sort-task"),
     path("api-auth/", include("rest_framework.urls")),
-    path("dj-rest-auth/", include("dj_rest_auth.urls")),
-    path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("auth/", include("dj_rest_auth.urls")),
+    path("auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("auth/guest/", GuestRegistration.as_view(), name="guest-registration"),
     path("backdoor/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

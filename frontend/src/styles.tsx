@@ -2,6 +2,18 @@ import { css } from "@emotion/core";
 import { borderRadius, imageSize, grid } from "const";
 import { N900 } from "utils/colors";
 
+export const boardCardBaseStyles = css`
+  position: relative;
+  display: block;
+  height: 100px;
+  border-radius: 6px;
+  padding: 0.5rem;
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export const iconBoxStyles = css`
   cursor: pointer;
   width: 24px;
@@ -58,7 +70,7 @@ export const createMdEditorStyles = (editing: boolean) => css`
   .rc-md-editor {
     border-color: #c4c4c4;
     border-radius: ${borderRadius}px;
-    height: 200px;
+    min-height: 240px;
 
     .rc-md-navigation {
       border-top-left-radius: ${borderRadius}px;
@@ -124,5 +136,8 @@ export const descriptionStyles = css`
   }
   code {
     font-size: 12px;
+  }
+  blockquote p {
+    margin: 0;
   }
 `;

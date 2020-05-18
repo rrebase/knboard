@@ -41,6 +41,7 @@ export const renderWithProviders = (
         <Provider store={store}>{ui}</Provider>
       </MemoryRouter>
     ),
-    mockStore: store
+    mockStore: store,
+    getActionsTypes: () => store.getActions().map(a => a.type)
   };
 };

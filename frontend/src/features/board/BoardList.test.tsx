@@ -11,9 +11,7 @@ import { API_BOARDS } from "api";
 import boardReducer from "features/board/BoardSlice";
 import { Board } from "types";
 
-const boards: Board[] = [
-  { id: 1, name: "Internals", owner: { id: 1 }, members: [] }
-];
+const boards: Board[] = [{ id: 1, name: "Internals", owner: 1, members: [] }];
 
 it("should fetch and render board list", async () => {
   axiosMock.onGet(API_BOARDS).reply(200, boards);
@@ -22,7 +20,7 @@ it("should fetch and render board list", async () => {
     board: { ...rootInitialState.board, all: boards }
   });
 
-  expect(screen.getByText(/My boards/i)).toBeVisible();
+  expect(screen.getByText(/All Boards/i)).toBeVisible();
   expect(screen.getByText(/Create new board/i)).toBeVisible();
 
   await screen.findByText("Internals");

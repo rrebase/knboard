@@ -27,24 +27,33 @@ const Container = styled.h4`
     outline: 2px solid ${P100};
     outline-offset: 2px;
   }
+  min-height: 40px;
   textarea {
     color: ${PRIMARY};
     font-weight: bold;
     width: 100%;
-    margin: 0 2rem 0 0.75rem;
+    margin: 0 2rem 0 0.5rem;
     border: none;
     resize: none;
+    border-radius: ${borderRadius}px;
+    box-shadow: inset 0 0 0 1px #ccc;
     &:focus {
       outline: none;
-      border-radius: ${borderRadius}px;
       box-shadow: inset 0 0 0 2px ${PRIMARY};
     }
   }
 `;
 
-const InputTitle = styled.div``;
+const InputTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const RegularTitle = styled.div`
+  margin: 0;
+  font-size: 14px;
+  align-self: center;
+  word-break: break-word;
   width: 190px;
   &:hover {
     cursor: pointer;
@@ -53,12 +62,13 @@ const RegularTitle = styled.div`
 
 const Extra = styled.div`
   display: flex;
+  align-items: flex-start;
 `;
 
 const Count = styled.div``;
 
 const OptionsContent = styled.div`
-  padding: 1rem;
+  padding: 0.75rem;
 `;
 
 interface Props {
@@ -123,8 +133,14 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteColumn(id));
-    handleOptionsClose();
+    if (
+      window.confirm(
+        "Are you sure? Deleting the column will also delete related tasks and this cannot be undone."
+      )
+    ) {
+      dispatch(deleteColumn(id));
+      handleOptionsClose();
+    }
   };
 
   const open = Boolean(anchorEl);
@@ -159,6 +175,7 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
             margin-left: 0.25rem;
             min-width: 0;
             padding: 2px 8px;
+            height: 22px;
           `}
         >
           <FontAwesomeIcon icon={faEllipsisV} />

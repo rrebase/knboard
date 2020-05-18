@@ -2,12 +2,13 @@ from adminsortable.fields import SortableForeignKey
 from adminsortable.models import SortableMixin
 from django.contrib.auth import get_user_model
 from django.db import models
+from model_utils.models import TimeStampedModel
 
 User = get_user_model()
 
 
 class Board(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT, related_name="owned_boards"
     )
@@ -54,12 +55,13 @@ class Label(models.Model):
         ]
 
 
-class Task(SortableMixin):
-    class Priority(models.TextChoices):
-        HIGH = "H", "High"
-        MEDIUM = "M", "Medium"
-        LOW = "L", "Low"
+class Priority(models.TextChoices):
+    HIGH = "H", "High"
+    MEDIUM = "M", "Medium"
+    LOW = "L", "Low"
 
+
+class Task(SortableMixin, TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     priority = models.CharField(

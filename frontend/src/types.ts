@@ -1,9 +1,5 @@
 export type Id = number;
 
-export interface BoardOwner {
-  id: number;
-}
-
 export interface BoardMember {
   id: number;
   username: string;
@@ -20,10 +16,16 @@ export interface Label {
   board: Id;
 }
 
+export interface NanoBoard {
+  id: number;
+  name: string;
+  owner: Id;
+}
+
 export interface Board {
   id: number;
   name: string;
-  owner: BoardOwner;
+  owner: Id;
   members: BoardMember[];
 }
 
@@ -42,6 +44,8 @@ export interface Priority {
 
 export interface ITask {
   id: Id;
+  created: string;
+  modified: string;
   title: string;
   description: string;
   labels: Id[];
@@ -49,7 +53,7 @@ export interface ITask {
   priority: PriorityValue;
 }
 
-export interface NewTask extends Omit<ITask, "id"> {
+export interface NewTask extends Omit<ITask, "id" | "created" | "modified"> {
   column: Id;
 }
 
@@ -71,6 +75,7 @@ export interface UserDetail {
   email: string;
   avatar: Avatar | null;
   date_joined: string;
+  is_guest: boolean;
 }
 
 export interface Avatar {

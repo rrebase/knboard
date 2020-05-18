@@ -33,7 +33,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
+import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import TaskAssignees from "./TaskAssignees";
 import {
   MD_EDITOR_PLUGINS,
@@ -49,7 +49,9 @@ import {
   selectAllLabels,
   selectLabelEntities
 } from "features/label/LabelSlice";
+import { formatDistanceToNow } from "date-fns";
 
+MdEditor.use(Plugins.AutoResize, { min: 200, max: 600 });
 const mdParser = new MarkdownIt({ breaks: true });
 
 const Content = styled.div`
@@ -64,8 +66,8 @@ const Main = styled.div`
 
 const Side = styled.div`
   margin-top: 2rem;
-  max-width: 200px;
-  min-width: 200px;
+  max-width: 220px;
+  min-width: 220px;
 `;
 
 const Header = styled.div`
@@ -134,6 +136,12 @@ const Description = styled.div`
 
 const DescriptionActions = styled.div`
   display: flex;
+`;
+
+const Text = styled.p`
+  color: #626e83;
+  margin: 4px 0;
+  font-size: 12px;
 `;
 
 const EditTaskDialog = () => {
@@ -279,8 +287,10 @@ const EditTaskDialog = () => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteTask(task.id));
-    handleClose();
+    if (window.confirm("Are you sure? Deleting a task cannot be undone.")) {
+      dispatch(deleteTask(task.id));
+      handleClose();
+    }
   };
 
   const handleDescriptionClick = () => {
@@ -401,6 +411,7 @@ const EditTaskDialog = () => {
             id="priority-select"
             size="small"
             blurOnSelect
+            autoHighlight
             options={PRIORITY_OPTIONS}
             getOptionLabel={option => option.label}
             value={PRIORITY_MAP[task.priority]}
@@ -474,11 +485,21 @@ const EditTaskDialog = () => {
               font-size: 12px;
               font-weight: bold;
               color: ${TASK_G};
-              margin-bottom: 1rem;
+              margin-bottom: 2rem;
             `}
           >
             Delete task
           </Button>
+          <Text>
+            Updated {formatDistanceToNow(new Date(task.modified))} ago
+          </Text>
+          <Text
+            css={css`
+              margin-bottom: 1rem;
+            `}
+          >
+            Created {formatDistanceToNow(new Date(task.created))} ago
+          </Text>
         </Side>
       </Content>
     </Dialog>

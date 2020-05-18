@@ -1,5 +1,5 @@
-from django.contrib import admin
 from adminsortable.admin import SortableAdmin
+from django.contrib import admin
 
 from .models import Board, Label, Column, Task
 

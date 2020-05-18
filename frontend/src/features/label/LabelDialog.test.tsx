@@ -6,7 +6,7 @@ import {
   renderWithProviders,
   axiosMock
 } from "utils/testHelpers";
-import LabelsDialog from "./LabelsDialog";
+import LabelDialog from "./LabelDialog";
 import user from "@testing-library/user-event";
 import { API_LABELS } from "api";
 import { Label } from "types";
@@ -21,9 +21,7 @@ import { createInfoToast } from "features/toast/ToastSlice";
 const boardDetail = {
   id: 1,
   name: "Math",
-  owner: {
-    id: 1
-  },
+  owner: 1,
   members: [
     {
       id: 1,
@@ -44,12 +42,12 @@ const docLabel: Label = {
 };
 
 it("should not show dialog", async () => {
-  renderWithProviders(<LabelsDialog />);
+  renderWithProviders(<LabelDialog />);
   expect(screen.queryByText(/Edit labels/i)).toBeNull();
 });
 
 it("should dispatch createLabel", async () => {
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { getActionsTypes } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: { ...rootInitialState.label, dialogOpen: true }
@@ -69,14 +67,9 @@ it("should dispatch createLabel", async () => {
   });
   fireEvent.click(screen.getByText(/Save/i));
   await waitFor(() =>
-    expect(
-      mockStore
-        .getActions()
-        .map(a => a.type)
-        .includes(createLabel.fulfilled.type)
-    ).toBe(true)
+    expect(getActionsTypes().includes(createLabel.fulfilled.type)).toBe(true)
   );
-  expect(mockStore.getActions().map(a => a.type)).toEqual([
+  expect(getActionsTypes()).toEqual([
     createLabel.pending.type,
     createInfoToast.type,
     createLabel.fulfilled.type
@@ -86,7 +79,7 @@ it("should dispatch createLabel", async () => {
 it("should have one label and dispatch deleteLabel", async () => {
   axiosMock.onDelete(`${API_LABELS}${docLabel.id}/`).reply(204);
   window.confirm = jest.fn().mockImplementation(() => true);
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { getActionsTypes } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -100,14 +93,9 @@ it("should have one label and dispatch deleteLabel", async () => {
   expect(screen.getByText(docLabel.name)).toBeVisible();
   fireEvent.click(screen.getByText(/Delete/i));
   await waitFor(() =>
-    expect(
-      mockStore
-        .getActions()
-        .map(a => a.type)
-        .includes(deleteLabel.fulfilled.type)
-    ).toBe(true)
+    expect(getActionsTypes().includes(deleteLabel.fulfilled.type)).toBe(true)
   );
-  expect(mockStore.getActions().map(a => a.type)).toEqual([
+  expect(getActionsTypes()).toEqual([
     deleteLabel.pending.type,
     createInfoToast.type,
     deleteLabel.fulfilled.type
@@ -116,7 +104,7 @@ it("should have one label and dispatch deleteLabel", async () => {
 
 it("should edit a label", async () => {
   axiosMock.onPatch(`${API_LABELS}${docLabel.id}/`).reply(200);
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { getActionsTypes } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -132,14 +120,9 @@ it("should edit a label", async () => {
   });
   fireEvent.click(screen.getByText(/Save/i));
   await waitFor(() =>
-    expect(
-      mockStore
-        .getActions()
-        .map(a => a.type)
-        .includes(patchLabel.pending.type)
-    ).toBe(true)
+    expect(getActionsTypes().includes(patchLabel.pending.type)).toBe(true)
   );
-  expect(mockStore.getActions().map(a => a.type)).toEqual([
+  expect(getActionsTypes()).toEqual([
     patchLabel.pending.type,
     createInfoToast.type,
     patchLabel.fulfilled.type
@@ -154,7 +137,7 @@ it("should edit a label", async () => {
 });
 
 it("should not save invalid and cancel label editing", async () => {
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {
@@ -183,7 +166,7 @@ it("should not save invalid and cancel label editing", async () => {
 
 it("should search from multiple labels", async () => {
   const designLabel = { ...docLabel, id: docLabel.id + 1, name: "Design" };
-  const { mockStore } = renderWithProviders(<LabelsDialog />, {
+  const { mockStore } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
     label: {

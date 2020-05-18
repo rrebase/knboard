@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { N80A, N900 } from "utils/colors";
-import { ITask, Id } from "types";
+import { Id } from "types";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";

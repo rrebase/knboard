@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_board_owner_added_to_members(board_factory, steve, leo):
     board = board_factory(owner=steve)
     members_ids = [member.id for member in board.members.all()]

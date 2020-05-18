@@ -1,4 +1,5 @@
 import pytest
+
 from boards.utils import reverse_querystring
 
 

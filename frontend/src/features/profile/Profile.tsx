@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import React from "react";
 import { Container, Divider, TextField, Button } from "@material-ui/core";
 import styled from "@emotion/styled";
@@ -7,6 +8,7 @@ import { RootState } from "store";
 import { css } from "@emotion/core";
 import { useForm } from "react-hook-form";
 import UserAvatar from "./UserAvatar";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const Title = styled.h3`
   margin-top: 2rem;
@@ -68,6 +70,18 @@ const Profile = () => {
 
   return (
     <Container maxWidth="sm">
+      {userDetail.is_guest && (
+        <Alert
+          severity="warning"
+          variant="outlined"
+          css={css`
+            margin: 1rem 0;
+          `}
+        >
+          <AlertTitle>Warning</AlertTitle>
+          Guest accounts are deleted 24 hours after creation!
+        </Alert>
+      )}
       <Title>About</Title>
       <Divider />
       <FormContainer>

@@ -80,7 +80,8 @@ export const slice = createSlice({
     },
     updateAvatarRejected(state) {
       state.avatarLoading = null;
-    }
+    },
+    resetProfile: () => initialState
   },
   extraReducers: builder => {
     builder.addCase(fetchUserDetail.fulfilled, (state, action) => {
@@ -106,7 +107,8 @@ export const slice = createSlice({
 export const {
   updateAvatarPending,
   updateAvatarFulfilled,
-  updateAvatarRejected
+  updateAvatarRejected,
+  resetProfile
 } = slice.actions;
 
 export const updateAvatar = (avatarId: number) => async (

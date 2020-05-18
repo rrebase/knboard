@@ -5,5 +5,6 @@
   "last_name": "Rebase",
   "email": "t@t.com",
   "avatar": null,
-  "date_joined": "2020-04-01T04:06:21.792404Z"
+  "date_joined": "2020-04-01T04:06:21.792404Z",
+  "is_guest": false
 }

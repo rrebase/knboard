@@ -118,6 +118,9 @@ export const theme = createMuiTheme({
       main: "#FDB915"
     }
   },
+  typography: {
+    fontFamily: "Inter, sans-serif"
+  },
   props: {
     MuiButtonBase: {
       disableRipple: true
