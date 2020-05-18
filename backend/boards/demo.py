@@ -1,6 +1,8 @@
 from random import randint
+
 from django.contrib.auth import get_user_model
 from django.db import transaction
+
 from accounts.models import Avatar
 from .models import Board, Column, Task, Label, Priority
 
@@ -9,6 +11,8 @@ User = get_user_model()
 
 def get_random_avatar():
     pks = Avatar.objects.values_list("pk", flat=True)
+    if not pks:
+        return None
     return Avatar.objects.get(pk=pks[randint(0, len(pks) - 1)])
 
 

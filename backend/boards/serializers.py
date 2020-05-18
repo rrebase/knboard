@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
 
-from accounts.serializers import BoardMemberSerializer, BoardOwnerSerializer
+from accounts.serializers import BoardMemberSerializer
 from .models import Board, Task, Column, Label
 
 User = get_user_model()

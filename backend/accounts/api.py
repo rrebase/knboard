@@ -1,27 +1,28 @@
 import uuid
+
 import shortuuid
 from dj_rest_auth.registration.views import RegisterView
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import filters
+from rest_framework import mixins
+from rest_framework.decorators import action
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
+
 from accounts.models import Avatar
 from boards.demo import create_demo_board, get_random_avatar
 from boards.models import Board
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from rest_framework.status import HTTP_400_BAD_REQUEST
-
+from .permissions import IsSelf
 from .serializers import (
     AvatarSerializer,
     UserSerializer,
     UserDetailSerializer,
     UserSearchSerializer,
 )
-from .permissions import IsSelf
 
 User = get_user_model()
 

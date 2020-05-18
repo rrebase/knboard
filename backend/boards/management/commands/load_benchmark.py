@@ -1,8 +1,8 @@
-from django.core import management
-from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
+
 from accounts.models import User
-from boards.models import Board, Column, Task
+from boards.models import Board
 from boards.tests.factories import BoardFactory, ColumnFactory, TaskFactory, UserFactory
 
 

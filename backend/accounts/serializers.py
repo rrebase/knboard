@@ -1,12 +1,11 @@
-from django.contrib.auth import get_user_model
 from pathlib import Path
 
-from rest_framework import serializers
 from dj_rest_auth.models import TokenModel
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import Avatar
-
 
 User = get_user_model()
 

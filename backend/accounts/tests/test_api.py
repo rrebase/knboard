@@ -1,7 +1,7 @@
 import pytest
-from rest_framework.reverse import reverse
-from boards.models import Column, Board
 from django.contrib.auth import get_user_model
+from rest_framework.reverse import reverse
+
 from boards.utils import reverse_querystring
 
 User = get_user_model()
