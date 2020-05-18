@@ -18,7 +18,7 @@ it("should show dialog", async () => {
   axiosMock
     .onPost(API_BOARDS)
     .reply(201, { id: 50, name: "Recipes", owner: 1 });
-  const { mockStore } = renderWithProviders(<NewBoardDialog />, {
+  const { getActionsTypes } = renderWithProviders(<NewBoardDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, createDialogOpen: true }
   });
@@ -29,15 +29,10 @@ it("should show dialog", async () => {
   fireEvent.click(screen.getByTestId("create-board-btn"));
 
   await waitFor(() =>
-    expect(
-      mockStore
-        .getActions()
-        .map(a => a.type)
-        .includes(createBoard.fulfilled.type)
-    ).toBe(true)
+    expect(getActionsTypes().includes(createBoard.fulfilled.type)).toBe(true)
   );
 
-  expect(mockStore.getActions().map(a => a.type)).toEqual([
+  expect(getActionsTypes()).toEqual([
     createBoard.pending.type,
     createBoard.fulfilled.type
   ]);

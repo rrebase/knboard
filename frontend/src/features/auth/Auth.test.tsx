@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
-import { screen, fireEvent, act } from "@testing-library/react";
+import { screen, fireEvent, act, waitFor } from "@testing-library/react";
 import {
   renderWithProviders,
   axiosMock,
   rootInitialState
 } from "utils/testHelpers";
 import Auth from "./Auth";
-import { API_LOGIN, API_REGISTER } from "api";
-import authReducer, { login, register, clearErrors, logout } from "./AuthSlice";
+import { API_LOGIN, API_REGISTER, API_GUEST_REGISTER } from "api";
+import authReducer, {
+  login,
+  register,
+  clearErrors,
+  logout,
+  guestRegister
+} from "./AuthSlice";
 import { User } from "types";
 
 export const steveAuthUser: User = {
@@ -134,6 +140,20 @@ it("should show register api errors", async () => {
   expect(mockStore.getActions()[0].type === clearErrors.type);
 });
 
+it("should enter a guest", async () => {
+  axiosMock.onPost(API_GUEST_REGISTER).reply(201, steveAuthUser);
+  const { getActionsTypes } = renderWithProviders(<Auth />);
+  fireEvent.click(screen.getByText(/Enter as a guest/i));
+
+  await waitFor(() =>
+    expect(getActionsTypes().includes(guestRegister.fulfilled.type)).toBe(true)
+  );
+  expect(getActionsTypes()).toEqual([
+    guestRegister.pending.type,
+    guestRegister.fulfilled.type
+  ]);
+});
+
 describe("AuthSlice", () => {
   const loginErrors = { non_field_errors: ["Invalid credentials."] };
   const registerErrors = { non_field_errors: ["Passwords don't match."] };
@@ -257,6 +277,21 @@ describe("AuthSlice", () => {
       authReducer(initial, {
         type: register.rejected.type,
         payload: registerErrors
+      })
+    ).toEqual(result);
+  });
+
+  it("should set user on guest register", () => {
+    const initial = rootInitialState.auth;
+    const result = {
+      ...rootInitialState.auth,
+      user: steveAuthUser
+    };
+
+    expect(
+      authReducer(initial, {
+        type: guestRegister.fulfilled.type,
+        payload: steveAuthUser
       })
     ).toEqual(result);
   });
