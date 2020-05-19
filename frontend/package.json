@@ -65,6 +65,9 @@
     "use-debounce": "3.4.2",
     "uuidv4": "6.0.8"
   },
+  "resolutions": {
+    "cypress": "4.3.0"
+  },
   "scripts": {
     "start": "craco start",
     "start:ci": "craco -r @cypress/instrument-cra start",
