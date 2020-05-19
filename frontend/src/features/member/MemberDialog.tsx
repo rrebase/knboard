@@ -75,7 +75,7 @@ const MemberDialog = ({ board }: Props) => {
   const handleRemoveMember = async () => {
     try {
       const response = await api.post(
-        `${API_BOARDS}/${board.id}/remove_member/`,
+        `${API_BOARDS}${board.id}/remove_member/`,
         { username: member.username }
       );
       const removedMember = response.data as BoardMember;
