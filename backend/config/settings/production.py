@@ -7,17 +7,11 @@ SECRET_KEY = get_env("DJANGO_SECRET_KEY")
 STATIC_ROOT = get_env("DJANGO_STATIC_ROOT")
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
-# Nginx takes care of it
-SECURE_SSL_REDIRECT = False
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-# TODO: set this to 20 seconds first and then to 518400 once you prove the former works
-SECURE_HSTS_SECONDS = 20
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
+# Nginx is used instead of SecurityMiddleware
+# for setting all the recommended security headers
+SILENCED_SYSTEM_CHECKS = [
+    "security.W001",
+]
 
 DATABASES = {
     "default": {
