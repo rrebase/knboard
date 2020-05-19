@@ -5,7 +5,7 @@ from ..env_utils import get_env
 DEBUG = False
 SECRET_KEY = get_env("DJANGO_SECRET_KEY")
 STATIC_ROOT = get_env("DJANGO_STATIC_ROOT")
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 # Nginx is used instead of SecurityMiddleware
 # for setting all the recommended security headers
