@@ -11,15 +11,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BACKEND_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+GIT_ROOT = os.path.dirname(BACKEND_DIR)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "h$6s!a$_uu4#r90f&@tqw2zp&lj%)+)hhov_%rglma6)4l$$-e"
+env = environ.Env()
+env.read_env(os.path.join(GIT_ROOT, ".env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,11 +48,10 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    # "debug_toolbar",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -87,7 +88,7 @@ WSGI_APPLICATION = "knboard.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join(BACKEND_DIR, "db.sqlite3"),
     }
 }
 
@@ -118,40 +119,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = "/static/"
+
+# Media files
+MEDIA_ROOT = "./media"
+MEDIA_URL = "/media/"
 
 # Fixtures
 FIXTURE_DIRS = ["fixtures"]
 
-# Add django extensions
-INSTALLED_APPS += ["django_extensions"]
-
 # Auth user
 AUTH_USER_MODEL = "accounts.User"
-
-# Configure django-debug-toolbar
-DEBUG_TOOLBAR_PANELS = [
-    "ddt_request_history.panels.request_history.RequestHistoryPanel",
-    "debug_toolbar.panels.versions.VersionsPanel",
-    "debug_toolbar.panels.timer.TimerPanel",
-    "debug_toolbar.panels.settings.SettingsPanel",
-    "debug_toolbar.panels.headers.HeadersPanel",
-    "debug_toolbar.panels.request.RequestPanel",
-    "debug_toolbar.panels.sql.SQLPanel",
-    "debug_toolbar.panels.templates.TemplatesPanel",
-    "debug_toolbar.panels.staticfiles.StaticFilesPanel",
-    "debug_toolbar.panels.cache.CachePanel",
-    "debug_toolbar.panels.signals.SignalsPanel",
-    "debug_toolbar.panels.logging.LoggingPanel",
-    "debug_toolbar.panels.redirects.RedirectsPanel",
-    "debug_toolbar.panels.profiling.ProfilingPanel",
-]
-
-# Needed for django-debug-toolbar
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
 
 # Configure django-rest-framework
 REST_FRAMEWORK = {
@@ -164,13 +142,9 @@ REST_FRAMEWORK = {
 
 REST_AUTH_SERIALIZERS = {"TOKEN_SERIALIZER": "accounts.serializers.TokenSerializer"}
 
-# Static files and media (CSS, JavaScript, images)
-MEDIA_ROOT = "./media"
-MEDIA_URL = "/media/"
-
 # For django.contrib.sites
 SITE_ID = 1
 
-# Allauth
+# Configure django-allauth
 ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_UNIQUE_EMAIL = True
