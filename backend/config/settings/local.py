@@ -1,5 +1,4 @@
 from .base import *
-from .base import env
 
 # Dummy value for development
 SECRET_KEY = "*m(r@4mdh*!zabwg&6tp%mgs_ezkprs9g+$@x@cdq-z_)dtf2i"

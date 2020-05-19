@@ -119,3 +119,7 @@ Experiment*.tsx
 
 # Ignore the docker-compose override
 docker-compose.override.yml
+
+# Generic data directories
+.data/
+data/

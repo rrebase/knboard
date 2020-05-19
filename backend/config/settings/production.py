@@ -1,9 +1,11 @@
+import os
 from .base import *
-from .base import env
+from ..env_utils import get_env
 
 DEBUG = False
-SECRET_KEY = env("DJANGO_SECRET_KEY")
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
+SECRET_KEY = get_env("DJANGO_SECRET_KEY")
+STATIC_ROOT = get_env("DJANGO_STATIC_ROOT")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 # Nginx takes care of it
 SECURE_SSL_REDIRECT = False
@@ -16,14 +18,15 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "PORT": env("POSTGRES_PORT"),
-        "HOST": env("POSTGRES_HOST"),
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "PORT": get_env("POSTGRES_PORT"),
+        "HOST": get_env("POSTGRES_HOST"),
+        "NAME": get_env("POSTGRES_DB"),
+        "USER": get_env("POSTGRES_USER"),
+        "PASSWORD": get_env("POSTGRES_PASSWORD"),
         "ATOMIC_REQUESTS": True,
     }
 }
