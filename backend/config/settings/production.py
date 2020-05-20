@@ -12,6 +12,7 @@ ALLOWED_HOSTS = get_env("DJANGO_ALLOWED_HOSTS").split(",")
 SILENCED_SYSTEM_CHECKS = [
     "security.W001",
 ]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 DATABASES = {
     "default": {
