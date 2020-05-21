@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
-import { grid, borderRadius, Key } from "const";
+import { grid, borderRadius, Key, taskHeaderTextareaWidth } from "const";
 import { P100, PRIMARY, TASK_G as ACTION_G } from "utils/colors";
 import { TextareaAutosize, Button, Popover } from "@material-ui/core";
 import { useDispatch } from "react-redux";
@@ -23,20 +23,20 @@ const Container = styled.h4`
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
+  min-height: 40px;
   &:focus {
     outline: 2px solid ${P100};
     outline-offset: 2px;
   }
-  min-height: 40px;
   textarea {
     color: ${PRIMARY};
     font-weight: bold;
-    width: 100%;
-    margin: 0 2rem 0 0.5rem;
+    width: ${taskHeaderTextareaWidth}px;
     border: none;
     resize: none;
     border-radius: ${borderRadius}px;
     box-shadow: inset 0 0 0 1px #ccc;
+    line-height: 1.43;
     &:focus {
       outline: none;
       box-shadow: inset 0 0 0 2px ${PRIMARY};
@@ -54,7 +54,7 @@ const RegularTitle = styled.div`
   font-size: 14px;
   align-self: center;
   word-break: break-word;
-  width: 190px;
+  width: ${taskHeaderTextareaWidth}px;
   &:hover {
     cursor: pointer;
   }
@@ -65,7 +65,15 @@ const Extra = styled.div`
   align-items: flex-start;
 `;
 
-const Count = styled.div``;
+const InnerExtra = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Count = styled.div`
+  overflow-wrap: anywhere;
+  font-size: 14px;
+`;
 
 const OptionsContent = styled.div`
   padding: 0.75rem;
@@ -167,19 +175,21 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
         </RegularTitle>
       )}
       <Extra>
-        <Count>{tasksCount}</Count>
-        <Button
-          onClick={handleOptionsClick}
-          data-testid="col-options"
-          css={css`
-            margin-left: 0.25rem;
-            min-width: 0;
-            padding: 2px 8px;
-            height: 22px;
-          `}
-        >
-          <FontAwesomeIcon icon={faEllipsisV} />
-        </Button>
+        <InnerExtra>
+          <Count>{tasksCount}</Count>
+          <Button
+            onClick={handleOptionsClick}
+            data-testid="col-options"
+            css={css`
+              margin-left: 0.25rem;
+              min-width: 0;
+              padding: 2px 8px;
+              height: 22px;
+            `}
+          >
+            <FontAwesomeIcon icon={faEllipsisV} />
+          </Button>
+        </InnerExtra>
         <Popover
           id={popoverId}
           open={open}

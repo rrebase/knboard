@@ -11,6 +11,7 @@ export const borderRadius = 4;
 export const imageSize = 40;
 export const barHeight = 50;
 export const sidebarWidth = 120;
+export const taskHeaderTextareaWidth = 180;
 export const taskWidth = 250;
 
 export const PRIORITY_1: Priority = { value: "H", label: "High" };
@@ -87,25 +88,6 @@ export const MD_READ_ONLY_CONFIG = {
     hideMenu: false
   }
 };
-
-export const QUILL_MODULES = {
-  toolbar: [
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["code"]
-  ]
-};
-
-export const QUILL_FORMATS = [
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "bullet",
-  "link",
-  "code"
-];
 
 export const theme = createMuiTheme({
   palette: {
