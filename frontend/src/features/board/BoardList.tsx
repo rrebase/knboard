@@ -124,7 +124,7 @@ const BoardList = () => {
   }, []);
 
   if (loading && boards.length === 0) {
-    <Spinner loading={loading} />;
+    return <Spinner loading={loading} />;
   }
 
   return (
