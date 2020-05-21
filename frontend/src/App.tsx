@@ -40,11 +40,11 @@ const App = () => {
           <Toast />
           <Global
             styles={css`
-              body {
-                font-family: "Inter", sans-serif;
-              }
               .Mui-focusVisible {
                 box-shadow: 0 0 3px 2px ${FOCUS_BOX_SHADOW};
+              }
+              textarea {
+                font-family: inherit;
               }
             `}
           />

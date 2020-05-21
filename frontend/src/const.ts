@@ -119,7 +119,7 @@ export const theme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: "Inter, sans-serif"
+    fontFamily: '"Inter var", sans-serif'
   },
   props: {
     MuiButtonBase: {
