@@ -36,18 +36,9 @@ type Props = {
   title: string;
   tasks: ITask[];
   index: number;
-  isScrollable?: boolean;
-  isCombineEnabled?: boolean;
 };
 
-const Column = ({
-  id,
-  title,
-  tasks,
-  index,
-  isScrollable,
-  isCombineEnabled
-}: Props) => {
+const Column = ({ id, title, tasks, index }: Props) => {
   return (
     <Draggable draggableId={`col-${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -66,13 +57,7 @@ const Column = ({
               data-testid="column-title"
             />
           </Header>
-          <TaskList
-            columnId={id}
-            listType="TASK"
-            tasks={tasks}
-            internalScroll={isScrollable}
-            isCombineEnabled={Boolean(isCombineEnabled)}
-          />
+          <TaskList columnId={id} listType="TASK" tasks={tasks} />
         </Container>
       )}
     </Draggable>

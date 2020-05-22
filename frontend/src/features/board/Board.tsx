@@ -20,12 +20,6 @@ import Spinner from "components/Spinner";
 import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
 
-const ParentContainer = styled.div<{ height: string }>`
-  height: ${({ height }) => height};
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
-
 const Container = styled.div`
   min-height: calc(100vh - ${barHeight * 2}px);
   min-width: calc(100vw - ${sidebarWidth});
@@ -40,17 +34,7 @@ const EmptyBoard = styled.div`
   margin-top: 50px;
 `;
 
-interface Props {
-  withScrollableColumns?: boolean;
-  isCombineEnabled?: boolean;
-  containerHeight?: string;
-}
-
-const Board = ({
-  containerHeight,
-  isCombineEnabled,
-  withScrollableColumns
-}: Props) => {
+const Board = () => {
   const detail = useSelector((state: RootState) => state.board.detail);
   const error = useSelector((state: RootState) => state.board.detailError);
   const columns = useSelector(columnSelectors.selectAll);
@@ -101,33 +85,6 @@ const Board = ({
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
 
-  const board = (
-    <Droppable
-      droppableId="board"
-      type="COLUMN"
-      direction="horizontal"
-      ignoreContainerClipping={Boolean(containerHeight)}
-      isCombineEnabled={isCombineEnabled}
-    >
-      {(provided: DroppableProvided) => (
-        <Container ref={provided.innerRef} {...provided.droppableProps}>
-          {columns.map((column: IColumn, index: number) => (
-            <Column
-              key={column.id}
-              id={column.id}
-              title={column.title}
-              index={index}
-              tasks={tasksByColumn[column.id].map(taskId => tasksById[taskId])}
-              isScrollable={withScrollableColumns}
-              isCombineEnabled={isCombineEnabled}
-            />
-          ))}
-          {provided.placeholder}
-        </Container>
-      )}
-    </Droppable>
-  );
-
   const detailDataExists = detail?.id.toString() === id;
 
   if (error) {
@@ -143,15 +100,26 @@ const Board = ({
   }
 
   return (
-    <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {containerHeight ? (
-          <ParentContainer height={containerHeight}>{board}</ParentContainer>
-        ) : (
-          <>{board}</>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+        {(provided: DroppableProvided) => (
+          <Container ref={provided.innerRef} {...provided.droppableProps}>
+            {columns.map((column: IColumn, index: number) => (
+              <Column
+                key={column.id}
+                id={column.id}
+                title={column.title}
+                index={index}
+                tasks={tasksByColumn[column.id].map(
+                  taskId => tasksById[taskId]
+                )}
+              />
+            ))}
+            {provided.placeholder}
+          </Container>
         )}
-      </DragDropContext>
-    </>
+      </Droppable>
+    </DragDropContext>
   );
 };
 
