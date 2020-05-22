@@ -4,7 +4,9 @@ import {
   TextField,
   InputAdornment,
   Avatar,
-  DialogTitle
+  DialogTitle,
+  useTheme,
+  useMediaQuery
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -27,7 +29,7 @@ const Container = styled.div`
 
 const LabelCount = styled.h3`
   color: #333;
-  margin: 0;
+  margin: 0 0 1rem 0;
 `;
 
 const Table = styled.div`
@@ -41,10 +43,12 @@ const Row = styled.div`
 `;
 
 const MemberListDialog = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const members = useSelector(selectAllMembers);
   const open = useSelector((state: RootState) => state.member.memberListOpen);
   const [searchValue, setSearchValue] = useState("");
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const filteredMembers = members.filter(member =>
     member.username.toLowerCase().match(searchValue.trim().toLowerCase())
@@ -60,13 +64,22 @@ const MemberListDialog = () => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      fullScreen={xsDown}
+    >
       <Container>
         <Close onClose={handleClose} />
         <DialogTitle id="edit-labels">Board members</DialogTitle>
         <Flex
           css={css`
             margin: 1.5rem 2rem 0rem 2rem;
+            ${theme.breakpoints.down("xs")} {
+              flex-direction: column;
+            }
           `}
         >
           <LabelCount>

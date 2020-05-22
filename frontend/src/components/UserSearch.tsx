@@ -132,7 +132,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
         ))
       }
       css={css`
-        width: ${theme.breakpoints.down("xs") ? 200 : 250}px;
+        width: ${theme.breakpoints.down("xs") ? 200 : 300}px;
       `}
     />
   );
