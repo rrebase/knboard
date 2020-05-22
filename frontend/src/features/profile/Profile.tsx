@@ -1,6 +1,13 @@
 /* eslint-disable react/jsx-no-undef */
 import React from "react";
-import { Container, Divider, TextField, Button } from "@material-ui/core";
+import {
+  Container,
+  Divider,
+  TextField,
+  Button,
+  useTheme,
+  WithTheme
+} from "@material-ui/core";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetail, fetchAvatarList, updateUser } from "./ProfileSlice";
@@ -15,9 +22,13 @@ const Title = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.div<WithTheme>`
   margin-top: 2rem;
   display: flex;
+  align-items: center;
+  ${props => props.theme.breakpoints.down("xs")} {
+    flex-direction: column;
+  }
 `;
 
 const Row = styled.div``;
@@ -36,6 +47,7 @@ interface FormData {
 }
 
 const Profile = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const userDetail = useSelector(
     (state: RootState) => state.profile.userDetail
@@ -84,7 +96,7 @@ const Profile = () => {
       )}
       <Title>About</Title>
       <Divider />
-      <FormContainer>
+      <FormContainer theme={theme}>
         <UserAvatar />
         <UserForm onSubmit={handleSubmit(onSubmit)}>
           <Fields>
@@ -157,7 +169,7 @@ const Profile = () => {
               disabled={loading}
               data-testid="profile-save"
               css={css`
-                margin-top: 1rem;
+                margin: 1rem 0;
                 text-align: right;
               `}
             >

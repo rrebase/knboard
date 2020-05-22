@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { TextField, CircularProgress } from "@material-ui/core";
+import { TextField, CircularProgress, useTheme } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import api, { API_SEARCH_USERS } from "api";
 import { useDebounce } from "use-debounce";
 import AvatarTag from "./AvatarTag";
 import { Avatar } from "types";
 import AvatarOption from "./AvatarOption";
+import { css } from "@emotion/core";
 
 export interface UserOption {
   id: number;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -100,7 +102,6 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
       onChange={handleTagsChange}
       options={options}
       loading={loading}
-      style={{ width: 250 }}
       value={tagsValue}
       renderOption={option => <AvatarOption option={option} />}
       renderInput={params => (
@@ -130,6 +131,9 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
           />
         ))
       }
+      css={css`
+        width: ${theme.breakpoints.down("xs") ? 200 : 250}px;
+      `}
     />
   );
 };

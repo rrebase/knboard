@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import { MemoryRouter } from "react-router-dom";
 import thunk from "redux-thunk";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -14,7 +15,7 @@ import { initialState as columnInitialState } from "features/column/ColumnSlice"
 import { initialState as taskInitialState } from "features/task/TaskSlice";
 import { initialState as memberInitialState } from "features/member/MemberSlice";
 import { initialState as labelInitialState } from "features/label/LabelSlice";
-import { MemoryRouter } from "react-router-dom";
+import { initialState as responsiveInitialState } from "features/responsive/ResponsiveSlice";
 import { RootState } from "store";
 
 export const rootInitialState = {
@@ -25,7 +26,8 @@ export const rootInitialState = {
   column: columnInitialState,
   task: taskInitialState,
   member: memberInitialState,
-  label: labelInitialState
+  label: labelInitialState,
+  responsive: responsiveInitialState
 };
 
 export const axiosMock = new MockAdapter(axios);

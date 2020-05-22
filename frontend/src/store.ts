@@ -10,6 +10,8 @@ import columnReducer from "./features/column/ColumnSlice";
 import taskReducer from "./features/task/TaskSlice";
 import labelReducer from "./features/label/LabelSlice";
 import memberReducer from "./features/member/MemberSlice";
+import responsiveReducer from "./features/responsive/ResponsiveSlice";
+
 import authInitialState from "./features/auth/AuthSlice";
 import { setupInterceptors } from "api";
 
@@ -21,7 +23,8 @@ export const rootReducer = combineReducers({
   column: columnReducer,
   task: taskReducer,
   member: memberReducer,
-  label: labelReducer
+  label: labelReducer,
+  responsive: responsiveReducer
 });
 
 const store = configureStore({

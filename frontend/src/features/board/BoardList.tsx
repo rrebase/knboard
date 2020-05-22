@@ -86,7 +86,8 @@ const Card = ({ cardCss, to, isOwner, children }: CardProps) => {
   return (
     <Grid
       item
-      xs={4}
+      xs={6}
+      sm={4}
       key="new-board"
       css={css`
         position: relative;
@@ -146,7 +147,7 @@ const BoardList = () => {
                 {board.name}
               </Card>
             ))}
-            <Grid item xs={4} key="new-board">
+            <Grid item xs={6} sm={4} key="new-board">
               <NewBoardDialog />
             </Grid>
           </Grid>

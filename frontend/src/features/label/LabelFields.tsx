@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Button, TextField, IconButton } from "@material-ui/core";
+import { Button, TextField, IconButton, useTheme } from "@material-ui/core";
 import { css } from "@emotion/core";
 import {
   TASK_G,
@@ -26,6 +26,7 @@ interface Props {
 }
 
 const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
+  const theme = useTheme();
   const {
     register,
     setValue,
@@ -41,10 +42,19 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
   const pendingColor = watch("color");
 
   return (
-    <Flex>
+    <Flex
+      css={css`
+        ${theme.breakpoints.down("xs")} {
+          flex-direction: column;
+        }
+      `}
+    >
       <div
         css={css`
           display: flex;
+          ${theme.breakpoints.down("xs")} {
+            margin-bottom: 1rem;
+          }
         `}
       >
         <TextField

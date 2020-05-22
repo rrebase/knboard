@@ -4,7 +4,10 @@ import {
   Button,
   TextField,
   TextareaAutosize,
-  Chip
+  Chip,
+  useTheme,
+  useMediaQuery,
+  WithTheme
 } from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -54,10 +57,13 @@ import { formatDistanceToNow } from "date-fns";
 MdEditor.use(Plugins.AutoResize, { min: 200, max: 600 });
 const mdParser = new MarkdownIt({ breaks: true });
 
-const Content = styled.div`
+const Content = styled.div<WithTheme>`
   display: flex;
   padding: 2rem;
   height: 600px;
+  ${props => props.theme.breakpoints.down("xs")} {
+    flex-direction: column;
+  }
 `;
 
 const Main = styled.div`
@@ -145,6 +151,7 @@ const Text = styled.p`
 `;
 
 const EditTaskDialog = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const columns = useSelector(selectAllColumns);
   const labels = useSelector(selectAllLabels);
@@ -160,6 +167,7 @@ const EditTaskDialog = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<MdEditor>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const open = taskId !== null;
 
   useEffect(() => {
@@ -316,13 +324,14 @@ const EditTaskDialog = () => {
       onClose={handleClose}
       fullWidth
       keepMounted={false}
+      fullScreen={xsDown}
       css={css`
         .MuiDialog-paper {
           max-width: 768px;
         }
       `}
     >
-      <Content>
+      <Content theme={theme}>
         <Close onClose={handleClose} />
         <Main>
           <Header>id: {task.id}</Header>
@@ -436,6 +445,7 @@ const EditTaskDialog = () => {
             autoHighlight
             openOnFocus
             blurOnSelect
+            disableClearable
             options={labels}
             getOptionLabel={option => option.name}
             value={

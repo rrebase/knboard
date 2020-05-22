@@ -5,7 +5,10 @@ import {
   Button,
   DialogTitle,
   TextField,
-  InputAdornment
+  InputAdornment,
+  Hidden,
+  useTheme,
+  useMediaQuery
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
@@ -33,11 +36,13 @@ const Table = styled.div`
 `;
 
 const LabelDialog = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const open = useSelector((state: RootState) => state.label.dialogOpen);
   const labels = useSelector(selectAllLabels);
   const [searchValue, setSearchValue] = useState("");
   const [creating, setCreating] = useState(false);
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const filteredLabels = labels.filter(label =>
     label.name.toLowerCase().match(searchValue.trim().toLowerCase())
@@ -48,7 +53,13 @@ const LabelDialog = () => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      fullScreen={xsDown}
+    >
       <Close onClose={handleClose} />
       <DialogTitle id="edit-labels">Edit labels</DialogTitle>
       <Container>
@@ -62,23 +73,25 @@ const LabelDialog = () => {
             {filteredLabels.length} label{filteredLabels.length !== 1 && "s"}
           </LabelCount>
           <div>
-            <TextField
-              value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
-              placeholder="Search labels"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment
-                    position="start"
-                    css={css`
-                      color: #ccc;
-                    `}
-                  >
-                    <FontAwesomeIcon icon={faSearch} />
-                  </InputAdornment>
-                )
-              }}
-            />
+            <Hidden xsDown implementation="css">
+              <TextField
+                value={searchValue}
+                onChange={e => setSearchValue(e.target.value)}
+                placeholder="Search labels"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment
+                      position="start"
+                      css={css`
+                        color: #ccc;
+                      `}
+                    >
+                      <FontAwesomeIcon icon={faSearch} />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Hidden>
           </div>
           <Button
             size="small"

@@ -3,7 +3,10 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { barHeight } from "const";
 import UserMenu from "./UserMenu";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
+import { faRocket, faBars } from "@fortawesome/free-solid-svg-icons";
+import { setMobileDrawerOpen } from "features/responsive/ResponsiveSlice";
+import { useDispatch } from "react-redux";
+import { Hidden } from "@material-ui/core";
 
 const Container = styled.div`
   min-height: ${barHeight}px;
@@ -34,11 +37,21 @@ const Icons = styled.div`
 `;
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+
   return (
     <Container>
       <Item>
         <Icons>
-          <FontAwesomeIcon icon={faRocket} />
+          <Hidden smUp implementation="css">
+            <FontAwesomeIcon
+              icon={faBars}
+              onClick={() => dispatch(setMobileDrawerOpen(true))}
+            />
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <FontAwesomeIcon icon={faRocket} />
+          </Hidden>
         </Icons>
       </Item>
       <Item>Knboard</Item>
