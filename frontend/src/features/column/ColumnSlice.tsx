@@ -6,11 +6,7 @@ import {
 import { fetchBoardById } from "features/board/BoardSlice";
 import { IColumn, Id } from "types";
 import api, { API_SORT_COLUMNS, API_COLUMNS } from "api";
-import {
-  createSuccessToast,
-  createErrorToast,
-  createInfoToast
-} from "features/toast/ToastSlice";
+import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
 import { RootState, AppDispatch, AppThunk } from "store";
 
 export const addColumn = createAsyncThunk<IColumn, number>(
@@ -107,7 +103,6 @@ export const updateColumns = (columns: IColumn[]): AppThunk => async (
     await api.post(API_SORT_COLUMNS, {
       order: columns.map(col => col.id)
     });
-    dispatch(createSuccessToast("Columns ordered"));
   } catch (err) {
     dispatch(setColumns(previousColumns));
     dispatch(createErrorToast(err.toString()));
