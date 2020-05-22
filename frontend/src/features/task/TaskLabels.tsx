@@ -22,7 +22,7 @@ const TaskLabels = ({ task }: Props) => {
   return (
     <Container>
       {labels.map(label => (
-        <LabelChip key={label.id} label={label} size="small" onCard />
+        <LabelChip key={label.id} label={label} onCard />
       ))}
     </Container>
   );

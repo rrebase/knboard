@@ -4,7 +4,6 @@ import {
   TextField,
   Button,
   CircularProgress,
-  Chip,
   useTheme,
   useMediaQuery
 } from "@material-ui/core";
@@ -34,6 +33,8 @@ import AvatarTag from "components/AvatarTag";
 import AvatarOption from "components/AvatarOption";
 import { selectAllLabels } from "features/label/LabelSlice";
 import { getSaveShortcutLabel } from "utils/shortcuts";
+import LabelChip from "components/LabelChip";
+import PriorityOption from "components/PriorityOption";
 
 const mdParser = new MarkdownIt();
 
@@ -204,6 +205,7 @@ const CreateTaskDialog = () => {
           getOptionLabel={option => option.label}
           value={priority}
           onChange={(_: any, value: Priority | null) => setPriority(value)}
+          renderOption={option => <PriorityOption option={option} />}
           renderInput={params => (
             <TextField {...params} label="Priority" variant="outlined" />
           )}
@@ -231,15 +233,15 @@ const CreateTaskDialog = () => {
           )}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip
-                size="small"
+              <LabelChip
                 key={option.id}
-                variant="outlined"
-                label={option.name}
+                label={option}
+                size="small"
                 {...getTagProps({ index })}
               />
             ))
           }
+          renderOption={option => <LabelChip label={option} size="small" />}
           css={css`
             margin-top: 1rem;
             width: 100%;

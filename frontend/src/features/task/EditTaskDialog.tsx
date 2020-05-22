@@ -4,7 +4,6 @@ import {
   Button,
   TextField,
   TextareaAutosize,
-  Chip,
   useTheme,
   useMediaQuery,
   WithTheme
@@ -56,6 +55,8 @@ import {
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
 import { getSaveShortcutLabel } from "utils/shortcuts";
+import LabelChip from "components/LabelChip";
+import PriorityOption from "components/PriorityOption";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
@@ -463,6 +464,7 @@ const EditTaskDialog = () => {
             renderInput={params => (
               <TextField {...params} label="Priority" variant="outlined" />
             )}
+            renderOption={option => <PriorityOption option={option} />}
             openOnFocus
             disableClearable
             data-testid="edit-priority"
@@ -494,15 +496,15 @@ const EditTaskDialog = () => {
             )}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip
-                  size="small"
+                <LabelChip
                   key={option.id}
-                  variant="outlined"
-                  label={option.name}
+                  label={option}
+                  size="small"
                   {...getTagProps({ index })}
                 />
               ))
             }
+            renderOption={option => <LabelChip label={option} size="small" />}
             css={css`
               width: 100%;
               margin-top: 1rem;
