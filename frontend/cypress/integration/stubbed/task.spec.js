@@ -161,7 +161,7 @@ context("Task", () => {
       });
     cy.findByTestId("task-description").click();
     cy.get("#textarea").type(initialTargetText);
-    cy.findByText(/Save.+/)
+    cy.findByText(/Save.*/)
       .click()
       .then(() => {
         cy.findAllByText(initialTargetText).should("be.visible");
