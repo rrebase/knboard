@@ -24,7 +24,8 @@ import {
   PRIORITY_OPTIONS,
   PRIORITY_2,
   MD_EDITOR_PLUGINS,
-  MD_EDITOR_CONFIG
+  MD_EDITOR_CONFIG,
+  Key
 } from "const";
 import { selectAllMembers } from "features/member/MemberSlice";
 import { Priority, BoardMember, Label } from "types";
@@ -32,6 +33,7 @@ import { createMdEditorStyles } from "styles";
 import AvatarTag from "components/AvatarTag";
 import AvatarOption from "components/AvatarOption";
 import { selectAllLabels } from "features/label/LabelSlice";
+import { getSaveShortcutLabel } from "utils/shortcuts";
 
 const mdParser = new MarkdownIt();
 
@@ -122,6 +124,12 @@ const CreateTaskDialog = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.keyCode == Key.Enter && e.metaKey) {
+      handleCreate();
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -131,7 +139,7 @@ const CreateTaskDialog = () => {
       keepMounted={false}
       fullScreen={xsDown}
     >
-      <Content>
+      <Content onKeyDown={handleKeyDown}>
         <DialogTitle>New issue</DialogTitle>
 
         <TextField
@@ -260,7 +268,7 @@ const CreateTaskDialog = () => {
             }
           `}
         >
-          Create issue
+          Create issue {getSaveShortcutLabel()}
         </Button>
         <Button
           css={css`
@@ -268,7 +276,7 @@ const CreateTaskDialog = () => {
           `}
           onClick={handleClose}
         >
-          Cancel
+          Cancel (Esc)
         </Button>
       </Footer>
     </Dialog>

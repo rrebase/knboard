@@ -55,6 +55,7 @@ import {
   selectLabelEntities
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
+import { getSaveShortcutLabel } from "utils/shortcuts";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
@@ -256,10 +257,25 @@ const EditTaskDialog = () => {
   const task = tasksById[taskId];
   const column = columnsById[columnId];
 
+  const handleEditorKeyDown = (e: React.KeyboardEvent) => {
+    if (e.keyCode == Key.Enter && e.metaKey) {
+      handleSaveDescription();
+    }
+    if (e.keyCode === Key.Escape) {
+      // Prevent propagation from reaching the Dialog
+      e.stopPropagation();
+      handleCancelDescription();
+    }
+  };
+
   const handleTitleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === Key.Enter) {
       e.preventDefault();
       titleTextAreaRef?.current?.blur();
+    }
+    if (e.keyCode === Key.Escape) {
+      // Prevent propagation from reaching the Dialog
+      e.stopPropagation();
     }
   };
 
@@ -371,6 +387,7 @@ const EditTaskDialog = () => {
               editing={editingDescription}
               ref={wrapperRef}
               theme={theme}
+              onKeyDown={handleEditorKeyDown}
             >
               <MdEditor
                 ref={editorRef}
@@ -397,7 +414,7 @@ const EditTaskDialog = () => {
                   color="primary"
                   size="small"
                 >
-                  Save
+                  Save {getSaveShortcutLabel()}
                 </Button>
                 <Button
                   variant="outlined"
@@ -409,7 +426,7 @@ const EditTaskDialog = () => {
                     margin-left: 0.5rem;
                   `}
                 >
-                  Cancel
+                  Cancel (Esc)
                 </Button>
               </DescriptionActions>
             )}

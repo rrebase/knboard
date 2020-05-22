@@ -27,7 +27,7 @@ coverage
 lib-cov
 junit.xml
 
-*/screenshots/*
+screenshots/
 
 # Translations
 *.mo
