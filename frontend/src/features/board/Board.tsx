@@ -20,11 +20,15 @@ import Spinner from "components/Spinner";
 import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
 
-const Container = styled.div`
-  min-height: calc(100vh - ${barHeight * 2}px);
+const BoardContainer = styled.div`
   min-width: calc(100vw - ${sidebarWidth});
-  display: inline-flex;
+  min-height: calc(100vh - ${barHeight * 2}px);
   overflow-x: scroll;
+  display: flex;
+`;
+
+const ColumnContainer = styled.div`
+  display: inline-flex;
   width: 100%;
 `;
 
@@ -32,6 +36,21 @@ const EmptyBoard = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 50px;
+`;
+
+const ColumnsBlock = styled.div``;
+
+const RightMargin = styled.div`
+  /* 
+  With overflow-x the right-margin of the rightmost column is hidden.
+  This is a dummy element that fills up the space to make it 
+  seem like there's some right margin.
+   */
+  &:after {
+    content: "";
+    display: block;
+    width: 0.5rem;
+  }
 `;
 
 const Board = () => {
@@ -100,26 +119,34 @@ const Board = () => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-        {(provided: DroppableProvided) => (
-          <Container ref={provided.innerRef} {...provided.droppableProps}>
-            {columns.map((column: IColumn, index: number) => (
-              <Column
-                key={column.id}
-                id={column.id}
-                title={column.title}
-                index={index}
-                tasks={tasksByColumn[column.id].map(
-                  taskId => tasksById[taskId]
-                )}
-              />
-            ))}
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <BoardContainer>
+      <ColumnsBlock>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+            {(provided: DroppableProvided) => (
+              <ColumnContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columns.map((column: IColumn, index: number) => (
+                  <Column
+                    key={column.id}
+                    id={column.id}
+                    title={column.title}
+                    index={index}
+                    tasks={tasksByColumn[column.id].map(
+                      taskId => tasksById[taskId]
+                    )}
+                  />
+                ))}
+                {provided.placeholder}
+              </ColumnContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </ColumnsBlock>
+      <RightMargin />
+    </BoardContainer>
   );
 };
 

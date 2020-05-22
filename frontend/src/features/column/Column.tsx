@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { grid, borderRadius } from "const";
+import { grid } from "const";
 import { COLUMN_COLOR, PRIMARY } from "utils/colors";
 import { ITask } from "types";
 import {
@@ -22,8 +22,6 @@ const Header = styled.div<{ isDragging: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top-left-radius: ${borderRadius}px;
-  border-top-right-radius: ${borderRadius}px;
   background-color: ${COLUMN_COLOR};
   transition: background-color 0.2s ease;
   [data-rbd-drag-handle-context-id="0"] {
