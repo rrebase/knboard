@@ -70,7 +70,6 @@ export const createMdEditorStyles = (editing: boolean) => css`
   .rc-md-editor {
     border-color: #c4c4c4;
     border-radius: ${borderRadius}px;
-    min-height: 240px;
 
     .rc-md-navigation {
       border-top-left-radius: ${borderRadius}px;

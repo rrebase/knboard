@@ -119,7 +119,7 @@ const Board = () => {
   }
 
   return (
-    <BoardContainer>
+    <BoardContainer data-testid="board-container">
       <ColumnsBlock>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="board" type="COLUMN" direction="horizontal">

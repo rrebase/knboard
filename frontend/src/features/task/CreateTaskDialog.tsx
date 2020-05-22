@@ -4,7 +4,9 @@ import {
   TextField,
   Button,
   CircularProgress,
-  Chip
+  Chip,
+  useTheme,
+  useMediaQuery
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
@@ -24,12 +26,8 @@ import {
   MD_EDITOR_PLUGINS,
   MD_EDITOR_CONFIG
 } from "const";
-import {
-  selectAllColumns,
-  selectColumnsEntities
-} from "features/column/ColumnSlice";
 import { selectAllMembers } from "features/member/MemberSlice";
-import { Priority, BoardMember, IColumn, Label } from "types";
+import { Priority, BoardMember, Label } from "types";
 import { createMdEditorStyles } from "styles";
 import AvatarTag from "components/AvatarTag";
 import AvatarOption from "components/AvatarOption";
@@ -51,22 +49,25 @@ const Content = styled.div`
 const EditorWrapper = styled.div`
   margin: 1rem 0;
   ${createMdEditorStyles(false)}
+  .rc-md-editor {
+    min-height: 160px;
+  }
 `;
 
 const Footer = styled.div`
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   border-top: 1px solid #ccc;
   padding: 1rem 2rem;
 `;
 
 const CreateTaskDialog = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const labelsOptions = useSelector(selectAllLabels);
-  const columns: IColumn[] = useSelector(selectAllColumns);
-  const columnsById = useSelector(selectColumnsEntities);
   const members = useSelector(selectAllMembers);
   const open = useSelector((state: RootState) => state.task.createDialogOpen);
-  const defaultColumnId = useSelector(
+  const columnId = useSelector(
     (state: RootState) => state.task.createDialogColumn
   );
   const createLoading = useSelector(
@@ -74,24 +75,21 @@ const CreateTaskDialog = () => {
   );
   const [titleTouched, setTitleTouched] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>(
-    "Describe the task..."
-  );
-  const [column, setColumn] = useState<IColumn | null>(null);
+  const [description, setDescription] = useState<string>("");
   const [assignees, setAssignees] = useState<BoardMember[]>([]);
   const [priority, setPriority] = useState<Priority | null>({
     value: "M",
     label: "Medium"
   });
   const [labels, setLabels] = useState<Label[]>([]);
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const handleEditorChange = ({ text }: any) => {
     setDescription(text);
   };
 
   const setInitialValues = () => {
-    if (defaultColumnId) {
-      setColumn(columnsById[defaultColumnId] || null);
+    if (columnId) {
       setTitleTouched(false);
       setTitle("");
       setDescription("");
@@ -111,11 +109,11 @@ const CreateTaskDialog = () => {
 
   const handleCreate = async () => {
     setTitleTouched(true);
-    if (defaultColumnId && column && priority) {
+    if (columnId && priority) {
       const newTask = {
         title,
         description,
-        column: column.id,
+        column: columnId,
         labels: labels.map(l => l.id),
         assignees: assignees.map(a => a.id),
         priority: priority.value
@@ -131,9 +129,10 @@ const CreateTaskDialog = () => {
       maxWidth="sm"
       fullWidth
       keepMounted={false}
+      fullScreen={xsDown}
     >
       <Content>
-        <DialogTitle>Create Task</DialogTitle>
+        <DialogTitle>New issue</DialogTitle>
 
         <TextField
           autoFocus
@@ -156,25 +155,9 @@ const CreateTaskDialog = () => {
             value={description}
             renderHTML={text => mdParser.render(text)}
             onChange={handleEditorChange}
+            placeholder="Describe the issue..."
           />
         </EditorWrapper>
-
-        <Autocomplete
-          id="create-column-select"
-          size="small"
-          options={columns}
-          getOptionLabel={option => option.title}
-          renderInput={params => (
-            <TextField {...params} label="Column" variant="outlined" />
-          )}
-          value={column}
-          onChange={(_: any, value: IColumn | null) => setColumn(value)}
-          disableClearable
-          openOnFocus
-          css={css`
-            width: 100%;
-          `}
-        />
 
         <Autocomplete
           multiple
@@ -256,7 +239,7 @@ const CreateTaskDialog = () => {
         />
       </Content>
 
-      <Footer>
+      <Footer theme={theme}>
         <Button
           startIcon={
             createLoading ? (
@@ -271,8 +254,13 @@ const CreateTaskDialog = () => {
           onClick={handleCreate}
           disabled={createLoading}
           data-testid="task-create"
+          css={css`
+            ${theme.breakpoints.down("xs")} {
+              flex-grow: 1;
+            }
+          `}
         >
-          Create Task
+          Create issue
         </Button>
         <Button
           css={css`

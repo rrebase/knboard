@@ -36,7 +36,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
-import MdEditor, { Plugins } from "react-markdown-editor-lite";
+import MdEditor from "react-markdown-editor-lite";
 import TaskAssignees from "./TaskAssignees";
 import {
   MD_EDITOR_PLUGINS,
@@ -45,7 +45,9 @@ import {
   PRIORITY_MAP,
   MD_EDITING_CONFIG,
   MD_READ_ONLY_CONFIG,
-  Key
+  Key,
+  taskDialogHeight,
+  taskSideWidth
 } from "const";
 import Close from "components/Close";
 import {
@@ -54,13 +56,12 @@ import {
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
 
-MdEditor.use(Plugins.AutoResize, { min: 200, max: 600 });
 const mdParser = new MarkdownIt({ breaks: true });
 
 const Content = styled.div<WithTheme>`
   display: flex;
   padding: 2rem;
-  height: 600px;
+  height: ${taskDialogHeight}px;
   ${props => props.theme.breakpoints.down("xs")} {
     flex-direction: column;
   }
@@ -70,10 +71,12 @@ const Main = styled.div`
   width: 100%;
 `;
 
-const Side = styled.div`
+const Side = styled.div<WithTheme>`
   margin-top: 2rem;
-  max-width: 220px;
-  min-width: 220px;
+  ${props => props.theme.breakpoints.up("sm")} {
+    max-width: ${taskSideWidth}px;
+    min-width: ${taskSideWidth}px;
+  }
 `;
 
 const Header = styled.div`
@@ -106,12 +109,13 @@ const Title = styled.div`
   }
 `;
 
-const EditorWrapper = styled.div<{ editing: boolean }>`
+const EditorWrapper = styled.div<WithTheme & { editing: boolean }>`
   margin: 1rem 0;
   margin-right: 2rem;
   ${props => createMdEditorStyles(props.editing)};
 
   .rc-md-editor {
+    min-height: ${props => (props.editing ? 180 : 32)}px;
     border: none;
     .section-container {
       ${props =>
@@ -150,6 +154,14 @@ const Text = styled.p`
   font-size: 12px;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const DESCRIPTION_PLACEHOLDER = "Write here...";
+
 const EditTaskDialog = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -161,7 +173,7 @@ const EditTaskDialog = () => {
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("Describe the task...");
+  const [description, setDescription] = useState("");
   const [editingDescription, setEditingDescription] = useState(false);
   const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -358,6 +370,7 @@ const EditTaskDialog = () => {
               onClick={editingDescription ? undefined : handleDescriptionClick}
               editing={editingDescription}
               ref={wrapperRef}
+              theme={theme}
             >
               <MdEditor
                 ref={editorRef}
@@ -365,9 +378,14 @@ const EditTaskDialog = () => {
                 config={
                   editingDescription ? MD_EDITING_CONFIG : MD_READ_ONLY_CONFIG
                 }
-                value={description}
+                value={
+                  editingDescription
+                    ? description
+                    : description || DESCRIPTION_PLACEHOLDER
+                }
                 renderHTML={text => mdParser.render(text)}
                 onChange={handleEditorChange}
+                placeholder={DESCRIPTION_PLACEHOLDER}
               />
             </EditorWrapper>
             {editingDescription && (
@@ -397,7 +415,7 @@ const EditTaskDialog = () => {
             )}
           </Description>
         </Main>
-        <Side>
+        <Side theme={theme}>
           <TaskAssignees task={task} />
           <Autocomplete
             id="column-select"
@@ -474,32 +492,34 @@ const EditTaskDialog = () => {
               margin-bottom: 2rem;
             `}
           />
-          <Button
-            startIcon={<FontAwesomeIcon fixedWidth icon={faLock} />}
-            onClick={handleNotImplemented}
-            size="small"
-            css={css`
-              font-size: 12px;
-              font-weight: bold;
-              color: ${TASK_G};
-            `}
-          >
-            Lock task
-          </Button>
-          <Button
-            startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
-            onClick={handleDelete}
-            data-testid="delete-task"
-            size="small"
-            css={css`
-              font-size: 12px;
-              font-weight: bold;
-              color: ${TASK_G};
-              margin-bottom: 2rem;
-            `}
-          >
-            Delete task
-          </Button>
+          <ButtonsContainer>
+            <Button
+              startIcon={<FontAwesomeIcon fixedWidth icon={faLock} />}
+              onClick={handleNotImplemented}
+              size="small"
+              css={css`
+                font-size: 12px;
+                font-weight: bold;
+                color: ${TASK_G};
+              `}
+            >
+              Lock task
+            </Button>
+            <Button
+              startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
+              onClick={handleDelete}
+              data-testid="delete-task"
+              size="small"
+              css={css`
+                font-size: 12px;
+                font-weight: bold;
+                color: ${TASK_G};
+                margin-bottom: 2rem;
+              `}
+            >
+              Delete task
+            </Button>
+          </ButtonsContainer>
           <Text>
             Updated {formatDistanceToNow(new Date(task.modified))} ago
           </Text>
