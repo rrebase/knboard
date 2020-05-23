@@ -19,7 +19,7 @@ interface InitialState {
 export const initialState: InitialState = {
   detail: null,
   all: [],
-  fetchLoading: false,
+  fetchLoading: true,
   fetchError: null,
   createDialogOpen: false,
   createLoading: false,

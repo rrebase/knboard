@@ -9,26 +9,39 @@ context("Task", () => {
     cy.visit("/b/1/");
   });
 
+  const createTaskResponse = {
+    id: 1000,
+    created: "2020-05-17T08:26:51.806330Z",
+    modified: "2020-05-17T09:02:10.724890Z",
+    title: "",
+    description: "",
+    column: 1,
+    assignees: [],
+    labels: [],
+    priority: "M"
+  };
+
   it("should create task", () => {
-    const taskTitle = "Improve CI";
-    cy.route("POST", "api/tasks/", {
-      id: 100,
-      created: "2020-05-17T08:26:51.806330Z",
-      modified: "2020-05-17T09:02:10.724890Z",
-      title: taskTitle,
-      description: "",
-      column: 1,
-      assignees: [],
-      labels: [],
-      priority: "M"
-    });
+    const title = "Improve CI";
+    cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
     cy.findAllByText("Add another card")
       .first()
       .click();
-    cy.findByTestId("create-task-title").type(taskTitle);
+    cy.findByTestId("create-task-title").type(title);
     cy.findByTestId("task-create").click();
-    cy.findByText(taskTitle).should("be.visible");
+    cy.findByText(title).should("be.visible");
+  });
+
+  it("should create task with shortcut", () => {
+    const title = "Redesign concept";
+    cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
+
+    cy.findAllByText("Add another card")
+      .first()
+      .click();
+    cy.findByTestId("create-task-title").type(title + "{meta}{enter}");
+    cy.findByText(title).should("be.visible");
   });
 
   it("should move task down successfully", () => {
@@ -133,6 +146,28 @@ context("Task", () => {
     });
   });
 
+  it("should edit & save task description", () => {
+    cy.route("PATCH", "api/tasks/1/", "");
+    const initialTargetText = "Use figma designs provided by Steve.";
+    const newText = "New text";
+
+    cy.findByTestId("task-1").click();
+    cy.findByText(initialTargetText).should("be.visible");
+    cy.findByTestId("task-description").click();
+    cy.get("#textarea")
+      .type(newText + "{meta}{enter}")
+      .then(() => {
+        cy.findAllByText(newText).should("be.visible");
+      });
+    cy.findByTestId("task-description").click();
+    cy.get("#textarea").type(initialTargetText);
+    cy.findByText(/Save.*/)
+      .click()
+      .then(() => {
+        cy.findAllByText(initialTargetText).should("be.visible");
+      });
+  });
+
   it("should cancel edit task description", () => {
     cy.route("PATCH", "api/tasks/1/", "");
     const initialTargetText = "Use figma designs provided by Steve.";
@@ -141,12 +176,20 @@ context("Task", () => {
     cy.findByTestId("task-1").click();
     cy.findByText(initialTargetText).should("be.visible");
     cy.findAllByText(draftText).should("not.exist");
-    cy.findByTestId("task-description").click();
 
+    cy.findByTestId("task-description").click();
     cy.get("#textarea").type(draftText);
     cy.findAllByText(draftText).should("exist");
 
     cy.findByTestId("cancel-description").click();
+    cy.findByText(initialTargetText).should("be.visible");
+    cy.findAllByText(draftText).should("not.exist");
+
+    cy.findByTestId("task-description").click();
+    cy.get("#textarea").type(draftText);
+    cy.findAllByText(draftText).should("exist");
+
+    cy.get("#textarea").type("{esc}");
     cy.findByText(initialTargetText).should("be.visible");
     cy.findAllByText(draftText).should("not.exist");
   });

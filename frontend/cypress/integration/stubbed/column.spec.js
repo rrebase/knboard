@@ -56,7 +56,7 @@ context("Column", () => {
     };
     cy.route("POST", "/api/columns/", newColumn);
     cy.findByTestId("add-col").click();
-    cy.get('[data-rbd-droppable-id="board"]').scrollTo("right");
+    cy.findByTestId("board-container").scrollTo("right");
     cy.findByText(newColumn.title).should("be.visible");
   });
 

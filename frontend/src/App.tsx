@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Provider, useSelector } from "react-redux";
 import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -17,9 +17,9 @@ const UnauthenticatedApp = React.lazy(() => import("./features/auth/Auth"));
 const AuthWrapper = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
-  React.useEffect(() => {
-    // preload the AuthenticatedApp
-    // while user is logging
+  useEffect(() => {
+    // Preload the AuthenticatedApp
+    // while the user is logging in
     loadAuthenticatedApp();
   }, []);
 
@@ -40,11 +40,11 @@ const App = () => {
           <Toast />
           <Global
             styles={css`
-              body {
-                font-family: "Inter", sans-serif;
-              }
               .Mui-focusVisible {
                 box-shadow: 0 0 3px 2px ${FOCUS_BOX_SHADOW};
+              }
+              textarea {
+                font-family: inherit;
               }
             `}
           />

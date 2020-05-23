@@ -1,0 +1,8 @@
+-r ./base.txt
+
+black==19.10b0
+django-debug-toolbar==2.2
+django-debug-toolbar-request-history==0.1.1
+pytest-django==3.9.0
+pytest-factoryboy==2.0.3
+pytest-cov==2.8.1

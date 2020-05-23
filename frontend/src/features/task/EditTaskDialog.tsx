@@ -4,7 +4,9 @@ import {
   Button,
   TextField,
   TextareaAutosize,
-  Chip
+  useTheme,
+  useMediaQuery,
+  WithTheme
 } from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +35,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
 import MarkdownIt from "markdown-it";
-import MdEditor, { Plugins } from "react-markdown-editor-lite";
+import MdEditor from "react-markdown-editor-lite";
 import TaskAssignees from "./TaskAssignees";
 import {
   MD_EDITOR_PLUGINS,
@@ -42,7 +44,9 @@ import {
   PRIORITY_MAP,
   MD_EDITING_CONFIG,
   MD_READ_ONLY_CONFIG,
-  Key
+  Key,
+  taskDialogHeight,
+  taskSideWidth
 } from "const";
 import Close from "components/Close";
 import {
@@ -50,24 +54,31 @@ import {
   selectLabelEntities
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
+import { getSaveShortcutLabel } from "utils/shortcuts";
+import LabelChip from "components/LabelChip";
+import PriorityOption from "components/PriorityOption";
 
-MdEditor.use(Plugins.AutoResize, { min: 200, max: 600 });
 const mdParser = new MarkdownIt({ breaks: true });
 
-const Content = styled.div`
+const Content = styled.div<WithTheme>`
   display: flex;
   padding: 2rem;
-  height: 600px;
+  height: ${taskDialogHeight}px;
+  ${props => props.theme.breakpoints.down("xs")} {
+    flex-direction: column;
+  }
 `;
 
 const Main = styled.div`
   width: 100%;
 `;
 
-const Side = styled.div`
+const Side = styled.div<WithTheme>`
   margin-top: 2rem;
-  max-width: 220px;
-  min-width: 220px;
+  ${props => props.theme.breakpoints.up("sm")} {
+    max-width: ${taskSideWidth}px;
+    min-width: ${taskSideWidth}px;
+  }
 `;
 
 const Header = styled.div`
@@ -100,12 +111,13 @@ const Title = styled.div`
   }
 `;
 
-const EditorWrapper = styled.div<{ editing: boolean }>`
+const EditorWrapper = styled.div<WithTheme & { editing: boolean }>`
   margin: 1rem 0;
   margin-right: 2rem;
   ${props => createMdEditorStyles(props.editing)};
 
   .rc-md-editor {
+    min-height: ${props => (props.editing ? 180 : 32)}px;
     border: none;
     .section-container {
       ${props =>
@@ -144,7 +156,16 @@ const Text = styled.p`
   font-size: 12px;
 `;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const DESCRIPTION_PLACEHOLDER = "Write here...";
+
 const EditTaskDialog = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const columns = useSelector(selectAllColumns);
   const labels = useSelector(selectAllLabels);
@@ -154,12 +175,13 @@ const EditTaskDialog = () => {
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("Describe the task...");
+  const [description, setDescription] = useState("");
   const [editingDescription, setEditingDescription] = useState(false);
   const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<MdEditor>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const open = taskId !== null;
 
   useEffect(() => {
@@ -236,10 +258,25 @@ const EditTaskDialog = () => {
   const task = tasksById[taskId];
   const column = columnsById[columnId];
 
+  const handleEditorKeyDown = (e: React.KeyboardEvent) => {
+    if (e.keyCode == Key.Enter && e.metaKey) {
+      handleSaveDescription();
+    }
+    if (e.keyCode === Key.Escape) {
+      // Prevent propagation from reaching the Dialog
+      e.stopPropagation();
+      handleCancelDescription();
+    }
+  };
+
   const handleTitleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === Key.Enter) {
       e.preventDefault();
       titleTextAreaRef?.current?.blur();
+    }
+    if (e.keyCode === Key.Escape) {
+      // Prevent propagation from reaching the Dialog
+      e.stopPropagation();
     }
   };
 
@@ -316,13 +353,14 @@ const EditTaskDialog = () => {
       onClose={handleClose}
       fullWidth
       keepMounted={false}
+      fullScreen={xsDown}
       css={css`
         .MuiDialog-paper {
           max-width: 768px;
         }
       `}
     >
-      <Content>
+      <Content theme={theme}>
         <Close onClose={handleClose} />
         <Main>
           <Header>id: {task.id}</Header>
@@ -349,6 +387,8 @@ const EditTaskDialog = () => {
               onClick={editingDescription ? undefined : handleDescriptionClick}
               editing={editingDescription}
               ref={wrapperRef}
+              theme={theme}
+              onKeyDown={handleEditorKeyDown}
             >
               <MdEditor
                 ref={editorRef}
@@ -356,9 +396,14 @@ const EditTaskDialog = () => {
                 config={
                   editingDescription ? MD_EDITING_CONFIG : MD_READ_ONLY_CONFIG
                 }
-                value={description}
+                value={
+                  editingDescription
+                    ? description
+                    : description || DESCRIPTION_PLACEHOLDER
+                }
                 renderHTML={text => mdParser.render(text)}
                 onChange={handleEditorChange}
+                placeholder={DESCRIPTION_PLACEHOLDER}
               />
             </EditorWrapper>
             {editingDescription && (
@@ -370,7 +415,7 @@ const EditTaskDialog = () => {
                   color="primary"
                   size="small"
                 >
-                  Save
+                  Save {getSaveShortcutLabel()}
                 </Button>
                 <Button
                   variant="outlined"
@@ -382,13 +427,13 @@ const EditTaskDialog = () => {
                     margin-left: 0.5rem;
                   `}
                 >
-                  Cancel
+                  Cancel (Esc)
                 </Button>
               </DescriptionActions>
             )}
           </Description>
         </Main>
-        <Side>
+        <Side theme={theme}>
           <TaskAssignees task={task} />
           <Autocomplete
             id="column-select"
@@ -419,6 +464,7 @@ const EditTaskDialog = () => {
             renderInput={params => (
               <TextField {...params} label="Priority" variant="outlined" />
             )}
+            renderOption={option => <PriorityOption option={option} />}
             openOnFocus
             disableClearable
             data-testid="edit-priority"
@@ -436,6 +482,7 @@ const EditTaskDialog = () => {
             autoHighlight
             openOnFocus
             blurOnSelect
+            disableClearable
             options={labels}
             getOptionLabel={option => option.name}
             value={
@@ -449,47 +496,49 @@ const EditTaskDialog = () => {
             )}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip
-                  size="small"
+                <LabelChip
                   key={option.id}
-                  variant="outlined"
-                  label={option.name}
+                  label={option}
+                  size="small"
                   {...getTagProps({ index })}
                 />
               ))
             }
+            renderOption={option => <LabelChip label={option} size="small" />}
             css={css`
               width: 100%;
               margin-top: 1rem;
               margin-bottom: 2rem;
             `}
           />
-          <Button
-            startIcon={<FontAwesomeIcon fixedWidth icon={faLock} />}
-            onClick={handleNotImplemented}
-            size="small"
-            css={css`
-              font-size: 12px;
-              font-weight: bold;
-              color: ${TASK_G};
-            `}
-          >
-            Lock task
-          </Button>
-          <Button
-            startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
-            onClick={handleDelete}
-            data-testid="delete-task"
-            size="small"
-            css={css`
-              font-size: 12px;
-              font-weight: bold;
-              color: ${TASK_G};
-              margin-bottom: 2rem;
-            `}
-          >
-            Delete task
-          </Button>
+          <ButtonsContainer>
+            <Button
+              startIcon={<FontAwesomeIcon fixedWidth icon={faLock} />}
+              onClick={handleNotImplemented}
+              size="small"
+              css={css`
+                font-size: 12px;
+                font-weight: bold;
+                color: ${TASK_G};
+              `}
+            >
+              Lock task
+            </Button>
+            <Button
+              startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
+              onClick={handleDelete}
+              data-testid="delete-task"
+              size="small"
+              css={css`
+                font-size: 12px;
+                font-weight: bold;
+                color: ${TASK_G};
+                margin-bottom: 2rem;
+              `}
+            >
+              Delete task
+            </Button>
+          </ButtonsContainer>
           <Text>
             Updated {formatDistanceToNow(new Date(task.modified))} ago
           </Text>

@@ -24,15 +24,39 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
+    <style>
+      .screen-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .loading-spinner {
+        pointer-events: none;
+        width: 2.5em;
+        height: 2.5em;
+        border: 0.3em solid transparent;
+        border-color: #ccc;
+        border-top-color: #5d6cd5;
+        border-radius: 50%;
+        animation: fullturn 1s linear infinite;
+      }
+
+      @keyframes fullturn {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
     <title>Knboard</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div class="screen-center">
+        <div class="loading-spinner" />
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { Dialog, Avatar, Button, Fab } from "@material-ui/core";
+import {
+  Dialog,
+  Avatar,
+  Button,
+  Fab,
+  useMediaQuery,
+  useTheme,
+  DialogTitle
+} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { BoardMember, Board } from "types";
+import { BoardMember, Board, WithTheme } from "types";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -19,10 +27,15 @@ import {
 } from "features/member/MemberSlice";
 import { RootState } from "store";
 import { currentBoardOwner } from "features/board/BoardSlice";
+import Close from "components/Close";
 
-const Container = styled.div`
+const Container = styled.div<WithTheme>`
   display: flex;
-  padding: 2rem;
+  align-items: center;
+  padding: 0.5rem 2rem 2rem 2rem;
+  ${props => props.theme.breakpoints.down("xs")} {
+    flex-direction: column;
+  }
 `;
 
 const PrimaryText = styled.h3`
@@ -52,12 +65,14 @@ interface Props {
 }
 
 const MemberDialog = ({ board }: Props) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const memberId = useSelector((state: RootState) => state.member.dialogMember);
   const members = useSelector(selectMembersEntities);
   const boardOwner = useSelector((state: RootState) =>
     currentBoardOwner(state)
   );
+  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const [confirmDelete, setConfirmDelete] = useState(false);
   const member = memberId === null ? null : members[memberId];
   const memberIsOwner = member?.id === board.owner;
@@ -75,7 +90,7 @@ const MemberDialog = ({ board }: Props) => {
   const handleRemoveMember = async () => {
     try {
       const response = await api.post(
-        `${API_BOARDS}/${board.id}/remove_member/`,
+        `${API_BOARDS}${board.id}/remove_member/`,
         { username: member.username }
       );
       const removedMember = response.data as BoardMember;
@@ -88,8 +103,16 @@ const MemberDialog = ({ board }: Props) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-      <Container>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="xs"
+      fullWidth
+      fullScreen={xsDown}
+    >
+      <Close onClose={handleClose} />
+      <DialogTitle id="member-detail">Member</DialogTitle>
+      <Container theme={theme}>
         {confirmDelete ? (
           <div>
             <Alert
@@ -135,6 +158,7 @@ const MemberDialog = ({ board }: Props) => {
                 height: 6rem;
                 width: 6rem;
                 font-size: 36px;
+                margin-bottom: 1rem;
               `}
               src={member?.avatar?.photo}
               alt={member?.avatar?.name}

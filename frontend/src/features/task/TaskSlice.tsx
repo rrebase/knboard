@@ -43,9 +43,8 @@ interface PatchFields {
 export const patchTask = createAsyncThunk<
   ITask,
   { id: Id; fields: Partial<PatchFields> }
->("task/patchTaskStatus", async ({ id, fields }, { dispatch }) => {
+>("task/patchTaskStatus", async ({ id, fields }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, fields);
-  dispatch(createSuccessToast("Task saved"));
   return response.data;
 });
 
@@ -178,7 +177,6 @@ export const updateTasksByColumn = (
       tasks: tasksByColumn,
       order: Object.values(tasksByColumn).flat()
     });
-    dispatch(createSuccessToast("Tasks ordered"));
   } catch (err) {
     dispatch(setTasksByColumn(previousTasksByColumn));
     dispatch(createErrorToast(err.toString()));

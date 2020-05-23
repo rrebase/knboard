@@ -27,7 +27,7 @@ coverage
 lib-cov
 junit.xml
 
-*/screenshots/*
+screenshots/
 
 # Translations
 *.mo
@@ -114,3 +114,12 @@ Session.vim
 # Experimental files
 Experiment*.tsx
 
+# Enviroment variables
+.env
+
+# Ignore the docker-compose override
+docker-compose.override.yml
+
+# Generic data directories
+.data/
+data/

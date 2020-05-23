@@ -28,13 +28,11 @@ export const getBackgroundColor = (
 const Wrapper = styled.div<{
   isDraggingOver: boolean;
   isDraggingFrom: boolean;
-  isDropDisabled?: boolean;
 }>`
   background-color: ${props =>
     getBackgroundColor(props.isDraggingOver, props.isDraggingFrom)};
   display: flex;
   flex-direction: column;
-  opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : "inherit")};
   padding: ${grid}px;
   border: ${grid}px;
   padding-bottom: 0;
@@ -55,25 +53,12 @@ const DropZone = styled.div`
   padding-bottom: ${grid}px;
 `;
 
-const ScrollContainer = styled.div`
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-height: ${scrollContainerHeight}px;
-`;
-
 const Container = styled.div``;
 
 interface Props {
   columnId: number;
-  listType?: string;
+  listType: string;
   tasks: ITask[];
-  title?: string;
-  internalScroll?: boolean;
-  scrollContainerStyle?: Record<string, any>;
-  isDropDisabled?: boolean;
-  isCombineEnabled?: boolean;
-  style?: Record<string, any>;
-  ignoreContainerClipping?: boolean;
 }
 
 interface TaskListProps {
@@ -111,50 +96,22 @@ const InnerList = ({ columnId, tasks, dropProvided }: InnerListProps) => (
   </Container>
 );
 
-const TaskList = ({
-  ignoreContainerClipping,
-  internalScroll,
-  scrollContainerStyle,
-  isDropDisabled,
-  isCombineEnabled,
-  columnId,
-  listType,
-  style,
-  tasks: tasks
-}: Props) => (
-  <Droppable
-    droppableId={columnId.toString()}
-    type={listType}
-    ignoreContainerClipping={ignoreContainerClipping}
-    isDropDisabled={isDropDisabled}
-    isCombineEnabled={isCombineEnabled}
-  >
+const TaskList = ({ columnId, listType, tasks: tasks }: Props) => (
+  <Droppable droppableId={columnId.toString()} type={listType}>
     {(
       dropProvided: DroppableProvided,
       dropSnapshot: DroppableStateSnapshot
     ) => (
       <Wrapper
-        style={style}
         isDraggingOver={dropSnapshot.isDraggingOver}
-        isDropDisabled={isDropDisabled}
         isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
         {...dropProvided.droppableProps}
       >
-        {internalScroll ? (
-          <ScrollContainer style={scrollContainerStyle}>
-            <InnerList
-              columnId={columnId}
-              tasks={tasks}
-              dropProvided={dropProvided}
-            />
-          </ScrollContainer>
-        ) : (
-          <InnerList
-            columnId={columnId}
-            tasks={tasks}
-            dropProvided={dropProvided}
-          />
-        )}
+        <InnerList
+          columnId={columnId}
+          tasks={tasks}
+          dropProvided={dropProvided}
+        />
       </Wrapper>
     )}
   </Droppable>

@@ -20,17 +20,15 @@ import Spinner from "components/Spinner";
 import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
 
-const ParentContainer = styled.div<{ height: string }>`
-  height: ${({ height }) => height};
-  overflow-x: hidden;
-  overflow-y: auto;
+const BoardContainer = styled.div`
+  min-width: calc(100vw - ${sidebarWidth});
+  min-height: calc(100vh - ${barHeight * 2}px);
+  overflow-x: scroll;
+  display: flex;
 `;
 
-const Container = styled.div`
-  min-height: calc(100vh - ${barHeight * 2}px);
-  min-width: calc(100vw - ${sidebarWidth});
+const ColumnContainer = styled.div`
   display: inline-flex;
-  overflow-x: scroll;
   width: 100%;
 `;
 
@@ -40,17 +38,22 @@ const EmptyBoard = styled.div`
   margin-top: 50px;
 `;
 
-interface Props {
-  withScrollableColumns?: boolean;
-  isCombineEnabled?: boolean;
-  containerHeight?: string;
-}
+const ColumnsBlock = styled.div``;
 
-const Board = ({
-  containerHeight,
-  isCombineEnabled,
-  withScrollableColumns
-}: Props) => {
+const RightMargin = styled.div`
+  /* 
+  With overflow-x the right-margin of the rightmost column is hidden.
+  This is a dummy element that fills up the space to make it 
+  seem like there's some right margin.
+   */
+  &:after {
+    content: "";
+    display: block;
+    width: 0.5rem;
+  }
+`;
+
+const Board = () => {
   const detail = useSelector((state: RootState) => state.board.detail);
   const error = useSelector((state: RootState) => state.board.detailError);
   const columns = useSelector(columnSelectors.selectAll);
@@ -101,33 +104,6 @@ const Board = ({
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
 
-  const board = (
-    <Droppable
-      droppableId="board"
-      type="COLUMN"
-      direction="horizontal"
-      ignoreContainerClipping={Boolean(containerHeight)}
-      isCombineEnabled={isCombineEnabled}
-    >
-      {(provided: DroppableProvided) => (
-        <Container ref={provided.innerRef} {...provided.droppableProps}>
-          {columns.map((column: IColumn, index: number) => (
-            <Column
-              key={column.id}
-              id={column.id}
-              title={column.title}
-              index={index}
-              tasks={tasksByColumn[column.id].map(taskId => tasksById[taskId])}
-              isScrollable={withScrollableColumns}
-              isCombineEnabled={isCombineEnabled}
-            />
-          ))}
-          {provided.placeholder}
-        </Container>
-      )}
-    </Droppable>
-  );
-
   const detailDataExists = detail?.id.toString() === id;
 
   if (error) {
@@ -143,15 +119,34 @@ const Board = ({
   }
 
   return (
-    <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {containerHeight ? (
-          <ParentContainer height={containerHeight}>{board}</ParentContainer>
-        ) : (
-          <>{board}</>
-        )}
-      </DragDropContext>
-    </>
+    <BoardContainer data-testid="board-container">
+      <ColumnsBlock>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+            {(provided: DroppableProvided) => (
+              <ColumnContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columns.map((column: IColumn, index: number) => (
+                  <Column
+                    key={column.id}
+                    id={column.id}
+                    title={column.title}
+                    index={index}
+                    tasks={tasksByColumn[column.id].map(
+                      taskId => tasksById[taskId]
+                    )}
+                  />
+                ))}
+                {provided.placeholder}
+              </ColumnContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </ColumnsBlock>
+      <RightMargin />
+    </BoardContainer>
   );
 };
 

@@ -11,20 +11,27 @@ import Profile from "features/profile/Profile";
 import Sidebar from "features/sidebar/Sidebar";
 import PageError from "components/PageError";
 import { sidebarWidth } from "const";
+import { useTheme, WithTheme } from "@material-ui/core";
 
-const Main = styled.div`
-  margin-left: ${sidebarWidth + 8}px;
+const Main = styled.div<WithTheme>`
+  ${props => props.theme.breakpoints.up("sm")} {
+    margin-left: ${sidebarWidth + 8}px;
+  }
 `;
 
-const Wrapper: React.FC = ({ children }) => (
-  <>
-    <Sidebar />
-    <Main>
-      <Navbar />
-      {children}
-    </Main>
-  </>
-);
+const Wrapper: React.FC = ({ children }) => {
+  const theme = useTheme();
+
+  return (
+    <>
+      <Sidebar />
+      <Main theme={theme}>
+        <Navbar />
+        {children}
+      </Main>
+    </>
+  );
+};
 
 const AppRoute = (props: RouteProps) => (
   <Route {...props}>

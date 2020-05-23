@@ -1,3 +1,5 @@
+import { Theme } from "@material-ui/core";
+
 export type Id = number;
 
 export interface BoardMember {
@@ -82,4 +84,8 @@ export interface Avatar {
   id: number;
   photo: string;
   name: string;
+}
+
+export interface WithTheme {
+  theme: Theme;
 }

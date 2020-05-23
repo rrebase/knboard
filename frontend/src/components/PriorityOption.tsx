@@ -1,0 +1,30 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCube } from "@fortawesome/free-solid-svg-icons";
+import { PRIO_COLORS } from "const";
+import { Priority } from "types";
+import styled from "@emotion/styled";
+
+interface Props {
+  option: Priority;
+}
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const PrioLabel = styled.div`
+  margin-left: 1rem;
+`;
+
+const PriorityOption = ({ option }: Props) => {
+  return (
+    <Container>
+      <FontAwesomeIcon icon={faCube} color={PRIO_COLORS[option.value]} />
+      <PrioLabel>{option.label}</PrioLabel>
+    </Container>
+  );
+};
+
+export default PriorityOption;

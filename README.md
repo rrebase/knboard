@@ -18,11 +18,12 @@
 ### Frontend
 
 - Typescript
-- React with only functional components and hooks
+- React with functional components and hooks
 - Redux Toolkit
-- Unit tests with Jest and React Testing Library
 - Components & styling with Material-UI and Emotion
-- Drag & Drop by react-beautiful-dnd
+- Drag & Drop using react-beautiful-dnd
+- Unit tests with React Testing Library
+- Integration tests with Cypress
 
 ### Backend
 
@@ -31,12 +32,11 @@
 - PostgreSQL
 - Unit tests with Pytest
 
-### DevOps
+### Infra
 
 - Blazing fast Nginx
 - Dockerized production setup
 - Continuous integration with CircleCI
-- Integration tests with Cypress
 
 ## Motivation 🎯
 
@@ -47,14 +47,12 @@
 
 ## Features ✨
 
-- Create multiple kanban boards
-- Create, edit, update & delete cards
-- Create, edit, update & delete columns
-- Drag & drop cards
-- Edit card descriptions with Markdown
-- Add & remove members
-- Update profile & pick an avatar
-- Admin panel for superusers
+- Multiple kanban boards
+- Drag & drop tasks
+- CRUD for tasks, labels & columns
+- Edit task descriptions with Markdown
+- Manage board members
+- Update your profile & pick an avatar
 
 ## License
 
