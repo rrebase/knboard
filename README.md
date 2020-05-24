@@ -13,6 +13,9 @@
 - Tested with Jest, Pytest and Cypress
 - Continuous Integration
 
+![clip1](.github/clip1.gif)
+![clip2](.github/clip1.gif)
+
 ## Modern stack 💎
 
 ### Frontend
