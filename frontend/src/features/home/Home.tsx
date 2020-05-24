@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import { ReactComponent as Thoughts } from "static/svg/thoughts.svg";
+import { ReactComponent as Hero } from "static/svg/thoughts.svg";
 import { css } from "@emotion/core";
 
 const Container = styled.div`
@@ -11,12 +11,14 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const HeroContainer = styled.div``;
+
 const Home = () => {
   return (
     <Container>
-      <div>
-        <Thoughts width={300} height={300} />
-      </div>
+      <HeroContainer>
+        <Hero width={260} height={260} />
+      </HeroContainer>
 
       <Link
         css={css`
@@ -27,7 +29,7 @@ const Home = () => {
       >
         <Button
           color="primary"
-          variant="outlined"
+          variant="contained"
           style={{ textTransform: "none" }}
         >
           View Boards
