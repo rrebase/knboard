@@ -140,7 +140,7 @@ it("should show register api errors", async () => {
   expect(mockStore.getActions()[0].type === clearErrors.type);
 });
 
-it("should enter a guest", async () => {
+it("should enter as guest", async () => {
   axiosMock.onPost(API_GUEST_REGISTER).reply(201, steveAuthUser);
   const { getActionsTypes } = renderWithProviders(<Auth />);
   fireEvent.click(screen.getByText(/Enter as a guest/i));
@@ -152,6 +152,12 @@ it("should enter a guest", async () => {
     guestRegister.pending.type,
     guestRegister.fulfilled.type
   ]);
+});
+
+it("should have about popover in footer", () => {
+  renderWithProviders(<Auth />);
+  fireEvent.click(screen.getByText("About"));
+  expect(screen.getByText("open-source")).toBeVisible();
 });
 
 describe("AuthSlice", () => {

@@ -27,6 +27,10 @@ export const updateUser = createAsyncThunk<
   "profile/updateUserStatus",
   async (userData, { dispatch, getState, rejectWithValue }) => {
     try {
+      // Don't POST blank email
+      if (!userData["email"]) {
+        delete userData["email"];
+      }
       const id = (getState() as RootState).auth.user?.id;
       const response = await api.put(`${API_USERS}${id}/`, userData);
       dispatch(createSuccessToast("User saved"));

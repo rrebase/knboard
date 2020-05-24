@@ -6,9 +6,7 @@ import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const Container = styled.div`
-  text-decoration: underline;
-`;
+const Container = styled.div``;
 
 const EnterAsGuest = () => {
   const dispatch = useDispatch();

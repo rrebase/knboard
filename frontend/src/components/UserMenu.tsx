@@ -43,6 +43,7 @@ const UserMenu = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     dispatch(logout());
+    history.push("/");
   };
 
   const handleToProfile = () => {

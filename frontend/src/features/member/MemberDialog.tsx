@@ -177,7 +177,7 @@ const MemberDialog = ({ board }: Props) => {
                   margin-bottom: 1.5rem;
                 `}
               >
-                email: <b>{member.email}</b>
+                email: <b>{member?.email || "-"}</b>
               </SecondaryText>
               {memberIsOwner && (
                 <Alert severity="info">Owner of this board</Alert>

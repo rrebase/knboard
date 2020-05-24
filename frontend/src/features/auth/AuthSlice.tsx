@@ -47,6 +47,10 @@ export const register = createAsyncThunk<
   }
 >("auth/registerStatus", async (credentials, { rejectWithValue }) => {
   try {
+    // Don't POST blank email
+    if (!credentials["email"]) {
+      delete credentials["email"];
+    }
     const response = await api.post(API_REGISTER, credentials);
     return response.data;
   } catch (err) {

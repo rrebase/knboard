@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "./AuthSlice";
 import { RootState } from "store";
 import { Alert } from "@material-ui/lab";
-import { useHistory } from "react-router-dom";
 import Close from "components/Close";
 
 const FormActions = styled.div`
@@ -28,7 +27,6 @@ interface FormData {
 }
 
 const LoginDialog = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const apiErrors = useSelector((state: RootState) => state.auth.loginErrors);
@@ -46,7 +44,6 @@ const LoginDialog = () => {
 
   const onSubmit = handleSubmit(({ username, password }) => {
     dispatch(login({ username, password }));
-    history.push("/");
   });
 
   return (

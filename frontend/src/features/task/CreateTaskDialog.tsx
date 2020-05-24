@@ -201,6 +201,7 @@ const CreateTaskDialog = () => {
         <Autocomplete
           id="create-priority-select"
           size="small"
+          autoHighlight
           options={PRIORITY_OPTIONS}
           getOptionLabel={option => option.label}
           value={priority}

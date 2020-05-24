@@ -140,5 +140,6 @@ REST_AUTH_SERIALIZERS = {"TOKEN_SERIALIZER": "accounts.serializers.TokenSerializ
 SITE_ID = 1
 
 # Configure django-allauth
+ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_UNIQUE_EMAIL = True

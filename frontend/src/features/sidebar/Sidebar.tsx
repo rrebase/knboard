@@ -1,9 +1,10 @@
 import React from "react";
-import { Drawer, List, Hidden } from "@material-ui/core";
+import { Drawer, List, Hidden, Tooltip } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { sidebarWidth } from "const";
 import styled from "@emotion/styled";
 import { ReactComponent as Logo } from "static/svg/logo.svg";
+import { ReactComponent as GitHubIcon } from "static/svg/github.svg";
 import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -67,6 +68,21 @@ const Sidebar = () => {
   );
 };
 
+const BottomBlock = styled.div`
+  position: absolute;
+  left: 0px;
+  bottom: 2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const GithubLink = styled.a`
+  color: #fff;
+  font-size: 1.75rem;
+`;
+
 const DrawerContent = () => {
   const history = useHistory();
 
@@ -98,6 +114,17 @@ const DrawerContent = () => {
           Profile
         </NavLink>
       </List>
+      <BottomBlock>
+        <Tooltip title="View GitHub Repo">
+          <GithubLink
+            href="https://github.com/rrebase/knboard"
+            target="_blank"
+            rel="noopener"
+          >
+            <GitHubIcon />
+          </GithubLink>
+        </Tooltip>
+      </BottomBlock>
     </Container>
   );
 };

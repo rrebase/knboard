@@ -121,8 +121,8 @@ const RegisterDialog = () => {
               margin="dense"
               label="Email"
               variant="outlined"
-              inputRef={register({ required: "This field is required" })}
-              helperText={errors.email?.message}
+              inputRef={register()}
+              helperText={errors.email?.message || "Can be left empty."}
               error={Boolean(errors.email)}
               fullWidth
             />
