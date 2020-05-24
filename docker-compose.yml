@@ -7,7 +7,7 @@ services:
       dockerfile: django.Dockerfile
     image: knboard_production_django
     volumes:
-      - "static:/app/static"
+      - "django-static:/app/static"
       - "media:/app/media"
       - "./backend/settings:/app/settings"
     env_file:
@@ -23,7 +23,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "static:/usr/share/nginx/static"
+      - "django-static:/usr/share/nginx/static"
       - "media:/usr/share/nginx/html/media"
       - "./production/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "./production/nginx/proxy.conf:/etc/nginx/proxy.conf"
@@ -46,4 +46,4 @@ services:
 
 volumes:
   media:
-  static:
+  django-static:
