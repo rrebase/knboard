@@ -92,8 +92,8 @@ with the admin backend available at `http://localhost:8000/backdoor/`
 
 ### React
 
-- [Node.js][https://nodejs.org] v12 or greater
-- [Yarn][https://yarnpkg.com/] v1 or greater
+- [Node.js](https://nodejs.org) v12 or greater
+- [Yarn](https://yarnpkg.com/) v1 or greater
 
 ```sh
 node --version
