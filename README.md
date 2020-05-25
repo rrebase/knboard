@@ -1,4 +1,6 @@
-<h1 align="center">Knboard</h1>
+<h1 align="center">Simple Kanban boards</h1>
+
+![image](https://user-images.githubusercontent.com/23059874/82831611-8f672600-9ec1-11ea-9d39-137936997925.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -13,7 +15,7 @@
 - Tested with Jest, Pytest and Cypress
 - Continuous Integration
 
-## Modern stack 💎
+## Built using a Modern stack 💎
 
 ### Frontend
 
@@ -53,6 +55,52 @@
 - Edit task descriptions with Markdown
 - Manage board members
 - Update your profile & pick an avatar
+
+## Development setup 🛠
+
+Steps to locally setup development after cloning the project (only tested on MacOS).
+
+Note: `docker-compose` is currently only used for production.
+
+### Django
+
+Have Python 3.8 installed and in PATH.
+Installing Python: https://realpython.com/installing-python/
+
+```sh
+python3 --version
+# Python 3.8.2
+```
+
+```sh
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements/local.txt
+
+python manage.py migrate
+python manage.py createsuperuser --username admin --email a@a.com
+python manage.py loaddata avatars
+python manage.py runserver
+```
+
+The Django API is now accessible at `http://localhost:8000/api/`
+with the admin backend available at `http://localhost:8000/backdoor/`
+
+### React
+
+```sh
+node --version
+# v12.16
+```
+
+```sh
+cd frontend
+yarn install
+yarn start
+```
+
+React app is now accessible at `http://localhost:3000`
 
 ## License
 
