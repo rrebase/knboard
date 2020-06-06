@@ -89,3 +89,7 @@ export interface Avatar {
 export interface WithTheme {
   theme: Theme;
 }
+
+export interface AuthSetup {
+  ALLOW_GUEST_ACCESS: boolean;
+}
