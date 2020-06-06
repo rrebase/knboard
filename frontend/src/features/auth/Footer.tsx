@@ -22,11 +22,6 @@ const Item = styled.div`
   align-items: center;
 `;
 
-const MailLink = styled.a`
-  text-decoration: none;
-  color: #888;
-`;
-
 const Footer = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -62,9 +57,6 @@ const Footer = () => {
           >
             About
           </Button>
-        </Item>
-        <Item>
-          <MailLink href="mailto:rrebasedev@gmail.com">Contact</MailLink>
         </Item>
       </List>
       <Popover
