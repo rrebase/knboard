@@ -2,10 +2,12 @@ import uuid
 
 import shortuuid
 from dj_rest_auth.registration.views import RegisterView
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import filters
 from rest_framework import mixins
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -100,6 +102,9 @@ class AvatarViewSet(ReadOnlyModelViewSet):
 
 class GuestRegistration(RegisterView):
     def create(self, request, *args, **kwargs):
+        if not settings.ALLOW_GUEST_ACCESS:
+            raise PermissionDenied
+
         password = str(uuid.uuid4())
         guest_id = str(shortuuid.uuid())[:10]
         request.data.update(

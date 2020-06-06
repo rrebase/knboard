@@ -1,9 +1,8 @@
 import pytest
 from django.contrib.auth import get_user_model
-from django.core.management import call_command
 from rest_framework.reverse import reverse
 
-from boards.models import Column, Board, Task, Label
+from boards.models import Column, Board, Task
 
 User = get_user_model()
 
@@ -623,27 +622,3 @@ def test_label_names_unique_per_board(
         reverse("label-detail", kwargs={"pk": label1.id}), {"name": "Bug"}
     )
     assert response.status_code == 400
-
-
-def test_guest_registration(api_client):
-    assert User.objects.count() == 0
-    call_command("loaddata", "avatars.yaml")
-    response = api_client.post(reverse("guest-registration"))
-
-    # Guest user is created
-    assert response.status_code == 201
-    guest_users = User.objects.filter(is_guest=True)
-    assert guest_users.count() == 1
-    guest = guest_users.first()
-    assert User.objects.filter(username="alice").exists()
-
-    # Should have a random avatar
-    assert guest.avatar is not None
-
-    # A demo board with at least some data is created
-    boards = Board.objects.filter(owner=guest).all()
-    assert boards.count() == 1
-    board = boards.first()
-    assert Label.objects.filter(board=board).count() > 0
-    assert Column.objects.filter(board=board).count() > 0
-    assert Task.objects.filter(column__board=board).count() > 0
