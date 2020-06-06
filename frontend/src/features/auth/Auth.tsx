@@ -18,10 +18,6 @@ const Title = styled.h1`
   margin-bottom: 0.75rem;
 `;
 
-const Separator = styled.div`
-  margin-top: 1rem;
-`;
-
 const Auth = () => {
   return (
     <Container>
@@ -33,7 +29,6 @@ const Auth = () => {
         <LoginDialog />
         <RegisterDialog />
       </div>
-      <Separator>or</Separator>
       <EnterAsGuest />
       <Footer />
     </Container>

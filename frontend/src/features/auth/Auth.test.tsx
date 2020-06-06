@@ -7,7 +7,12 @@ import {
   rootInitialState
 } from "utils/testHelpers";
 import Auth from "./Auth";
-import { API_LOGIN, API_REGISTER, API_GUEST_REGISTER } from "api";
+import {
+  API_LOGIN,
+  API_REGISTER,
+  API_GUEST_REGISTER,
+  API_AUTH_SETUP
+} from "api";
 import authReducer, {
   login,
   register,
@@ -15,13 +20,21 @@ import authReducer, {
   logout,
   guestRegister
 } from "./AuthSlice";
-import { User } from "types";
+import { User, AuthSetup } from "types";
 
 export const steveAuthUser: User = {
   id: 1,
   username: "steve",
   photo_url: null
 };
+
+const authSetup: AuthSetup = {
+  ALLOW_GUEST_ACCESS: false
+};
+
+beforeEach(() => {
+  axiosMock.onGet(API_AUTH_SETUP).reply(200, authSetup);
+});
 
 it("should have Knboard text", async () => {
   renderWithProviders(<Auth />);
@@ -140,10 +153,22 @@ it("should show register api errors", async () => {
   expect(mockStore.getActions()[0].type === clearErrors.type);
 });
 
+it("should not see enter as guest if the feature isn't enabled", async () => {
+  axiosMock
+    .onGet(API_AUTH_SETUP)
+    .reply(200, { ...authSetup, ALLOW_GUEST_ACCESS: false });
+  renderWithProviders(<Auth />);
+  expect(screen.queryByText(/Enter as a guest/i)).toBeNull();
+});
+
 it("should enter as guest", async () => {
+  axiosMock
+    .onGet(API_AUTH_SETUP)
+    .reply(200, { ...authSetup, ALLOW_GUEST_ACCESS: true });
   axiosMock.onPost(API_GUEST_REGISTER).reply(201, steveAuthUser);
   const { getActionsTypes } = renderWithProviders(<Auth />);
-  fireEvent.click(screen.getByText(/Enter as a guest/i));
+
+  await waitFor(() => fireEvent.click(screen.getByText(/Enter as a guest/i)));
 
   await waitFor(() =>
     expect(getActionsTypes().includes(guestRegister.fulfilled.type)).toBe(true)
