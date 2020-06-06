@@ -19,7 +19,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from accounts.api import UserViewSet, UserSearchView, AvatarViewSet, GuestRegistration
+from accounts.api import (
+    UserViewSet,
+    UserSearchView,
+    AvatarViewSet,
+    GuestRegistration,
+    AuthSetup,
+)
 from boards.api import (
     BoardViewSet,
     ColumnViewSet,
@@ -45,6 +51,7 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("auth/", include("dj_rest_auth.urls")),
     path("auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("auth/setup/", AuthSetup.as_view(), name="auth-setup"),
     path("auth/guest/", GuestRegistration.as_view(), name="guest-registration"),
     path("backdoor/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

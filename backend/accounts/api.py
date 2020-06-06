@@ -12,6 +12,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -98,6 +99,11 @@ class AvatarViewSet(ReadOnlyModelViewSet):
     serializer_class = AvatarSerializer
     queryset = Avatar.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+class AuthSetup(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response({"ALLOW_GUEST_ACCESS": settings.ALLOW_GUEST_ACCESS})
 
 
 class GuestRegistration(RegisterView):

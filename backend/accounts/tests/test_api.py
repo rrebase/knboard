@@ -107,6 +107,18 @@ def test_user_detail(api_client, steve, amy):
     assert response.status_code == 403
 
 
+def test_auth_setup(api_client, settings):
+    settings.ALLOW_GUEST_ACCESS = False
+    response = api_client.get(reverse("auth-setup"))
+    assert response.status_code == 200
+    assert response.data == dict(ALLOW_GUEST_ACCESS=False)
+
+    settings.ALLOW_GUEST_ACCESS = True
+    response = api_client.get(reverse("auth-setup"))
+    assert response.status_code == 200
+    assert response.data == dict(ALLOW_GUEST_ACCESS=True)
+
+
 def test_guest_registration_not_allowed(api_client, settings):
     settings.ALLOW_GUEST_ACCESS = False
 

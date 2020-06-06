@@ -145,4 +145,4 @@ ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_UNIQUE_EMAIL = True
 
 # Allow entering as a guest
-ALLOW_GUEST_ACCESS = False
+ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
