@@ -1,11 +1,11 @@
-Django==3.0.6
+Django>=3.0.7
 djangorestframework==3.11.0
-django-filter==2.2.0
+django-filter==2.3.0
 django-extensions==2.2.9
 django-allauth==0.42.0
 django-model-utils==4.0.0
 django-admin-sortable==2.2.3
-dj-rest-auth==1.0.5
+dj-rest-auth==1.0.7
 markdown==3.2.2
 PyYAML==5.3.1
 Pillow==7.1.2
