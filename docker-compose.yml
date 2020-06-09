@@ -31,6 +31,8 @@ services:
       - "./data/certbot/www:/var/www/certbot"
     env_file:
       - .env
+    depends_on:
+      - django
 
   certbot:
     image: certbot/certbot

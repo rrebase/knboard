@@ -31,6 +31,3 @@ ARG NGINX_DOMAIN_NAME
 
 # Replace underscore variables with env variables
 RUN sed -ir "s/__NGINX_DOMAIN_NAME__/${NGINX_DOMAIN_NAME}/g" /etc/nginx/nginx.conf
-
-# Test the configuration file
-RUN nginx -c /etc/nginx/nginx.conf -t
