@@ -27,6 +27,8 @@ services:
       - "media:/usr/share/nginx/html/media"
       - "./data/certbot/conf:/etc/letsencrypt"
       - "./data/certbot/www:/var/www/certbot"
+    env_file:
+      - .env
 
   certbot:
     image: certbot/certbot
