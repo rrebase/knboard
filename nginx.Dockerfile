@@ -27,7 +27,7 @@ COPY ./production/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./production/nginx/proxy.conf /etc/nginx/proxy.conf
 
 # Replace underscore variables with env variables
-RUN sed -i "s/__NGINX_DOMAIN_NAME__/${NGINX_DOMAIN_NAME}/g" /etc/nginx/nginx.conf
+RUN sed -ir "s/__NGINX_DOMAIN_NAME__/${NGINX_DOMAIN_NAME}/g" /etc/nginx/nginx.conf
 
 # Test the configuration file
 RUN nginx -c /etc/nginx/nginx.conf -t
