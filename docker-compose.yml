@@ -17,6 +17,8 @@ services:
     build:
       context: .
       dockerfile: nginx.Dockerfile
+      args:
+        NGINX_DOMAIN_NAME: ${NGINX_DOMAIN_NAME}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     image: knboard_production_nginx
     ports:
