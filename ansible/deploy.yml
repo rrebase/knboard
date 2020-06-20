@@ -1,0 +1,31 @@
+---
+
+- name: Deploy live branch
+  connection: ssh
+  gather_facts: false
+  hosts: knboard
+  vars:
+    repo_folder: /srv/knboard/
+    repo_name: rrebase/knboard
+    repo_branch: live
+    ansible_become: true
+    ansible_become_user: root
+
+  tasks:
+    - name: Checkout repo
+      git:
+        repo: https://github.com/{{ repo_name }}.git
+        accept_hostkey: yes
+        dest: "{{ repo_folder }}"
+        version: "{{ repo_branch }}"
+        key_file: /root/.ssh/id_rsa
+
+    - name: Run `docker-compose build`
+      command:
+        docker-compose up --build --detach
+      args:
+        chdir: "{{ repo_folder }}"
+      register: output
+
+    - debug:
+        var: output

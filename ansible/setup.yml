@@ -1,0 +1,12 @@
+---
+
+- hosts: knboard
+  become: true
+  vars:
+    create_user: rareba
+    copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    sys_packages: ["curl", "vim", "git", "ufw"]
+
+  roles:
+    - { role: users }
+    - { role: docker-compose }
