@@ -11,7 +11,7 @@ services:
       - "media:/app/media"
       - "./backend/settings:/app/settings"
     env_file:
-      - .env
+      - .production.env
 
   nginx:
     build:
@@ -30,7 +30,7 @@ services:
       - "./data/certbot/conf:/etc/letsencrypt"
       - "./data/certbot/www:/var/www/certbot"
     env_file:
-      - .env
+      - .production.env
     depends_on:
       - django
 
@@ -46,7 +46,7 @@ services:
     volumes:
       - "/var/lib/postgresql/knboard:/var/lib/postgresql/data"
     env_file:
-      - .env
+      - .production.env
 
 volumes:
   media:

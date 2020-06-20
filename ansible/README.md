@@ -2,10 +2,10 @@
 
 Setup the server:
 ```sh
-ansible-playbook -i hosts setup.yml -v
+ansible-playbook setup.yml --verbose
 ```
 
-Deploy live branch:
+Deploy:
 ```sh
-ansible-playbook -i hosts deploy.yml
+ansible-playbook deploy.yml --verbose
 ```

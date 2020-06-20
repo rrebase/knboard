@@ -3,6 +3,19 @@
 - name: Install Prerequisites
   apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
 
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
 - name: Create a new regular user with sudo privileges
   user:
     name: "{{ create_user }}"
@@ -24,15 +37,16 @@
     state: present
     regexp: "^#?PasswordAuthentication"
     line: "PasswordAuthentication no"
-  notify: Restart sshd
+  notify:
+    - Restart sshd
 
 - name: Disallow root SSH access
   lineinfile:
     path: /etc/ssh/sshd_config
-    state: present
     regexp: "^#?PermitRootLogin"
     line: "PermitRootLogin no"
-  notify: Restart sshd
+  notify:
+    - Restart sshd
 
 - name: Update apt package cache
   apt: update_cache=yes cache_valid_time=3600
@@ -53,3 +67,7 @@
     state: enabled
     policy: deny
     direction: incoming
+
+handlers:
+  - name: Restart sshd
+    service: name=sshd state=restarted

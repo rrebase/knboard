@@ -116,6 +116,7 @@ Experiment*.tsx
 
 # Enviroment variables
 .env
+.production.env
 
 # Ignore the docker-compose override
 docker-compose.override.yml

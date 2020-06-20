@@ -6,6 +6,7 @@
     create_user: rareba
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
     sys_packages: ["curl", "vim", "git", "ufw"]
+    docker_compose_version: 1.25.5
 
   roles:
     - { role: users }

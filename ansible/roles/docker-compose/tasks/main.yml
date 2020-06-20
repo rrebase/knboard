@@ -1,7 +1,10 @@
 ---
 
 - name: Install required system packages
-  apt: name=["apt-transport-https", "ca-certificates"] state=latest
+  apt: name={{ item }} state=latest
+  loop:
+    - "apt-transport-https"
+    - "ca-certificates"
 
 - name: Add Docker GPG apt Key
   apt_key:
