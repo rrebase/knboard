@@ -123,3 +123,6 @@ docker-compose.override.yml
 # Generic data directories
 .data/
 data/
+
+# Managed by ansible
+init-letsencrypt.sh

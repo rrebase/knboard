@@ -11,6 +11,7 @@
     repo_branch: add-ansible
     ansible_become: true
     ansible_become_user: root
+    up_and_build: false
 
   tasks:
     - name: Checkout repo
@@ -35,6 +36,7 @@
       args:
         chdir: "{{ repo_folder }}"
       register: output
+      when: up_and_build
 
     - debug:
         var: output

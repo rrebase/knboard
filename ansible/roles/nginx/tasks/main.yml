@@ -1,15 +1,5 @@
 ---
 
-- name: Install letsencrypt
-  apt:
-    name: letsencrypt
-    state: latest
-
-- name: Create letsencrypt directory
-  file:
-    name: /var/www/letsencrypt
-    state: directory
-
 - name: Ensures /etc/nginx dir exists
   file: path=/etc/nginx state=directory
 
@@ -22,24 +12,3 @@
   template:
     src: templates/proxy.conf
     dest: /etc/nginx/proxy.conf
-
-- name: Run `docker-compose nginx up --build --detach`
-  command:
-    docker-compose nginx up --build --detach
-  args:
-    chdir: "/srv/knboard/"
-  register: output
-
-- name: Create letsencrypt certificate
-  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos {{ all_domain_names | map('regex_replace', '^(.*)$', '-d \1') | join(' ') }}
-  args:
-    creates: /etc/letsencrypt/live/{{ main_domain_name }}
-
-- name: Add empty data directory for {{ main_domain_name }} static files at /var/www/{{ main_domain_name }}
-  become: true
-  file:
-    path: "/var/www/{{ main_domain_name }}"
-    state: directory
-    mode: u=rwx,g=r,o=r
-    owner: www-data
-    group: www-data

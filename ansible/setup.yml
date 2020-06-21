@@ -7,8 +7,18 @@
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
     sys_packages: ["curl", "vim", "git", "ufw", "haveged"]
     docker_compose_version: 1.25.5
+    letsencrypt_email: example@gmail.com
+    domain_name: thatapp.xyz
+    env_file: ../.env
+    repo_folder: /srv/knboard/
+    repo_name: rrebase/knboard
+    repo_branch: add-ansible
+    ansible_become: true
+    ansible_become_user: root
+    up_and_build: false
 
   roles:
-    - { role: users }
-    - { role: docker-compose }
-    - { role: nginx }
+    - role: security
+    - role: docker-compose
+    - role: nginx
+    - role: certbot
