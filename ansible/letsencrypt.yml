@@ -1,0 +1,13 @@
+---
+
+- hosts: knboard
+  become: true
+
+  roles:
+    - role: nginx
+      vars:
+        letsencrypt_email: test@test.com
+        main_domain_name: knboard.com
+        all_domain_names:
+          - knboard.com
+          - staging.knboard.com

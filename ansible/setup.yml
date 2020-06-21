@@ -11,3 +11,4 @@
   roles:
     - { role: users }
     - { role: docker-compose }
+    - { role: nginx }

@@ -21,13 +21,3 @@ FROM nginx:1.17
 
 # Copy the React app over from node container to nginx container
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
-
-# Copy the nginx configuration files
-COPY ./production/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./production/nginx/proxy.conf /etc/nginx/proxy.conf
-
-# Set via docker-compose
-ARG NGINX_DOMAIN_NAME
-
-# Replace underscore variables with env variables
-RUN sed -ir "s/__NGINX_DOMAIN_NAME__/${NGINX_DOMAIN_NAME}/g" /etc/nginx/nginx.conf
