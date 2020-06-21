@@ -5,10 +5,10 @@
   gather_facts: false
   hosts: knboard
   vars:
-    env_file: ../.production.env
+    env_file: ../.env
     repo_folder: /srv/knboard/
     repo_name: rrebase/knboard
-    repo_branch: live
+    repo_branch: add-ansible
     ansible_become: true
     ansible_become_user: root
 
@@ -21,7 +21,7 @@
         version: "{{ repo_branch }}"
         key_file: /root/.ssh/id_rsa
 
-    - name: Copy local .production.env file to remote
+    - name: Copy .env file to remote
       copy:
         src: "{{ env_file }}"
         dest: "{{ repo_folder }}"
