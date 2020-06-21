@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r /app/requirements/production.txt
 COPY ./backend/ /app/
 
 # Run database migrations, collectstatic for nginx to serve and then start the app
-CMD bash -c "./manage.py migrate --settings=config.settings.production && ./manage.py collectstatic --no-input && gunicorn config.wsgi:application --bind :8000"
+CMD bash -c "./wait-for-it.sh postgres:5432 && ./manage.py migrate --settings=config.settings.production && ./manage.py collectstatic --no-input && gunicorn config.wsgi:application --bind :8000"
 
 # Make it accessible for the nginx container
 EXPOSE 8000

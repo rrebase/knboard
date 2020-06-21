@@ -126,3 +126,4 @@ data/
 
 # Managed by ansible
 init-letsencrypt.sh
+wait-for-it.sh

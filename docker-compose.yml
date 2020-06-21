@@ -6,12 +6,15 @@ services:
       context: .
       dockerfile: django.Dockerfile
     image: knboard_production_django
+    restart: unless-stopped
     volumes:
       - "django-static:/app/django-static"
       - "media:/app/media"
       - "./backend/settings:/app/settings"
     env_file:
       - .env
+    depends_on:
+      - postgres
 
   nginx:
     build:
@@ -30,6 +33,9 @@ services:
       - "/etc/nginx/proxy.conf:/etc/nginx/proxy.conf"
       - "./data/certbot/conf:/etc/letsencrypt"
       - "./data/certbot/www:/var/www/certbot"
+    depends_on:
+      - django
+      - postgres
 
   certbot:
     image: certbot/certbot
@@ -40,6 +46,7 @@ services:
 
   postgres:
     image: postgres:11
+    restart: unless-stopped
     volumes:
       - "/var/lib/postgresql/knboard:/var/lib/postgresql/data"
     env_file:

@@ -44,3 +44,11 @@
     url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: "a+x"
+
+- name: Copy wait.sh script
+  copy:
+    src: files/wait.sh
+    dest: /srv/knboard/wait-for-it.sh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r

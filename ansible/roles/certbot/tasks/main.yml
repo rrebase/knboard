@@ -18,5 +18,5 @@
 
 - name: Create init-letsencrypt from template
   template:
-    src: templates/init-letsencrypt.sh
+    src: templates/letsencrypt.sh
     dest: /srv/knboard/init-letsencrypt.sh
