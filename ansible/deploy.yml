@@ -5,13 +5,9 @@
   gather_facts: false
   hosts: knboard
   vars:
-    env_file: ../.env
-    repo_folder: /srv/knboard/
-    repo_name: rrebase/knboard
-    repo_branch: add-ansible
     ansible_become: true
     ansible_become_user: root
-    up_and_build: false
+    env_file: ../.env
 
   tasks:
     - name: Checkout repo
@@ -36,7 +32,6 @@
       args:
         chdir: "{{ repo_folder }}"
       register: output
-      when: up_and_build
 
     - debug:
         var: output
