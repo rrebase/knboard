@@ -35,11 +35,6 @@
   args:
     creates: /etc/letsencrypt/live/{{ main_domain_name }}
 
-- name: Generate dhparams
-  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
-  args:
-    creates: /etc/nginx/dhparams.pem
-
 - name: Add empty data directory for {{ main_domain_name }} static files at /var/www/{{ main_domain_name }}
   become: true
   file:

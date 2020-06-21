@@ -27,7 +27,7 @@ services:
       - "media:/usr/share/nginx/html/media"
       - "/etc/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "/etc/nginx/proxy.conf:/etc/nginx/proxy.conf"
-      - "/etc/letsencrypt"
+      - "/etc/letsencrypt:/etc/letsencrypt"
     env_file:
       - .env
     depends_on:
