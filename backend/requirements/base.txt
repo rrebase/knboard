@@ -5,7 +5,7 @@ django-extensions==2.2.9
 django-allauth==0.42.0
 django-model-utils==4.0.0
 django-admin-sortable==2.2.3
-dj-rest-auth==1.0.7
+dj-rest-auth==1.0.8
 markdown==3.2.2
 PyYAML==5.3.1
 Pillow==7.1.2
