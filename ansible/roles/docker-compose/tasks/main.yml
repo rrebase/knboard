@@ -48,7 +48,7 @@
 - name: Copy wait.sh script
   copy:
     src: files/wait.sh
-    dest: /srv/knboard/wait-for-it.sh
+    dest: /srv/knboard/backend/wait-for-it.sh
     owner: root
     group: root
     mode: u=rw,g=r,o=r
