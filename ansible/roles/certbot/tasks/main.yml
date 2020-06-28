@@ -2,11 +2,17 @@
 
 - include: roles/common/tasks/checkout.yml
 
+- name: Build containers
+  command:
+    docker-compose build
+
 - name: Create init-letsencrypt from template
   template:
     src: templates/letsencrypt.sh
-    dest: /srv/knboard/init-letsencrypt.sh
+    dest: "{{ repo_folder }}init-letsencrypt.sh"
     mode: a+x
 
 - name: Run init-letsencrypt.sh
-  shell: /srv/knboard/init-letsencrypt.sh
+  shell: "{{ repo_folder }}init-letsencrypt.sh"
+  args:
+    chdir: {{ repo_folder }}

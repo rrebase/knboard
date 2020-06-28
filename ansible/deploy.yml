@@ -1,18 +1,12 @@
 ---
 
-- name: Deploy
-  connection: ssh
+- hosts: knboard
   gather_facts: false
-  hosts: knboard
-  vars:
-    ansible_become: true
-    ansible_become_user: root
-    env_file: ../.env
 
   tasks:
     - include: roles/common/tasks/checkout.yml
 
-    - name: Run `docker-compose build`
+    - name: Run `docker-compose up --build --detach`
       command:
         docker-compose up --build --detach
       args:

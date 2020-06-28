@@ -8,7 +8,7 @@
     src: templates/nginx.conf
     dest: /etc/nginx/nginx.conf
 
-- name: Create nginx.config from template
+- name: Create proxy.config from template
   template:
     src: templates/proxy.conf
     dest: /etc/nginx/proxy.conf

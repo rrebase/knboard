@@ -1,7 +1,15 @@
-[knboard]
-knboard.com
+[all:vars]
+ansible_become=true
+ansible_become_user=root
+env_file=../.env
 
 [knboard:vars]
 repo_folder=/srv/knboard/
 repo_name=rrebase/knboard
 repo_branch=live
+create_user=rareba
+letsencrypt_email=rebasedev@gmail.com
+domain_name=knboard.com
+
+[knboard]
+knboard.com

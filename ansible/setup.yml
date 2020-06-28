@@ -1,17 +1,10 @@
 ---
 
 - hosts: knboard
-  become: true
   vars:
-    ansible_become: true
-    ansible_become_user: root
-    env_file: ../.env
     docker_compose_version: 1.25.5
     sys_packages: ["curl", "vim", "git", "ufw", "haveged"]
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
-    create_user: rareba
-    letsencrypt_email: email@example.com
-    domain_name: knboard.com
 
   roles:
     - role: security
