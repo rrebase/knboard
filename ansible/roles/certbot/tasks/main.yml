@@ -2,7 +2,7 @@
 
 - include: roles/common/tasks/checkout.yml
 
-- name: Build containers
+- name: Build containers (may take a few minutes)
   command:
     docker-compose build
   args:
