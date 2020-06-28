@@ -45,10 +45,4 @@
     dest: /usr/local/bin/docker-compose
     mode: "a+x"
 
-- name: Copy wait.sh script
-  copy:
-    src: files/wait.sh
-    dest: /srv/knboard/backend/wait-for-it.sh
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
+- include: roles/common/tasks/checkout.yml

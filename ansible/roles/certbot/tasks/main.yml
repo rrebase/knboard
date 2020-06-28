@@ -1,22 +1,12 @@
 ---
 
-- name: Checkout repo
-  git:
-    repo: https://github.com/{{ repo_name }}.git
-    accept_hostkey: yes
-    dest: "{{ repo_folder }}"
-    version: "{{ repo_branch }}"
-    key_file: /root/.ssh/id_rsa
-
-- name: Copy .env file to remote
-  copy:
-    src: "{{ env_file }}"
-    dest: "{{ repo_folder }}"
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
+- include: roles/common/tasks/checkout.yml
 
 - name: Create init-letsencrypt from template
   template:
     src: templates/letsencrypt.sh
     dest: /srv/knboard/init-letsencrypt.sh
+    mode: a+x
+
+- name: Run init-letsencrypt.sh
+  shell: /srv/knboard/init-letsencrypt.sh
