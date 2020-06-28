@@ -37,18 +37,20 @@
     state: present
     regexp: "^#?PasswordAuthentication"
     line: "PasswordAuthentication no"
-
-- name: Restart sshd
-  service: name=sshd state=restarted
+  register: disallow_pw
 
 - name: Disallow root SSH access
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^#?PermitRootLogin"
     line: "PermitRootLogin no"
+  register: disallow_root_ssh
 
 - name: Restart sshd
-  service: name=sshd state=restarted
+  service:
+    name: sshd
+    state: restarted
+  when: disallow_pw.changed or disallow_root_ssh.changed
 
 - name: Update apt package cache
   apt: update_cache=yes cache_valid_time=3600

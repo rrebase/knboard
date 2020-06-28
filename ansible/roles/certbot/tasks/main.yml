@@ -13,8 +13,3 @@
     src: templates/letsencrypt.sh
     dest: "{{ repo_folder }}init-letsencrypt.sh"
     mode: a+x
-
-- name: Run init-letsencrypt.sh
-  shell: "{{ repo_folder }}init-letsencrypt.sh"
-  args:
-    chdir: "{{ repo_folder }}"
