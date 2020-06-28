@@ -1,6 +1,6 @@
 ---
 
-- name: Deploy live branch
+- name: Deploy
   connection: ssh
   gather_facts: false
   hosts: knboard

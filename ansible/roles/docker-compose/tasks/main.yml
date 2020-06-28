@@ -43,6 +43,12 @@
   get_url:
     url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
-    mode: "a+x"
+    mode: a+x
 
 - include: roles/common/tasks/checkout.yml
+
+- name: Copy wait.sh
+  copy:
+    src: wait.sh
+    dest: /srv/knboard/backend/wait-for-it.sh
+    mode: a+x
