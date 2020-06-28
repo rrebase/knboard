@@ -5,6 +5,8 @@
 - name: Build containers
   command:
     docker-compose build
+  args:
+    chdir: "{{ repo_folder }}"
 
 - name: Create init-letsencrypt from template
   template:
@@ -15,4 +17,4 @@
 - name: Run init-letsencrypt.sh
   shell: "{{ repo_folder }}init-letsencrypt.sh"
   args:
-    chdir: {{ repo_folder }}
+    chdir: "{{ repo_folder }}"
