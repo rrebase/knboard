@@ -10,8 +10,8 @@
     sys_packages: ["curl", "vim", "git", "ufw", "haveged"]
     copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
     create_user: rareba
-    letsencrypt_email: example@gmail.com
-    domain_name: thatapp.xyz
+    letsencrypt_email: email@example.com
+    domain_name: knboard.com
 
   roles:
     - role: security
