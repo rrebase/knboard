@@ -7,9 +7,9 @@ env_file=../.env
 repo_folder=/srv/knboard/
 repo_name=rrebase/knboard
 repo_branch=live
-create_user=rareba
-letsencrypt_email=rebasedev@gmail.com
+letsencrypt_email=info@knboard.com
 domain_name=knboard.com
+create_user=rareba
 
 [knboard]
 knboard.com
