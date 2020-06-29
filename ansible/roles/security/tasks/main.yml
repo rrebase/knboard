@@ -1,0 +1,73 @@
+---
+
+- name: Install Prerequisites
+  apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Create a new regular user with sudo privileges
+  user:
+    name: "{{ create_user }}"
+    state: present
+    groups: wheel
+    append: true
+    create_home: true
+    shell: /bin/bash
+
+- name: Set authorized key for remote user
+  authorized_key:
+    user: "{{ create_user }}"
+    state: present
+    key: "{{ copy_local_key }}"
+
+- name: Disallow password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  register: disallow_pw
+
+- name: Disallow root SSH access
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin no"
+  register: disallow_root_ssh
+
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: disallow_pw.changed or disallow_root_ssh.changed
+
+- name: Update apt package cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Upgrade apt to the latest packages
+  apt: upgrade=safe
+
+- name: Install required system packages
+  apt: name={{ sys_packages }} state=latest
+
+- name: UFW - Allow SSH connections
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: UFW - Deny all other incoming traffic by default
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming

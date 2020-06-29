@@ -1,0 +1,17 @@
+---
+
+- hosts: knboard
+  gather_facts: false
+
+  tasks:
+    - include: roles/common/tasks/checkout.yml
+
+    - name: Run `docker-compose up --build --detach`
+      command:
+        docker-compose up --build --detach
+      args:
+        chdir: "{{ repo_folder }}"
+      register: output
+
+    - debug:
+        var: output

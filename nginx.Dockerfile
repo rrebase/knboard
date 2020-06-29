@@ -21,6 +21,3 @@ FROM nginx:1.17
 
 # Copy the React app over from node container to nginx container
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
-
-# Test the configuration file
-RUN nginx -c /etc/nginx/nginx.conf -t

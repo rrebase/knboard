@@ -1,0 +1,17 @@
+---
+
+- name: Checkout repo
+  git:
+    repo: https://github.com/{{ repo_name }}.git
+    accept_hostkey: yes
+    dest: "{{ repo_folder }}"
+    version: "{{ repo_branch }}"
+    key_file: /root/.ssh/id_rsa
+
+- name: Copy .env file to remote
+  copy:
+    src: "{{ env_file }}"
+    dest: "{{ repo_folder }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r

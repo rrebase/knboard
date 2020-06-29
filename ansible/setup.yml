@@ -1,0 +1,13 @@
+---
+
+- hosts: knboard
+  vars:
+    docker_compose_version: 1.25.5
+    sys_packages: ["curl", "vim", "git", "ufw", "haveged"]
+    copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+  roles:
+    - role: security
+    - role: docker-compose
+    - role: nginx
+    - role: certbot

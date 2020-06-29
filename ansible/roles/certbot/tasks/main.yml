@@ -1,0 +1,15 @@
+---
+
+- include: roles/common/tasks/checkout.yml
+
+- name: Build containers (may take a few minutes)
+  command:
+    docker-compose build
+  args:
+    chdir: "{{ repo_folder }}"
+
+- name: Create init-letsencrypt from template
+  template:
+    src: templates/letsencrypt.sh
+    dest: "{{ repo_folder }}init-letsencrypt.sh"
+    mode: a+x

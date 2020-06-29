@@ -6,12 +6,15 @@ services:
       context: .
       dockerfile: django.Dockerfile
     image: knboard_production_django
+    restart: unless-stopped
     volumes:
       - "django-static:/app/django-static"
       - "media:/app/media"
       - "./backend/settings:/app/settings"
     env_file:
       - .env
+    depends_on:
+      - postgres
 
   nginx:
     build:
@@ -19,16 +22,20 @@ services:
       dockerfile: nginx.Dockerfile
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     image: knboard_production_nginx
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - "django-static:/usr/share/nginx/django-static"
       - "media:/usr/share/nginx/html/media"
-      - "./production/nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "./production/nginx/proxy.conf:/etc/nginx/proxy.conf"
+      - "/etc/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "/etc/nginx/proxy.conf:/etc/nginx/proxy.conf"
       - "./data/certbot/conf:/etc/letsencrypt"
       - "./data/certbot/www:/var/www/certbot"
+    depends_on:
+      - django
+      - postgres
 
   certbot:
     image: certbot/certbot
@@ -39,6 +46,7 @@ services:
 
   postgres:
     image: postgres:11
+    restart: unless-stopped
     volumes:
       - "/var/lib/postgresql/knboard:/var/lib/postgresql/data"
     env_file:

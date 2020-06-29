@@ -1,0 +1,14 @@
+---
+
+- name: Ensures /etc/nginx dir exists
+  file: path=/etc/nginx state=directory
+
+- name: Create nginx.config from template
+  template:
+    src: templates/nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Create proxy.config from template
+  template:
+    src: templates/proxy.conf
+    dest: /etc/nginx/proxy.conf

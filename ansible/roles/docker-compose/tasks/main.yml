@@ -1,0 +1,54 @@
+---
+
+- name: Install required system packages
+  apt: name={{ item }} state=latest
+  loop:
+    - "apt-transport-https"
+    - "ca-certificates"
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Install docker-ce
+  apt: update_cache=yes name=docker-ce state=latest
+
+- name: Install Docker Python bindings
+  apt: update_cache=yes name=python3-docker state=present
+
+- name: Check if /etc/default/ufw exists
+  stat:
+    path: /etc/default/ufw
+  register: ufw_default_exists
+
+- name: Change ufw default forward policy from drop to accept
+  lineinfile:
+    dest: /etc/default/ufw
+    regexp: "^DEFAULT_FORWARD_POLICY="
+    line: "DEFAULT_FORWARD_POLICY=\"ACCEPT\""
+  when: ufw_default_exists.stat.exists
+
+- name: Start docker
+  service:
+    name: docker
+    state: started
+
+- name: Install Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: a+x
+
+- include: roles/common/tasks/checkout.yml
+
+- name: Copy wait.sh
+  copy:
+    src: wait.sh
+    dest: "{{ repo_folder }}backend/wait-for-it.sh"
+    mode: a+x
