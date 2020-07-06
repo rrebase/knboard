@@ -42,6 +42,7 @@
 - Blazing fast Nginx
 - Dockerized production setup
 - Continuous integration with CircleCI
+- Server setup and deployment with Ansible
 
 ## Motivation 🎯
 
@@ -136,6 +137,10 @@ Check formatting with Black
 ```sh
 black --exclude .venv .
 ```
+
+## Articles
+
+- [Deploying knboard to DigitalOcean with Ansible](https://www.rrebase.com/posts/deploying-knboard-to-digitalocean-with-ansible)
 
 ## License
 
