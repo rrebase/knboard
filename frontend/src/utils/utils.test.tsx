@@ -1,11 +1,12 @@
 import { saveState, loadState } from "utils/localStorage";
 import { LOCAL_STORAGE_KEY } from "const";
+import { getContrastColor, getRandomHexColor } from "./colors";
 
-beforeEach(() => {
-  localStorage.clear();
-});
+describe("localStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
-describe("loadState", () => {
   it("should handle empty data", () => {
     loadState();
     expect(window.localStorage.getItem).toBeCalled();
@@ -26,14 +27,23 @@ describe("loadState", () => {
     const result = loadState();
     expect(result).toBeUndefined();
   });
-});
 
-describe("saveState", () => {
   it("should save data", () => {
     const stateToSave = { message: "Fix covid-19" };
     saveState(stateToSave);
     expect(localStorage.__STORE__[LOCAL_STORAGE_KEY]).toBe(
       JSON.stringify(stateToSave)
     );
+  });
+});
+
+describe("color utilities", () => {
+  it("should return white as contrast for black and vice versa", () => {
+    expect(getContrastColor("#FFFFFF")).toEqual("#000000");
+    expect(getContrastColor("#000000")).toEqual("#FFFFFF");
+  });
+
+  it("should return a valid random hex color", () => {
+    expect(/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(getRandomHexColor())).toBeTruthy();
   });
 });

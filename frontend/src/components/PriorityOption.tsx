@@ -21,7 +21,11 @@ const PrioLabel = styled.div`
 const PriorityOption = ({ option }: Props) => {
   return (
     <Container>
-      <FontAwesomeIcon icon={faCube} color={PRIO_COLORS[option.value]} />
+      <FontAwesomeIcon
+        icon={faCube}
+        color={PRIO_COLORS[option.value]}
+        data-testid="priority-icon"
+      />
       <PrioLabel>{option.label}</PrioLabel>
     </Container>
   );

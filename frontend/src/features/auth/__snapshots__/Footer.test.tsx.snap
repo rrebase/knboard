@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render github link correctly 1`] = `
+<a
+  class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+  href="https://github.com/rrebase/knboard"
+  rel="noopener"
+  target="_blank"
+>
+  GitHub
+</a>
+`;

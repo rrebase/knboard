@@ -16,7 +16,7 @@ interface Props {
   onPopper?: boolean;
 }
 
-const Close = ({ onClose, onPopper }: Props) => {
+const Close = ({ onClose, onPopper = false }: Props) => {
   return (
     <Container
       css={css`
