@@ -4,15 +4,15 @@ import Footer from "./Footer";
 
 it("should open popover and have text visible", () => {
   render(<Footer />);
-  fireEvent.click(screen.getByText("About"));
-  expect(screen.getByText("open-source")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "About" }));
+  expect(screen.getByRole("link", { name: "GitHub" })).toBeVisible();
 });
 
 it("should render github link correctly", async () => {
   render(<Footer />);
   fireEvent.click(screen.getByText("About"));
   await waitFor(() => {
-    expect(screen.getByText("open-source")).toBeVisible();
+    expect(screen.getByRole("alert")).toBeVisible();
   });
-  expect(screen.getByText("GitHub")).toMatchSnapshot();
+  expect(screen.getByRole("link", { name: "GitHub" })).toMatchSnapshot();
 });

@@ -89,9 +89,9 @@ it("should have one label and dispatch deleteLabel", async () => {
       entities: { [docLabel.id]: docLabel }
     }
   });
-  expect(screen.getByText("1 label")).toBeVisible();
+  expect(screen.getByRole("heading", { name: "1 label" })).toBeVisible();
   expect(screen.getByText(docLabel.name)).toBeVisible();
-  fireEvent.click(screen.getByText(/Delete/i));
+  fireEvent.click(screen.getByRole("button", { name: /delete/i }));
   await waitFor(() =>
     expect(getActionsTypes().includes(deleteLabel.fulfilled.type)).toBe(true)
   );
@@ -154,11 +154,11 @@ it("should not save invalid and cancel label editing", async () => {
   fireEvent.change(screen.getByLabelText("Color"), {
     target: { value: "#invalid" }
   });
-  fireEvent.click(screen.getByText(/Save/i));
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
   fireEvent.click(screen.getByTestId("random-color"));
   waitFor(() => expect(screen.getByLabelText("Color")).not.toEqual("#invalid"));
-  fireEvent.click(screen.getByText(/Cancel/i));
-  expect(screen.queryByText(/Save/i)).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  expect(screen.queryByRole("button", { name: "Save" })).toBeNull();
   expect(screen.getByText(docLabel.name)).toBeVisible();
   expect(mockStore.getActions()).toHaveLength(0);
   expect(axiosMock.history.patch).toHaveLength(0);

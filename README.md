@@ -140,6 +140,7 @@ black --exclude .venv .
 
 ## Articles
 
+- [Full Guide to Testing Javascript & React](https://www.rrebase.com/posts/full-guide-to-testing-javascript-react)
 - [Deploying knboard to DigitalOcean with Ansible](https://www.rrebase.com/posts/deploying-knboard-to-digitalocean-with-ansible)
 
 ## License
