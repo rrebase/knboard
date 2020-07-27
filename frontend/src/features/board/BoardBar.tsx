@@ -16,7 +16,7 @@ import { Button } from "@material-ui/core";
 import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faColumns, faCog } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPen } from "@fortawesome/free-solid-svg-icons";
 import { setDialogOpen } from "features/label/LabelSlice";
 import LabelDialog from "features/label/LabelDialog";
 import { useParams } from "react-router-dom";
@@ -127,7 +127,7 @@ const BoardBar = () => {
               margin-right: 0.5rem;
             `}
             onClick={handleEditLabels}
-            startIcon={<FontAwesomeIcon icon={faCog} />}
+            startIcon={<FontAwesomeIcon icon={faPen} />}
             data-testid="open-labels-dialog"
           >
             Edit labels
@@ -138,7 +138,7 @@ const BoardBar = () => {
               ${buttonStyles}
             `}
             onClick={handleAddColumn}
-            startIcon={<FontAwesomeIcon icon={faColumns} />}
+            startIcon={<FontAwesomeIcon icon={faPlus} />}
             data-testid="add-col"
           >
             Add List
