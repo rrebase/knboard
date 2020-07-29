@@ -37,7 +37,7 @@ const MemberDetail = ({ member, isOwner }: Props) => {
       css={css`
         ${avatarStyles}
         ${isOwner &&
-          `border: 1px solid ${OWNER_COLOR}; border-radius: 50%;`}
+        `border: 1px solid ${OWNER_COLOR}; border-radius: 50%;`}
         &:hover {
           ${animationStyles}
         }

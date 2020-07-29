@@ -6,7 +6,7 @@ import {
   Button,
   PopperProps,
   Popover,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { css } from "@emotion/core";
 import { PRIMARY } from "utils/colors";
@@ -15,13 +15,13 @@ import { Autocomplete } from "@material-ui/lab";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllMembers,
-  selectMembersEntities
+  selectMembersEntities,
 } from "features/member/MemberSlice";
 import { patchTask } from "./TaskSlice";
 import {
   modalPopperIndex,
   modalPopperAutocompleteIndex,
-  modalPopperWidth
+  modalPopperWidth,
 } from "const";
 import AvatarOption from "components/AvatarOption";
 import AvatarTag from "components/AvatarTag";
@@ -51,7 +51,7 @@ const AutocompletePopper = (props: PopperProps) => (
     {...props}
     style={{
       zIndex: modalPopperAutocompleteIndex,
-      width: modalPopperWidth - popperXSpacing * 2
+      width: modalPopperWidth - popperXSpacing * 2,
     }}
     placement="bottom-start"
   />
@@ -79,7 +79,9 @@ const TaskAssignees = ({ task }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [pendingAssignees, setPendingAssignees] = useState<BoardMember[]>([]);
   const members = useSelector(selectAllMembers);
-  const assignees = task.assignees.map(id => membersById[id]) as BoardMember[];
+  const assignees = task.assignees.map(
+    (id) => membersById[id]
+  ) as BoardMember[];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setPendingAssignees(assignees);
@@ -87,8 +89,8 @@ const TaskAssignees = ({ task }: Props) => {
   };
 
   const handleClose = () => {
-    const currentIds = assignees.map(a => a.id);
-    const pendingIds = pendingAssignees.map(member => member.id);
+    const currentIds = assignees.map((a) => a.id);
+    const pendingIds = pendingAssignees.map((member) => member.id);
     if (
       !(
         pendingIds.length === currentIds.length &&
@@ -100,7 +102,7 @@ const TaskAssignees = ({ task }: Props) => {
       dispatch(
         patchTask({
           id: task.id,
-          fields: { assignees: pendingIds }
+          fields: { assignees: pendingIds },
         })
       );
     }
@@ -113,7 +115,7 @@ const TaskAssignees = ({ task }: Props) => {
   return (
     <Container>
       <Label>Assignees</Label>
-      {assignees.map(assignee => (
+      {assignees.map((assignee) => (
         <List key={assignee.id}>
           <div>
             <Avatar
@@ -169,11 +171,11 @@ const TaskAssignees = ({ task }: Props) => {
             data-testid="edit-assignees"
             size="small"
             options={members}
-            getOptionLabel={option => option.username}
+            getOptionLabel={(option) => option.username}
             value={pendingAssignees}
             onChange={(_event, value) => setPendingAssignees(value)}
-            renderOption={option => <AvatarOption option={option} />}
-            renderInput={params => (
+            renderOption={(option) => <AvatarOption option={option} />}
+            renderInput={(params) => (
               <TextField
                 {...params}
                 autoFocus

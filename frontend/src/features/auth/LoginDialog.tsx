@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Grow
+  Grow,
 } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
@@ -81,7 +81,7 @@ const LoginDialog = () => {
                     margin-bottom: 0.75rem;
                   `}
                 >
-                  {apiErrors.non_field_errors?.map(errorMsg => (
+                  {apiErrors.non_field_errors?.map((errorMsg) => (
                     <div key={errorMsg}>{errorMsg}</div>
                   ))}
                 </Alert>

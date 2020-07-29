@@ -6,7 +6,7 @@ import {
   Fab,
   useMediaQuery,
   useTheme,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { BoardMember, Board, WithTheme } from "types";
@@ -17,13 +17,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api, { API_BOARDS } from "api";
 import {
   createSuccessToast,
-  createErrorToast
+  createErrorToast,
 } from "features/toast/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeBoardMember,
   setDialogMember,
-  selectMembersEntities
+  selectMembersEntities,
 } from "features/member/MemberSlice";
 import { RootState } from "store";
 import { currentBoardOwner } from "features/board/BoardSlice";
@@ -33,7 +33,7 @@ const Container = styled.div<WithTheme>`
   display: flex;
   align-items: center;
   padding: 0.5rem 2rem 2rem 2rem;
-  ${props => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down("xs")} {
     flex-direction: column;
   }
 `;

@@ -23,7 +23,7 @@ export const PRIORITY_3: Priority = { value: "L", label: "Low" };
 export const PRIORITY_OPTIONS: Priority[] = [
   PRIORITY_1,
   PRIORITY_2,
-  PRIORITY_3
+  PRIORITY_3,
 ];
 
 export const PRIORITY_MAP = PRIORITY_OPTIONS.reduce((acc, curr) => {
@@ -34,7 +34,7 @@ export const PRIORITY_MAP = PRIORITY_OPTIONS.reduce((acc, curr) => {
 export const PRIO_COLORS = {
   H: PRIO1,
   M: PRIO2,
-  L: PRIO3
+  L: PRIO3,
 };
 
 export const MD_EDITOR_PLUGINS = [
@@ -43,85 +43,85 @@ export const MD_EDITOR_PLUGINS = [
   "table",
   "link",
   "mode-toggle",
-  "full-screen"
+  "full-screen",
 ];
 
 export const MD_EDITOR_CONFIG = {
   view: {
     menu: true,
     md: true,
-    html: false
+    html: false,
   },
   canView: {
     menu: true,
     md: true,
     html: true,
     fullScreen: true,
-    hideMenu: false
-  }
+    hideMenu: false,
+  },
 };
 
 export const MD_EDITING_CONFIG = {
   view: {
     menu: false,
     md: true,
-    html: false
+    html: false,
   },
   canView: {
     menu: false,
     md: true,
     html: false,
     fullScreen: false,
-    hideMenu: false
-  }
+    hideMenu: false,
+  },
 };
 
 export const MD_READ_ONLY_CONFIG = {
   view: {
     menu: false,
     md: false,
-    html: true
+    html: true,
   },
   canView: {
     menu: false,
     md: false,
     html: true,
     fullScreen: false,
-    hideMenu: false
-  }
+    hideMenu: false,
+  },
 };
 
 export const theme = createMuiTheme({
   palette: {
     type: "light",
     primary: {
-      main: PRIMARY_MAIN
+      main: PRIMARY_MAIN,
     },
     secondary: {
       light: grey[700],
-      main: "#FDB915"
-    }
+      main: "#FDB915",
+    },
   },
   typography: {
-    fontFamily: '"Inter var", sans-serif'
+    fontFamily: '"Inter var", sans-serif',
   },
   props: {
     MuiButtonBase: {
-      disableRipple: true
+      disableRipple: true,
     },
     MuiDialog: {
-      transitionDuration: 100
-    }
+      transitionDuration: 100,
+    },
   },
   overrides: {
     MuiButton: {
       root: {
         "&:hover": {
-          transition: "none"
-        }
-      }
-    }
-  }
+          transition: "none",
+        },
+      },
+    },
+  },
 });
 
 export const modalPopperIndex = theme.zIndex.modal + 100;
@@ -132,5 +132,5 @@ export const modalPopperWidth = 300;
 
 export enum Key {
   Enter = 13,
-  Escape = 27
+  Escape = 27,
 }

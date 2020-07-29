@@ -7,15 +7,15 @@ Cypress.Commands.add("e2eLogin", () => {
     url: "http://localhost:3000/auth/login/",
     body: {
       username: "t@t.com",
-      password: "test"
-    }
-  }).then(response => {
+      password: "test",
+    },
+  }).then((response) => {
     localStorage.setItem(
       "knboard-data",
       JSON.stringify({
         auth: {
-          user: response.body
-        }
+          user: response.body,
+        },
       })
     );
   });
@@ -30,9 +30,9 @@ Cypress.Commands.add("stubbedSetup", () => {
         user: {
           id: 1,
           username: "testuser",
-          photo_url: null
-        }
-      }
+          photo_url: null,
+        },
+      },
     })
   );
 });
@@ -42,15 +42,15 @@ const draggableId = "data-rbd-draggable-id";
 const droppableId = "data-rbd-droppable-id";
 const testId = "data-testid";
 
-Cypress.Commands.add("draggable", id => {
+Cypress.Commands.add("draggable", (id) => {
   return cy.get(`[${dragHandleDraggableId}='${id}']`);
 });
 
-Cypress.Commands.add("droppable", id => {
+Cypress.Commands.add("droppable", (id) => {
   return cy.get(`[${droppableId}='${id}']`);
 });
 
-Cypress.Commands.add("expectColumns", columns => {
+Cypress.Commands.add("expectColumns", (columns) => {
   cy.droppable("board")
     .children()
     .each(($el, index) => {
@@ -68,7 +68,7 @@ Cypress.Commands.add("expectTasks", (column, tasks) => {
   });
 });
 
-Cypress.Commands.add("expectMembers", members => {
+Cypress.Commands.add("expectMembers", (members) => {
   cy.findByTestId("member-group")
     .children()
     .each(($el, index) => {

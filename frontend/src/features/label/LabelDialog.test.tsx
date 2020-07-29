@@ -4,7 +4,7 @@ import { screen, waitFor, fireEvent } from "@testing-library/react";
 import {
   rootInitialState,
   renderWithProviders,
-  axiosMock
+  axiosMock,
 } from "utils/testHelpers";
 import LabelDialog from "./LabelDialog";
 import user from "@testing-library/user-event";
@@ -14,7 +14,7 @@ import labelReducer, {
   createLabel,
   deleteLabel,
   patchLabel,
-  setDialogOpen
+  setDialogOpen,
 } from "./LabelSlice";
 import { createInfoToast } from "features/toast/ToastSlice";
 
@@ -29,16 +29,16 @@ const boardDetail = {
       email: "steve@gmail.com",
       first_name: "Steve",
       last_name: "Apple",
-      avatar: null
-    }
-  ]
+      avatar: null,
+    },
+  ],
 };
 
 const docLabel: Label = {
   id: 1,
   name: "Documentation",
   color: "#111fff",
-  board: 1
+  board: 1,
 };
 
 it("should not show dialog", async () => {
@@ -50,7 +50,7 @@ it("should dispatch createLabel", async () => {
   const { getActionsTypes } = renderWithProviders(<LabelDialog />, {
     ...rootInitialState,
     board: { ...rootInitialState.board, detail: boardDetail },
-    label: { ...rootInitialState.label, dialogOpen: true }
+    label: { ...rootInitialState.label, dialogOpen: true },
   });
   axiosMock.onPost(API_LABELS).reply(201, docLabel);
 
@@ -60,10 +60,10 @@ it("should dispatch createLabel", async () => {
   expect(screen.queryByText(/Save/i)).toBeNull();
   user.click(screen.getByText(/New label/i));
   fireEvent.change(screen.getByLabelText("Label name"), {
-    target: { value: docLabel.name }
+    target: { value: docLabel.name },
   });
   fireEvent.change(screen.getByLabelText("Color"), {
-    target: { value: docLabel.color }
+    target: { value: docLabel.color },
   });
   fireEvent.click(screen.getByText(/Save/i));
   await waitFor(() =>
@@ -72,7 +72,7 @@ it("should dispatch createLabel", async () => {
   expect(getActionsTypes()).toEqual([
     createLabel.pending.type,
     createInfoToast.type,
-    createLabel.fulfilled.type
+    createLabel.fulfilled.type,
   ]);
 });
 
@@ -86,8 +86,8 @@ it("should have one label and dispatch deleteLabel", async () => {
       ...rootInitialState.label,
       dialogOpen: true,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
-    }
+      entities: { [docLabel.id]: docLabel },
+    },
   });
   expect(screen.getByRole("heading", { name: "1 label" })).toBeVisible();
   expect(screen.getByText(docLabel.name)).toBeVisible();
@@ -98,7 +98,7 @@ it("should have one label and dispatch deleteLabel", async () => {
   expect(getActionsTypes()).toEqual([
     deleteLabel.pending.type,
     createInfoToast.type,
-    deleteLabel.fulfilled.type
+    deleteLabel.fulfilled.type,
   ]);
 });
 
@@ -111,12 +111,12 @@ it("should edit a label", async () => {
       ...rootInitialState.label,
       dialogOpen: true,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
-    }
+      entities: { [docLabel.id]: docLabel },
+    },
   });
   fireEvent.click(screen.getByText(/^Edit$/i));
   fireEvent.change(screen.getByLabelText("Label name"), {
-    target: { value: "New" }
+    target: { value: "New" },
   });
   fireEvent.click(screen.getByText(/Save/i));
   await waitFor(() =>
@@ -125,13 +125,13 @@ it("should edit a label", async () => {
   expect(getActionsTypes()).toEqual([
     patchLabel.pending.type,
     createInfoToast.type,
-    patchLabel.fulfilled.type
+    patchLabel.fulfilled.type,
   ]);
   expect(axiosMock.history.patch[0].data).toEqual(
     JSON.stringify({
       name: "New",
       color: docLabel.color,
-      board: docLabel.board
+      board: docLabel.board,
     })
   );
 });
@@ -144,15 +144,15 @@ it("should not save invalid and cancel label editing", async () => {
       ...rootInitialState.label,
       dialogOpen: true,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
-    }
+      entities: { [docLabel.id]: docLabel },
+    },
   });
   fireEvent.click(screen.getByText(/^Edit$/i));
   fireEvent.change(screen.getByLabelText("Label name"), {
-    target: { value: "New" }
+    target: { value: "New" },
   });
   fireEvent.change(screen.getByLabelText("Color"), {
-    target: { value: "#invalid" }
+    target: { value: "#invalid" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Save" }));
   fireEvent.click(screen.getByTestId("random-color"));
@@ -175,9 +175,9 @@ it("should search from multiple labels", async () => {
       ids: [docLabel.id, designLabel.id],
       entities: {
         [docLabel.id]: docLabel,
-        [designLabel.id]: designLabel
-      }
-    }
+        [designLabel.id]: designLabel,
+      },
+    },
   });
   expect(screen.getByText("2 labels")).toBeVisible();
   expect(screen.getByText(docLabel.name)).toBeVisible();
@@ -185,21 +185,21 @@ it("should search from multiple labels", async () => {
   expect(mockStore.getActions()).toHaveLength(0);
 
   fireEvent.change(screen.getByPlaceholderText("Search labels"), {
-    target: { value: "d" }
+    target: { value: "d" },
   });
   expect(screen.getByText("2 labels")).toBeVisible();
   expect(screen.getByText(docLabel.name)).toBeVisible();
   expect(screen.getByText(designLabel.name)).toBeVisible();
 
   fireEvent.change(screen.getByPlaceholderText("Search labels"), {
-    target: { value: "Document" }
+    target: { value: "Document" },
   });
   expect(screen.getByText("1 label")).toBeVisible();
   expect(screen.getByText(docLabel.name)).toBeVisible();
   expect(screen.queryByText(designLabel.name)).toBeNull();
 
   fireEvent.change(screen.getByPlaceholderText("Search labels"), {
-    target: { value: "Nothing to see" }
+    target: { value: "Nothing to see" },
   });
   expect(screen.getByText("0 labels")).toBeVisible();
   expect(screen.queryByText(docLabel.name)).toBeNull();
@@ -211,7 +211,7 @@ describe("LabelSlice", () => {
     const initial = rootInitialState.label;
     const result = {
       ...rootInitialState.label,
-      dialogOpen: true
+      dialogOpen: true,
     };
     expect(
       labelReducer(initial, { type: setDialogOpen.type, payload: true })
@@ -223,12 +223,12 @@ describe("LabelSlice", () => {
     const result = {
       ...rootInitialState.label,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
+      entities: { [docLabel.id]: docLabel },
     };
     expect(
       labelReducer(initial, {
         type: createLabel.fulfilled.type,
-        payload: docLabel
+        payload: docLabel,
       })
     ).toEqual(result);
   });
@@ -238,17 +238,17 @@ describe("LabelSlice", () => {
     const initial = {
       ...rootInitialState.label,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
+      entities: { [docLabel.id]: docLabel },
     };
     const result = {
       ...rootInitialState.label,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: { ...docLabel, name: updatedName } }
+      entities: { [docLabel.id]: { ...docLabel, name: updatedName } },
     };
     expect(
       labelReducer(initial, {
         type: patchLabel.fulfilled.type,
-        payload: { id: docLabel.id, color: docLabel.color, name: updatedName }
+        payload: { id: docLabel.id, color: docLabel.color, name: updatedName },
       })
     ).toEqual(result);
   });
@@ -257,17 +257,17 @@ describe("LabelSlice", () => {
     const initial = {
       ...rootInitialState.label,
       ids: [docLabel.id],
-      entities: { [docLabel.id]: docLabel }
+      entities: { [docLabel.id]: docLabel },
     };
     const result = {
       ...rootInitialState.label,
       ids: [],
-      entities: {}
+      entities: {},
     };
     expect(
       labelReducer(initial, {
         type: deleteLabel.fulfilled.type,
-        payload: docLabel.id
+        payload: docLabel.id,
       })
     ).toEqual(result);
   });

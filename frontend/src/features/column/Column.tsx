@@ -6,7 +6,7 @@ import { ITask } from "types";
 import {
   Draggable,
   DraggableProvided,
-  DraggableStateSnapshot
+  DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 import TaskList from "features/task/TaskList";
 import ColumnTitle from "components/ColumnTitle";

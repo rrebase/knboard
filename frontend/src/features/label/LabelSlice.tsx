@@ -2,7 +2,7 @@ import {
   createSlice,
   createEntityAdapter,
   createAsyncThunk,
-  PayloadAction
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import { Label, Id } from "types";
 import { fetchBoardById } from "features/board/BoardSlice";
@@ -51,7 +51,7 @@ export const deleteLabel = createAsyncThunk<Id, Id>(
 );
 
 const labelAdapter = createEntityAdapter<Label>({
-  sortComparer: (a, b) => a.name.localeCompare(b.name)
+  sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
 interface ExtraInitialState {
@@ -59,7 +59,7 @@ interface ExtraInitialState {
 }
 
 export const initialState = labelAdapter.getInitialState<ExtraInitialState>({
-  dialogOpen: false
+  dialogOpen: false,
 });
 
 export const slice = createSlice({
@@ -68,9 +68,9 @@ export const slice = createSlice({
   reducers: {
     setDialogOpen: (state, action: PayloadAction<boolean>) => {
       state.dialogOpen = action.payload;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       labelAdapter.setAll(state, action.payload.labels);
     });
@@ -84,7 +84,7 @@ export const slice = createSlice({
     builder.addCase(deleteLabel.fulfilled, (state, action) => {
       labelAdapter.removeOne(state, action.payload);
     });
-  }
+  },
 });
 
 export const { setDialogOpen } = slice.actions;
@@ -95,7 +95,7 @@ export const labelSelectors = labelAdapter.getSelectors(
 
 export const {
   selectAll: selectAllLabels,
-  selectEntities: selectLabelEntities
+  selectEntities: selectLabelEntities,
 } = labelSelectors;
 
 export default slice.reducer;

@@ -43,7 +43,7 @@ const LabelRow = ({ label }: RowProps) => {
   const detail = useSelector((state: RootState) => state.board.detail);
   const methods = useForm<DialogFormData>({
     defaultValues: { name: label.name, color: label.color },
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const onSubmit = methods.handleSubmit(({ name, color }) => {

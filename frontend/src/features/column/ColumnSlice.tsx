@@ -1,7 +1,7 @@
 import {
   createSlice,
   createEntityAdapter,
-  createAsyncThunk
+  createAsyncThunk,
 } from "@reduxjs/toolkit";
 import { fetchBoardById } from "features/board/BoardSlice";
 import { IColumn, Id } from "types";
@@ -11,11 +11,11 @@ import { RootState, AppDispatch, AppThunk } from "store";
 
 export const addColumn = createAsyncThunk<IColumn, number>(
   "column/addColumnStatus",
-  async boardId => {
+  async (boardId) => {
     const response = await api.post(`${API_COLUMNS}`, {
       board: boardId,
       title: "new column",
-      tasks: []
+      tasks: [],
     });
     return response.data;
   }
@@ -50,16 +50,16 @@ export const slice = createSlice({
   name: "column",
   initialState,
   reducers: {
-    setColumns: columnAdapter.setAll
+    setColumns: columnAdapter.setAll,
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       columnAdapter.setAll(
         state,
-        action.payload.columns.map(column => ({
+        action.payload.columns.map((column) => ({
           id: column.id,
           title: column.title,
-          board: action.payload.id
+          board: action.payload.id,
         }))
       );
     });
@@ -69,13 +69,13 @@ export const slice = createSlice({
     builder.addCase(patchColumn.fulfilled, (state, action) => {
       columnAdapter.updateOne(state, {
         id: action.payload.id,
-        changes: { title: action.payload.title }
+        changes: { title: action.payload.title },
       });
     });
     builder.addCase(deleteColumn.fulfilled, (state, action) => {
       columnAdapter.removeOne(state, action.payload);
     });
-  }
+  },
 });
 
 export const { setColumns } = slice.actions;
@@ -86,7 +86,7 @@ export const columnSelectors = columnAdapter.getSelectors(
 
 export const {
   selectAll: selectAllColumns,
-  selectEntities: selectColumnsEntities
+  selectEntities: selectColumnsEntities,
 } = columnSelectors;
 
 /**
@@ -101,7 +101,7 @@ export const updateColumns = (columns: IColumn[]): AppThunk => async (
   try {
     dispatch(setColumns(columns));
     await api.post(API_SORT_COLUMNS, {
-      order: columns.map(col => col.id)
+      order: columns.map((col) => col.id),
     });
   } catch (err) {
     dispatch(setColumns(previousColumns));

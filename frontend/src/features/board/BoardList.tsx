@@ -137,7 +137,7 @@ const BoardList = () => {
         </Title>
         <Cards>
           <Grid container spacing={2}>
-            {boards.map(board => {
+            {boards.map((board) => {
               return (
                 <Card
                   key={board.id}

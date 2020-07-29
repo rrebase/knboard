@@ -3,7 +3,7 @@ import api, {
   API_LOGIN,
   API_LOGOUT,
   API_REGISTER,
-  API_GUEST_REGISTER
+  API_GUEST_REGISTER,
 } from "api";
 import { User } from "types";
 import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
@@ -11,7 +11,7 @@ import { AxiosError } from "axios";
 import {
   updateUser,
   updateAvatarFulfilled,
-  resetProfile
+  resetProfile,
 } from "features/profile/ProfileSlice";
 
 interface InitialState {
@@ -25,7 +25,7 @@ export const initialState: InitialState = {
   user: null,
   loginLoading: false,
   loginErrors: undefined,
-  registerErrors: undefined
+  registerErrors: undefined,
 };
 
 interface ValidationErrors {
@@ -118,13 +118,13 @@ export const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    clearErrors: state => {
+    clearErrors: (state) => {
       state.loginErrors = undefined;
       state.registerErrors = undefined;
-    }
+    },
   },
-  extraReducers: builder => {
-    builder.addCase(login.pending, state => {
+  extraReducers: (builder) => {
+    builder.addCase(login.pending, (state) => {
       state.loginLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
@@ -136,10 +136,10 @@ export const slice = createSlice({
       state.loginErrors = action.payload;
       state.loginLoading = false;
     });
-    builder.addCase(logout.fulfilled, state => {
+    builder.addCase(logout.fulfilled, (state) => {
       state.user = null;
     });
-    builder.addCase(logout.rejected, state => {
+    builder.addCase(logout.rejected, (state) => {
       state.user = null;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
@@ -163,7 +163,7 @@ export const slice = createSlice({
         state.user.photo_url = action.payload.photo;
       }
     });
-  }
+  },
 });
 
 export const { clearErrors } = slice.actions;

@@ -6,7 +6,7 @@ import { ITask } from "types";
 import {
   DroppableProvided,
   DroppableStateSnapshot,
-  Droppable
+  Droppable,
 } from "react-beautiful-dnd";
 import Task from "./Task";
 import AddTask from "./AddTask";
@@ -29,7 +29,7 @@ const Wrapper = styled.div<{
   isDraggingOver: boolean;
   isDraggingFrom: boolean;
 }>`
-  background-color: ${props =>
+  background-color: ${(props) =>
     getBackgroundColor(props.isDraggingOver, props.isDraggingFrom)};
   display: flex;
   flex-direction: column;

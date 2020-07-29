@@ -7,7 +7,7 @@ import api, { API_BOARDS } from "api";
 import { useDispatch } from "react-redux";
 import {
   createErrorToast,
-  createSuccessToast
+  createSuccessToast,
 } from "features/toast/ToastSlice";
 import { BoardMember } from "types";
 import { addBoardMembers } from "features/member/MemberSlice";
@@ -54,7 +54,7 @@ const MemberInvite = ({ boardId }: Props) => {
       dispatch(addBoardMembers(newMembers));
       dispatch(
         createSuccessToast(
-          `Invited ${newMembers.map(m => m.username).join(", ")}`
+          `Invited ${newMembers.map((m) => m.username).join(", ")}`
         )
       );
       handleClose();
@@ -65,7 +65,7 @@ const MemberInvite = ({ boardId }: Props) => {
   };
 
   const handleClickInvite = () => {
-    postInviteMember(tagsValue.map(v => v.id));
+    postInviteMember(tagsValue.map((v) => v.id));
   };
 
   return (
@@ -91,11 +91,11 @@ const MemberInvite = ({ boardId }: Props) => {
         getContentAnchorEl={null}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left"
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "left"
+          horizontal: "left",
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}

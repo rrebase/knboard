@@ -6,7 +6,7 @@ import { css } from "@emotion/core";
 import {
   usePopupState,
   bindTrigger,
-  bindPopover
+  bindPopover,
 } from "material-ui-popup-state/hooks";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
@@ -77,7 +77,7 @@ const UserAvatar = () => {
   const dispatch = useDispatch();
   const popupState = usePopupState({
     variant: "popover",
-    popupId: "avatarPopover"
+    popupId: "avatarPopover",
   });
 
   const handleChangeAvatar = async (id: number) => {
@@ -129,7 +129,7 @@ const UserAvatar = () => {
             </Button>
           </GridTitle>
           <Grid container>
-            {avatars.map(avatar => (
+            {avatars.map((avatar) => (
               <Grid item xs={3} key={avatar.id}>
                 <img
                   onClick={() => handleChangeAvatar(avatar.id)}

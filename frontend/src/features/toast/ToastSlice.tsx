@@ -10,7 +10,7 @@ interface InitialState {
 export const initialState: InitialState = {
   open: false,
   message: null,
-  severity: "success"
+  severity: "success",
 };
 
 export const slice = createSlice({
@@ -32,17 +32,17 @@ export const slice = createSlice({
       state.message = action.payload;
       state.severity = "error";
     },
-    clearToast: state => {
+    clearToast: (state) => {
       state.open = false;
-    }
-  }
+    },
+  },
 });
 
 export const {
   createSuccessToast,
   createInfoToast,
   createErrorToast,
-  clearToast
+  clearToast,
 } = slice.actions;
 
 export default slice.reducer;
