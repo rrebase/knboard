@@ -137,16 +137,18 @@ const BoardList = () => {
         </Title>
         <Cards>
           <Grid container spacing={2}>
-            {boards.map(board => (
-              <Card
-                key={board.id}
-                cardCss={boardCardStyles}
-                to={`/b/${board.id}`}
-                isOwner={board.owner === userId}
-              >
-                {board.name}
-              </Card>
-            ))}
+            {boards.map(board => {
+              return (
+                <Card
+                  key={board.id}
+                  cardCss={boardCardStyles}
+                  to={`/b/${board.id}`}
+                  isOwner={board.owner === userId}
+                >
+                  {board.name}
+                </Card>
+              );
+            })}
             <Grid item xs={6} sm={4} key="new-board">
               <NewBoardDialog />
             </Grid>
