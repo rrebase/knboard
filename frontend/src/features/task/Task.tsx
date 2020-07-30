@@ -78,7 +78,6 @@ const CardIcon = styled.div`
   font-size: 0.75rem;
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TaskId = styled.small`
   flex-grow: 1;
   flex-shrink: 1;

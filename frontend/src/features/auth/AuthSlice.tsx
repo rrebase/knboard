@@ -159,6 +159,7 @@ export const slice = createSlice({
     });
     builder.addCase(updateAvatarFulfilled, (state, action) => {
       if (state.user) {
+        // eslint-disable-next-line
         state.user.photo_url = action.payload.photo;
       }
     });
