@@ -4,7 +4,7 @@ import { ITask, BoardMember } from "types";
 import {
   DraggableProvided,
   Draggable,
-  DraggableStateSnapshot
+  DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 import { N30, N0, N70, PRIMARY } from "utils/colors";
 import { PRIO_COLORS } from "const";
@@ -40,8 +40,8 @@ interface ContainerProps {
 }
 
 const Container = styled.span<ContainerProps>`
-  border-color: ${props => getBorderColor(props.isDragging)};
-  background-color: ${props =>
+  border-color: ${(props) => getBorderColor(props.isDragging)};
+  background-color: ${(props) =>
     getBackgroundColor(props.isDragging, props.isGroupedOver)};
   box-shadow: ${({ isDragging }) =>
     isDragging ? `2px 2px 1px ${N70}` : "none"};
@@ -100,14 +100,14 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
   return {
     ...provided.draggableProps.style,
-    ...style
+    ...style,
   };
 };
 
 export const TaskFooter = ({ task }: { task: ITask }) => {
   const membersByIds = useSelector(selectMembersEntities);
   const assignees = task.assignees.map(
-    assigneeId => membersByIds[assigneeId]
+    (assigneeId) => membersByIds[assigneeId]
   ) as BoardMember[];
 
   return (
@@ -129,7 +129,7 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
               }
             `}
           >
-            {assignees.map(assignee => (
+            {assignees.map((assignee) => (
               <Avatar
                 key={assignee.id}
                 css={css`

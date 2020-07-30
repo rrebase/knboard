@@ -5,7 +5,7 @@ import {
   TextField,
   Dialog,
   DialogContent,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { css } from "@emotion/core";
@@ -53,7 +53,7 @@ const RegisterDialog = () => {
     dispatch(clearErrors());
   };
 
-  const onSubmit = handleSubmit(fields => {
+  const onSubmit = handleSubmit((fields) => {
     dispatch(registerUser(fields));
   });
 
@@ -98,7 +98,7 @@ const RegisterDialog = () => {
                   margin-bottom: 0.75rem;
                 `}
               >
-                {apiErrors.non_field_errors?.map(errorMsg => (
+                {apiErrors.non_field_errors?.map((errorMsg) => (
                   <div key={errorMsg}>{errorMsg}</div>
                 ))}
               </Alert>

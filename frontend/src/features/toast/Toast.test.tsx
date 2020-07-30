@@ -5,7 +5,7 @@ import toastReducer, {
   createSuccessToast,
   createInfoToast,
   createErrorToast,
-  clearToast
+  clearToast,
 } from "./ToastSlice";
 import { renderWithProviders, rootInitialState } from "utils/testHelpers";
 import { TOAST_AUTO_HIDE_DURATION } from "const";
@@ -18,8 +18,8 @@ it("should show toast and auto hide", () => {
       ...rootInitialState.toast,
       open: true,
       message: "Ready!",
-      severity: "success"
-    }
+      severity: "success",
+    },
   });
   expect(screen.getByText("Ready!")).toBeVisible();
   fireEvent.click(screen.getByTestId("toast-close"));
@@ -34,13 +34,13 @@ it("should create success toast", () => {
   expect(
     toastReducer(rootInitialState.toast, {
       type: createSuccessToast.type,
-      payload: "Ready!"
+      payload: "Ready!",
     })
   ).toEqual({
     ...rootInitialState.toast,
     open: true,
     message: "Ready!",
-    severity: "success"
+    severity: "success",
   });
 });
 
@@ -48,13 +48,13 @@ it("should create info toast", () => {
   expect(
     toastReducer(rootInitialState.toast, {
       type: createInfoToast.type,
-      payload: "Update available!"
+      payload: "Update available!",
     })
   ).toEqual({
     ...rootInitialState.toast,
     open: true,
     message: "Update available!",
-    severity: "info"
+    severity: "info",
   });
 });
 
@@ -62,13 +62,13 @@ it("should create error toast", () => {
   expect(
     toastReducer(rootInitialState.toast, {
       type: createErrorToast.type,
-      payload: "Failed!"
+      payload: "Failed!",
     })
   ).toEqual({
     ...rootInitialState.toast,
     open: true,
     message: "Failed!",
-    severity: "error"
+    severity: "error",
   });
 });
 
@@ -78,11 +78,11 @@ it("should clear toast", () => {
       { ...rootInitialState.toast, open: true },
       {
         type: clearToast.type,
-        payload: undefined
+        payload: undefined,
       }
     )
   ).toEqual({
     ...rootInitialState.toast,
-    open: false
+    open: false,
   });
 });

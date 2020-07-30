@@ -79,7 +79,7 @@ export const createMdEditorStyles = (editing: boolean) => css`
       border-bottom-left-radius: ${borderRadius}px;
       border-bottom-right-radius: ${borderRadius}px;
       ${editing &&
-        `border-top-left-radius: ${borderRadius}px;
+      `border-top-left-radius: ${borderRadius}px;
       border-top-right-radius: ${borderRadius}px;`}
     }
   }

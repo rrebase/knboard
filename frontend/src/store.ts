@@ -24,13 +24,13 @@ export const rootReducer = combineReducers({
   task: taskReducer,
   member: memberReducer,
   label: labelReducer,
-  responsive: responsiveReducer
+  responsive: responsiveReducer,
 });
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
   preloadedState: loadState() || {},
-  reducer: rootReducer
+  reducer: rootReducer,
 });
 
 store.subscribe(() => {
@@ -38,8 +38,8 @@ store.subscribe(() => {
   saveState({
     auth: {
       ...authInitialState,
-      user: state.auth.user
-    }
+      user: state.auth.user,
+    },
   });
 });
 

@@ -27,7 +27,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<UserOption[]>([]);
   const [debouncedInput] = useDebounce(inputValue, 300, {
-    equalityFn: (a, b) => a === b
+    equalityFn: (a, b) => a === b,
   });
 
   useEffect(() => {
@@ -97,14 +97,14 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       getOptionSelected={(option, value) => option.username === value.username}
-      getOptionLabel={option => option.username}
+      getOptionLabel={(option) => option.username}
       filterSelectedOptions
       onChange={handleTagsChange}
       options={options}
       loading={loading}
       value={tagsValue}
-      renderOption={option => <AvatarOption option={option} />}
-      renderInput={params => (
+      renderOption={(option) => <AvatarOption option={option} />}
+      renderInput={(params) => (
         <TextField
           {...params}
           autoFocus
@@ -118,7 +118,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
                 {loading && <CircularProgress color="inherit" size={20} />}
                 {params.InputProps.endAdornment}
               </>
-            )
+            ),
           }}
         />
       )}

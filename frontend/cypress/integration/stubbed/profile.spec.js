@@ -22,9 +22,7 @@ context("Profile", () => {
     cy.route("PUT", "/api/users/1/", "fixture:testuser_update.json");
     cy.findByLabelText("First name").clear();
     cy.findByLabelText("Last name").clear();
-    cy.findByLabelText("Email")
-      .clear()
-      .type("newmail@gmail.com");
+    cy.findByLabelText("Email").clear().type("newmail@gmail.com");
     cy.findByText("Save").click();
     cy.findByText("User saved").should("be.visible");
   });

@@ -5,7 +5,7 @@ import {
   Droppable,
   DroppableProvided,
   DraggableLocation,
-  DropResult
+  DropResult,
 } from "react-beautiful-dnd";
 import Column from "features/column";
 import { IColumn } from "types";
@@ -99,7 +99,7 @@ const Board = () => {
     const data = reorderTasks({
       tasksByColumn,
       source,
-      destination
+      destination,
     });
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };
@@ -135,7 +135,7 @@ const Board = () => {
                     title={column.title}
                     index={index}
                     tasks={tasksByColumn[column.id].map(
-                      taskId => tasksById[taskId]
+                      (taskId) => tasksById[taskId]
                     )}
                   />
                 ))}

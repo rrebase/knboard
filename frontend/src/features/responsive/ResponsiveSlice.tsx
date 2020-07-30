@@ -6,7 +6,7 @@ interface InitialState {
 }
 
 export const initialState: InitialState = {
-  mobileDrawerOpen: false
+  mobileDrawerOpen: false,
 };
 
 export const slice = createSlice({
@@ -15,8 +15,8 @@ export const slice = createSlice({
   reducers: {
     setMobileDrawerOpen: (state, action: PayloadAction<boolean>) => {
       state.mobileDrawerOpen = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { setMobileDrawerOpen } = slice.actions;

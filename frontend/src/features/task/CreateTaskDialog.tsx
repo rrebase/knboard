@@ -5,7 +5,7 @@ import {
   Button,
   CircularProgress,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { RootState } from "store";
@@ -24,7 +24,7 @@ import {
   PRIORITY_2,
   MD_EDITOR_PLUGINS,
   MD_EDITOR_CONFIG,
-  Key
+  Key,
 } from "const";
 import { selectAllMembers } from "features/member/MemberSlice";
 import { Priority, BoardMember, Label } from "types";
@@ -82,7 +82,7 @@ const CreateTaskDialog = () => {
   const [assignees, setAssignees] = useState<BoardMember[]>([]);
   const [priority, setPriority] = useState<Priority | null>({
     value: "M",
-    label: "Medium"
+    label: "Medium",
   });
   const [labels, setLabels] = useState<Label[]>([]);
   const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
@@ -117,9 +117,9 @@ const CreateTaskDialog = () => {
         title,
         description,
         column: columnId,
-        labels: labels.map(l => l.id),
-        assignees: assignees.map(a => a.id),
-        priority: priority.value
+        labels: labels.map((l) => l.id),
+        assignees: assignees.map((a) => a.id),
+        priority: priority.value,
       };
       dispatch(createTask(newTask));
     }
@@ -149,7 +149,7 @@ const CreateTaskDialog = () => {
           data-testid="create-task-title"
           label="Title"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           variant="outlined"
           fullWidth
           size="small"
@@ -162,7 +162,7 @@ const CreateTaskDialog = () => {
             plugins={MD_EDITOR_PLUGINS}
             config={MD_EDITOR_CONFIG}
             value={description}
-            renderHTML={text => mdParser.render(text)}
+            renderHTML={(text) => mdParser.render(text)}
             onChange={handleEditorChange}
             placeholder="Describe the issue..."
           />
@@ -176,11 +176,11 @@ const CreateTaskDialog = () => {
           id="create-assignee-select"
           size="small"
           options={members}
-          getOptionLabel={option => option.username}
+          getOptionLabel={(option) => option.username}
           value={assignees}
           onChange={(_event, value) => setAssignees(value)}
-          renderOption={option => <AvatarOption option={option} />}
-          renderInput={params => (
+          renderOption={(option) => <AvatarOption option={option} />}
+          renderInput={(params) => (
             <TextField {...params} label="Assignees" variant="outlined" />
           )}
           renderTags={(value, getTagProps) =>
@@ -203,11 +203,11 @@ const CreateTaskDialog = () => {
           size="small"
           autoHighlight
           options={PRIORITY_OPTIONS}
-          getOptionLabel={option => option.label}
+          getOptionLabel={(option) => option.label}
           value={priority}
           onChange={(_: any, value: Priority | null) => setPriority(value)}
-          renderOption={option => <PriorityOption option={option} />}
-          renderInput={params => (
+          renderOption={(option) => <PriorityOption option={option} />}
+          renderInput={(params) => (
             <TextField {...params} label="Priority" variant="outlined" />
           )}
           openOnFocus
@@ -226,10 +226,10 @@ const CreateTaskDialog = () => {
           autoHighlight
           openOnFocus
           options={labelsOptions}
-          getOptionLabel={option => option.name}
+          getOptionLabel={(option) => option.name}
           value={labels}
           onChange={(_, newLabels) => setLabels(newLabels)}
-          renderInput={params => (
+          renderInput={(params) => (
             <TextField {...params} label="Labels" variant="outlined" />
           )}
           renderTags={(value, getTagProps) =>
@@ -242,7 +242,7 @@ const CreateTaskDialog = () => {
               />
             ))
           }
-          renderOption={option => <LabelChip label={option} size="small" />}
+          renderOption={(option) => <LabelChip label={option} size="small" />}
           css={css`
             margin-top: 1rem;
             width: 100%;

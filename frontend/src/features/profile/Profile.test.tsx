@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import {
   renderWithProviders,
   rootInitialState,
-  axiosMock
+  axiosMock,
 } from "utils/testHelpers";
 import { API_USERS } from "api";
 import { UserDetail } from "types";
@@ -19,7 +19,7 @@ const steveDetail: UserDetail = {
   email: "steve@gmail.com",
   avatar: null,
   date_joined: new Date().toISOString(),
-  is_guest: false
+  is_guest: false,
 };
 
 it("should handle null userDetail", () => {
@@ -32,8 +32,8 @@ it("should render default values", () => {
     ...rootInitialState,
     profile: {
       ...rootInitialState.profile,
-      userDetail: steveDetail
-    }
+      userDetail: steveDetail,
+    },
   });
   expect(screen.getByText(/About/i)).toBeVisible();
 
@@ -46,23 +46,23 @@ it("should render default values", () => {
 it("should update username", async () => {
   axiosMock.onPut(`${API_USERS}${steveDetail.id}/`).reply(200, {
     ...steveDetail,
-    username: "newsteve"
+    username: "newsteve",
   });
 
   renderWithProviders(<Profile />, {
     ...rootInitialState,
     auth: {
       ...rootInitialState.auth,
-      user: steveAuthUser
+      user: steveAuthUser,
     },
     profile: {
       ...rootInitialState.profile,
-      userDetail: steveDetail
-    }
+      userDetail: steveDetail,
+    },
   });
 
   fireEvent.change(screen.getByLabelText("Username"), {
-    target: { value: "newsteve" }
+    target: { value: "newsteve" },
   });
   await act(async () => {
     fireEvent.click(screen.getByTestId("profile-save"));
@@ -74,17 +74,17 @@ it("should show validation error for email field", async () => {
     ...rootInitialState,
     auth: {
       ...rootInitialState.auth,
-      user: steveAuthUser
+      user: steveAuthUser,
     },
     profile: {
       ...rootInitialState.profile,
-      userDetail: steveDetail
-    }
+      userDetail: steveDetail,
+    },
   });
 
   await act(async () => {
     fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "bad@." }
+      target: { value: "bad@." },
     });
     fireEvent.click(screen.getByTestId("profile-save"));
   });
@@ -96,12 +96,12 @@ it("should show warning for guest", async () => {
     ...rootInitialState,
     auth: {
       ...rootInitialState.auth,
-      user: steveAuthUser
+      user: steveAuthUser,
     },
     profile: {
       ...rootInitialState.profile,
-      userDetail: { ...steveDetail, is_guest: true }
-    }
+      userDetail: { ...steveDetail, is_guest: true },
+    },
   });
 
   expect(screen.getByText("Warning")).toBeVisible();

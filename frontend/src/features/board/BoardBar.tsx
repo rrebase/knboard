@@ -22,7 +22,7 @@ import LabelDialog from "features/label/LabelDialog";
 import { useParams } from "react-router-dom";
 import {
   selectAllMembers,
-  setMemberListOpen
+  setMemberListOpen,
 } from "features/member/MemberSlice";
 import MemberListDialog from "features/member/MemberList";
 
@@ -109,7 +109,7 @@ const BoardBar = () => {
               }
             }}
           >
-            {members.map(member => (
+            {members.map((member) => (
               <MemberDetail
                 key={member.id}
                 member={member}

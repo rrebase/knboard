@@ -9,7 +9,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   mobileDrawerOpen,
-  setMobileDrawerOpen
+  setMobileDrawerOpen,
 } from "features/responsive/ResponsiveSlice";
 
 const Container = styled.div`

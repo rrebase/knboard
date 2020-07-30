@@ -8,7 +8,7 @@ import {
   InputAdornment,
   Hidden,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
@@ -44,7 +44,7 @@ const LabelDialog = () => {
   const [creating, setCreating] = useState(false);
   const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const filteredLabels = labels.filter(label =>
+  const filteredLabels = labels.filter((label) =>
     label.name.toLowerCase().match(searchValue.trim().toLowerCase())
   );
 
@@ -76,7 +76,7 @@ const LabelDialog = () => {
             <Hidden xsDown implementation="css">
               <TextField
                 value={searchValue}
-                onChange={e => setSearchValue(e.target.value)}
+                onChange={(e) => setSearchValue(e.target.value)}
                 placeholder="Search labels"
                 InputProps={{
                   startAdornment: (
@@ -88,7 +88,7 @@ const LabelDialog = () => {
                     >
                       <FontAwesomeIcon icon={faSearch} />
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
             </Hidden>
@@ -107,7 +107,7 @@ const LabelDialog = () => {
         </Flex>
         {creating && <LabelCreate setCreating={setCreating} />}
         <Table>
-          {filteredLabels.map(label => (
+          {filteredLabels.map((label) => (
             <LabelRow key={label.id + label.color + label.name} label={label} />
           ))}
         </Table>

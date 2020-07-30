@@ -27,7 +27,7 @@ export const rootInitialState = {
   task: taskInitialState,
   member: memberInitialState,
   label: labelInitialState,
-  responsive: responsiveInitialState
+  responsive: responsiveInitialState,
 };
 
 export const axiosMock = new MockAdapter(axios);
@@ -44,6 +44,6 @@ export const renderWithProviders = (
       </MemoryRouter>
     ),
     mockStore: store,
-    getActionsTypes: () => store.getActions().map(a => a.type)
+    getActionsTypes: () => store.getActions().map((a) => a.type),
   };
 };

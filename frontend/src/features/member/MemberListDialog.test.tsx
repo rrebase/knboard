@@ -10,7 +10,7 @@ const member1 = {
   email: "t@t.com",
   first_name: "Ragnar",
   last_name: "Rebase",
-  avatar: null
+  avatar: null,
 };
 
 const member2 = {
@@ -19,7 +19,7 @@ const member2 = {
   email: "steve@gmail.com",
   first_name: "Steve",
   last_name: "Apple",
-  avatar: null
+  avatar: null,
 };
 
 it("should display and search members", async () => {
@@ -29,15 +29,15 @@ it("should display and search members", async () => {
       ...rootInitialState.member,
       memberListOpen: true,
       ids: [member1.id, member2.id],
-      entities: { [member1.id]: member1, [member2.id]: member2 }
-    }
+      entities: { [member1.id]: member1, [member2.id]: member2 },
+    },
   });
   expect(screen.getByText("2 members")).toBeVisible();
   expect(screen.getByText(member1.username)).toBeVisible();
   expect(screen.getByText(member2.username)).toBeVisible();
 
   fireEvent.change(screen.getByPlaceholderText("Search members"), {
-    target: { value: member1.username }
+    target: { value: member1.username },
   });
 
   expect(screen.getByText("1 member")).toBeVisible();
@@ -45,7 +45,7 @@ it("should display and search members", async () => {
   expect(screen.queryByText(member2.username)).toBeNull();
 
   fireEvent.change(screen.getByPlaceholderText("Search members"), {
-    target: { value: "match nothing" }
+    target: { value: "match nothing" },
   });
 
   expect(screen.getByText("0 members")).toBeVisible();

@@ -24,7 +24,7 @@ const LabelChip = ({ label, onCard = false, ...rest }: Props) => {
         border: ${contrastColor === WHITE && "none"};
         border-radius: 4px;
         ${onCard &&
-          `
+        `
           cursor: pointer;
           max-width: fit-content; 
           margin-bottom: 0.125rem; 
@@ -34,7 +34,7 @@ const LabelChip = ({ label, onCard = false, ...rest }: Props) => {
         `}
         .MuiChip-label {
           ${onCard &&
-            `
+          `
             padding: 1px 0.75em;
             line-height: 1.5;
             height: 18px;
