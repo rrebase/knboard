@@ -83,7 +83,10 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
     setInputValue(event.target.value);
   };
 
-  const handleTagsChange = (_event: React.ChangeEvent<{}>, newValues: any) => {
+  const handleTagsChange = (
+    _event: React.ChangeEvent<unknown>,
+    newValues: any
+  ) => {
     setTagsValue(newValues);
     setOptions([]);
   };
