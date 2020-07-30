@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import "@testing-library/cypress/add-commands";
 
 Cypress.Commands.add("e2eLogin", () => {

@@ -2,10 +2,11 @@ import React from "react";
 import LabelFields from "./LabelFields";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { useForm, FormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { createLabel, selectAllLabels } from "./LabelSlice";
 import { getRandomHexColor } from "utils/colors";
 import styled from "@emotion/styled";
+import { ErrorOption } from "react-hook-form/dist/types/form";
 
 const Container = styled.div`
   margin: 0 0.5rem;
@@ -31,7 +32,11 @@ const LabelCreate = ({ setCreating }: Props) => {
 
   const onSubmit = methods.handleSubmit(({ name, color }) => {
     if (labels.map((label) => label.name).includes(name)) {
-      methods.setError("name", "Label already exists");
+      const errorOption: ErrorOption = {
+        type: "createLabel",
+        message: "Label already exists",
+      };
+      methods.setError("name", errorOption);
       return;
     }
     if (boardId) {
@@ -41,7 +46,7 @@ const LabelCreate = ({ setCreating }: Props) => {
   });
 
   return (
-    <FormContext {...methods}>
+    <FormProvider {...methods}>
       <Container>
         <LabelFields
           fieldsId="create"
@@ -49,7 +54,7 @@ const LabelCreate = ({ setCreating }: Props) => {
           setActive={setCreating}
         />
       </Container>
-    </FormContext>
+    </FormProvider>
   );
 };
 

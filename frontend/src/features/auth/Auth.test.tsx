@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
 import { screen, fireEvent, act, waitFor } from "@testing-library/react";
 import {
@@ -76,7 +75,6 @@ it("should show login api errors", async () => {
     ...rootInitialState,
     auth: {
       ...rootInitialState.auth,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       loginErrors: { non_field_errors: [errorMsg] },
     },
   });
@@ -138,7 +136,6 @@ it("should show register api errors", async () => {
     ...rootInitialState,
     auth: {
       ...rootInitialState.auth,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       registerErrors: { non_field_errors: [errorMsg] },
     },
   });

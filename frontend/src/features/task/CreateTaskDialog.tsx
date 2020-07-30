@@ -80,7 +80,7 @@ const CreateTaskDialog = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [assignees, setAssignees] = useState<BoardMember[]>([]);
-  const [priority, setPriority] = useState<Priority | null>({
+  const [priority, setPriority] = useState<Priority | undefined>({
     value: "M",
     label: "Medium",
   });
@@ -205,7 +205,7 @@ const CreateTaskDialog = () => {
           options={PRIORITY_OPTIONS}
           getOptionLabel={(option) => option.label}
           value={priority}
-          onChange={(_: any, value: Priority | null) => setPriority(value)}
+          onChange={(_: any, value: Priority | undefined) => setPriority(value)}
           renderOption={(option) => <PriorityOption option={option} />}
           renderInput={(params) => (
             <TextField {...params} label="Priority" variant="outlined" />
@@ -252,13 +252,7 @@ const CreateTaskDialog = () => {
 
       <Footer theme={theme}>
         <Button
-          startIcon={
-            createLoading ? (
-              <CircularProgress color="inherit" size={16} />
-            ) : (
-              <FontAwesomeIcon icon={faRocket} />
-            )
-          }
+          startIcon={createLoading ? <CircularProgress color="inherit" size={16} /> : <FontAwesomeIcon icon={faRocket} />}
           variant="contained"
           color="primary"
           size="small"

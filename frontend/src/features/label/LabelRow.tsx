@@ -6,7 +6,7 @@ import { RootState } from "store";
 import { patchLabel, deleteLabel } from "./LabelSlice";
 import { css } from "@emotion/core";
 import { Label } from "types";
-import { useForm, FormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { borderRadius } from "const";
 import Flex from "components/Flex";
 import LabelFields from "./LabelFields";
@@ -99,7 +99,7 @@ const LabelRow = ({ label }: RowProps) => {
           </Button>
         </Flex>
       </Flex>
-      <FormContext {...methods}>
+      <FormProvider {...methods}>
         {editing && (
           <LabelFields
             fieldsId={label.id.toString()}
@@ -107,7 +107,7 @@ const LabelRow = ({ label }: RowProps) => {
             setActive={setEditing}
           />
         )}
-      </FormContext>
+      </FormProvider>
     </RowDiv>
   );
 };

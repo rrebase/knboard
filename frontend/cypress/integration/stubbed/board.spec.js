@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /// <reference types="cypress" />
 import * as keyCodes from "../../util";
 

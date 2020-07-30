@@ -10,7 +10,6 @@ import { API_USERS } from "api";
 import { UserDetail } from "types";
 import { steveAuthUser } from "features/auth/Auth.test";
 
-/* eslint-disable @typescript-eslint/camelcase */
 const steveDetail: UserDetail = {
   id: 1,
   username: "steve",

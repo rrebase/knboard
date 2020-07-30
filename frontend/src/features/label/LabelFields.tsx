@@ -27,17 +27,11 @@ interface Props {
 
 const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
   const theme = useTheme();
-  const {
-    register,
-    setValue,
-    triggerValidation,
-    watch,
-    errors,
-  } = useFormContext();
+  const { register, setValue, trigger, watch, errors } = useFormContext();
 
   const setRandomColor = () => {
     setValue("color", getRandomHexColor());
-    triggerValidation();
+    trigger();
   };
   const pendingColor = watch("color");
 

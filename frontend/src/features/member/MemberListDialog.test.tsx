@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import { rootInitialState, renderWithProviders } from "utils/testHelpers";
