@@ -252,7 +252,7 @@ const CreateTaskDialog = () => {
 
       <Footer theme={theme}>
         <Button
-          startIcon={createLoading ? <CircularProgress color="inherit" size={16} /> : <FontAwesomeIcon icon={faRocket} />}
+          // startIcon={createLoading ? (<CircularProgress color="inherit" size={16} />) : (<FontAwesomeIcon icon={faRocket} />)}
           variant="contained"
           color="primary"
           size="small"
