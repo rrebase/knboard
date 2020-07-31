@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Color } from "@material-ui/lab/Alert";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Color } from '@material-ui/lab/Alert';
 
 interface InitialState {
   open: boolean;
@@ -10,39 +10,39 @@ interface InitialState {
 export const initialState: InitialState = {
   open: false,
   message: null,
-  severity: "success",
+  severity: 'success'
 };
 
 export const slice = createSlice({
-  name: "toast",
+  name: 'toast',
   initialState,
   reducers: {
     createSuccessToast: (state, action: PayloadAction<string>) => {
       state.open = true;
       state.message = action.payload;
-      state.severity = "success";
+      state.severity = 'success';
     },
     createInfoToast: (state, action: PayloadAction<string>) => {
       state.open = true;
       state.message = action.payload;
-      state.severity = "info";
+      state.severity = 'info';
     },
     createErrorToast: (state, action: PayloadAction<string>) => {
       state.open = true;
       state.message = action.payload;
-      state.severity = "error";
+      state.severity = 'error';
     },
     clearToast: (state) => {
       state.open = false;
-    },
-  },
+    }
+  }
 });
 
 export const {
   createSuccessToast,
   createInfoToast,
   createErrorToast,
-  clearToast,
+  clearToast
 } = slice.actions;
 
 export default slice.reducer;

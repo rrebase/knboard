@@ -1,22 +1,22 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from 'store';
 
 interface InitialState {
   mobileDrawerOpen: boolean;
 }
 
 export const initialState: InitialState = {
-  mobileDrawerOpen: false,
+  mobileDrawerOpen: false
 };
 
 export const slice = createSlice({
-  name: "responsive",
+  name: 'responsive',
   initialState,
   reducers: {
     setMobileDrawerOpen: (state, action: PayloadAction<boolean>) => {
       state.mobileDrawerOpen = action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setMobileDrawerOpen } = slice.actions;

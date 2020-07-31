@@ -1,8 +1,12 @@
 {
   "workbench.settings.editor": "json",
+  "editor.renderWhitespace": "none",
+  "editor.autoIndent": "full",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "javascript.format.enable": false,
+  "editor.wordWrap": "off",
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.packageManager": "yarn",
   "eslint.validate": [
@@ -12,7 +16,5 @@
     "typescriptreact"
   ],
   "eslint.workingDirectories": [{ "mode": "auto" }],
-  "[javascript]": { "editor.formatOnSave": false },
-  "[typescript]": { "editor.formatOnSave": false },
   "editor.codeActionsOnSave": { "source.fixAll": true }
 }

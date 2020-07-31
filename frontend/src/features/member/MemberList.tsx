@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   TextField,
@@ -6,22 +6,22 @@ import {
   Avatar,
   DialogTitle,
   useTheme,
-  useMediaQuery,
-} from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+  useMediaQuery
+} from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectAllMembers,
   setMemberListOpen,
-  setDialogMember,
-} from "./MemberSlice";
-import { RootState } from "store";
-import styled from "@emotion/styled";
-import Flex from "components/Flex";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { css } from "@emotion/core";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { avatarStyles } from "styles";
-import Close from "components/Close";
+  setDialogMember
+} from './MemberSlice';
+import { RootState } from 'store';
+import styled from '@emotion/styled';
+import Flex from 'components/Flex';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { css } from '@emotion/core';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { avatarStyles } from 'styles';
+import Close from 'components/Close';
 
 const Container = styled.div`
   height: 500px;
@@ -47,8 +47,8 @@ const MemberListDialog = () => {
   const dispatch = useDispatch();
   const members = useSelector(selectAllMembers);
   const open = useSelector((state: RootState) => state.member.memberListOpen);
-  const [searchValue, setSearchValue] = useState("");
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const [searchValue, setSearchValue] = useState('');
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
 
   const filteredMembers = members.filter((member) =>
     member.username.toLowerCase().match(searchValue.trim().toLowerCase())
@@ -56,7 +56,7 @@ const MemberListDialog = () => {
 
   const handleClose = () => {
     dispatch(setMemberListOpen(false));
-    setSearchValue("");
+    setSearchValue('');
   };
 
   const handleClick = (memberId: number) => {
@@ -77,13 +77,13 @@ const MemberListDialog = () => {
         <Flex
           css={css`
             margin: 1.5rem 2rem 0rem 2rem;
-            ${theme.breakpoints.down("xs")} {
+            ${theme.breakpoints.down('xs')} {
               flex-direction: column;
             }
           `}
         >
           <LabelCount>
-            {filteredMembers.length} member{filteredMembers.length !== 1 && "s"}{" "}
+            {filteredMembers.length} member{filteredMembers.length !== 1 && 's'}{' '}
           </LabelCount>
           <div>
             <TextField
@@ -100,7 +100,7 @@ const MemberListDialog = () => {
                   >
                     <FontAwesomeIcon icon={faSearch} />
                   </InputAdornment>
-                ),
+                )
               }}
             />
           </div>

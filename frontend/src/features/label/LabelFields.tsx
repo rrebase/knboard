@@ -1,18 +1,18 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { Button, TextField, IconButton, useTheme } from "@material-ui/core";
-import { css } from "@emotion/core";
+import React from 'react';
+import styled from '@emotion/styled';
+import { Button, TextField, IconButton, useTheme } from '@material-ui/core';
+import { css } from '@emotion/core';
 import {
   TASK_G,
   getContrastColor,
   getRandomHexColor,
   DANGER,
-  BLACK,
-} from "utils/colors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
-import Flex from "components/Flex";
-import { useFormContext } from "react-hook-form";
+  BLACK
+} from 'utils/colors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import Flex from 'components/Flex';
+import { useFormContext } from 'react-hook-form';
 
 const Actions = styled.div`
   display: flex;
@@ -32,19 +32,19 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
     setValue,
     triggerValidation,
     watch,
-    errors,
+    errors
   } = useFormContext();
 
   const setRandomColor = () => {
-    setValue("color", getRandomHexColor());
+    setValue('color', getRandomHexColor());
     triggerValidation();
   };
-  const pendingColor = watch("color");
+  const pendingColor = watch('color');
 
   return (
     <Flex
       css={css`
-        ${theme.breakpoints.down("xs")} {
+        ${theme.breakpoints.down('xs')} {
           flex-direction: column;
         }
       `}
@@ -52,7 +52,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
       <div
         css={css`
           display: flex;
-          ${theme.breakpoints.down("xs")} {
+          ${theme.breakpoints.down('xs')} {
             margin-bottom: 1rem;
           }
         `}
@@ -85,7 +85,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
               ? DANGER
               : getContrastColor(pendingColor)};
             border: ${getContrastColor(pendingColor) === BLACK &&
-            "1px solid #ccc"};
+            '1px solid #ccc'};
             &:hover {
               background-color: ${pendingColor};
             }
@@ -101,7 +101,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
           variant="outlined"
           name="color"
           inputRef={register({
-            pattern: /^#(?:[0-9a-fA-F]{3}){1,2}$/,
+            pattern: /^#(?:[0-9a-fA-F]{3}){1,2}$/
           })}
           error={Boolean(errors.color)}
           css={css`

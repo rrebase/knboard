@@ -1,18 +1,18 @@
-import React from "react";
-import { Avatar, Button, Popover, Grid, Link } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
+import React from 'react';
+import { Avatar, Button, Popover, Grid, Link } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 import {
   usePopupState,
   bindTrigger,
-  bindPopover,
-} from "material-ui-popup-state/hooks";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
-import { updateAvatar } from "./ProfileSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+  bindPopover
+} from 'material-ui-popup-state/hooks';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'store';
+import { updateAvatar } from './ProfileSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const avatarBorderStyles = css`
   cursor: pointer;
@@ -76,8 +76,8 @@ const UserAvatar = () => {
   );
   const dispatch = useDispatch();
   const popupState = usePopupState({
-    variant: "popover",
-    popupId: "avatarPopover",
+    variant: 'popover',
+    popupId: 'avatarPopover'
   });
 
   const handleChangeAvatar = async (id: number) => {
@@ -111,8 +111,8 @@ const UserAvatar = () => {
       <Popover
         {...bindPopover(popupState)}
         keepMounted
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <AvatarListContainer>
           <GridTitle>
@@ -157,14 +157,14 @@ const UserAvatar = () => {
               `}
             >
               <span>
-                Icons made by{" "}
+                Icons made by{' '}
                 <Link
                   href="https://www.flaticon.com/authors/pixel-perfect"
                   title="Pixel perfect"
                 >
                   Pixel perfect
-                </Link>{" "}
-                from{" "}
+                </Link>{' '}
+                from{' '}
                 <Link href="https://www.flaticon.com/" title="Flaticon">
                   www.flaticon.com
                 </Link>

@@ -1,16 +1,16 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { TasksByColumn, ITask, Id, NewTask, PriorityValue } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
-import { AppDispatch, AppThunk, RootState } from "store";
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { TasksByColumn, ITask, Id, NewTask, PriorityValue } from 'types';
+import { fetchBoardById } from 'features/board/BoardSlice';
+import { AppDispatch, AppThunk, RootState } from 'store';
 import {
   createErrorToast,
   createSuccessToast,
-  createInfoToast,
-} from "features/toast/ToastSlice";
-import api, { API_SORT_TASKS, API_TASKS } from "api";
-import { addColumn, deleteColumn } from "features/column/ColumnSlice";
-import { deleteLabel } from "features/label/LabelSlice";
-import { removeBoardMember } from "features/member/MemberSlice";
+  createInfoToast
+} from 'features/toast/ToastSlice';
+import api, { API_SORT_TASKS, API_TASKS } from 'api';
+import { addColumn, deleteColumn } from 'features/column/ColumnSlice';
+import { deleteLabel } from 'features/label/LabelSlice';
+import { removeBoardMember } from 'features/member/MemberSlice';
 
 type TasksById = Record<string, ITask>;
 
@@ -29,7 +29,7 @@ export const initialState: InitialState = {
   createLoading: false,
   createDialogOpen: false,
   createDialogColumn: null,
-  editDialogOpen: null,
+  editDialogOpen: null
 };
 
 interface PatchFields {
@@ -43,7 +43,7 @@ interface PatchFields {
 export const patchTask = createAsyncThunk<
   ITask,
   { id: Id; fields: Partial<PatchFields> }
->("task/patchTaskStatus", async ({ id, fields }) => {
+>('task/patchTaskStatus', async ({ id, fields }) => {
   const response = await api.patch(`${API_TASKS}${id}/`, fields);
   return response.data;
 });
@@ -58,10 +58,10 @@ export const createTask = createAsyncThunk<
   {
     rejectValue: string;
   }
->("task/createTaskStatus", async (task, { dispatch, rejectWithValue }) => {
+>('task/createTaskStatus', async (task, { dispatch, rejectWithValue }) => {
   try {
     const response = await api.post(`${API_TASKS}`, task);
-    dispatch(createSuccessToast("Task created"));
+    dispatch(createSuccessToast('Task created'));
     return response.data;
   } catch (err) {
     return rejectWithValue(err.message);
@@ -69,16 +69,16 @@ export const createTask = createAsyncThunk<
 });
 
 export const deleteTask = createAsyncThunk<Id, Id>(
-  "task/deleteTaskStatus",
+  'task/deleteTaskStatus',
   async (id, { dispatch }) => {
     await api.delete(`${API_TASKS}${id}/`);
-    dispatch(createInfoToast("Task deleted"));
+    dispatch(createInfoToast('Task deleted'));
     return id;
   }
 );
 
 export const slice = createSlice({
-  name: "task",
+  name: 'task',
   initialState,
   reducers: {
     setTasksByColumn: (state, action: PayloadAction<TasksByColumn>) => {
@@ -92,7 +92,7 @@ export const slice = createSlice({
     },
     setEditDialogOpen: (state, action: PayloadAction<Id | null>) => {
       state.editDialogOpen = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
@@ -156,14 +156,14 @@ export const slice = createSlice({
         );
       }
     });
-  },
+  }
 });
 
 export const {
   setTasksByColumn,
   setCreateDialogOpen,
   setCreateDialogColumn,
-  setEditDialogOpen,
+  setEditDialogOpen
 } = slice.actions;
 
 export const updateTasksByColumn = (
@@ -177,7 +177,7 @@ export const updateTasksByColumn = (
     await api.post(API_SORT_TASKS, {
       board: boardId,
       tasks: tasksByColumn,
-      order: Object.values(tasksByColumn).flat(),
+      order: Object.values(tasksByColumn).flat()
     });
   } catch (err) {
     dispatch(setTasksByColumn(previousTasksByColumn));

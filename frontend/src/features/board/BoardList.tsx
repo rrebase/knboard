@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Container, Grid, Tooltip } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAllBoards } from "./BoardSlice";
-import { RootState } from "store";
-import { css, SerializedStyles, keyframes } from "@emotion/core";
-import { Link } from "react-router-dom";
-import NewBoardDialog from "./NewBoardDialog";
-import Spinner from "components/Spinner";
-import { boardCardBaseStyles } from "styles";
-import { faUserAlt, faTh } from "@fortawesome/free-solid-svg-icons";
-import { OWNER_COLOR } from "utils/colors";
+import React from 'react';
+import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Container, Grid, Tooltip } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllBoards } from './BoardSlice';
+import { RootState } from 'store';
+import { css, SerializedStyles, keyframes } from '@emotion/core';
+import { Link } from 'react-router-dom';
+import NewBoardDialog from './NewBoardDialog';
+import Spinner from 'components/Spinner';
+import { boardCardBaseStyles } from 'styles';
+import { faUserAlt, faTh } from '@fortawesome/free-solid-svg-icons';
+import { OWNER_COLOR } from 'utils/colors';
 
 const BoardsSection = styled.div`
   margin-top: 2rem;

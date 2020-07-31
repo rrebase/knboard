@@ -1,9 +1,9 @@
-import React from "react";
-import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import styled from "@emotion/styled";
-import { ReactComponent as Hero } from "static/svg/thoughts.svg";
-import { css } from "@emotion/core";
+import React from 'react';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { ReactComponent as Hero } from 'static/svg/thoughts.svg';
+import { css } from '@emotion/core';
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const Home = () => {
         <Button
           color="primary"
           variant="contained"
-          style={{ textTransform: "none" }}
+          style={{ textTransform: 'none' }}
         >
           View Boards
         </Button>

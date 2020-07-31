@@ -1,16 +1,16 @@
-import React from "react";
-import { Drawer, List, Hidden, Tooltip } from "@material-ui/core";
-import { css } from "@emotion/core";
-import { sidebarWidth } from "const";
-import styled from "@emotion/styled";
-import { ReactComponent as Logo } from "static/svg/logo.svg";
-import { ReactComponent as GitHubIcon } from "static/svg/github.svg";
-import { NavLink, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import { Drawer, List, Hidden, Tooltip } from '@material-ui/core';
+import { css } from '@emotion/core';
+import { sidebarWidth } from 'const';
+import styled from '@emotion/styled';
+import { ReactComponent as Logo } from 'static/svg/logo.svg';
+import { ReactComponent as GitHubIcon } from 'static/svg/github.svg';
+import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   mobileDrawerOpen,
-  setMobileDrawerOpen,
-} from "features/responsive/ResponsiveSlice";
+  setMobileDrawerOpen
+} from 'features/responsive/ResponsiveSlice';
 
 const Container = styled.div`
   height: 100%;
@@ -95,7 +95,7 @@ const DrawerContent = () => {
               cursor: pointer;
             }
           `}
-          onClick={() => history.push("/")}
+          onClick={() => history.push('/')}
         />
       </TopArea>
       <List

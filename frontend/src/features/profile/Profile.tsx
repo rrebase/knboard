@@ -1,21 +1,20 @@
-/* eslint-disable react/jsx-no-undef */
-import React from "react";
+import React from 'react';
 import {
   Container,
   Divider,
   TextField,
   Button,
   useTheme,
-  WithTheme,
-} from "@material-ui/core";
-import styled from "@emotion/styled";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUserDetail, fetchAvatarList, updateUser } from "./ProfileSlice";
-import { RootState } from "store";
-import { css } from "@emotion/core";
-import { useForm } from "react-hook-form";
-import UserAvatar from "./UserAvatar";
-import { Alert, AlertTitle } from "@material-ui/lab";
+  WithTheme
+} from '@material-ui/core';
+import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserDetail, fetchAvatarList, updateUser } from './ProfileSlice';
+import { RootState } from 'store';
+import { css } from '@emotion/core';
+import { useForm } from 'react-hook-form';
+import UserAvatar from './UserAvatar';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const Title = styled.h3`
   margin-top: 2rem;
@@ -26,7 +25,7 @@ const FormContainer = styled.div<WithTheme>`
   margin-top: 2rem;
   display: flex;
   align-items: center;
-  ${(props) => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down('xs')} {
     flex-direction: column;
   }
 `;
@@ -55,7 +54,7 @@ const Profile = () => {
   const apiErrors = useSelector((state: RootState) => state.profile.apiErrors);
   const loading = useSelector((state: RootState) => state.profile.loading);
   const { register, errors, handleSubmit, setError } = useForm<FormData>({
-    mode: "onChange",
+    mode: 'onChange'
   });
 
   React.useEffect(() => {
@@ -67,7 +66,7 @@ const Profile = () => {
     if (apiErrors) {
       for (const errorKey in apiErrors) {
         // @ts-ignore
-        setError(errorKey, "api_error", apiErrors[errorKey]);
+        setError(errorKey, 'api_error', apiErrors[errorKey]);
       }
     }
   }, [apiErrors]);
@@ -104,7 +103,7 @@ const Profile = () => {
               <TextField
                 id="username"
                 name="username"
-                inputRef={register({ required: "This field is required" })}
+                inputRef={register({ required: 'This field is required' })}
                 defaultValue={userDetail.username}
                 helperText={errors.username?.message}
                 error={Boolean(errors.username)}
@@ -149,8 +148,8 @@ const Profile = () => {
                 inputRef={register({
                   pattern: {
                     value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    message: "Invalid email",
-                  },
+                    message: 'Invalid email'
+                  }
                 })}
                 defaultValue={userDetail.email}
                 helperText={errors.email?.message}

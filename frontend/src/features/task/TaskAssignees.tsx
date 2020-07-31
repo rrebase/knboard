@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import {
   Avatar,
   Popper,
   Button,
   PopperProps,
   Popover,
-  TextField,
-} from "@material-ui/core";
-import { css } from "@emotion/core";
-import { PRIMARY } from "utils/colors";
-import { BoardMember, ITask } from "types";
-import { Autocomplete } from "@material-ui/lab";
-import { useSelector, useDispatch } from "react-redux";
+  TextField
+} from '@material-ui/core';
+import { css } from '@emotion/core';
+import { PRIMARY } from 'utils/colors';
+import { BoardMember, ITask } from 'types';
+import { Autocomplete } from '@material-ui/lab';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectAllMembers,
-  selectMembersEntities,
-} from "features/member/MemberSlice";
-import { patchTask } from "./TaskSlice";
+  selectMembersEntities
+} from 'features/member/MemberSlice';
+import { patchTask } from './TaskSlice';
 import {
   modalPopperIndex,
   modalPopperAutocompleteIndex,
-  modalPopperWidth,
-} from "const";
-import AvatarOption from "components/AvatarOption";
-import AvatarTag from "components/AvatarTag";
-import Close from "components/Close";
+  modalPopperWidth
+} from 'const';
+import AvatarOption from 'components/AvatarOption';
+import AvatarTag from 'components/AvatarTag';
+import Close from 'components/Close';
 
 const Container = styled.div`
   margin-bottom: 1rem;
@@ -51,7 +51,7 @@ const AutocompletePopper = (props: PopperProps) => (
     {...props}
     style={{
       zIndex: modalPopperAutocompleteIndex,
-      width: modalPopperWidth - popperXSpacing * 2,
+      width: modalPopperWidth - popperXSpacing * 2
     }}
     placement="bottom-start"
   />
@@ -102,7 +102,7 @@ const TaskAssignees = ({ task }: Props) => {
       dispatch(
         patchTask({
           id: task.id,
-          fields: { assignees: pendingIds },
+          fields: { assignees: pendingIds }
         })
       );
     }
@@ -110,7 +110,7 @@ const TaskAssignees = ({ task }: Props) => {
   };
 
   const open = Boolean(anchorEl);
-  const popoverId = open ? "task-assignees-popover" : undefined;
+  const popoverId = open ? 'task-assignees-popover' : undefined;
 
   return (
     <Container>

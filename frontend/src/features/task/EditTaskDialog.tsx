@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Dialog,
   Button,
@@ -6,37 +6,37 @@ import {
   TextareaAutosize,
   useTheme,
   useMediaQuery,
-  WithTheme,
-} from "@material-ui/core";
-import { RootState } from "store";
-import { useSelector, useDispatch } from "react-redux";
+  WithTheme
+} from '@material-ui/core';
+import { RootState } from 'store';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   setEditDialogOpen,
   deleteTask,
   updateTasksByColumn,
-  patchTask,
-} from "./TaskSlice";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  patchTask
+} from './TaskSlice';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
   faLock,
   faAlignLeft,
-  faCube,
-} from "@fortawesome/free-solid-svg-icons";
-import { createInfoToast } from "features/toast/ToastSlice";
-import { PRIMARY, TASK_G } from "utils/colors";
-import { IColumn, TasksByColumn, Id, Priority, Label } from "types";
+  faCube
+} from '@fortawesome/free-solid-svg-icons';
+import { createInfoToast } from 'features/toast/ToastSlice';
+import { PRIMARY, TASK_G } from 'utils/colors';
+import { IColumn, TasksByColumn, Id, Priority, Label } from 'types';
 import {
   selectAllColumns,
-  selectColumnsEntities,
-} from "features/column/ColumnSlice";
-import { Autocomplete } from "@material-ui/lab";
-import { createMdEditorStyles, descriptionStyles } from "styles";
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import TaskAssignees from "./TaskAssignees";
+  selectColumnsEntities
+} from 'features/column/ColumnSlice';
+import { Autocomplete } from '@material-ui/lab';
+import { createMdEditorStyles, descriptionStyles } from 'styles';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import TaskAssignees from './TaskAssignees';
 import {
   MD_EDITOR_PLUGINS,
   borderRadius,
@@ -46,17 +46,17 @@ import {
   MD_READ_ONLY_CONFIG,
   Key,
   taskDialogHeight,
-  taskSideWidth,
-} from "const";
-import Close from "components/Close";
+  taskSideWidth
+} from 'const';
+import Close from 'components/Close';
 import {
   selectAllLabels,
-  selectLabelEntities,
-} from "features/label/LabelSlice";
-import { formatDistanceToNow } from "date-fns";
-import { getSaveShortcutLabel } from "utils/shortcuts";
-import LabelChip from "components/LabelChip";
-import PriorityOption from "components/PriorityOption";
+  selectLabelEntities
+} from 'features/label/LabelSlice';
+import { formatDistanceToNow } from 'date-fns';
+import { getSaveShortcutLabel } from 'utils/shortcuts';
+import LabelChip from 'components/LabelChip';
+import PriorityOption from 'components/PriorityOption';
 
 const mdParser = new MarkdownIt({ breaks: true });
 
@@ -64,7 +64,7 @@ const Content = styled.div<WithTheme>`
   display: flex;
   padding: 2rem;
   height: ${taskDialogHeight}px;
-  ${(props) => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down('xs')} {
     flex-direction: column;
   }
 `;
@@ -75,7 +75,7 @@ const Main = styled.div`
 
 const Side = styled.div<WithTheme>`
   margin-top: 2rem;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     max-width: ${taskSideWidth}px;
     min-width: ${taskSideWidth}px;
   }
@@ -126,7 +126,7 @@ const EditorWrapper = styled.div<WithTheme & { editing: boolean }>`
         outline: none;
         box-shadow: inset 0 0 0 2px ${PRIMARY};
       `};
-      padding: ${(props) => (props.editing ? "8px" : "0px")} !important;
+      padding: ${(props) => (props.editing ? '8px' : '0px')} !important;
       &.input {
         line-height: 20px;
       }
@@ -162,7 +162,7 @@ const ButtonsContainer = styled.div`
   align-items: flex-start;
 `;
 
-const DESCRIPTION_PLACEHOLDER = "Write here...";
+const DESCRIPTION_PLACEHOLDER = 'Write here...';
 
 const EditTaskDialog = () => {
   const theme = useTheme();
@@ -174,14 +174,14 @@ const EditTaskDialog = () => {
   const tasksByColumn = useSelector((state: RootState) => state.task.byColumn);
   const taskId = useSelector((state: RootState) => state.task.editDialogOpen);
   const tasksById = useSelector((state: RootState) => state.task.byId);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [editingDescription, setEditingDescription] = useState(false);
   const titleTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<MdEditor>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
   const open = taskId !== null;
 
   useEffect(() => {
@@ -223,9 +223,9 @@ const EditTaskDialog = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [wrapperRef, taskId, description]);
 
@@ -233,7 +233,7 @@ const EditTaskDialog = () => {
     if (editingDescription && editorRef && editorRef.current) {
       editorRef.current.setSelection({
         start: 0,
-        end: description.length,
+        end: description.length
       });
     }
   }, [editingDescription]);
@@ -307,7 +307,7 @@ const EditTaskDialog = () => {
     const updatedTasksByColumn: TasksByColumn = {
       ...tasksByColumn,
       [column.id]: current,
-      [value.id]: next,
+      [value.id]: next
     };
     dispatch(updateTasksByColumn(updatedTasksByColumn));
     handleClose();
@@ -320,11 +320,11 @@ const EditTaskDialog = () => {
   };
 
   const handleNotImplemented = () => {
-    dispatch(createInfoToast("Not implemented yet 😟"));
+    dispatch(createInfoToast('Not implemented yet 😟'));
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure? Deleting a task cannot be undone.")) {
+    if (window.confirm('Are you sure? Deleting a task cannot be undone.')) {
       dispatch(deleteTask(task.id));
       handleClose();
     }
@@ -342,7 +342,7 @@ const EditTaskDialog = () => {
     dispatch(
       patchTask({
         id: taskId,
-        fields: { labels: newLabels.map((label) => label.id) },
+        fields: { labels: newLabels.map((label) => label.id) }
       })
     );
   };

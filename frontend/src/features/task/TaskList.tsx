@@ -1,16 +1,16 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { R50, T50, COLUMN_COLOR } from "utils/colors";
-import { grid, barHeight, taskWidth } from "const";
-import { ITask } from "types";
+import React from 'react';
+import styled from '@emotion/styled';
+import { R50, T50, COLUMN_COLOR } from 'utils/colors';
+import { grid, barHeight, taskWidth } from 'const';
+import { ITask } from 'types';
 import {
   DroppableProvided,
   DroppableStateSnapshot,
-  Droppable,
-} from "react-beautiful-dnd";
-import Task from "./Task";
-import AddTask from "./AddTask";
-import { css } from "@emotion/core";
+  Droppable
+} from 'react-beautiful-dnd';
+import Task from './Task';
+import AddTask from './AddTask';
+import { css } from '@emotion/core';
 
 export const getBackgroundColor = (
   isDraggingOver: boolean,

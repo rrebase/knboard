@@ -1,24 +1,24 @@
-import React from "react";
-import styled from "@emotion/styled";
+import React from 'react';
+import styled from '@emotion/styled';
 import {
   DragDropContext,
   Droppable,
   DroppableProvided,
   DraggableLocation,
-  DropResult,
-} from "react-beautiful-dnd";
-import Column from "features/column";
-import { IColumn } from "types";
-import reorder, { reorderTasks } from "utils/reorder";
-import { RootState } from "store";
-import { useSelector, useDispatch } from "react-redux";
-import { updateTasksByColumn } from "features/task/TaskSlice";
-import { updateColumns, columnSelectors } from "features/column/ColumnSlice";
-import { useParams } from "react-router-dom";
-import { fetchBoardById } from "./BoardSlice";
-import Spinner from "components/Spinner";
-import { barHeight, sidebarWidth } from "const";
-import PageError from "components/PageError";
+  DropResult
+} from 'react-beautiful-dnd';
+import Column from 'features/column';
+import { IColumn } from 'types';
+import reorder, { reorderTasks } from 'utils/reorder';
+import { RootState } from 'store';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTasksByColumn } from 'features/task/TaskSlice';
+import { updateColumns, columnSelectors } from 'features/column/ColumnSlice';
+import { useParams } from 'react-router-dom';
+import { fetchBoardById } from './BoardSlice';
+import Spinner from 'components/Spinner';
+import { barHeight, sidebarWidth } from 'const';
+import PageError from 'components/PageError';
 
 const BoardContainer = styled.div`
   min-width: calc(100vw - ${sidebarWidth});
@@ -47,7 +47,7 @@ const RightMargin = styled.div`
   seem like there's some right margin.
    */
   &:after {
-    content: "";
+    content: '';
     display: block;
     width: 0.5rem;
   }
@@ -86,7 +86,7 @@ const Board = () => {
     }
 
     // reordering column
-    if (result.type === "COLUMN") {
+    if (result.type === 'COLUMN') {
       const newOrdered: IColumn[] = reorder(
         columns,
         source.index,
@@ -99,7 +99,7 @@ const Board = () => {
     const data = reorderTasks({
       tasksByColumn,
       source,
-      destination,
+      destination
     });
     dispatch(updateTasksByColumn(data.tasksByColumn));
   };

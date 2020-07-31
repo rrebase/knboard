@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Snackbar, Button } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { RootState } from "store";
-import { clearToast } from "./ToastSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { css } from "@emotion/core";
-import { TOAST_AUTO_HIDE_DURATION } from "const";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Snackbar, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { RootState } from 'store';
+import { clearToast } from './ToastSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { css } from '@emotion/core';
+import { TOAST_AUTO_HIDE_DURATION } from 'const';
 
 const Toast = () => {
   const dispatch = useDispatch();

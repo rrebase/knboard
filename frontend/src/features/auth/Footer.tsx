@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { Popover, Button, Link } from "@material-ui/core";
-import { css } from "@emotion/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import React from 'react';
+import styled from '@emotion/styled';
+import { Popover, Button, Link } from '@material-ui/core';
+import { css } from '@emotion/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const Container = styled.div`
   position: absolute;
@@ -36,7 +36,7 @@ const Footer = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "about-popover" : undefined;
+  const id = open ? 'about-popover' : undefined;
 
   return (
     <Container>
@@ -65,12 +65,12 @@ const Footer = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
+          vertical: 'top',
+          horizontal: 'center'
         }}
         transformOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
+          vertical: 'bottom',
+          horizontal: 'center'
         }}
       >
         <Alert
@@ -86,7 +86,7 @@ const Footer = () => {
             boards, maximizing efficiency.
           </p>
           It is an <b>open-source</b> project built using Django & React,
-          available on{" "}
+          available on{' '}
           <Link
             href="https://github.com/rrebase/knboard"
             target="_blank"

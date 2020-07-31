@@ -1,15 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UserDetail, Avatar } from "types";
-import api, { API_USERS, API_AVATARS } from "api";
-import { RootState, AppDispatch } from "store";
-import { createSuccessToast } from "features/toast/ToastSlice";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { UserDetail, Avatar } from 'types';
+import api, { API_USERS, API_AVATARS } from 'api';
+import { RootState, AppDispatch } from 'store';
+import { createSuccessToast } from 'features/toast/ToastSlice';
 
 export interface ValidationErrors extends Partial<UserDetail> {
   non_field_errors?: string[];
 }
 
 export const fetchUserDetail = createAsyncThunk<UserDetail>(
-  "profile/fetchUserDetailStatus",
+  'profile/fetchUserDetailStatus',
   async (_, { getState }) => {
     const id = (getState() as RootState).auth.user?.id;
     const response = await api.get(`${API_USERS}${id}/`);
@@ -24,16 +24,16 @@ export const updateUser = createAsyncThunk<
     rejectValue: ValidationErrors;
   }
 >(
-  "profile/updateUserStatus",
+  'profile/updateUserStatus',
   async (userData, { dispatch, getState, rejectWithValue }) => {
     try {
       // Don't POST blank email
-      if (!userData["email"]) {
-        delete userData["email"];
+      if (!userData['email']) {
+        delete userData['email'];
       }
       const id = (getState() as RootState).auth.user?.id;
       const response = await api.put(`${API_USERS}${id}/`, userData);
-      dispatch(createSuccessToast("User saved"));
+      dispatch(createSuccessToast('User saved'));
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -46,7 +46,7 @@ export const updateUser = createAsyncThunk<
 );
 
 export const fetchAvatarList = createAsyncThunk<Avatar[]>(
-  "profile/fetchAvatarListStatus",
+  'profile/fetchAvatarListStatus',
   async () => {
     const response = await api.get(API_AVATARS);
     return response.data;
@@ -66,11 +66,11 @@ export const initialState: InitialState = {
   userDetail: null,
   loading: false,
   apiErrors: undefined,
-  avatarLoading: null,
+  avatarLoading: null
 };
 
 export const slice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState,
   reducers: {
     updateAvatarPending(state, action) {
@@ -85,7 +85,7 @@ export const slice = createSlice({
     updateAvatarRejected(state) {
       state.avatarLoading = null;
     },
-    resetProfile: () => initialState,
+    resetProfile: () => initialState
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserDetail.fulfilled, (state, action) => {
@@ -105,14 +105,14 @@ export const slice = createSlice({
       state.apiErrors = action.payload;
       state.loading = false;
     });
-  },
+  }
 });
 
 export const {
   updateAvatarPending,
   updateAvatarFulfilled,
   updateAvatarRejected,
-  resetProfile,
+  resetProfile
 } = slice.actions;
 
 export const updateAvatar = (avatarId: number) => async (
@@ -123,10 +123,10 @@ export const updateAvatar = (avatarId: number) => async (
   try {
     const id = getState().auth.user?.id;
     const response = await api.post(`${API_USERS}${id}/update_avatar/`, {
-      id: avatarId,
+      id: avatarId
     });
     dispatch(updateAvatarFulfilled(response.data));
-    dispatch(createSuccessToast("Avatar saved"));
+    dispatch(createSuccessToast('Avatar saved'));
   } catch (err) {
     dispatch(updateAvatarRejected());
   }

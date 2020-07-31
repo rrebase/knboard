@@ -1,4 +1,4 @@
-import { Theme } from "@material-ui/core";
+import { Theme } from '@material-ui/core';
 
 export type Id = number;
 
@@ -37,11 +37,11 @@ export interface IColumn {
   board: Id;
 }
 
-export type PriorityValue = "H" | "M" | "L";
+export type PriorityValue = 'H' | 'M' | 'L';
 
 export interface Priority {
   value: PriorityValue;
-  label: "High" | "Medium" | "Low";
+  label: 'High' | 'Medium' | 'Low';
 }
 
 export interface ITask {
@@ -55,7 +55,7 @@ export interface ITask {
   priority: PriorityValue;
 }
 
-export interface NewTask extends Omit<ITask, "id" | "created" | "modified"> {
+export interface NewTask extends Omit<ITask, 'id' | 'created' | 'modified'> {
   column: Id;
 }
 

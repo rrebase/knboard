@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Button,
   TextField,
   Dialog,
   DialogContent,
   DialogTitle,
-  Grow,
-} from "@material-ui/core";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import { useDispatch, useSelector } from "react-redux";
-import { login, clearErrors } from "./AuthSlice";
-import { RootState } from "store";
-import { Alert } from "@material-ui/lab";
-import Close from "components/Close";
+  Grow
+} from '@material-ui/core';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, clearErrors } from './AuthSlice';
+import { RootState } from 'store';
+import { Alert } from '@material-ui/lab';
+import Close from 'components/Close';
 
 const FormActions = styled.div`
   margin-top: 1rem;
@@ -94,7 +94,7 @@ const LoginDialog = () => {
               id="username"
               label="Username"
               variant="outlined"
-              inputRef={register({ required: "This field is required" })}
+              inputRef={register({ required: 'This field is required' })}
               helperText={errors.username?.message}
               error={Boolean(errors.username)}
               fullWidth
@@ -106,7 +106,7 @@ const LoginDialog = () => {
               label="Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: "This field is required" })}
+              inputRef={register({ required: 'This field is required' })}
               helperText={errors.password?.message}
               error={Boolean(errors.password)}
               fullWidth

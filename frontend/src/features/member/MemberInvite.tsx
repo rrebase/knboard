@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Button, Popover } from "@material-ui/core";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import UserSearch, { UserOption } from "components/UserSearch";
-import api, { API_BOARDS } from "api";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { Button, Popover } from '@material-ui/core';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import UserSearch, { UserOption } from 'components/UserSearch';
+import api, { API_BOARDS } from 'api';
+import { useDispatch } from 'react-redux';
 import {
   createErrorToast,
-  createSuccessToast,
-} from "features/toast/ToastSlice";
-import { BoardMember } from "types";
-import { addBoardMembers } from "features/member/MemberSlice";
+  createSuccessToast
+} from 'features/toast/ToastSlice';
+import { BoardMember } from 'types';
+import { addBoardMembers } from 'features/member/MemberSlice';
 
 const InviteMember = styled.div`
   margin-left: 0.5rem;
@@ -54,7 +54,7 @@ const MemberInvite = ({ boardId }: Props) => {
       dispatch(addBoardMembers(newMembers));
       dispatch(
         createSuccessToast(
-          `Invited ${newMembers.map((m) => m.username).join(", ")}`
+          `Invited ${newMembers.map((m) => m.username).join(', ')}`
         )
       );
       handleClose();
@@ -90,12 +90,12 @@ const MemberInvite = ({ boardId }: Props) => {
         anchorEl={anchorEl}
         getContentAnchorEl={null}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+          vertical: 'bottom',
+          horizontal: 'left'
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
+          vertical: 'top',
+          horizontal: 'left'
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}

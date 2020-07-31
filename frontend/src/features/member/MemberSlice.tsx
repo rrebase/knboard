@@ -1,14 +1,14 @@
 import {
   createSlice,
   PayloadAction,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
-import { BoardMember } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
-import { RootState } from "store";
+  createEntityAdapter
+} from '@reduxjs/toolkit';
+import { BoardMember } from 'types';
+import { fetchBoardById } from 'features/board/BoardSlice';
+import { RootState } from 'store';
 
 const memberAdapter = createEntityAdapter<BoardMember>({
-  sortComparer: (a, b) => a.username.localeCompare(b.username),
+  sortComparer: (a, b) => a.username.localeCompare(b.username)
 });
 
 interface ExtraInitialState {
@@ -18,11 +18,11 @@ interface ExtraInitialState {
 
 export const initialState = memberAdapter.getInitialState<ExtraInitialState>({
   dialogMember: null,
-  memberListOpen: false,
+  memberListOpen: false
 });
 
 export const slice = createSlice({
-  name: "member",
+  name: 'member',
   initialState,
   reducers: {
     addBoardMembers: memberAdapter.addMany,
@@ -32,20 +32,20 @@ export const slice = createSlice({
     },
     setMemberListOpen: (state, action: PayloadAction<boolean>) => {
       state.memberListOpen = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       memberAdapter.setAll(state, action.payload.members);
     });
-  },
+  }
 });
 
 export const {
   addBoardMembers,
   removeBoardMember,
   setDialogMember,
-  setMemberListOpen,
+  setMemberListOpen
 } = slice.actions;
 
 const memberSelectors = memberAdapter.getSelectors(
@@ -55,7 +55,7 @@ const memberSelectors = memberAdapter.getSelectors(
 export const {
   selectAll: selectAllMembers,
   selectEntities: selectMembersEntities,
-  selectTotal: selectMembersTotal,
+  selectTotal: selectMembersTotal
 } = memberSelectors;
 
 export default slice.reducer;

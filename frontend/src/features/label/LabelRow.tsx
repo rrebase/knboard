@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
-import { Button } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
-import { patchLabel, deleteLabel } from "./LabelSlice";
-import { css } from "@emotion/core";
-import { Label } from "types";
-import { useForm, FormContext } from "react-hook-form";
-import { borderRadius } from "const";
-import Flex from "components/Flex";
-import LabelFields from "./LabelFields";
-import LabelChip from "components/LabelChip";
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { Button } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { patchLabel, deleteLabel } from './LabelSlice';
+import { css } from '@emotion/core';
+import { Label } from 'types';
+import { useForm, FormContext } from 'react-hook-form';
+import { borderRadius } from 'const';
+import Flex from 'components/Flex';
+import LabelFields from './LabelFields';
+import LabelChip from 'components/LabelChip';
 
 const RowDiv = styled.div`
   padding: 0.5rem;
@@ -43,7 +43,7 @@ const LabelRow = ({ label }: RowProps) => {
   const detail = useSelector((state: RootState) => state.board.detail);
   const methods = useForm<DialogFormData>({
     defaultValues: { name: label.name, color: label.color },
-    mode: "onChange",
+    mode: 'onChange'
   });
 
   const onSubmit = methods.handleSubmit(({ name, color }) => {
@@ -58,7 +58,7 @@ const LabelRow = ({ label }: RowProps) => {
   const handleDelete = () => {
     if (
       window.confirm(
-        "Are you sure? Deleting a label will remove it from all tasks."
+        'Are you sure? Deleting a label will remove it from all tasks.'
       )
     ) {
       dispatch(deleteLabel(label.id));
@@ -69,7 +69,7 @@ const LabelRow = ({ label }: RowProps) => {
     <RowDiv data-testid={`row-${label.id}`}>
       <Flex
         css={css`
-          ${editing && "margin-bottom: 1rem;"}
+          ${editing && 'margin-bottom: 1rem;'}
           transition: all 0.1s ease-in-out;
         `}
       >

@@ -1,18 +1,18 @@
-import React, { useEffect, Suspense } from "react";
-import { Provider, useSelector } from "react-redux";
-import { ThemeProvider, CssBaseline } from "@material-ui/core";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Global, css } from "@emotion/core";
+import React, { useEffect, Suspense } from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Global, css } from '@emotion/core';
 
-import FullPageSpinner from "components/FullPageSpinner";
-import Toast from "features/toast/Toast";
-import { theme } from "./const";
-import store, { RootState } from "./store";
-import { FOCUS_BOX_SHADOW } from "utils/colors";
+import FullPageSpinner from 'components/FullPageSpinner';
+import Toast from 'features/toast/Toast';
+import { theme } from './const';
+import store, { RootState } from './store';
+import { FOCUS_BOX_SHADOW } from 'utils/colors';
 
-const loadAuthenticatedApp = () => import("./AuthenticatedApp");
+const loadAuthenticatedApp = () => import('./AuthenticatedApp');
 const AuthenticatedApp = React.lazy(loadAuthenticatedApp);
-const UnauthenticatedApp = React.lazy(() => import("./features/auth/Auth"));
+const UnauthenticatedApp = React.lazy(() => import('./features/auth/Auth'));
 
 const AuthWrapper = () => {
   const user = useSelector((state: RootState) => state.auth.user);

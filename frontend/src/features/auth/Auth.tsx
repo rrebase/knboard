@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { ReactComponent as Board } from "static/svg/board.svg";
-import LoginDialog from "./LoginDialog";
-import RegisterDialog from "./RegisterDialog";
-import EnterAsGuest from "./EnterAsGuest";
-import Footer from "./Footer";
+import React from 'react';
+import styled from '@emotion/styled';
+import { ReactComponent as Board } from 'static/svg/board.svg';
+import LoginDialog from './LoginDialog';
+import RegisterDialog from './RegisterDialog';
+import EnterAsGuest from './EnterAsGuest';
+import Footer from './Footer';
 
 const Container = styled.div`
   margin-top: 20vh;

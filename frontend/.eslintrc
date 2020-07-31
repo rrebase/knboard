@@ -6,12 +6,20 @@
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint"
   ],
+  "plugins": ["prettier"],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
   },
   "overrides": [
     {

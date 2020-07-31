@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   Avatar,
@@ -6,34 +6,34 @@ import {
   Fab,
   useMediaQuery,
   useTheme,
-  DialogTitle,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { BoardMember, Board, WithTheme } from "types";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import api, { API_BOARDS } from "api";
+  DialogTitle
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { BoardMember, Board, WithTheme } from 'types';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import api, { API_BOARDS } from 'api';
 import {
   createSuccessToast,
-  createErrorToast,
-} from "features/toast/ToastSlice";
-import { useDispatch, useSelector } from "react-redux";
+  createErrorToast
+} from 'features/toast/ToastSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   removeBoardMember,
   setDialogMember,
-  selectMembersEntities,
-} from "features/member/MemberSlice";
-import { RootState } from "store";
-import { currentBoardOwner } from "features/board/BoardSlice";
-import Close from "components/Close";
+  selectMembersEntities
+} from 'features/member/MemberSlice';
+import { RootState } from 'store';
+import { currentBoardOwner } from 'features/board/BoardSlice';
+import Close from 'components/Close';
 
 const Container = styled.div<WithTheme>`
   display: flex;
   align-items: center;
   padding: 0.5rem 2rem 2rem 2rem;
-  ${(props) => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down('xs')} {
     flex-direction: column;
   }
 `;
@@ -72,7 +72,7 @@ const MemberDialog = ({ board }: Props) => {
   const boardOwner = useSelector((state: RootState) =>
     currentBoardOwner(state)
   );
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
   const [confirmDelete, setConfirmDelete] = useState(false);
   const member = memberId === null ? null : members[memberId];
   const memberIsOwner = member?.id === board.owner;
@@ -177,7 +177,7 @@ const MemberDialog = ({ board }: Props) => {
                   margin-bottom: 1.5rem;
                 `}
               >
-                email: <b>{member?.email || "-"}</b>
+                email: <b>{member?.email || '-'}</b>
               </SecondaryText>
               {memberIsOwner && (
                 <Alert severity="info">Owner of this board</Alert>

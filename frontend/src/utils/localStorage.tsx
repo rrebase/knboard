@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_KEY } from "const";
+import { LOCAL_STORAGE_KEY } from 'const';
 
 export const loadState = () => {
   try {

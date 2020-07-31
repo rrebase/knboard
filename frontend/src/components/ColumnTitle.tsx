@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "@emotion/styled";
-import { grid, borderRadius, Key, taskHeaderTextareaWidth } from "const";
-import { P100, PRIMARY, TASK_G as ACTION_G } from "utils/colors";
-import { TextareaAutosize, Button, Popover } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Id } from "types";
-import { patchColumn, deleteColumn } from "features/column/ColumnSlice";
-import { css } from "@emotion/core";
+import React, { useState, useRef, useEffect } from 'react';
+import styled from '@emotion/styled';
+import { grid, borderRadius, Key, taskHeaderTextareaWidth } from 'const';
+import { P100, PRIMARY, TASK_G as ACTION_G } from 'utils/colors';
+import { TextareaAutosize, Button, Popover } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisV, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Id } from 'types';
+import { patchColumn, deleteColumn } from 'features/column/ColumnSlice';
+import { css } from '@emotion/core';
 
 const Container = styled.h4`
   padding: ${grid}px;
@@ -143,7 +143,7 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
   const handleDelete = () => {
     if (
       window.confirm(
-        "Are you sure? Deleting the column will also delete related tasks and this cannot be undone."
+        'Are you sure? Deleting the column will also delete related tasks and this cannot be undone.'
       )
     ) {
       dispatch(deleteColumn(id));
@@ -196,12 +196,12 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
           anchorEl={anchorEl}
           onClose={handleOptionsClose}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
+            vertical: 'bottom',
+            horizontal: 'left'
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
+            vertical: 'top',
+            horizontal: 'left'
           }}
         >
           <OptionsContent>

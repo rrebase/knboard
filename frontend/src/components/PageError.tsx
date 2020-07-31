@@ -1,6 +1,6 @@
-import React from "react";
-import { Alert } from "@material-ui/lab";
-import styled from "@emotion/styled";
+import React from 'react';
+import { Alert } from '@material-ui/lab';
+import styled from '@emotion/styled';
 
 const Container = styled.div`
   margin-top: 10rem;

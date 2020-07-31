@@ -1,6 +1,6 @@
-import React from "react";
-import { Avatar as UserAvatar } from "types";
-import { Chip, Avatar, ChipProps } from "@material-ui/core";
+import React from 'react';
+import { Avatar as UserAvatar } from 'types';
+import { Chip, Avatar, ChipProps } from '@material-ui/core';
 
 interface Option {
   id: number;

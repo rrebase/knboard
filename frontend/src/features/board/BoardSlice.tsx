@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Board, IColumn, ITask, Label, NanoBoard } from "types";
-import api, { API_BOARDS } from "api";
-import { RootState } from "store";
-import { logout } from "features/auth/AuthSlice";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import api, { API_BOARDS } from 'api';
+import { logout } from 'features/auth/AuthSlice';
+import { RootState } from 'store';
+import { Board, IColumn, ITask, Label, NanoBoard } from 'types';
 
 interface InitialState {
   detail: Board | null;
@@ -25,7 +25,7 @@ export const initialState: InitialState = {
   createLoading: false,
   createError: null,
   detailLoading: false,
-  detailError: undefined,
+  detailError: undefined
 };
 
 interface ColumnsResponse extends IColumn {
@@ -38,7 +38,7 @@ interface BoardDetailResponse extends Board {
 }
 
 export const fetchAllBoards = createAsyncThunk<Board[]>(
-  "board/fetchAllStatus",
+  'board/fetchAllStatus',
   async () => {
     const response = await api.get(API_BOARDS);
     return response.data;
@@ -51,7 +51,7 @@ export const fetchBoardById = createAsyncThunk<
   {
     rejectValue: string;
   }
->("board/fetchByIdStatus", async (id, { rejectWithValue }) => {
+>('board/fetchByIdStatus', async (id, { rejectWithValue }) => {
   try {
     const response = await api.get(`${API_BOARDS}${id}/`);
     return response.data;
@@ -61,7 +61,7 @@ export const fetchBoardById = createAsyncThunk<
 });
 
 export const createBoard = createAsyncThunk<Board, string>(
-  "board/createBoardStatus",
+  'board/createBoardStatus',
   async (name) => {
     const response = await api.post(API_BOARDS, { name });
     return response.data;
@@ -69,12 +69,12 @@ export const createBoard = createAsyncThunk<Board, string>(
 );
 
 export const slice = createSlice({
-  name: "board",
+  name: 'board',
   initialState,
   reducers: {
     setCreateDialogOpen: (state, action: PayloadAction<boolean>) => {
       state.createDialogOpen = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllBoards.pending, (state) => {
@@ -121,7 +121,7 @@ export const slice = createSlice({
       state.all = [];
       state.detail = null;
     });
-  },
+  }
 });
 
 export const { setCreateDialogOpen } = slice.actions;

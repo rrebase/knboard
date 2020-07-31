@@ -1,18 +1,19 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+/* eslint-disable @typescript-eslint/camelcase */
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api, {
   API_LOGIN,
   API_LOGOUT,
   API_REGISTER,
-  API_GUEST_REGISTER,
-} from "api";
-import { User } from "types";
-import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
-import { AxiosError } from "axios";
+  API_GUEST_REGISTER
+} from 'api';
+import { User } from 'types';
+import { createErrorToast, createInfoToast } from 'features/toast/ToastSlice';
+import { AxiosError } from 'axios';
 import {
   updateUser,
   updateAvatarFulfilled,
-  resetProfile,
-} from "features/profile/ProfileSlice";
+  resetProfile
+} from 'features/profile/ProfileSlice';
 
 interface InitialState {
   user: User | null;
@@ -25,7 +26,7 @@ export const initialState: InitialState = {
   user: null,
   loginLoading: false,
   loginErrors: undefined,
-  registerErrors: undefined,
+  registerErrors: undefined
 };
 
 interface ValidationErrors {
@@ -45,11 +46,11 @@ export const register = createAsyncThunk<
   {
     rejectValue: ValidationErrors;
   }
->("auth/registerStatus", async (credentials, { rejectWithValue }) => {
+>('auth/registerStatus', async (credentials, { rejectWithValue }) => {
   try {
     // Don't POST blank email
-    if (!credentials["email"]) {
-      delete credentials["email"];
+    if (!credentials['email']) {
+      delete credentials['email'];
     }
     const response = await api.post(API_REGISTER, credentials);
     return response.data;
@@ -63,14 +64,14 @@ export const register = createAsyncThunk<
 });
 
 export const guestRegister = createAsyncThunk<User>(
-  "auth/guestRegisterStatus",
+  'auth/guestRegisterStatus',
   async (_, { dispatch }) => {
     try {
       const response = await api.post(API_GUEST_REGISTER);
       return response.data;
     } catch (e) {
       dispatch(
-        createErrorToast("Failed to enter as a guest, try again later.")
+        createErrorToast('Failed to enter as a guest, try again later.')
       );
     }
   }
@@ -87,7 +88,7 @@ export const login = createAsyncThunk<
   {
     rejectValue: ValidationErrors;
   }
->("auth/loginStatus", async (credentials, { rejectWithValue }) => {
+>('auth/loginStatus', async (credentials, { rejectWithValue }) => {
   try {
     const response = await api.post(API_LOGIN, credentials);
     return response.data;
@@ -101,7 +102,7 @@ export const login = createAsyncThunk<
 });
 
 export const logout = createAsyncThunk(
-  "auth/logoutStatus",
+  'auth/logoutStatus',
   async (_, { dispatch }) => {
     try {
       await api.post(API_LOGOUT);
@@ -109,19 +110,19 @@ export const logout = createAsyncThunk(
       dispatch(createErrorToast(err.toString()));
     } finally {
       dispatch(resetProfile());
-      dispatch(createInfoToast("Logged out"));
+      dispatch(createInfoToast('Logged out'));
     }
   }
 );
 
 export const slice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     clearErrors: (state) => {
       state.loginErrors = undefined;
       state.registerErrors = undefined;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
@@ -159,11 +160,10 @@ export const slice = createSlice({
     });
     builder.addCase(updateAvatarFulfilled, (state, action) => {
       if (state.user) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         state.user.photo_url = action.payload.photo;
       }
     });
-  },
+  }
 });
 
 export const { clearErrors } = slice.actions;

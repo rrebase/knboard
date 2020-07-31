@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Button,
   TextField,
   Dialog,
   DialogContent,
-  DialogTitle,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import { register as registerUser, clearErrors } from "./AuthSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
-import Close from "components/Close";
+  DialogTitle
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { register as registerUser, clearErrors } from './AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import Close from 'components/Close';
 
 const FormActions = styled.div`
   margin-top: 1rem;
@@ -39,7 +39,7 @@ const RegisterDialog = () => {
     if (apiErrors) {
       for (const errorKey in apiErrors) {
         // @ts-ignore
-        setError(errorKey, "api_error", apiErrors[errorKey]);
+        setError(errorKey, 'api_error', apiErrors[errorKey]);
       }
     }
   }, [apiErrors]);
@@ -110,7 +110,7 @@ const RegisterDialog = () => {
               margin="dense"
               label="Username"
               variant="outlined"
-              inputRef={register({ required: "This field is required" })}
+              inputRef={register({ required: 'This field is required' })}
               helperText={errors.username?.message}
               error={Boolean(errors.username)}
               fullWidth
@@ -122,7 +122,7 @@ const RegisterDialog = () => {
               label="Email"
               variant="outlined"
               inputRef={register()}
-              helperText={errors.email?.message || "Can be left empty."}
+              helperText={errors.email?.message || 'Can be left empty.'}
               error={Boolean(errors.email)}
               fullWidth
             />
@@ -133,7 +133,7 @@ const RegisterDialog = () => {
               label="Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: "This field is required" })}
+              inputRef={register({ required: 'This field is required' })}
               helperText={errors.password1?.message}
               error={Boolean(errors.password1)}
               fullWidth
@@ -145,7 +145,7 @@ const RegisterDialog = () => {
               label="Confirm Password"
               variant="outlined"
               type="password"
-              inputRef={register({ required: "This field is required" })}
+              inputRef={register({ required: 'This field is required' })}
               helperText={errors.password2?.message}
               error={Boolean(errors.password2)}
               fullWidth

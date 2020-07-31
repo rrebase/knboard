@@ -1,5 +1,5 @@
-import { TasksByColumn, Id } from "types";
-import { DraggableLocation } from "react-beautiful-dnd";
+import { TasksByColumn, Id } from 'types';
+import { DraggableLocation } from 'react-beautiful-dnd';
 
 // a little function to help us with reordering the result
 const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
@@ -25,7 +25,7 @@ export interface ReorderTasksResult {
 export const reorderTasks = ({
   tasksByColumn,
   source,
-  destination,
+  destination
 }: ReorderTasksArgs): ReorderTasksResult => {
   const current: Id[] = [...tasksByColumn[source.droppableId]];
   const next: Id[] = [...tasksByColumn[destination.droppableId]];
@@ -36,10 +36,10 @@ export const reorderTasks = ({
     const reordered: Id[] = reorder(current, source.index, destination.index);
     const result: TasksByColumn = {
       ...tasksByColumn,
-      [source.droppableId]: reordered,
+      [source.droppableId]: reordered
     };
     return {
-      tasksByColumn: result,
+      tasksByColumn: result
     };
   }
 
@@ -53,10 +53,10 @@ export const reorderTasks = ({
   const result: TasksByColumn = {
     ...tasksByColumn,
     [source.droppableId]: current,
-    [destination.droppableId]: next,
+    [destination.droppableId]: next
   };
 
   return {
-    tasksByColumn: result,
+    tasksByColumn: result
   };
 };

@@ -2,11 +2,11 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom/extend-expect";
-import "mutationobserver-shim";
-import "jest-localstorage-mock";
+import '@testing-library/jest-dom/extend-expect';
+import 'mutationobserver-shim';
+import 'jest-localstorage-mock';
 
-import { axiosMock } from "utils/testHelpers";
+import { axiosMock } from 'utils/testHelpers';
 
 beforeEach(() => {
   axiosMock.reset();

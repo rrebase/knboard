@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
-import { Button } from "@material-ui/core";
-import { N80A, N900 } from "utils/colors";
-import { Id } from "types";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { css } from "@emotion/core";
-import { useDispatch } from "react-redux";
-import { setCreateDialogColumn, setCreateDialogOpen } from "./TaskSlice";
+import React from 'react';
+import { Button } from '@material-ui/core';
+import { N80A, N900 } from 'utils/colors';
+import { Id } from 'types';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { css } from '@emotion/core';
+import { useDispatch } from 'react-redux';
+import { setCreateDialogColumn, setCreateDialogOpen } from './TaskSlice';
 
 interface Props {
   columnId: Id;

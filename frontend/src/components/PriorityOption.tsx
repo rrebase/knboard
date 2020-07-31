@@ -1,9 +1,9 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCube } from "@fortawesome/free-solid-svg-icons";
-import { PRIO_COLORS } from "const";
-import { Priority } from "types";
-import styled from "@emotion/styled";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCube } from '@fortawesome/free-solid-svg-icons';
+import { PRIO_COLORS } from 'const';
+import { Priority } from 'types';
+import styled from '@emotion/styled';
 
 interface Props {
   option: Priority;

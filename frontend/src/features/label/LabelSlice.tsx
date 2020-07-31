@@ -2,20 +2,20 @@ import {
   createSlice,
   createEntityAdapter,
   createAsyncThunk,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-import { Label, Id } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
-import { RootState } from "store";
-import api, { API_LABELS } from "api";
-import { createInfoToast, createErrorToast } from "features/toast/ToastSlice";
-import { AxiosError } from "axios";
+  PayloadAction
+} from '@reduxjs/toolkit';
+import { Label, Id } from 'types';
+import { fetchBoardById } from 'features/board/BoardSlice';
+import { RootState } from 'store';
+import api, { API_LABELS } from 'api';
+import { createInfoToast, createErrorToast } from 'features/toast/ToastSlice';
+import { AxiosError } from 'axios';
 
-export const createLabel = createAsyncThunk<Label, Omit<Label, "id">>(
-  "label/createLabelStatus",
+export const createLabel = createAsyncThunk<Label, Omit<Label, 'id'>>(
+  'label/createLabelStatus',
   async (label, { dispatch }) => {
     const response = await api.post(`${API_LABELS}`, label);
-    dispatch(createInfoToast("Label created"));
+    dispatch(createInfoToast('Label created'));
     return response.data;
   }
 );
@@ -24,11 +24,11 @@ export const patchLabel = createAsyncThunk<
   Label,
   { id: Id; fields: Partial<Label> }
 >(
-  "label/patchLabelStatus",
+  'label/patchLabelStatus',
   async ({ id, fields }, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.patch(`${API_LABELS}${id}/`, fields);
-      dispatch(createInfoToast("Label updated"));
+      dispatch(createInfoToast('Label updated'));
       return response.data;
     } catch (err) {
       const error: AxiosError = err;
@@ -42,16 +42,16 @@ export const patchLabel = createAsyncThunk<
 );
 
 export const deleteLabel = createAsyncThunk<Id, Id>(
-  "label/deleteLabelStatus",
+  'label/deleteLabelStatus',
   async (id, { dispatch }) => {
     await api.delete(`${API_LABELS}${id}/`);
-    dispatch(createInfoToast("Label deleted"));
+    dispatch(createInfoToast('Label deleted'));
     return id;
   }
 );
 
 const labelAdapter = createEntityAdapter<Label>({
-  sortComparer: (a, b) => a.name.localeCompare(b.name),
+  sortComparer: (a, b) => a.name.localeCompare(b.name)
 });
 
 interface ExtraInitialState {
@@ -59,16 +59,16 @@ interface ExtraInitialState {
 }
 
 export const initialState = labelAdapter.getInitialState<ExtraInitialState>({
-  dialogOpen: false,
+  dialogOpen: false
 });
 
 export const slice = createSlice({
-  name: "label",
+  name: 'label',
   initialState,
   reducers: {
     setDialogOpen: (state, action: PayloadAction<boolean>) => {
       state.dialogOpen = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
@@ -84,7 +84,7 @@ export const slice = createSlice({
     builder.addCase(deleteLabel.fulfilled, (state, action) => {
       labelAdapter.removeOne(state, action.payload);
     });
-  },
+  }
 });
 
 export const { setDialogOpen } = slice.actions;
@@ -95,7 +95,7 @@ export const labelSelectors = labelAdapter.getSelectors(
 
 export const {
   selectAll: selectAllLabels,
-  selectEntities: selectLabelEntities,
+  selectEntities: selectLabelEntities
 } = labelSelectors;
 
 export default slice.reducer;

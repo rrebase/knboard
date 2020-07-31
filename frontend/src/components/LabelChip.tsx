@@ -1,8 +1,8 @@
-import React from "react";
-import { css } from "@emotion/core";
-import { Chip, ChipProps } from "@material-ui/core";
-import { getContrastColor, WHITE } from "utils/colors";
-import { Label } from "types";
+import React from 'react';
+import { css } from '@emotion/core';
+import { Chip, ChipProps } from '@material-ui/core';
+import { getContrastColor, WHITE } from 'utils/colors';
+import { Label } from 'types';
 
 interface Props extends ChipProps {
   label: Label;
@@ -21,7 +21,7 @@ const LabelChip = ({ label, onCard = false, ...rest }: Props) => {
         overflow: auto;
         background-color: ${label.color};
         color: ${contrastColor};
-        border: ${contrastColor === WHITE && "none"};
+        border: ${contrastColor === WHITE && 'none'};
         border-radius: 4px;
         ${onCard &&
         `

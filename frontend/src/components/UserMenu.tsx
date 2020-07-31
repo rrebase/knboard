@@ -1,13 +1,13 @@
-import React from "react";
-import { Button, Menu, MenuItem, Avatar } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
-import { createInfoToast } from "features/toast/ToastSlice";
-import { logout } from "features/auth/AuthSlice";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
-import { avatarStyles } from "styles";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { Button, Menu, MenuItem, Avatar } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'store';
+import { createInfoToast } from 'features/toast/ToastSlice';
+import { logout } from 'features/auth/AuthSlice';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { avatarStyles } from 'styles';
+import { useHistory } from 'react-router-dom';
 
 const Username = styled.div`
   color: #333;
@@ -37,18 +37,18 @@ const UserMenu = () => {
   };
 
   const handleNotImplemented = () => {
-    dispatch(createInfoToast("Not implemented yet 😟"));
+    dispatch(createInfoToast('Not implemented yet 😟'));
   };
 
   const handleLogout = () => {
     setAnchorEl(null);
     dispatch(logout());
-    history.push("/");
+    history.push('/');
   };
 
   const handleToProfile = () => {
     setAnchorEl(null);
-    history.push("/profile");
+    history.push('/profile');
   };
 
   return (
@@ -69,7 +69,7 @@ const UserMenu = () => {
       >
         <Avatar
           css={avatarStyles}
-          src={user?.photo_url || ""}
+          src={user?.photo_url || ''}
           alt="user-avatar"
         >
           {user?.username.charAt(0)}
@@ -79,8 +79,8 @@ const UserMenu = () => {
         id="user-menu"
         anchorEl={anchorEl}
         getContentAnchorEl={null}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
         transitionDuration={0}

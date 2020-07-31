@@ -1,19 +1,19 @@
-import { loadState, saveState } from "./utils/localStorage";
-import { Action, configureStore, combineReducers } from "@reduxjs/toolkit";
-import { ThunkAction } from "redux-thunk";
+import { loadState, saveState } from './utils/localStorage';
+import { Action, configureStore, combineReducers } from '@reduxjs/toolkit';
+import { ThunkAction } from 'redux-thunk';
 
-import authReducer from "./features/auth/AuthSlice";
-import profileReducer from "./features/profile/ProfileSlice";
-import toastReducer from "./features/toast/ToastSlice";
-import boardReducer from "./features/board/BoardSlice";
-import columnReducer from "./features/column/ColumnSlice";
-import taskReducer from "./features/task/TaskSlice";
-import labelReducer from "./features/label/LabelSlice";
-import memberReducer from "./features/member/MemberSlice";
-import responsiveReducer from "./features/responsive/ResponsiveSlice";
+import authReducer from './features/auth/AuthSlice';
+import profileReducer from './features/profile/ProfileSlice';
+import toastReducer from './features/toast/ToastSlice';
+import boardReducer from './features/board/BoardSlice';
+import columnReducer from './features/column/ColumnSlice';
+import taskReducer from './features/task/TaskSlice';
+import labelReducer from './features/label/LabelSlice';
+import memberReducer from './features/member/MemberSlice';
+import responsiveReducer from './features/responsive/ResponsiveSlice';
 
-import authInitialState from "./features/auth/AuthSlice";
-import { setupInterceptors } from "api";
+import authInitialState from './features/auth/AuthSlice';
+import { setupInterceptors } from 'api';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -24,13 +24,13 @@ export const rootReducer = combineReducers({
   task: taskReducer,
   member: memberReducer,
   label: labelReducer,
-  responsive: responsiveReducer,
+  responsive: responsiveReducer
 });
 
 const store = configureStore({
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: process.env.NODE_ENV !== 'production',
   preloadedState: loadState() || {},
-  reducer: rootReducer,
+  reducer: rootReducer
 });
 
 store.subscribe(() => {
@@ -38,8 +38,8 @@ store.subscribe(() => {
   saveState({
     auth: {
       ...authInitialState,
-      user: state.auth.user,
-    },
+      user: state.auth.user
+    }
   });
 });
 

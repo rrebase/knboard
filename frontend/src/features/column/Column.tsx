@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { grid } from "const";
-import { COLUMN_COLOR, PRIMARY } from "utils/colors";
-import { ITask } from "types";
+import React from 'react';
+import styled from '@emotion/styled';
+import { grid } from 'const';
+import { COLUMN_COLOR, PRIMARY } from 'utils/colors';
+import { ITask } from 'types';
 import {
   Draggable,
   DraggableProvided,
-  DraggableStateSnapshot,
-} from "react-beautiful-dnd";
-import TaskList from "features/task/TaskList";
-import ColumnTitle from "components/ColumnTitle";
+  DraggableStateSnapshot
+} from 'react-beautiful-dnd';
+import TaskList from 'features/task/TaskList';
+import ColumnTitle from 'components/ColumnTitle';
 
 const Container = styled.div`
   margin: ${grid / 2}px;
@@ -24,7 +24,7 @@ const Header = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   background-color: ${COLUMN_COLOR};
   transition: background-color 0.2s ease;
-  [data-rbd-drag-handle-context-id="0"] {
+  [data-rbd-drag-handle-context-id='0'] {
     cursor: initial;
   }
 `;

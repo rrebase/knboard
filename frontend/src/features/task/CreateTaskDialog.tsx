@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   TextField,
   Button,
   CircularProgress,
   useTheme,
-  useMediaQuery,
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import { RootState } from "store";
-import { useSelector, useDispatch } from "react-redux";
-import styled from "@emotion/styled";
-import { css } from "@emotion/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
+  useMediaQuery
+} from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
+import { RootState } from 'store';
+import { useSelector, useDispatch } from 'react-redux';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRocket } from '@fortawesome/free-solid-svg-icons';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
 
-import { setCreateDialogOpen, createTask } from "./TaskSlice";
-import { PRIMARY } from "utils/colors";
+import { setCreateDialogOpen, createTask } from './TaskSlice';
+import { PRIMARY } from 'utils/colors';
 import {
   PRIORITY_OPTIONS,
   PRIORITY_2,
   MD_EDITOR_PLUGINS,
   MD_EDITOR_CONFIG,
-  Key,
-} from "const";
-import { selectAllMembers } from "features/member/MemberSlice";
-import { Priority, BoardMember, Label } from "types";
-import { createMdEditorStyles } from "styles";
-import AvatarTag from "components/AvatarTag";
-import AvatarOption from "components/AvatarOption";
-import { selectAllLabels } from "features/label/LabelSlice";
-import { getSaveShortcutLabel } from "utils/shortcuts";
-import LabelChip from "components/LabelChip";
-import PriorityOption from "components/PriorityOption";
+  Key
+} from 'const';
+import { selectAllMembers } from 'features/member/MemberSlice';
+import { Priority, BoardMember, Label } from 'types';
+import { createMdEditorStyles } from 'styles';
+import AvatarTag from 'components/AvatarTag';
+import AvatarOption from 'components/AvatarOption';
+import { selectAllLabels } from 'features/label/LabelSlice';
+import { getSaveShortcutLabel } from 'utils/shortcuts';
+import LabelChip from 'components/LabelChip';
+import PriorityOption from 'components/PriorityOption';
 
 const mdParser = new MarkdownIt();
 
@@ -77,15 +77,15 @@ const CreateTaskDialog = () => {
     (state: RootState) => state.task.createLoading
   );
   const [titleTouched, setTitleTouched] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [assignees, setAssignees] = useState<BoardMember[]>([]);
   const [priority, setPriority] = useState<Priority | null>({
-    value: "M",
-    label: "Medium",
+    value: 'M',
+    label: 'Medium'
   });
   const [labels, setLabels] = useState<Label[]>([]);
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
 
   const handleEditorChange = ({ text }: any) => {
     setDescription(text);
@@ -94,8 +94,8 @@ const CreateTaskDialog = () => {
   const setInitialValues = () => {
     if (columnId) {
       setTitleTouched(false);
-      setTitle("");
-      setDescription("");
+      setTitle('');
+      setDescription('');
       setAssignees([]);
       setPriority(PRIORITY_2);
       setLabels([]);
@@ -119,7 +119,7 @@ const CreateTaskDialog = () => {
         column: columnId,
         labels: labels.map((l) => l.id),
         assignees: assignees.map((a) => a.id),
-        priority: priority.value,
+        priority: priority.value
       };
       dispatch(createTask(newTask));
     }
@@ -266,7 +266,7 @@ const CreateTaskDialog = () => {
           disabled={createLoading}
           data-testid="task-create"
           css={css`
-            ${theme.breakpoints.down("xs")} {
+            ${theme.breakpoints.down('xs')} {
               flex-grow: 1;
             }
           `}

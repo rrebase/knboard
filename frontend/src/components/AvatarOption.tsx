@@ -1,8 +1,8 @@
-import React from "react";
-import { Avatar as UserAvatar } from "types";
-import { Avatar, ChipProps } from "@material-ui/core";
-import { css } from "@emotion/core";
-import styled from "@emotion/styled";
+import React from 'react';
+import { Avatar as UserAvatar } from 'types';
+import { Avatar, ChipProps } from '@material-ui/core';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 const Username = styled.span`
   margin-left: 0.5rem;

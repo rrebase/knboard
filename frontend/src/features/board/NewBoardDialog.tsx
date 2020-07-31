@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -6,15 +6,15 @@ import {
   DialogActions,
   DialogContentText,
   TextField,
-  Button,
-} from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { createBoard, setCreateDialogOpen } from "./BoardSlice";
-import { RootState } from "store";
-import { Alert } from "@material-ui/lab";
-import { css } from "@emotion/core";
-import { boardCardBaseStyles } from "styles";
-import { useForm } from "react-hook-form";
+  Button
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { createBoard, setCreateDialogOpen } from './BoardSlice';
+import { RootState } from 'store';
+import { Alert } from '@material-ui/lab';
+import { css } from '@emotion/core';
+import { boardCardBaseStyles } from 'styles';
+import { useForm } from 'react-hook-form';
 
 const openBtnStyles = css`
   ${boardCardBaseStyles}
@@ -83,11 +83,11 @@ const NewBoardDialog = () => {
               fullWidth
               name="name"
               inputRef={register({
-                required: "This field is required",
+                required: 'This field is required',
                 maxLength: {
                   value: 50,
-                  message: "This field can't be more than 50 chars long.",
-                },
+                  message: "This field can't be more than 50 chars long."
+                }
               })}
               helperText={errors.name?.message}
               error={Boolean(errors.name)}

@@ -1,13 +1,13 @@
-import { Button, Fade } from "@material-ui/core";
-import { css } from "@emotion/core";
-import { guestRegister } from "./AuthSlice";
-import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import api, { API_AUTH_SETUP } from "api";
-import { AuthSetup } from "types";
-import { AxiosResponse } from "axios";
+import { Button, Fade } from '@material-ui/core';
+import { css } from '@emotion/core';
+import { guestRegister } from './AuthSlice';
+import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import api, { API_AUTH_SETUP } from 'api';
+import { AuthSetup } from 'types';
+import { AxiosResponse } from 'axios';
 
 const Separator = styled.div`
   margin-top: 1rem;
@@ -32,12 +32,13 @@ const EnterAsGuest = () => {
         const response: AxiosResponse<AuthSetup> = await api(
           `${API_AUTH_SETUP}`,
           {
-            cancelToken: source.token,
+            cancelToken: source.token
           }
         );
         setAllowGuest(response.data.ALLOW_GUEST_ACCESS);
       } catch (err) {
         if (!api.isCancel(err)) {
+          // eslint-disable-next-line no-console
           console.error(err);
         }
       }
@@ -49,7 +50,7 @@ const EnterAsGuest = () => {
 
   const handleClick = () => {
     dispatch(guestRegister());
-    history.push("/");
+    history.push('/');
   };
 
   if (!allowGuest) {

@@ -1,27 +1,27 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { ITask, BoardMember } from "types";
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { faCube } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Avatar } from '@material-ui/core';
+import { AvatarGroup } from '@material-ui/lab';
+import { PRIO_COLORS } from 'const';
+import { selectMembersEntities } from 'features/member/MemberSlice';
+import React from 'react';
 import {
-  DraggableProvided,
   Draggable,
-  DraggableStateSnapshot,
-} from "react-beautiful-dnd";
-import { N30, N0, N70, PRIMARY } from "utils/colors";
-import { PRIO_COLORS } from "const";
-import { taskContainerStyles } from "styles";
-import { AvatarGroup } from "@material-ui/lab";
-import { css } from "@emotion/core";
-import { useSelector, useDispatch } from "react-redux";
-import { Avatar } from "@material-ui/core";
-import { setEditDialogOpen } from "./TaskSlice";
-import TaskLabels from "./TaskLabels";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCube } from "@fortawesome/free-solid-svg-icons";
-import { selectMembersEntities } from "features/member/MemberSlice";
+  DraggableProvided,
+  DraggableStateSnapshot
+} from 'react-beautiful-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskContainerStyles } from 'styles';
+import { BoardMember, ITask } from 'types';
+import { N0, N30, N70, PRIMARY } from 'utils/colors';
+import TaskLabels from './TaskLabels';
+import { setEditDialogOpen } from './TaskSlice';
 
 const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
   if (isDragging) {
-    return "#eee";
+    return '#eee';
   }
 
   if (isGroupedOver) {
@@ -32,7 +32,7 @@ const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
 };
 
 const getBorderColor = (isDragging: boolean) =>
-  isDragging ? "orange" : "transparent";
+  isDragging ? 'orange' : 'transparent';
 
 interface ContainerProps {
   isDragging: boolean;
@@ -44,7 +44,7 @@ const Container = styled.span<ContainerProps>`
   background-color: ${(props) =>
     getBackgroundColor(props.isDragging, props.isGroupedOver)};
   box-shadow: ${({ isDragging }) =>
-    isDragging ? `2px 2px 1px ${N70}` : "none"};
+    isDragging ? `2px 2px 1px ${N70}` : 'none'};
 
   &:focus {
     border-color: #aaa;
@@ -78,7 +78,6 @@ const CardIcon = styled.div`
   font-size: 0.75rem;
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TaskId = styled.small`
   flex-grow: 1;
   flex-shrink: 1;
@@ -100,7 +99,7 @@ const getStyle = (provided: DraggableProvided, style?: Record<string, any>) => {
 
   return {
     ...provided.draggableProps.style,
-    ...style,
+    ...style
   };
 };
 
@@ -169,29 +168,31 @@ const Task = ({ task: task, style, index }: Props) => {
       {(
         dragProvided: DraggableProvided,
         dragSnapshot: DraggableStateSnapshot
-      ) => (
-        <Container
-          isDragging={dragSnapshot.isDragging}
-          isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-          ref={dragProvided.innerRef}
-          {...dragProvided.draggableProps}
-          {...dragProvided.dragHandleProps}
-          style={getStyle(dragProvided, style)}
-          data-is-dragging={dragSnapshot.isDragging}
-          data-testid={`task-${task.id}`}
-          data-index={index}
-          aria-label={`task ${task.title}`}
-          onClick={handleClick}
-          css={taskContainerStyles}
-        >
-          <Content>
-            <TextContent>{task.title}</TextContent>
-            <TaskId>id: {task.id}</TaskId>
-            <TaskLabels task={task} />
-            <TaskFooter task={task} />
-          </Content>
-        </Container>
-      )}
+      ) => {
+        return (
+          <Container
+            isDragging={dragSnapshot.isDragging}
+            isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+            ref={dragProvided.innerRef}
+            {...dragProvided.draggableProps}
+            {...dragProvided.dragHandleProps}
+            style={getStyle(dragProvided, style)}
+            data-is-dragging={dragSnapshot.isDragging}
+            data-testid={`task-${task.id}`}
+            data-index={index}
+            aria-label={`task ${task.title}`}
+            onClick={handleClick}
+            css={taskContainerStyles}
+          >
+            <Content>
+              <TextContent>{task.title}</TextContent>
+              <TaskId>id: {task.id}</TaskId>
+              <TaskLabels task={task} />
+              <TaskFooter task={task} />
+            </Content>
+          </Container>
+        );
+      }}
     </Draggable>
   );
 };

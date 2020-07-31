@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { IconButton } from "@material-ui/core";
-import { css } from "@emotion/core";
-import { ReactComponent as TimesIcon } from "static/svg/times.svg";
-import { TASK_G } from "utils/colors";
+import React from 'react';
+import styled from '@emotion/styled';
+import { IconButton } from '@material-ui/core';
+import { css } from '@emotion/core';
+import { ReactComponent as TimesIcon } from 'static/svg/times.svg';
+import { TASK_G } from 'utils/colors';
 
 const Container = styled.div`
   position: absolute;
@@ -20,14 +20,14 @@ const Close = ({ onClose, onPopper = false }: Props) => {
   return (
     <Container
       css={css`
-        ${onPopper && "top: 0.5rem; right: 0.5rem;"}
+        ${onPopper && 'top: 0.5rem; right: 0.5rem;'}
       `}
     >
       <IconButton
         size="small"
         onClick={onClose}
         aria-label="close"
-        data-testid={onPopper ? "close-popper" : "close-dialog"}
+        data-testid={onPopper ? 'close-popper' : 'close-dialog'}
         css={css`
           height: 2.5rem;
           width: 2.5rem;

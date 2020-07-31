@@ -1,9 +1,9 @@
-import React from "react";
-import { ITask, Label } from "types";
-import { useSelector } from "react-redux";
-import LabelChip from "components/LabelChip";
-import styled from "@emotion/styled";
-import { selectLabelEntities } from "features/label/LabelSlice";
+import React from 'react';
+import { ITask, Label } from 'types';
+import { useSelector } from 'react-redux';
+import LabelChip from 'components/LabelChip';
+import styled from '@emotion/styled';
+import { selectLabelEntities } from 'features/label/LabelSlice';
 
 const Container = styled.div`
   display: flex;

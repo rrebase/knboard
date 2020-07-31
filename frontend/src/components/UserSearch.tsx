@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { TextField, CircularProgress, useTheme } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import api, { API_SEARCH_USERS } from "api";
-import { useDebounce } from "use-debounce";
-import AvatarTag from "./AvatarTag";
-import { Avatar } from "types";
-import AvatarOption from "./AvatarOption";
-import { css } from "@emotion/core";
+import React, { useState, useEffect } from 'react';
+import { TextField, CircularProgress, useTheme } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import api, { API_SEARCH_USERS } from 'api';
+import { useDebounce } from 'use-debounce';
+import AvatarTag from './AvatarTag';
+import { Avatar } from 'types';
+import AvatarOption from './AvatarOption';
+import { css } from '@emotion/core';
 
 export interface UserOption {
   id: number;
@@ -23,11 +23,11 @@ interface Props {
 const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<UserOption[]>([]);
   const [debouncedInput] = useDebounce(inputValue, 300, {
-    equalityFn: (a, b) => a === b,
+    equalityFn: (a, b) => a === b
   });
 
   useEffect(() => {
@@ -56,12 +56,13 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
         setOptions(response.data);
       } catch (err) {
         if (!api.isCancel(err)) {
+          // eslint-disable-next-line no-console
           console.error(err);
         }
       }
     };
 
-    if (inputValue === "") {
+    if (inputValue === '') {
       setLoading(false);
       setOptions([]);
     } else {
@@ -69,7 +70,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
     }
 
     return () => {
-      source.cancel("unmount/debouncedInput changed");
+      source.cancel('unmount/debouncedInput changed');
     };
   }, [debouncedInput, tagsValue]);
 
@@ -118,7 +119,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
                 {loading && <CircularProgress color="inherit" size={20} />}
                 {params.InputProps.endAdornment}
               </>
-            ),
+            )
           }}
         />
       )}
@@ -132,7 +133,7 @@ const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
         ))
       }
       css={css`
-        width: ${theme.breakpoints.down("xs") ? 200 : 300}px;
+        width: ${theme.breakpoints.down('xs') ? 200 : 300}px;
       `}
     />
   );

@@ -1,11 +1,11 @@
-import React from "react";
-import { Avatar } from "@material-ui/core";
-import { BoardMember } from "types";
-import { avatarStyles } from "styles";
-import { css, keyframes } from "@emotion/core";
-import { useDispatch } from "react-redux";
-import { setDialogMember } from "features/member/MemberSlice";
-import { OWNER_COLOR } from "utils/colors";
+import React from 'react';
+import { Avatar } from '@material-ui/core';
+import { BoardMember } from 'types';
+import { avatarStyles } from 'styles';
+import { css, keyframes } from '@emotion/core';
+import { useDispatch } from 'react-redux';
+import { setDialogMember } from 'features/member/MemberSlice';
+import { OWNER_COLOR } from 'utils/colors';
 
 const scaleUp = keyframes`
     0% {

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import {
   Dialog,
   Button,
@@ -8,18 +8,18 @@ import {
   InputAdornment,
   Hidden,
   useTheme,
-  useMediaQuery,
-} from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
-import { setDialogOpen, selectAllLabels } from "./LabelSlice";
-import { css } from "@emotion/core";
-import Close from "components/Close";
-import Flex from "components/Flex";
-import LabelRow from "./LabelRow";
-import LabelCreate from "./LabelCreate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+  useMediaQuery
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { setDialogOpen, selectAllLabels } from './LabelSlice';
+import { css } from '@emotion/core';
+import Close from 'components/Close';
+import Flex from 'components/Flex';
+import LabelRow from './LabelRow';
+import LabelCreate from './LabelCreate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
   padding: 1rem;
@@ -40,9 +40,9 @@ const LabelDialog = () => {
   const dispatch = useDispatch();
   const open = useSelector((state: RootState) => state.label.dialogOpen);
   const labels = useSelector(selectAllLabels);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [creating, setCreating] = useState(false);
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
 
   const filteredLabels = labels.filter((label) =>
     label.name.toLowerCase().match(searchValue.trim().toLowerCase())
@@ -66,11 +66,11 @@ const LabelDialog = () => {
         <Flex
           css={css`
             align-items: flex-end;
-            ${creating && "margin-bottom: 1rem;"}
+            ${creating && 'margin-bottom: 1rem;'}
           `}
         >
           <LabelCount>
-            {filteredLabels.length} label{filteredLabels.length !== 1 && "s"}
+            {filteredLabels.length} label{filteredLabels.length !== 1 && 's'}
           </LabelCount>
           <div>
             <Hidden xsDown implementation="css">
@@ -88,7 +88,7 @@ const LabelDialog = () => {
                     >
                       <FontAwesomeIcon icon={faSearch} />
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
             </Hidden>
