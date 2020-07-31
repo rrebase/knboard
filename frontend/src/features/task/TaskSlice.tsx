@@ -5,7 +5,7 @@ import { AppDispatch, AppThunk, RootState } from "store";
 import {
   createErrorToast,
   createSuccessToast,
-  createInfoToast
+  createInfoToast,
 } from "features/toast/ToastSlice";
 import api, { API_SORT_TASKS, API_TASKS } from "api";
 import { addColumn, deleteColumn } from "features/column/ColumnSlice";
@@ -29,7 +29,7 @@ export const initialState: InitialState = {
   createLoading: false,
   createDialogOpen: false,
   createDialogColumn: null,
-  editDialogOpen: null
+  editDialogOpen: null,
 };
 
 interface PatchFields {
@@ -92,9 +92,9 @@ export const slice = createSlice({
     },
     setEditDialogOpen: (state, action: PayloadAction<Id | null>) => {
       state.editDialogOpen = action.payload;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       const byColumn: TasksByColumn = {};
       const byId: TasksById = {};
@@ -102,7 +102,7 @@ export const slice = createSlice({
         for (const task of col.tasks) {
           byId[task.id] = task;
         }
-        byColumn[col.id] = col.tasks.map(t => t.id);
+        byColumn[col.id] = col.tasks.map((t) => t.id);
       }
       state.byColumn = byColumn;
       state.byId = byId;
@@ -110,7 +110,7 @@ export const slice = createSlice({
     builder.addCase(patchTask.fulfilled, (state, action) => {
       state.byId[action.payload.id] = action.payload;
     });
-    builder.addCase(createTask.pending, state => {
+    builder.addCase(createTask.pending, (state) => {
       state.createLoading = true;
     });
     builder.addCase(createTask.fulfilled, (state, action) => {
@@ -119,7 +119,7 @@ export const slice = createSlice({
       state.createDialogOpen = false;
       state.createLoading = false;
     });
-    builder.addCase(createTask.rejected, state => {
+    builder.addCase(createTask.rejected, (state) => {
       state.createLoading = false;
     });
     builder.addCase(deleteTask.fulfilled, (state, action) => {
@@ -142,7 +142,9 @@ export const slice = createSlice({
       const deletedLabelId = action.payload;
       for (const taskId in state.byId) {
         const task = state.byId[taskId];
-        task.labels = task.labels.filter(labelId => labelId !== deletedLabelId);
+        task.labels = task.labels.filter(
+          (labelId) => labelId !== deletedLabelId
+        );
       }
     });
     builder.addCase(removeBoardMember, (state, action) => {
@@ -150,18 +152,18 @@ export const slice = createSlice({
       for (const taskId in state.byId) {
         const task = state.byId[taskId];
         task.assignees = task.assignees.filter(
-          assigneeId => assigneeId !== deletedMemberId
+          (assigneeId) => assigneeId !== deletedMemberId
         );
       }
     });
-  }
+  },
 });
 
 export const {
   setTasksByColumn,
   setCreateDialogOpen,
   setCreateDialogColumn,
-  setEditDialogOpen
+  setEditDialogOpen,
 } = slice.actions;
 
 export const updateTasksByColumn = (
@@ -175,7 +177,7 @@ export const updateTasksByColumn = (
     await api.post(API_SORT_TASKS, {
       board: boardId,
       tasks: tasksByColumn,
-      order: Object.values(tasksByColumn).flat()
+      order: Object.values(tasksByColumn).flat(),
     });
   } catch (err) {
     dispatch(setTasksByColumn(previousTasksByColumn));

@@ -14,7 +14,7 @@ import { sidebarWidth } from "const";
 import { useTheme, WithTheme } from "@material-ui/core";
 
 const Main = styled.div<WithTheme>`
-  ${props => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     margin-left: ${sidebarWidth + 8}px;
   }
 `;

@@ -6,13 +6,13 @@ import {
   Avatar,
   DialogTitle,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllMembers,
   setMemberListOpen,
-  setDialogMember
+  setDialogMember,
 } from "./MemberSlice";
 import { RootState } from "store";
 import styled from "@emotion/styled";
@@ -50,7 +50,7 @@ const MemberListDialog = () => {
   const [searchValue, setSearchValue] = useState("");
   const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const filteredMembers = members.filter(member =>
+  const filteredMembers = members.filter((member) =>
     member.username.toLowerCase().match(searchValue.trim().toLowerCase())
   );
 
@@ -88,7 +88,7 @@ const MemberListDialog = () => {
           <div>
             <TextField
               value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
+              onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search members"
               InputProps={{
                 startAdornment: (
@@ -100,13 +100,13 @@ const MemberListDialog = () => {
                   >
                     <FontAwesomeIcon icon={faSearch} />
                   </InputAdornment>
-                )
+                ),
               }}
             />
           </div>
         </Flex>
         <Table>
-          {filteredMembers.map(member => (
+          {filteredMembers.map((member) => (
             <Row key={member.id}>
               <Avatar
                 css={css`

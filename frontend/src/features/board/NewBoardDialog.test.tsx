@@ -3,7 +3,7 @@ import { screen, fireEvent, waitFor } from "@testing-library/react";
 import {
   rootInitialState,
   renderWithProviders,
-  axiosMock
+  axiosMock,
 } from "utils/testHelpers";
 import NewBoardDialog from "./NewBoardDialog";
 import { createBoard } from "./BoardSlice";
@@ -20,11 +20,11 @@ it("should show dialog", async () => {
     .reply(201, { id: 50, name: "Recipes", owner: 1 });
   const { getActionsTypes } = renderWithProviders(<NewBoardDialog />, {
     ...rootInitialState,
-    board: { ...rootInitialState.board, createDialogOpen: true }
+    board: { ...rootInitialState.board, createDialogOpen: true },
   });
   expect(screen.getByText(/Create a new private board./i)).toBeVisible();
   fireEvent.change(screen.getByLabelText("Board name"), {
-    target: { value: "Science" }
+    target: { value: "Science" },
   });
   fireEvent.click(screen.getByTestId("create-board-btn"));
 
@@ -34,6 +34,6 @@ it("should show dialog", async () => {
 
   expect(getActionsTypes()).toEqual([
     createBoard.pending.type,
-    createBoard.fulfilled.type
+    createBoard.fulfilled.type,
   ]);
 });

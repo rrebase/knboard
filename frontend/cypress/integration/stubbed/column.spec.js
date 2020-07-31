@@ -10,13 +10,13 @@ context("Column", () => {
   });
 
   it("should edit column title if not empty & cancel via esc", () => {
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const colTitle = "In progress";
       const newColTitle = "Ongoing";
-      const newColumn = board.columns.find(c => c.id === 3);
+      const newColumn = board.columns.find((c) => c.id === 3);
       cy.route("PATCH", "/api/columns/3/", {
         ...newColumn,
-        title: newColTitle
+        title: newColTitle,
       });
 
       cy.findAllByText(newColTitle).should("not.exist");
@@ -52,7 +52,7 @@ context("Column", () => {
       title: "new column",
       tasks: [],
       column_order: 5,
-      board: 1
+      board: 1,
     };
     cy.route("POST", "/api/columns/", newColumn);
     cy.findByTestId("add-col").click();
@@ -64,7 +64,7 @@ context("Column", () => {
     const stub = cy.stub();
     stub.onFirstCall().returns(true);
     cy.on("window:confirm", stub);
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const columnToDelete = board.columns[0];
       cy.route("DELETE", `/api/columns/${columnToDelete.id}/`, "");
 
@@ -100,7 +100,7 @@ context("Column", () => {
       method: "POST",
       url: "/api/sort/column/",
       status: 500,
-      response: ""
+      response: "",
     }).as("sortColumns");
 
     const columns = ["col-3", "col-1", "col-2", "col-4"];

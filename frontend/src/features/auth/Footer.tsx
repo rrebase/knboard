@@ -66,11 +66,11 @@ const Footer = () => {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "top",
-          horizontal: "center"
+          horizontal: "center",
         }}
         transformOrigin={{
           vertical: "bottom",
-          horizontal: "center"
+          horizontal: "center",
         }}
       >
         <Alert

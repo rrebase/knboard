@@ -96,14 +96,12 @@ context("Board Detail (Owner)", () => {
         username: "steveapple1",
         email: "steve@gmail.com",
         first_name: "Steve",
-        last_name: "Apple"
-      }
+        last_name: "Apple",
+      },
     ]).as("inviteSteve");
 
     cy.findByTestId("member-invite").click();
-    cy.get("#user-search")
-      .focus()
-      .type(searchQuery);
+    cy.get("#user-search").focus().type(searchQuery);
     cy.wait("@getUsers");
     cy.get("#user-search")
       .trigger("keydown", { keyCode: keyCodes.arrowDown })
@@ -119,7 +117,7 @@ context("Board Detail (Owner)", () => {
     cy.route("POST", "/api/boards/1/remove_member/", {
       id: 3,
       username: "daveice",
-      email: "dave@ice.com"
+      email: "dave@ice.com",
     }).as("removeDave");
 
     cy.findByTestId("member-1").click();
@@ -136,7 +134,7 @@ context("Board Detail (Owner)", () => {
   });
 
   it("should delete a label from all tasks", () => {
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const labelToDelete = board.labels[2];
       cy.route("DELETE", `/api/labels/${labelToDelete.id}/`, "").as(
         "deleteLabel"

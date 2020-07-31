@@ -6,7 +6,7 @@ import {
   TextField,
   Button,
   useTheme,
-  WithTheme
+  WithTheme,
 } from "@material-ui/core";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,7 @@ const FormContainer = styled.div<WithTheme>`
   margin-top: 2rem;
   display: flex;
   align-items: center;
-  ${props => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down("xs")} {
     flex-direction: column;
   }
 `;
@@ -55,7 +55,7 @@ const Profile = () => {
   const apiErrors = useSelector((state: RootState) => state.profile.apiErrors);
   const loading = useSelector((state: RootState) => state.profile.loading);
   const { register, errors, handleSubmit, setError } = useForm<FormData>({
-    mode: "onChange"
+    mode: "onChange",
   });
 
   React.useEffect(() => {
@@ -149,8 +149,8 @@ const Profile = () => {
                 inputRef={register({
                   pattern: {
                     value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    message: "Invalid email"
-                  }
+                    message: "Invalid email",
+                  },
                 })}
                 defaultValue={userDetail.email}
                 helperText={errors.email?.message}

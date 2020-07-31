@@ -197,11 +197,11 @@ const ColumnTitle = ({ id, title, tasksCount, ...props }: Props) => {
           onClose={handleOptionsClose}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "left"
+            horizontal: "left",
           }}
         >
           <OptionsContent>

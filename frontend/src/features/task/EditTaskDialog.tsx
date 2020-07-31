@@ -6,7 +6,7 @@ import {
   TextareaAutosize,
   useTheme,
   useMediaQuery,
-  WithTheme
+  WithTheme,
 } from "@material-ui/core";
 import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +14,7 @@ import {
   setEditDialogOpen,
   deleteTask,
   updateTasksByColumn,
-  patchTask
+  patchTask,
 } from "./TaskSlice";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
@@ -23,14 +23,14 @@ import {
   faTrash,
   faLock,
   faAlignLeft,
-  faCube
+  faCube,
 } from "@fortawesome/free-solid-svg-icons";
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
 import { IColumn, TasksByColumn, Id, Priority, Label } from "types";
 import {
   selectAllColumns,
-  selectColumnsEntities
+  selectColumnsEntities,
 } from "features/column/ColumnSlice";
 import { Autocomplete } from "@material-ui/lab";
 import { createMdEditorStyles, descriptionStyles } from "styles";
@@ -46,12 +46,12 @@ import {
   MD_READ_ONLY_CONFIG,
   Key,
   taskDialogHeight,
-  taskSideWidth
+  taskSideWidth,
 } from "const";
 import Close from "components/Close";
 import {
   selectAllLabels,
-  selectLabelEntities
+  selectLabelEntities,
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
 import { getSaveShortcutLabel } from "utils/shortcuts";
@@ -64,7 +64,7 @@ const Content = styled.div<WithTheme>`
   display: flex;
   padding: 2rem;
   height: ${taskDialogHeight}px;
-  ${props => props.theme.breakpoints.down("xs")} {
+  ${(props) => props.theme.breakpoints.down("xs")} {
     flex-direction: column;
   }
 `;
@@ -75,7 +75,7 @@ const Main = styled.div`
 
 const Side = styled.div<WithTheme>`
   margin-top: 2rem;
-  ${props => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     max-width: ${taskSideWidth}px;
     min-width: ${taskSideWidth}px;
   }
@@ -114,19 +114,19 @@ const Title = styled.div`
 const EditorWrapper = styled.div<WithTheme & { editing: boolean }>`
   margin: 1rem 0;
   margin-right: 2rem;
-  ${props => createMdEditorStyles(props.editing)};
+  ${(props) => createMdEditorStyles(props.editing)};
 
   .rc-md-editor {
-    min-height: ${props => (props.editing ? 180 : 32)}px;
+    min-height: ${(props) => (props.editing ? 180 : 32)}px;
     border: none;
     .section-container {
-      ${props =>
+      ${(props) =>
         props.editing &&
         `
         outline: none;
         box-shadow: inset 0 0 0 2px ${PRIMARY};
       `};
-      padding: ${props => (props.editing ? "8px" : "0px")} !important;
+      padding: ${(props) => (props.editing ? "8px" : "0px")} !important;
       &.input {
         line-height: 20px;
       }
@@ -233,7 +233,7 @@ const EditTaskDialog = () => {
     if (editingDescription && editorRef && editorRef.current) {
       editorRef.current.setSelection({
         start: 0,
-        end: description.length
+        end: description.length,
       });
     }
   }, [editingDescription]);
@@ -307,7 +307,7 @@ const EditTaskDialog = () => {
     const updatedTasksByColumn: TasksByColumn = {
       ...tasksByColumn,
       [column.id]: current,
-      [value.id]: next
+      [value.id]: next,
     };
     dispatch(updateTasksByColumn(updatedTasksByColumn));
     handleClose();
@@ -342,7 +342,7 @@ const EditTaskDialog = () => {
     dispatch(
       patchTask({
         id: taskId,
-        fields: { labels: newLabels.map(label => label.id) }
+        fields: { labels: newLabels.map((label) => label.id) },
       })
     );
   };
@@ -401,7 +401,7 @@ const EditTaskDialog = () => {
                     ? description
                     : description || DESCRIPTION_PLACEHOLDER
                 }
-                renderHTML={text => mdParser.render(text)}
+                renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
                 placeholder={DESCRIPTION_PLACEHOLDER}
               />
@@ -439,8 +439,8 @@ const EditTaskDialog = () => {
             id="column-select"
             size="small"
             options={columns}
-            getOptionLabel={option => option.title}
-            renderInput={params => (
+            getOptionLabel={(option) => option.title}
+            renderInput={(params) => (
               <TextField {...params} label="Column" variant="outlined" />
             )}
             value={column}
@@ -458,13 +458,13 @@ const EditTaskDialog = () => {
             blurOnSelect
             autoHighlight
             options={PRIORITY_OPTIONS}
-            getOptionLabel={option => option.label}
+            getOptionLabel={(option) => option.label}
             value={PRIORITY_MAP[task.priority]}
             onChange={handlePriorityChange}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField {...params} label="Priority" variant="outlined" />
             )}
-            renderOption={option => <PriorityOption option={option} />}
+            renderOption={(option) => <PriorityOption option={option} />}
             openOnFocus
             disableClearable
             data-testid="edit-priority"
@@ -484,14 +484,14 @@ const EditTaskDialog = () => {
             blurOnSelect
             disableClearable
             options={labels}
-            getOptionLabel={option => option.name}
+            getOptionLabel={(option) => option.name}
             value={
               tasksById[taskId].labels.map(
-                labelId => labelsById[labelId]
+                (labelId) => labelsById[labelId]
               ) as Label[]
             }
             onChange={(_, newLabels) => handleLabelsChange(newLabels)}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField {...params} label="Labels" variant="outlined" />
             )}
             renderTags={(value, getTagProps) =>
@@ -504,7 +504,7 @@ const EditTaskDialog = () => {
                 />
               ))
             }
-            renderOption={option => <LabelChip label={option} size="small" />}
+            renderOption={(option) => <LabelChip label={option} size="small" />}
             css={css`
               width: 100%;
               margin-top: 1rem;

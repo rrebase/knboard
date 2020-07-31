@@ -32,7 +32,7 @@ const EnterAsGuest = () => {
         const response: AxiosResponse<AuthSetup> = await api(
           `${API_AUTH_SETUP}`,
           {
-            cancelToken: source.token
+            cancelToken: source.token,
           }
         );
         setAllowGuest(response.data.ALLOW_GUEST_ACCESS);

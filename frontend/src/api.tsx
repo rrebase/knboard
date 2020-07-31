@@ -7,8 +7,8 @@ axios.defaults.xsrfCookieName = "csrftoken";
 
 export const setupInterceptors = (store: any) => {
   axios.interceptors.response.use(
-    response => response,
-    error => {
+    (response) => response,
+    (error) => {
       // Handle expired sessions
       if (error.response && error.response.status === 401) {
         store.dispatch(logout());

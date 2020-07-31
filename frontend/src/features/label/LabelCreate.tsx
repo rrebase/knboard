@@ -26,11 +26,11 @@ const LabelCreate = ({ setCreating }: Props) => {
   const labels = useSelector(selectAllLabels);
   const methods = useForm<DialogFormData>({
     defaultValues: { name: "", color: getRandomHexColor() },
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const onSubmit = methods.handleSubmit(({ name, color }) => {
-    if (labels.map(label => label.name).includes(name)) {
+    if (labels.map((label) => label.name).includes(name)) {
       methods.setError("name", "Label already exists");
       return;
     }

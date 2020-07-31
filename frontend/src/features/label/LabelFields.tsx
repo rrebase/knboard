@@ -7,7 +7,7 @@ import {
   getContrastColor,
   getRandomHexColor,
   DANGER,
-  BLACK
+  BLACK,
 } from "utils/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +32,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
     setValue,
     triggerValidation,
     watch,
-    errors
+    errors,
   } = useFormContext();
 
   const setRandomColor = () => {
@@ -85,7 +85,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
               ? DANGER
               : getContrastColor(pendingColor)};
             border: ${getContrastColor(pendingColor) === BLACK &&
-              "1px solid #ccc"};
+            "1px solid #ccc"};
             &:hover {
               background-color: ${pendingColor};
             }
@@ -101,7 +101,7 @@ const LabelFields = ({ fieldsId, onSubmit, setActive }: Props) => {
           variant="outlined"
           name="color"
           inputRef={register({
-            pattern: /^#(?:[0-9a-fA-F]{3}){1,2}$/
+            pattern: /^#(?:[0-9a-fA-F]{3}){1,2}$/,
           })}
           error={Boolean(errors.color)}
           css={css`

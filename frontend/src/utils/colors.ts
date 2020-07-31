@@ -162,7 +162,7 @@ export const getContrastColor = (hexColor: string) => {
   if (hexColor.length === 3) {
     hexColor = hexColor
       .split("")
-      .map(h => h + h)
+      .map((h) => h + h)
       .join("");
   }
 

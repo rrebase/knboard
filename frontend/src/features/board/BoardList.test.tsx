@@ -4,7 +4,7 @@ import BoardList from "./BoardList";
 import {
   renderWithProviders,
   rootInitialState,
-  axiosMock
+  axiosMock,
 } from "utils/testHelpers";
 import { fetchAllBoards } from "./BoardSlice";
 import { API_BOARDS } from "api";
@@ -17,7 +17,7 @@ it("should fetch and render board list", async () => {
   axiosMock.onGet(API_BOARDS).reply(200, boards);
   const { mockStore } = renderWithProviders(<BoardList />, {
     ...rootInitialState,
-    board: { ...rootInitialState.board, all: boards }
+    board: { ...rootInitialState.board, all: boards },
   });
 
   expect(screen.getByText(/All Boards/i)).toBeVisible();
@@ -64,7 +64,7 @@ it("should set boards on success", () => {
   ).toEqual({
     ...rootInitialState.board,
     fetchLoading: false,
-    all: boards
+    all: boards,
   });
 });
 
@@ -78,6 +78,6 @@ it("should set error on fail", () => {
   ).toEqual({
     ...rootInitialState.board,
     fetchLoading: false,
-    fetchError: errorMsg
+    fetchError: errorMsg,
   });
 });

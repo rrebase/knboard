@@ -66,7 +66,7 @@ export const initialState: InitialState = {
   userDetail: null,
   loading: false,
   apiErrors: undefined,
-  avatarLoading: null
+  avatarLoading: null,
 };
 
 export const slice = createSlice({
@@ -85,16 +85,16 @@ export const slice = createSlice({
     updateAvatarRejected(state) {
       state.avatarLoading = null;
     },
-    resetProfile: () => initialState
+    resetProfile: () => initialState,
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchUserDetail.fulfilled, (state, action) => {
       state.userDetail = action.payload;
     });
     builder.addCase(fetchAvatarList.fulfilled, (state, action) => {
       state.avatars = action.payload;
     });
-    builder.addCase(updateUser.pending, state => {
+    builder.addCase(updateUser.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
@@ -105,14 +105,14 @@ export const slice = createSlice({
       state.apiErrors = action.payload;
       state.loading = false;
     });
-  }
+  },
 });
 
 export const {
   updateAvatarPending,
   updateAvatarFulfilled,
   updateAvatarRejected,
-  resetProfile
+  resetProfile,
 } = slice.actions;
 
 export const updateAvatar = (avatarId: number) => async (
@@ -123,7 +123,7 @@ export const updateAvatar = (avatarId: number) => async (
   try {
     const id = getState().auth.user?.id;
     const response = await api.post(`${API_USERS}${id}/update_avatar/`, {
-      id: avatarId
+      id: avatarId,
     });
     dispatch(updateAvatarFulfilled(response.data));
     dispatch(createSuccessToast("Avatar saved"));

@@ -17,11 +17,11 @@ interface Props {
 
 const TaskLabels = ({ task }: Props) => {
   const labelsById = useSelector(selectLabelEntities);
-  const labels = task.labels.map(labelId => labelsById[labelId]) as Label[];
+  const labels = task.labels.map((labelId) => labelsById[labelId]) as Label[];
 
   return (
     <Container>
-      {labels.map(label => (
+      {labels.map((label) => (
         <LabelChip key={label.id} label={label} onCard />
       ))}
     </Container>

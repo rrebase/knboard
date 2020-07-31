@@ -18,16 +18,14 @@ context("Task", () => {
     column: 1,
     assignees: [],
     labels: [],
-    priority: "M"
+    priority: "M",
   };
 
   it("should create task", () => {
     const title = "Improve CI";
     cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
-    cy.findAllByText("Add another card")
-      .first()
-      .click();
+    cy.findAllByText("Add another card").first().click();
     cy.findByTestId("create-task-title").type(title);
     cy.findByTestId("task-create").click();
     cy.findByText(title).should("be.visible");
@@ -37,9 +35,7 @@ context("Task", () => {
     const title = "Redesign concept";
     cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
-    cy.findAllByText("Add another card")
-      .first()
-      .click();
+    cy.findAllByText("Add another card").first().click();
     cy.findByTestId("create-task-title").type(title + "{meta}{enter}");
     cy.findByText(title).should("be.visible");
   });
@@ -66,7 +62,7 @@ context("Task", () => {
       method: "POST",
       url: "/api/sort/task/",
       status: 500,
-      response: ""
+      response: "",
     }).as("sortTasks");
 
     const tasks = ["task-5", "task-4"];
@@ -109,10 +105,7 @@ context("Task", () => {
     cy.route("PATCH", "api/tasks/1/", "");
 
     cy.findByTestId("task-1").click();
-    cy.findByTestId("task-title")
-      .click()
-      .clear()
-      .type("Fresh");
+    cy.findByTestId("task-title").click().clear().type("Fresh");
     cy.findByText("Description").click();
     cy.findByText("Fresh").should("be.visible");
     cy.findByText("Fresh").type(" one{enter}");
@@ -120,7 +113,7 @@ context("Task", () => {
   });
 
   it("should successfully edit task priority", () => {
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const task = board.columns[1].tasks[0];
       const updatedTask = { ...task, priority: "H" };
       cy.route("PATCH", `api/tasks/${task.id}/`, updatedTask);
@@ -231,12 +224,12 @@ context("Task", () => {
   });
 
   it("should add a label", () => {
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const label = board.labels[0];
       const task = board.columns[1].tasks[0];
       cy.route("PATCH", `/api/tasks/${task.id}/`, {
         ...task,
-        labels: [label.id]
+        labels: [label.id],
       }).as("patchTask");
 
       cy.findByTestId(`task-${task.id}`).click();
@@ -260,12 +253,12 @@ context("Task", () => {
   });
 
   it("should assign a member to task", () => {
-    cy.fixture("internals_board").then(board => {
+    cy.fixture("internals_board").then((board) => {
       const member = board.members[0];
       const task = board.columns[1].tasks[0];
       cy.route("PATCH", `/api/tasks/${task.id}/`, {
         ...task,
-        assignees: [member.id]
+        assignees: [member.id],
       }).as("patchTask");
 
       cy.findByTestId(`task-${task.id}`).click();
