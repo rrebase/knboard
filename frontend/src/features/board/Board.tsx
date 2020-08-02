@@ -64,7 +64,7 @@ const Board = () => {
 
   React.useEffect(() => {
     if (id) {
-      dispatch(fetchBoardById(id));
+      dispatch(fetchBoardById({ boardId: id }));
     }
   }, [id]);
 

@@ -2,13 +2,18 @@ from itertools import chain
 
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
+from rest_framework import filters
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from django.db.models import Q
+from django.db.models import Prefetch
+
 
 from .models import Board, Task, Column, Label
 from .permissions import IsOwner, IsOwnerForDangerousMethods
@@ -48,20 +53,25 @@ class BoardViewSet(
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset().filter(members=user)
-
+        assignees = self.request.query_params.get('assignees', None)
         if self.action == "retrieve":
-            return qs.prefetch_related("columns__tasks")
+            queryset = None
+            if assignees:
+                queryset = Task.objects.filter(
+                    Q(assignees__in=[int(x) for x in assignees.split(',')]))
+            return qs.prefetch_related(Prefetch('columns__tasks', queryset=queryset)).distinct('id')
         return qs
 
     def get_member(self):
         try:
-            member = User.objects.get(username=self.request.data.get("username"))
+            member = User.objects.get(
+                username=self.request.data.get("username"))
         except User.DoesNotExist:
             return None
 
         return member
 
-    @action(
+    @ action(
         detail=True,
         methods=["post"],
         serializer_class=MemberSerializer,
@@ -81,7 +91,7 @@ class BoardViewSet(
             data=BoardMemberSerializer(instance=new_members, many=True).data
         )
 
-    @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
+    @ action(detail=True, methods=["post"], serializer_class=MemberSerializer)
     def remove_member(self, request, pk):
         member = self.get_member()
         board = self.get_object()
@@ -128,7 +138,7 @@ class LabelViewSet(ModelDetailViewSet):
 class SortColumn(APIView):
     permission_classes = [IsAuthenticated]
 
-    @transaction.atomic
+    @ transaction.atomic
     def post(self, request, **kwargs):
         try:
             return sort_model(request, Column)
@@ -188,7 +198,8 @@ def sort_model(request, Model):
         return Response(status=HTTP_400_BAD_REQUEST)
 
     objects_dict = dict(
-        [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
+        [(str(obj.pk), obj)
+         for obj in Model.objects.filter(pk__in=ordered_pks)]
     )
     order_field_name = Model._meta.ordering[0]
 

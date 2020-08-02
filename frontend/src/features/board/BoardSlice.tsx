@@ -37,6 +37,11 @@ interface BoardDetailResponse extends Board {
   labels: Label[];
 }
 
+export interface BoardSearchQuery {
+  boardId: string | number;
+  assigneeIds?: number[];
+}
+
 export const fetchAllBoards = createAsyncThunk<Board[]>(
   "board/fetchAllStatus",
   async () => {
@@ -47,13 +52,18 @@ export const fetchAllBoards = createAsyncThunk<Board[]>(
 
 export const fetchBoardById = createAsyncThunk<
   BoardDetailResponse,
-  string,
+  BoardSearchQuery,
   {
     rejectValue: string;
   }
->("board/fetchByIdStatus", async (id, { rejectWithValue }) => {
+>("board/fetchByIdStatus", async (boardSearchQuery, { rejectWithValue }) => {
   try {
-    const response = await api.get(`${API_BOARDS}${id}/`);
+    const queryString = boardSearchQuery.assigneeIds
+      ? `?assignees=${boardSearchQuery.assigneeIds.toString()}`
+      : "";
+    const response = await api.get(
+      `${API_BOARDS}${boardSearchQuery.boardId}/${queryString}`
+    );
     return response.data;
   } catch (err) {
     return rejectWithValue(err.message);
