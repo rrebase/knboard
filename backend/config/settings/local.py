@@ -6,13 +6,13 @@ SECRET_KEY = "*m(r@4mdh*!zabwg&6tp%mgs_ezkprs9g+$@x@cdq-z_)dtf2i"
 DEBUG_TOOLBAR = True
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'knboard',
-        'USER': 'knboard',
-        'PASSWORD': 'knboard',
-        'HOST': 'localhost',
-        'PORT': 5432,
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "knboard",
+        "USER": "knboard",
+        "PASSWORD": "knboard",
+        "HOST": "localhost",
+        "PORT": 5432,
     }
 }
 
@@ -43,5 +43,3 @@ if DEBUG_TOOLBAR:
     INTERNAL_IPS = [
         "127.0.0.1",
     ]
-
-

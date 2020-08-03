@@ -52,25 +52,29 @@ class BoardViewSet(
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset().filter(members=user)
-        assignees = self.request.query_params.get('assignees', None)
+        assignees = self.request.query_params.get("assignees", None)
         if self.action == "retrieve":
             queryset = None
             if assignees:
-                queryset = Task.objects.filter(
-                    Q(assignees__in=[int(x) for x in assignees.split(',')])).order_by('id').distinct('id')
-            return qs.prefetch_related(Prefetch('columns__tasks', queryset=queryset))
+                queryset = (
+                    Task.objects.filter(
+                        Q(assignees__in=[int(x) for x in assignees.split(",")])
+                    )
+                    .order_by("id")
+                    .distinct("id")
+                )
+            return qs.prefetch_related(Prefetch("columns__tasks", queryset=queryset))
         return qs
 
     def get_member(self):
         try:
-            member = User.objects.get(
-                username=self.request.data.get("username"))
+            member = User.objects.get(username=self.request.data.get("username"))
         except User.DoesNotExist:
             return None
 
         return member
 
-    @ action(
+    @action(
         detail=True,
         methods=["post"],
         serializer_class=MemberSerializer,
@@ -90,7 +94,7 @@ class BoardViewSet(
             data=BoardMemberSerializer(instance=new_members, many=True).data
         )
 
-    @ action(detail=True, methods=["post"], serializer_class=MemberSerializer)
+    @action(detail=True, methods=["post"], serializer_class=MemberSerializer)
     def remove_member(self, request, pk):
         member = self.get_member()
         board = self.get_object()
@@ -137,7 +141,7 @@ class LabelViewSet(ModelDetailViewSet):
 class SortColumn(APIView):
     permission_classes = [IsAuthenticated]
 
-    @ transaction.atomic
+    @transaction.atomic
     def post(self, request, **kwargs):
         try:
             return sort_model(request, Column)
@@ -197,8 +201,7 @@ def sort_model(request, Model):
         return Response(status=HTTP_400_BAD_REQUEST)
 
     objects_dict = dict(
-        [(str(obj.pk), obj)
-         for obj in Model.objects.filter(pk__in=ordered_pks)]
+        [(str(obj.pk), obj) for obj in Model.objects.filter(pk__in=ordered_pks)]
     )
     order_field_name = Model._meta.ordering[0]
 
