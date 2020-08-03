@@ -14,7 +14,6 @@ from rest_framework.viewsets import GenericViewSet
 from django.db.models import Q
 from django.db.models import Prefetch
 
-
 from .models import Board, Task, Column, Label
 from .permissions import IsOwner, IsOwnerForDangerousMethods
 from .serializers import (
@@ -58,8 +57,8 @@ class BoardViewSet(
             queryset = None
             if assignees:
                 queryset = Task.objects.filter(
-                    Q(assignees__in=[int(x) for x in assignees.split(',')]))
-            return qs.prefetch_related(Prefetch('columns__tasks', queryset=queryset)).distinct('id')
+                    Q(assignees__in=[int(x) for x in assignees.split(',')])).order_by('id').distinct('id')
+            return qs.prefetch_related(Prefetch('columns__tasks', queryset=queryset))
         return qs
 
     def get_member(self):
