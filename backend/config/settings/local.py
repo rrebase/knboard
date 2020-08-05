@@ -3,7 +3,7 @@ from .base import *
 # Dummy value for development
 SECRET_KEY = "*m(r@4mdh*!zabwg&6tp%mgs_ezkprs9g+$@x@cdq-z_)dtf2i"
 
-DEBUG_TOOLBAR = True
+DEBUG_TOOLBAR = False
 
 DATABASES = {
     "default": {
