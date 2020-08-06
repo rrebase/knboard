@@ -1,12 +1,17 @@
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import { Button, Popover } from "@material-ui/core";
+import { Button, Popover, TextField } from "@material-ui/core";
 import UserSearch, { UserOption } from "components/UserSearch";
 import { fetchBoardById } from "features/board/BoardSlice";
 import { createErrorToast } from "features/toast/ToastSlice";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllMembers } from "./MemberSlice";
+import { Autocomplete } from "@material-ui/lab";
+import AvatarOption from "components/AvatarOption";
+import AvatarTag from "components/AvatarTag";
+import { BoardMember } from "types";
+import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 
 const FilterButton = styled.div`
   margin-left: 0.5rem;
@@ -23,14 +28,15 @@ const Description = styled.p`
   font-weight: bold;
 `;
 
+const popperXSpacing = 16;
+
 interface Props {
   boardId: number;
 }
 
 const MemberFilter = ({ boardId }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [tagsValue, setTagsValue] = useState<UserOption[]>([]);
-  const [filteredAssigneeIds, setFilteredAssigneeIds] = useState<number[]>([]);
+  const [filteredAssignee, setFilteredAssignee] = useState<BoardMember[]>([]);
   const dispatch = useDispatch();
   const members = useSelector(selectAllMembers);
 
@@ -42,10 +48,14 @@ const MemberFilter = ({ boardId }: Props) => {
     setAnchorEl(null);
   };
 
-  const postFilterMember = async (users: number[]) => {
+  const postFilterMember = async (users: BoardMember[]) => {
     try {
-      setFilteredAssigneeIds(users);
-      dispatch(fetchBoardById({ boardId: boardId, assigneeIds: users }));
+      dispatch(
+        fetchBoardById({
+          boardId: boardId,
+          assigneeIds: users.map((m) => m.id),
+        })
+      );
       handleClose();
     } catch (err) {
       dispatch(createErrorToast(err.toString()));
@@ -53,11 +63,11 @@ const MemberFilter = ({ boardId }: Props) => {
   };
 
   const handleClickFilter = () => {
-    postFilterMember(tagsValue.map((v) => v.id));
+    postFilterMember(filteredAssignee);
   };
 
   const handleClickClearFilter = () => {
-    setTagsValue([]);
+    setFilteredAssignee([]);
     postFilterMember([]);
   };
 
@@ -94,7 +104,7 @@ const MemberFilter = ({ boardId }: Props) => {
           Filter
         </Button>
       </FilterButton>
-      {filteredAssigneeIds.length > 0 ? <ClearFilterButton /> : null}
+      {filteredAssignee.length > 0 ? <ClearFilterButton /> : null}
       <Popover
         id="member-filter-menu"
         anchorEl={anchorEl}
@@ -112,12 +122,13 @@ const MemberFilter = ({ boardId }: Props) => {
         transitionDuration={0}
       >
         <Content>
-          <Description>Filter board by assignees</Description>
-          <UserSearch
-            boardId={boardId}
-            tagsValue={tagsValue}
-            setTagsValue={setTagsValue}
-            passedOptions={members}
+          <Description>Filter Tasks by Assignees</Description>
+          <AssigneeAutoComplete
+            assignee={filteredAssignee}
+            members={members}
+            controlId={"assignee-filter"}
+            dataTestId={"filter-assignees"}
+            setAssignee={setFilteredAssignee}
           />
           <Button
             color="primary"
@@ -128,7 +139,7 @@ const MemberFilter = ({ boardId }: Props) => {
             `}
             onClick={handleClickFilter}
             data-testid="filter-selected"
-            disabled={tagsValue.length === 0}
+            disabled={filteredAssignee.length === 0}
           >
             Filter
           </Button>

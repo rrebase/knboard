@@ -17,16 +17,10 @@ export interface UserOption {
 interface Props {
   boardId: number;
   tagsValue: UserOption[];
-  passedOptions?: UserOption[];
   setTagsValue: (val: UserOption[]) => void;
 }
 
-const UserSearch = ({
-  boardId,
-  tagsValue,
-  setTagsValue,
-  passedOptions,
-}: Props) => {
+const UserSearch = ({ boardId, tagsValue, setTagsValue }: Props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -70,9 +64,6 @@ const UserSearch = ({
     if (inputValue === "") {
       setLoading(false);
       setOptions([]);
-    } else if (passedOptions) {
-      setLoading(false);
-      setOptions(passedOptions);
     } else {
       fetchData();
     }

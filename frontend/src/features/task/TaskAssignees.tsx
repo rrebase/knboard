@@ -26,6 +26,7 @@ import {
 import AvatarOption from "components/AvatarOption";
 import AvatarTag from "components/AvatarTag";
 import Close from "components/Close";
+import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 
 const Container = styled.div`
   margin-bottom: 1rem;
@@ -160,38 +161,12 @@ const TaskAssignees = ({ task }: Props) => {
         <Content>
           <Close onClose={handleClose} onPopper />
           <ContentTitle>Assigned board members</ContentTitle>
-          <Autocomplete
-            multiple
-            filterSelectedOptions
-            disableClearable
-            disableCloseOnSelect
-            openOnFocus
-            PopperComponent={AutocompletePopper}
-            id="assignee-select"
-            data-testid="edit-assignees"
-            size="small"
-            options={members}
-            getOptionLabel={(option) => option.username}
-            value={pendingAssignees}
-            onChange={(_event, value) => setPendingAssignees(value)}
-            renderOption={(option) => <AvatarOption option={option} />}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                label="Assignees"
-                variant="outlined"
-              />
-            )}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <AvatarTag
-                  key={option.id}
-                  option={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
+          <AssigneeAutoComplete
+            assignee={pendingAssignees}
+            members={members}
+            setAssignee={setPendingAssignees}
+            controlId={"assignee-select"}
+            dataTestId={"edit-assignees"}
             css={css`
               padding: 1rem ${popperXSpacing}px;
             `}
