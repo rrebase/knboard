@@ -1,32 +1,28 @@
-import React, { useState } from "react";
+import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import {
   Avatar,
-  Popper,
   Button,
-  PopperProps,
   Popover,
-  TextField,
+  Popper,
+  PopperProps,
 } from "@material-ui/core";
-import { css } from "@emotion/core";
-import { PRIMARY } from "utils/colors";
-import { BoardMember, ITask } from "types";
-import { Autocomplete } from "@material-ui/lab";
-import { useSelector, useDispatch } from "react-redux";
+import AssigneeAutoComplete from "components/AssigneeAutoComplete";
+import Close from "components/Close";
+import {
+  modalPopperAutocompleteIndex,
+  modalPopperIndex,
+  modalPopperWidth,
+} from "const";
 import {
   selectAllMembers,
   selectMembersEntities,
 } from "features/member/MemberSlice";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BoardMember, ITask } from "types";
+import { PRIMARY } from "utils/colors";
 import { patchTask } from "./TaskSlice";
-import {
-  modalPopperIndex,
-  modalPopperAutocompleteIndex,
-  modalPopperWidth,
-} from "const";
-import AvatarOption from "components/AvatarOption";
-import AvatarTag from "components/AvatarTag";
-import Close from "components/Close";
-import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 
 const Container = styled.div`
   margin-bottom: 1rem;

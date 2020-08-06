@@ -1,17 +1,13 @@
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import { Button, Popover, TextField } from "@material-ui/core";
-import UserSearch, { UserOption } from "components/UserSearch";
+import { Button, Popover } from "@material-ui/core";
+import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 import { fetchBoardById } from "features/board/BoardSlice";
 import { createErrorToast } from "features/toast/ToastSlice";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllMembers } from "./MemberSlice";
-import { Autocomplete } from "@material-ui/lab";
-import AvatarOption from "components/AvatarOption";
-import AvatarTag from "components/AvatarTag";
 import { BoardMember } from "types";
-import AssigneeAutoComplete from "components/AssigneeAutoComplete";
+import { selectAllMembers } from "./MemberSlice";
 
 const FilterButton = styled.div`
   margin-left: 0.5rem;
