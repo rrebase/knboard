@@ -46,6 +46,9 @@ const App = () => {
               textarea {
                 font-family: inherit;
               }
+              .MuiAutocomplete-popper {
+                z-index: 999999 !important;
+              }
             `}
           />
         </ThemeProvider>

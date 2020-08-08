@@ -41,18 +41,9 @@ const Content = styled.div`
   width: ${modalPopperWidth}px;
 `;
 
-const popperXSpacing = 16;
-
-const AutocompletePopper = (props: PopperProps) => (
-  <Popper
-    {...props}
-    style={{
-      zIndex: modalPopperAutocompleteIndex,
-      width: modalPopperWidth - popperXSpacing * 2,
-    }}
-    placement="bottom-start"
-  />
-);
+const AssigneeContainer = styled.div`
+  padding: 1rem 16px;
+`;
 
 const Label = styled.p`
   color: #757575;
@@ -157,16 +148,15 @@ const TaskAssignees = ({ task }: Props) => {
         <Content>
           <Close onClose={handleClose} onPopper />
           <ContentTitle>Assigned board members</ContentTitle>
-          <AssigneeAutoComplete
-            assignee={pendingAssignees}
-            members={members}
-            setAssignee={setPendingAssignees}
-            controlId={"assignee-select"}
-            dataTestId={"edit-assignees"}
-            css={css`
-              padding: 1rem ${popperXSpacing}px;
-            `}
-          />
+          <AssigneeContainer>
+            <AssigneeAutoComplete
+              assignee={pendingAssignees}
+              members={members}
+              setAssignee={setPendingAssignees}
+              controlId={"assignee-select"}
+              dataTestId={"edit-assignees"}
+            />
+          </AssigneeContainer>
         </Content>
       </Popover>
     </Container>

@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import React from "react";
 import AvatarTag from "./AvatarTag";
 import { BoardMember } from "types";
+import { css } from "@emotion/core";
 
 interface Props {
   controlId: string;
@@ -23,6 +24,7 @@ const AssigneeAutoComplete = ({
   return (
     <Autocomplete
       multiple
+      openOnFocus
       filterSelectedOptions
       disableClearable
       disableCloseOnSelect
