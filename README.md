@@ -88,6 +88,31 @@ python manage.py loaddata avatars
 python manage.py runserver
 ```
 
+```
+python3 -m venv .venv
+source .venv/bin/activate
+----- For Windows----
+virtualenv .venv --python=python3.7 #or latest version of python if postgres works with it
+.venv/scripts/activate
+---------------------
+pip install -r requirements/local.txt
+
+#if failed to import from psycopg:
+pip install psycopg2-binary
+
+docker-compose -f services.yml up --d
+
+#if postgres is installed locally, stop its service or uninstall it
+python manage.py migrate --settings=config.settings.local
+python manage.py createsuperuser --username admin --email a@a.com --settings=config.settings.local
+python manage.py loaddata avatars --settings=config.settings.local
+python manage.py runserver --settings=config.settings.local
+```
+
+Troubleshooting running the project:
+-Make sure PostgresSQL container is running
+-Make sure Python vertual environment is activated
+
 The Django API is now accessible at `http://localhost:8000/api/`
 with the admin backend available at `http://localhost:8000/backdoor/`
 
