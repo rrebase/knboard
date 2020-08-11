@@ -24,8 +24,6 @@ const Description = styled.p`
   font-weight: bold;
 `;
 
-const popperXSpacing = 16;
-
 interface Props {
   boardId: number;
 }

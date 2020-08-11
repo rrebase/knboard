@@ -1,10 +1,9 @@
-import { Autocomplete } from "@material-ui/lab";
-import AvatarOption from "./AvatarOption";
 import { TextField } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import React from "react";
-import AvatarTag from "./AvatarTag";
 import { BoardMember } from "types";
-import { css } from "@emotion/core";
+import AvatarOption from "./AvatarOption";
+import AvatarTag from "./AvatarTag";
 
 interface Props {
   controlId: string;

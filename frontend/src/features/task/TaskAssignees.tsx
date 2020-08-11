@@ -1,19 +1,9 @@
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
-import {
-  Avatar,
-  Button,
-  Popover,
-  Popper,
-  PopperProps,
-} from "@material-ui/core";
+import { Avatar, Button, Popover } from "@material-ui/core";
 import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 import Close from "components/Close";
-import {
-  modalPopperAutocompleteIndex,
-  modalPopperIndex,
-  modalPopperWidth,
-} from "const";
+import { modalPopperIndex, modalPopperWidth } from "const";
 import {
   selectAllMembers,
   selectMembersEntities,
