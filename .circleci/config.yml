@@ -87,7 +87,7 @@ jobs:
             sudo pip install pipenv
             pipenv install -r requirements/local.txt
       - setup_remote_docker
-      - run: docker-compose -f ../services.yml up -d --no-recreate -wait tcp://localhost:5432 -timeout 1m
+      - run: docker-compose -f ../services.yml up -d -wait tcp://localhost:5432 -timeout 1m --no-recreate
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
