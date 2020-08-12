@@ -67,7 +67,7 @@ jobs:
 
   backend:
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:3.8
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
