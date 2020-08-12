@@ -86,6 +86,7 @@ jobs:
           command: |
             sudo pip install pipenv
             pipenv install -r requirements/local.txt
+      - run: docker-compose -f services.yml up --d
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
