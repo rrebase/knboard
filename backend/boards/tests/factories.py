@@ -2,6 +2,7 @@ import factory
 from django.contrib.auth import get_user_model
 import faker
 from boards.models import Board, Column, Task, Label
+import factory.fuzzy
 
 User = get_user_model()
 
