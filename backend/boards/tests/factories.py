@@ -1,11 +1,12 @@
 import factory
 from django.contrib.auth import get_user_model
 from boards.models import Board, Column, Task, Label
+from factory.django import DjangoModelFactory
 
 User = get_user_model()
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
 
@@ -14,7 +15,7 @@ class UserFactory(factory.DjangoModelFactory):
     password = factory.Faker("password")
 
 
-class BoardFactory(factory.DjangoModelFactory):
+class BoardFactory(DjangoModelFactory):
     class Meta:
         model = Board
 
@@ -22,7 +23,7 @@ class BoardFactory(factory.DjangoModelFactory):
     owner = factory.SubFactory(UserFactory)
 
 
-class ColumnFactory(factory.DjangoModelFactory):
+class ColumnFactory(DjangoModelFactory):
     class Meta:
         model = Column
 
@@ -30,7 +31,7 @@ class ColumnFactory(factory.DjangoModelFactory):
     title = factory.Sequence(lambda n: f"col{n}")
 
 
-class TaskFactory(factory.DjangoModelFactory):
+class TaskFactory(DjangoModelFactory):
     class Meta:
         model = Task
 
@@ -39,7 +40,7 @@ class TaskFactory(factory.DjangoModelFactory):
     column = factory.SubFactory(ColumnFactory)
 
 
-class LabelFactory(factory.DjangoModelFactory):
+class LabelFactory(DjangoModelFactory):
     class Meta:
         model = Label
 
