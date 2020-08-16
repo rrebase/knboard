@@ -20,7 +20,7 @@ const Content = styled.div`
 const Description = styled.p`
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
 `;
 
@@ -43,17 +43,13 @@ const MemberFilter = ({ boardId }: Props) => {
   };
 
   const postFilterMember = async (users: BoardMember[]) => {
-    try {
-      dispatch(
-        fetchBoardById({
-          boardId: boardId,
-          assigneeIds: users.map((m) => m.id),
-        })
-      );
-      handleClose();
-    } catch (err) {
-      dispatch(createErrorToast(err.toString()));
-    }
+    dispatch(
+      fetchBoardById({
+        boardId: boardId,
+        assigneeIds: users.map((m) => m.id),
+      })
+    );
+    handleClose();
   };
 
   const handleClickFilter = () => {

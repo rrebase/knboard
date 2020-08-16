@@ -3,6 +3,7 @@ import { Board, IColumn, ITask, Label, NanoBoard } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
 import { logout } from "features/auth/AuthSlice";
+import { createErrorToast } from "features/toast/ToastSlice";
 
 interface InitialState {
   detail: Board | null;
@@ -59,7 +60,7 @@ export const fetchBoardById = createAsyncThunk<
 >("board/fetchByIdStatus", async (boardSearchQuery, { rejectWithValue }) => {
   try {
     const queryString = boardSearchQuery.assigneeIds
-      ? `?assignees=${boardSearchQuery.assigneeIds.toString()}`
+      ? `?assignees=${boardSearchQuery.assigneeIds}`
       : "";
     const response = await api.get(
       `${API_BOARDS}${boardSearchQuery.boardId}/${queryString}`

@@ -110,8 +110,8 @@ python manage.py runserver --settings=config.settings.local
 ```
 
 Troubleshooting running the project:
--Make sure PostgresSQL container is running
--Make sure Python vertual environment is activated
+-Make sure PostgreSQL container is running
+-Make sure Python virtual environment is activated
 
 The Django API is now accessible at `http://localhost:8000/api/`
 with the admin backend available at `http://localhost:8000/backdoor/`

@@ -32,7 +32,7 @@ const Content = styled.div`
 `;
 
 const AssigneeContainer = styled.div`
-  padding: 1rem 16px;
+  padding: 16px;
 `;
 
 const Label = styled.p`
@@ -143,7 +143,7 @@ const TaskAssignees = ({ task }: Props) => {
               assignee={pendingAssignees}
               members={members}
               setAssignee={setPendingAssignees}
-              controlId={"assignee-select"}
+              controlId="assignee-select"
               dataTestId={"edit-assignees"}
             />
           </AssigneeContainer>
