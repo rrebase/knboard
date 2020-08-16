@@ -62,7 +62,7 @@
 
 ## Development setup 🛠
 
-Steps to locally setup development after cloning the project (only tested on MacOS).
+Steps to locally setup development after cloning the project.
 
 Note: `docker-compose` is currently only used for production.
 
@@ -142,30 +142,37 @@ React app is now accessible at `http://localhost:3000`
 ### Quality tools
 
 Check formatting & quality with eslint
+
 ```sh
 yarn lint
 ```
 
 Run Jest tests
+
 ```sh
 yarn test
 ```
 
 Run Cypress tests
+
 ```sh
 yarn cypress run
 ```
+
 Debug Cypress tests
+
 ```sh
 npx cypress open
 ```
 
 Run Python tests
+
 ```sh
 python -m pytest
 ```
 
 Check formatting with Black
+
 ```sh
 black --exclude .venv .
 ```
