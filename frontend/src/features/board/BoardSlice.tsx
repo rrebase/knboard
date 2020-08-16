@@ -3,7 +3,6 @@ import { Board, IColumn, ITask, Label, NanoBoard } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
 import { logout } from "features/auth/AuthSlice";
-import { createErrorToast } from "features/toast/ToastSlice";
 
 interface InitialState {
   detail: Board | null;

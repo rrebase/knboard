@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { Button, Popover, Box } from "@material-ui/core";
 import AssigneeAutoComplete from "components/AssigneeAutoComplete";
 import { fetchBoardById } from "features/board/BoardSlice";
-import { createErrorToast } from "features/toast/ToastSlice";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BoardMember } from "types";
