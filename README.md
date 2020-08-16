@@ -91,10 +91,12 @@ python manage.py runserver
 ```
 python3 -m venv .venv
 source .venv/bin/activate
+
 ----- For Windows----
-virtualenv .venv --python=python3.7 #or latest version of python if postgres works with it
+virtualenv .venv
 .venv/scripts/activate
 ---------------------
+
 pip install -r requirements/local.txt
 
 #if failed to import from psycopg:
@@ -110,8 +112,9 @@ python manage.py runserver --settings=config.settings.local
 ```
 
 Troubleshooting running the project:
--Make sure PostgreSQL container is running
--Make sure Python virtual environment is activated
+
+- Make sure PostgreSQL container is running
+- Make sure Python virtual environment is activated
 
 The Django API is now accessible at `http://localhost:8000/api/`
 with the admin backend available at `http://localhost:8000/backdoor/`
@@ -151,6 +154,10 @@ yarn test
 Run Cypress tests
 ```sh
 yarn cypress run
+```
+Debug Cypress tests
+```sh
+npx cypress open
 ```
 
 Run Python tests
