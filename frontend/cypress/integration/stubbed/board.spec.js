@@ -150,4 +150,38 @@ context("Board Detail (Owner)", () => {
       });
     });
   });
+
+  it("should filter assignees", () => {
+    cy.fixture("internals_board").then((board) => {
+      const member = board.members[0];
+      cy.route(
+        "GET",
+        `/api/boards/1/?assignees=${member.id}`,
+        "fixture:internals_board"
+      ).as("getFilteredBoard");
+
+      cy.route(
+        "GET",
+        `/api/boards/1/?assignees=`,
+        "fixture:internals_board"
+      ).as("getBoard");
+
+      cy.findByTestId("member-filter").click();
+      cy.get(".MuiAutocomplete-popper").within(() => {
+        cy.findByText(member.username).click();
+      });
+      cy.findByTestId("filter-selected").click();
+      cy.wait("@getFilteredBoard");
+      cy.findByTestId("clear-filter").should("be.visible");
+
+      cy.findByTestId("clear-filter").click();
+      cy.findByTestId("clear-filter").should("not.be.visible");
+      cy.wait("@getBoard");
+
+      cy.findByTestId("member-filter").click();
+      cy.get(".MuiAutocomplete-popper").within(() => {
+        cy.findByText(member.username).should("have.value", "");
+      });
+    });
+  });
 });

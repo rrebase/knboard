@@ -6,7 +6,7 @@ import { Global, css } from "@emotion/core";
 
 import FullPageSpinner from "components/FullPageSpinner";
 import Toast from "features/toast/Toast";
-import { theme } from "./const";
+import { theme, modalPopperAutocompleteModalIndex } from "./const";
 import store, { RootState } from "./store";
 import { FOCUS_BOX_SHADOW } from "utils/colors";
 
@@ -45,6 +45,9 @@ const App = () => {
               }
               textarea {
                 font-family: inherit;
+              }
+              .MuiAutocomplete-popper {
+                z-index: ${modalPopperAutocompleteModalIndex} !important;
               }
             `}
           />
