@@ -1,31 +1,18 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
-import {
-  Avatar,
-  Popper,
-  Button,
-  PopperProps,
-  Popover,
-  TextField,
-} from "@material-ui/core";
 import { css } from "@emotion/core";
-import { PRIMARY } from "utils/colors";
-import { BoardMember, ITask } from "types";
-import { Autocomplete } from "@material-ui/lab";
-import { useSelector, useDispatch } from "react-redux";
+import styled from "@emotion/styled";
+import { Avatar, Button, Popover } from "@material-ui/core";
+import AssigneeAutoComplete from "components/AssigneeAutoComplete";
+import Close from "components/Close";
+import { modalPopperIndex, modalPopperWidth } from "const";
 import {
   selectAllMembers,
   selectMembersEntities,
 } from "features/member/MemberSlice";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BoardMember, ITask } from "types";
+import { PRIMARY } from "utils/colors";
 import { patchTask } from "./TaskSlice";
-import {
-  modalPopperIndex,
-  modalPopperAutocompleteIndex,
-  modalPopperWidth,
-} from "const";
-import AvatarOption from "components/AvatarOption";
-import AvatarTag from "components/AvatarTag";
-import Close from "components/Close";
 
 const Container = styled.div`
   margin-bottom: 1rem;
@@ -44,18 +31,9 @@ const Content = styled.div`
   width: ${modalPopperWidth}px;
 `;
 
-const popperXSpacing = 16;
-
-const AutocompletePopper = (props: PopperProps) => (
-  <Popper
-    {...props}
-    style={{
-      zIndex: modalPopperAutocompleteIndex,
-      width: modalPopperWidth - popperXSpacing * 2,
-    }}
-    placement="bottom-start"
-  />
-);
+const AssigneeContainer = styled.div`
+  padding: 16px;
+`;
 
 const Label = styled.p`
   color: #757575;
@@ -160,42 +138,15 @@ const TaskAssignees = ({ task }: Props) => {
         <Content>
           <Close onClose={handleClose} onPopper />
           <ContentTitle>Assigned board members</ContentTitle>
-          <Autocomplete
-            multiple
-            filterSelectedOptions
-            disableClearable
-            disableCloseOnSelect
-            openOnFocus
-            PopperComponent={AutocompletePopper}
-            id="assignee-select"
-            data-testid="edit-assignees"
-            size="small"
-            options={members}
-            getOptionLabel={(option) => option.username}
-            value={pendingAssignees}
-            onChange={(_event, value) => setPendingAssignees(value)}
-            renderOption={(option) => <AvatarOption option={option} />}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                label="Assignees"
-                variant="outlined"
-              />
-            )}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <AvatarTag
-                  key={option.id}
-                  option={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
-            css={css`
-              padding: 1rem ${popperXSpacing}px;
-            `}
-          />
+          <AssigneeContainer>
+            <AssigneeAutoComplete
+              assignee={pendingAssignees}
+              members={members}
+              setAssignee={setPendingAssignees}
+              controlId="assignee-select"
+              dataTestId={"edit-assignees"}
+            />
+          </AssigneeContainer>
         </Content>
       </Popover>
     </Container>

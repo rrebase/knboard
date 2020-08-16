@@ -196,8 +196,8 @@ def test_order_duplicate(api_client_with_credentials, col_done):
 def test_order_column_status_code(
     post_data, expected_status_code, api_client_with_credentials, board
 ):
-    Column.objects.create(board=board, title="col1")
-    Column.objects.create(board=board, title="col2")
+    Column.objects.create(id=1, board=board, title="col1")
+    Column.objects.create(id=2, board=board, title="col2")
 
     response = api_client_with_credentials.post(reverse("sort-column"), post_data)
     assert response.status_code == expected_status_code

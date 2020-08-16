@@ -73,8 +73,8 @@ jobs:
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
       - image: circleci/postgres:12
         environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle_test
+          POSTGRES_USER: knboard
+          POSTGRES_DB: knboard
           POSTGRES_HOST_AUTH_METHOD: trust
     working_directory: ~/project/backend
     steps:

@@ -1,5 +1,5 @@
-Django>=3.0.7
-djangorestframework==3.11.0
+Django>=3.1
+djangorestframework==3.11.1
 django-filter==2.3.0
 django-extensions==3.0.3
 django-allauth==0.42.0
