@@ -1,7 +1,7 @@
 Django>=3.1
 djangorestframework==3.11.1
 django-filter==2.3.0
-django-extensions==3.0.3
+django-extensions==3.0.9
 django-allauth==0.42.0
 django-model-utils==4.0.0
 django-admin-sortable==2.2.3
