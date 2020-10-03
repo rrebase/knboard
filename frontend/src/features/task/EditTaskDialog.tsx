@@ -347,10 +347,30 @@ const EditTaskDialog = () => {
     );
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // don't listen for input when inputs are focused
+    if (
+      document.activeElement instanceof HTMLInputElement ||
+      document.activeElement instanceof HTMLTextAreaElement
+    ) {
+      return;
+    }
+
+    if (e.key === "Backspace" && e.metaKey) {
+      handleDelete();
+    }
+
+    if (e.key === "l" && e.metaKey) {
+      e.preventDefault();
+      handleNotImplemented();
+    }
+  };
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
+      onKeyDown={handleKeyDown}
       fullWidth
       keepMounted={false}
       fullScreen={xsDown}
@@ -522,7 +542,7 @@ const EditTaskDialog = () => {
                 color: ${TASK_G};
               `}
             >
-              Lock task
+              Lock task ({getMetaKey()}+L)
             </Button>
             <Button
               startIcon={<FontAwesomeIcon fixedWidth icon={faTrash} />}
@@ -536,7 +556,7 @@ const EditTaskDialog = () => {
                 margin-bottom: 2rem;
               `}
             >
-              Delete task
+              Delete task ({getMetaKey()}+⌫)
             </Button>
           </ButtonsContainer>
           <Text>
