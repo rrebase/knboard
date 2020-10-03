@@ -1,6 +1,4 @@
-export const getSaveShortcutLabel = () => {
-  if (navigator.platform.indexOf("Mac") > -1) {
-    return "(⌘+⏎)";
-  }
-  return "";
-};
+const getMetaKey = () =>
+  navigator.platform.indexOf("Mac") > -1 ? "⌘" : "ctrl";
+
+export default getMetaKey;

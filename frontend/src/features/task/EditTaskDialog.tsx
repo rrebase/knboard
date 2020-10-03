@@ -54,7 +54,7 @@ import {
   selectLabelEntities,
 } from "features/label/LabelSlice";
 import { formatDistanceToNow } from "date-fns";
-import { getSaveShortcutLabel } from "utils/shortcuts";
+import getMetaKey from "utils/shortcuts";
 import LabelChip from "components/LabelChip";
 import PriorityOption from "components/PriorityOption";
 
@@ -415,7 +415,7 @@ const EditTaskDialog = () => {
                   color="primary"
                   size="small"
                 >
-                  Save {getSaveShortcutLabel()}
+                  Save ({getMetaKey()}+⏎)
                 </Button>
                 <Button
                   variant="outlined"

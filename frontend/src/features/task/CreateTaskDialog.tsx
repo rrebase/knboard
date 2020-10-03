@@ -32,7 +32,7 @@ import { createMdEditorStyles } from "styles";
 import AvatarTag from "components/AvatarTag";
 import AvatarOption from "components/AvatarOption";
 import { selectAllLabels } from "features/label/LabelSlice";
-import { getSaveShortcutLabel } from "utils/shortcuts";
+import getMetaKey from "utils/shortcuts";
 import LabelChip from "components/LabelChip";
 import PriorityOption from "components/PriorityOption";
 
@@ -271,7 +271,7 @@ const CreateTaskDialog = () => {
             }
           `}
         >
-          Create issue {getSaveShortcutLabel()}
+          Create issue ({getMetaKey()}+⏎)
         </Button>
         <Button
           css={css`

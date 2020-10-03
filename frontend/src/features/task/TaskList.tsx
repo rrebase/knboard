@@ -59,6 +59,7 @@ interface Props {
   columnId: number;
   listType: string;
   tasks: ITask[];
+  index: number;
 }
 
 interface TaskListProps {
@@ -77,9 +78,15 @@ interface InnerListProps {
   dropProvided: DroppableProvided;
   columnId: number;
   tasks: ITask[];
+  index: number;
 }
 
-const InnerList = ({ columnId, tasks, dropProvided }: InnerListProps) => (
+const InnerList = ({
+  columnId,
+  tasks,
+  dropProvided,
+  index,
+}: InnerListProps) => (
   <Container>
     <DropZone
       data-testid="drop-zone"
@@ -92,11 +99,11 @@ const InnerList = ({ columnId, tasks, dropProvided }: InnerListProps) => (
       <InnerTaskList tasks={tasks} />
       {dropProvided.placeholder}
     </DropZone>
-    <AddTask columnId={columnId} />
+    <AddTask columnId={columnId} index={index} />
   </Container>
 );
 
-const TaskList = ({ columnId, listType, tasks: tasks }: Props) => (
+const TaskList = ({ columnId, listType, tasks: tasks, index }: Props) => (
   <Droppable droppableId={columnId.toString()} type={listType}>
     {(
       dropProvided: DroppableProvided,
@@ -111,6 +118,7 @@ const TaskList = ({ columnId, listType, tasks: tasks }: Props) => (
           columnId={columnId}
           tasks={tasks}
           dropProvided={dropProvided}
+          index={index}
         />
       </Wrapper>
     )}

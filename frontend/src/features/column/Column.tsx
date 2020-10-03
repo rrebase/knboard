@@ -10,6 +10,11 @@ import {
 } from "react-beautiful-dnd";
 import TaskList from "features/task/TaskList";
 import ColumnTitle from "components/ColumnTitle";
+import { useDispatch } from "react-redux";
+import {
+  setCreateDialogColumn,
+  setCreateDialogOpen,
+} from "features/task/TaskSlice";
 
 const Container = styled.div`
   margin: ${grid / 2}px;
@@ -37,6 +42,22 @@ type Props = {
 };
 
 const Column = ({ id, title, tasks, index }: Props) => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (index > 8) return;
+      if (e.key === (index + 1).toString() && e.metaKey) {
+        e.preventDefault();
+        dispatch(setCreateDialogColumn(id));
+        dispatch(setCreateDialogOpen(true));
+      }
+    };
+
+    document.addEventListener("keydown", (e) => handleKeydown(e));
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, []);
+
   return (
     <Draggable draggableId={`col-${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -55,7 +76,7 @@ const Column = ({ id, title, tasks, index }: Props) => {
               data-testid="column-title"
             />
           </Header>
-          <TaskList columnId={id} listType="TASK" tasks={tasks} />
+          <TaskList columnId={id} listType="TASK" tasks={tasks} index={index} />
         </Container>
       )}
     </Draggable>
