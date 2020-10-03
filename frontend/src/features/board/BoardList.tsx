@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Grid, Tooltip } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllBoards } from "./BoardSlice";
+import { fetchAllBoards, setCreateDialogOpen } from "./BoardSlice";
 import { RootState } from "store";
 import { css, SerializedStyles, keyframes } from "@emotion/core";
 import { Link } from "react-router-dom";
@@ -122,6 +122,15 @@ const BoardList = () => {
 
   React.useEffect(() => {
     dispatch(fetchAllBoards());
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === "b" && e.metaKey) {
+        dispatch(setCreateDialogOpen(true));
+      }
+    };
+
+    document.addEventListener("keydown", (e) => handleKeydown(e));
+    return () => document.removeEventListener("keydown", handleKeydown);
   }, []);
 
   if (loading && boards.length === 0) {
