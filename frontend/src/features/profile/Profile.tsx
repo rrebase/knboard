@@ -16,6 +16,7 @@ import { css } from "@emotion/core";
 import { useForm } from "react-hook-form";
 import UserAvatar from "./UserAvatar";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import SEO from "components/SEO";
 
 const Title = styled.h3`
   margin-top: 2rem;
@@ -82,6 +83,7 @@ const Profile = () => {
 
   return (
     <Container maxWidth="sm">
+      <SEO title="Profile" />
       {userDetail.is_guest && (
         <Alert
           severity="warning"

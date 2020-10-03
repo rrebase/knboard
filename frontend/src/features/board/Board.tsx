@@ -19,6 +19,7 @@ import { fetchBoardById } from "./BoardSlice";
 import Spinner from "components/Spinner";
 import { barHeight, sidebarWidth } from "const";
 import PageError from "components/PageError";
+import SEO from "components/SEO";
 
 const BoardContainer = styled.div`
   min-width: calc(100vw - ${sidebarWidth});
@@ -114,39 +115,46 @@ const Board = () => {
     return <Spinner loading={!detailDataExists} />;
   }
 
-  if (columns.length === 0) {
-    return <EmptyBoard>This board is empty.</EmptyBoard>;
-  }
-
   return (
-    <BoardContainer data-testid="board-container">
-      <ColumnsBlock>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-            {(provided: DroppableProvided) => (
-              <ColumnContainer
-                ref={provided.innerRef}
-                {...provided.droppableProps}
+    <>
+      <SEO title={detail?.name} />
+      {columns.length !== 0 ? (
+        <BoardContainer data-testid="board-container">
+          <ColumnsBlock>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable
+                droppableId="board"
+                type="COLUMN"
+                direction="horizontal"
               >
-                {columns.map((column: IColumn, index: number) => (
-                  <Column
-                    key={column.id}
-                    id={column.id}
-                    title={column.title}
-                    index={index}
-                    tasks={tasksByColumn[column.id].map(
-                      (taskId) => tasksById[taskId]
-                    )}
-                  />
-                ))}
-                {provided.placeholder}
-              </ColumnContainer>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </ColumnsBlock>
-      <RightMargin />
-    </BoardContainer>
+                {(provided: DroppableProvided) => (
+                  <ColumnContainer
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {columns.map((column: IColumn, index: number) => (
+                      <Column
+                        key={column.id}
+                        id={column.id}
+                        title={column.title}
+                        index={index}
+                        tasks={tasksByColumn[column.id].map(
+                          (taskId) => tasksById[taskId]
+                        )}
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </ColumnContainer>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </ColumnsBlock>
+          <RightMargin />
+        </BoardContainer>
+      ) : (
+        <EmptyBoard>This board is empty.</EmptyBoard>
+      )}
+    </>
   );
 };
 
