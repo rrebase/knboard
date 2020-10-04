@@ -15,6 +15,7 @@ import { Alert } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import { boardCardBaseStyles } from "styles";
 import { useForm } from "react-hook-form";
+import getMetaKey from "utils/shortcuts";
 
 const openBtnStyles = css`
   ${boardCardBaseStyles}
@@ -59,6 +60,7 @@ const NewBoardDialog = () => {
     <div>
       <Button css={openBtnStyles} onClick={handleOpen}>
         Create new board
+        <br />({getMetaKey()}+B)
       </Button>
       <Dialog
         open={open}
