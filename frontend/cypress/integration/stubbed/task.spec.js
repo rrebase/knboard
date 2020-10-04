@@ -25,7 +25,7 @@ context("Task", () => {
     const title = "Improve CI";
     cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
-    cy.findAllByText("Add card (ctrl+shift+2").first().click();
+    cy.findAllByText("Add card (ctrl+shift+2)").first().click();
     cy.findByTestId("create-task-title").type(title);
     cy.findByTestId("task-create").click();
     cy.findByText(title).should("be.visible");
