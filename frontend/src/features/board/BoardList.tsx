@@ -9,6 +9,7 @@ import { css, SerializedStyles, keyframes } from "@emotion/core";
 import { Link } from "react-router-dom";
 import NewBoardDialog from "./NewBoardDialog";
 import Spinner from "components/Spinner";
+import SEO from "components/SEO";
 import { boardCardBaseStyles } from "styles";
 import { faUserAlt, faTh } from "@fortawesome/free-solid-svg-icons";
 import { OWNER_COLOR } from "utils/colors";
@@ -130,6 +131,7 @@ const BoardList = () => {
 
   return (
     <Container maxWidth="sm">
+      <SEO title="Boards" />
       <BoardsSection>
         <Title>
           <FontAwesomeIcon icon={faTh} />

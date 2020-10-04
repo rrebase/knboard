@@ -7,6 +7,7 @@ context("Task", () => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/1/", "fixture:internals_board.json");
     cy.visit("/b/1/");
+    cy.title().should("eq", "Internals | Knboard");
   });
 
   const createTaskResponse = {

@@ -5,6 +5,7 @@ import LoginDialog from "./LoginDialog";
 import RegisterDialog from "./RegisterDialog";
 import EnterAsGuest from "./EnterAsGuest";
 import Footer from "./Footer";
+import SEO from "components/SEO";
 
 const Container = styled.div`
   margin-top: 20vh;
@@ -21,6 +22,7 @@ const Title = styled.h1`
 const Auth = () => {
   return (
     <Container>
+      <SEO />
       <div>
         <Board width={200} height={200} />
       </div>

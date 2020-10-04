@@ -7,6 +7,7 @@ context("Board List", () => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/", "fixture:board_list.json");
     cy.visit("/boards/");
+    cy.title().should("eq", "Boards | Knboard");
   });
 
   it("should have list of boards and create new board", () => {
@@ -33,6 +34,7 @@ context("Board Detail (Member)", () => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/2/", "fixture:os_board.json");
     cy.visit("/b/2/");
+    cy.title().should("eq", "Operating Systems | Knboard");
   });
 
   it("should not see owner specific member invite & remove buttons", () => {
@@ -54,6 +56,7 @@ context("Board Detail (Owner)", () => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/1/", "fixture:internals_board.json");
     cy.visit("/b/1/");
+    cy.title().should("eq", "Internals | Knboard");
   });
 
   it("should have all columns and tasks", () => {
