@@ -45,7 +45,7 @@ const AddTask = ({ columnId, index }: Props) => {
       onClick={handleOnClick}
       fullWidth
     >
-      Add another card {index <= 8 && `(${getMetaKey()} + ${index + 1})`}
+      Add card {index <= 8 && `(${getMetaKey()}+shift+${index + 1})`}
     </Button>
   );
 };

@@ -47,7 +47,7 @@ const Column = ({ id, title, tasks, index }: Props) => {
   React.useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (index > 8) return;
-      if (e.key === (index + 1).toString() && e.metaKey) {
+      if (e.key === (index + 1).toString() && e.metaKey && e.shiftKey) {
         e.preventDefault();
         dispatch(setCreateDialogColumn(id));
         dispatch(setCreateDialogOpen(true));
