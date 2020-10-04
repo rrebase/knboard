@@ -1,6 +1,12 @@
+version: "2"
+
+checks:
+  similar-code:
+    enabled: false
+
 exclude_patterns:
-- "**/node_modules/"
-- "**/migrations/"
-- "**/tests/"
-- "**/*.test.*"
-- "**/*.spec.*"
+  - "**/node_modules/"
+  - "**/migrations/"
+  - "**/tests/"
+  - "**/*.test.*"
+  - "**/*.spec.*"
