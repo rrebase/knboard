@@ -33,6 +33,7 @@ from boards.api import (
     TaskViewSet,
     SortColumn,
     SortTask,
+    CommentViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -42,6 +43,7 @@ router.register(r"boards", BoardViewSet)
 router.register(r"columns", ColumnViewSet)
 router.register(r"labels", LabelViewSet)
 router.register(r"tasks", TaskViewSet)
+router.register(r"comments", CommentViewSet)
 
 urlpatterns = [
     path("api/", include(router.urls)),

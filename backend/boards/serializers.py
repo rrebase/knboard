@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import ValidationError
 
 from accounts.serializers import BoardMemberSerializer
-from .models import Board, Task, Column, Label
+from .models import Board, Task, Column, Label, Comment
 
 User = get_user_model()
 
@@ -80,6 +80,12 @@ class TaskSerializer(serializers.ModelSerializer):
             "task_order",
             "column",
         ]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id", "task", "author", "text", "created", "modified"]
 
 
 class ColumnSerializer(BoardModelSerializer):

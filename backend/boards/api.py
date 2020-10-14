@@ -3,7 +3,7 @@ from itertools import chain
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import mixins
+from rest_framework import mixins, viewsets
 from rest_framework import filters
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +14,7 @@ from rest_framework.viewsets import GenericViewSet
 from django.db.models import Q
 from django.db.models import Prefetch
 
-from .models import Board, Task, Column, Label
+from .models import Board, Task, Column, Label, Comment
 from .permissions import IsOwner, IsOwnerForDangerousMethods
 from .serializers import (
     BoardSerializer,
@@ -24,6 +24,7 @@ from .serializers import (
     MemberSerializer,
     BoardMemberSerializer,
     LabelSerializer,
+    CommentSerializer,
 )
 from .viewsets import ModelDetailViewSet
 
@@ -116,6 +117,39 @@ class TaskViewSet(ModelDetailViewSet):
     def get_queryset(self):
         user = self.request.user
         return super().get_queryset().filter(column__board__members=user)
+
+
+class CommentViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["task"]
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(task__column__board__members=self.request.user)
+        )
+
+    def create(self, request, *args, **kwargs):
+        request.data.update(dict(author=request.user.id))
+
+        if (
+            self.request.user
+            not in Task.objects.get(
+                id=request.data.get("task")
+            ).column.board.members.all()
+        ):
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return super().create(request, *args, **kwargs)
 
 
 class ColumnViewSet(ModelDetailViewSet):
