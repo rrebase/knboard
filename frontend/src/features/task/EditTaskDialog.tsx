@@ -57,6 +57,7 @@ import { formatDistanceToNow } from "date-fns";
 import getMetaKey from "utils/shortcuts";
 import LabelChip from "components/LabelChip";
 import PriorityOption from "components/PriorityOption";
+import CommentSection from "features/comment/CommentSection";
 
 const mdParser = new MarkdownIt({ breaks: true });
 
@@ -452,6 +453,7 @@ const EditTaskDialog = () => {
               </DescriptionActions>
             )}
           </Description>
+          <CommentSection taskId={task.id} />
         </Main>
         <Side theme={theme}>
           <TaskAssignees task={task} />
