@@ -13,6 +13,7 @@ import {
   updateAvatarFulfilled,
   resetProfile,
 } from "features/profile/ProfileSlice";
+import { RootState } from "store";
 
 interface InitialState {
   user: User | null;
@@ -167,5 +168,7 @@ export const slice = createSlice({
 });
 
 export const { clearErrors } = slice.actions;
+
+export const selectMe = (state: RootState) => state.auth.user;
 
 export default slice.reducer;

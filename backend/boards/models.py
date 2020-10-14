@@ -77,3 +77,12 @@ class Task(SortableMixin, TimeStampedModel):
 
     class Meta:
         ordering = ["task_order"]
+
+
+class Comment(TimeStampedModel):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name="comments")
+    text = models.TextField()
+
+    class Meta:
+        ordering = ["created"]

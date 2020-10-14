@@ -1,6 +1,6 @@
 import factory
 from django.contrib.auth import get_user_model
-from boards.models import Board, Column, Task, Label
+from boards.models import Board, Column, Task, Label, Comment
 from factory.django import DjangoModelFactory
 
 User = get_user_model()
@@ -38,6 +38,15 @@ class TaskFactory(DjangoModelFactory):
     title = factory.Sequence(lambda n: f"task{n}")
     description = factory.Sequence(lambda n: f"Some description{n}")
     column = factory.SubFactory(ColumnFactory)
+
+
+class CommentFactory(DjangoModelFactory):
+    class Meta:
+        model = Comment
+
+    task = factory.SubFactory(TaskFactory)
+    author = factory.SubFactory(UserFactory)
+    text = factory.Sequence(lambda n: f"Comment Text{n}")
 
 
 class LabelFactory(DjangoModelFactory):

@@ -13,6 +13,7 @@ import { initialState as toastInitialState } from "features/toast/ToastSlice";
 import { initialState as boardInitialState } from "features/board/BoardSlice";
 import { initialState as columnInitialState } from "features/column/ColumnSlice";
 import { initialState as taskInitialState } from "features/task/TaskSlice";
+import { initialState as commentInitialState } from "features/comment/CommentSlice";
 import { initialState as memberInitialState } from "features/member/MemberSlice";
 import { initialState as labelInitialState } from "features/label/LabelSlice";
 import { initialState as responsiveInitialState } from "features/responsive/ResponsiveSlice";
@@ -25,6 +26,7 @@ export const rootInitialState = {
   board: boardInitialState,
   column: columnInitialState,
   task: taskInitialState,
+  comment: commentInitialState,
   member: memberInitialState,
   label: labelInitialState,
   responsive: responsiveInitialState,

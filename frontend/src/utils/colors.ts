@@ -3,6 +3,7 @@ export const PRIMARY = "#263590";
 export const PRIMARY_MAIN = "#5E68ED";
 export const SECONDARY_MAIN = "#89DAFF";
 export const DANGER = "#E25241";
+export const HINT = "#626E83";
 
 // Contrast
 export const WHITE = "#FFFFFF";

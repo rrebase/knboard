@@ -8,6 +8,7 @@ from boards.tests.factories import (
     ColumnFactory,
     TaskFactory,
     LabelFactory,
+    CommentFactory,
 )
 
 register(UserFactory)
@@ -15,6 +16,7 @@ register(BoardFactory)
 register(ColumnFactory)
 register(TaskFactory)
 register(LabelFactory)
+register(CommentFactory)
 
 
 @pytest.fixture(autouse=True)

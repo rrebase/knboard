@@ -6,6 +6,7 @@ context("Task", () => {
   beforeEach(() => {
     cy.stubbedSetup();
     cy.route("GET", "/api/boards/1/", "fixture:internals_board.json");
+    cy.route("GET", `/api/comments/**`, []);
     cy.visit("/b/1/");
     cy.title().should("eq", "Internals | Knboard");
   });
@@ -26,7 +27,7 @@ context("Task", () => {
     const title = "Improve CI";
     cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
-    cy.findAllByText("Add card (ctrl+shift+2)").first().click();
+    cy.contains("Add card").first().click();
     cy.findByTestId("create-task-title").type(title);
     cy.findByTestId("task-create").click();
     cy.findByText(title).should("be.visible");
@@ -36,7 +37,7 @@ context("Task", () => {
     const title = "Redesign concept";
     cy.route("POST", "api/tasks/", { ...createTaskResponse, title });
 
-    cy.findAllByText("Add card (ctrl+shift+2)").first().click();
+    cy.contains("Add card").first().click();
     cy.findByTestId("create-task-title").type(title + "{meta}{enter}");
     cy.findByText(title).should("be.visible");
   });
@@ -108,9 +109,9 @@ context("Task", () => {
     cy.findByTestId("task-1").click();
     cy.findByTestId("task-title").click().clear().type("Fresh");
     cy.findByText("Description").click();
-    cy.findByText("Fresh").should("be.visible");
+    cy.findByText("Fresh").should("exist");
     cy.findByText("Fresh").type(" one{enter}");
-    cy.findByText("Fresh one").should("be.visible");
+    cy.findByText("Fresh one").should("exist");
   });
 
   it("should successfully edit task priority", () => {
@@ -276,6 +277,46 @@ context("Task", () => {
               cy.findByText(member.username[0]).should("be.visible");
             });
           });
+      });
+    });
+  });
+
+  it("should add a comment to task", () => {
+    cy.fixture("internals_board").then((board) => {
+      const task = board.columns[1].tasks[0];
+      const existingComment = {
+        id: 1,
+        task: task.id,
+        author: 1, // testuser from stubbedSetup
+        text: "A comment that exists.",
+        created: "2020-10-13T18:10:48.551816Z",
+        modified: "2020-10-13T18:10:48.551816Z",
+      };
+      cy.route("GET", `/api/comments/?task=${task.id}`, [existingComment]).as(
+        "getComments"
+      );
+
+      const newComment = {
+        id: 2,
+        task: task.id,
+        author: 1, // testuser from stubbedSetup
+        text: "A new comment.",
+        created: new Date().toISOString(),
+        modified: new Date().toISOString(),
+      };
+      cy.route("POST", `/api/comments/`, newComment).as("postComment");
+
+      cy.findByTestId(`task-${task.id}`).click();
+      cy.findByRole("textbox", { name: /comment/i })
+        .type(newComment.text)
+        .then(() => {
+          cy.findByRole("button", { name: /post comment/i }).click();
+        });
+
+      cy.wait("@postComment").then(() => {
+        cy.findByText("A new comment.").should("be.visible");
+        cy.findByText("less than a minute ago").should("be.visible");
+        cy.findByText("A comment that exists.").should("be.visible");
       });
     });
   });
