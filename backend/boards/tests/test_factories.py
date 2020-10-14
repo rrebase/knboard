@@ -30,3 +30,10 @@ def test_label_factory(label_factory):
     label = label_factory()
     assert re.match(r"label\d+", label.name)
     assert re.match(r"#\w{6}", label.color)
+
+
+def test_comment_factory(comment_factory):
+    comment = comment_factory()
+    assert comment.task
+    assert comment.author
+    assert comment.text
