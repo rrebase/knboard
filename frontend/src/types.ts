@@ -80,6 +80,20 @@ export interface UserDetail {
   is_guest: boolean;
 }
 
+export interface TaskComment {
+  id: number;
+  task: number;
+  author: number;
+  text: string;
+  created: string;
+  modified: string;
+}
+
+export type NewTaskComment = Omit<
+  TaskComment,
+  "id" | "author" | "created" | "modified"
+>;
+
 export interface Avatar {
   id: number;
   photo: string;
@@ -93,3 +107,5 @@ export interface WithTheme {
 export interface AuthSetup {
   ALLOW_GUEST_ACCESS: boolean;
 }
+
+export type Status = "idle" | "loading" | "succeeded" | "failed";
