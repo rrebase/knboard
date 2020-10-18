@@ -121,6 +121,7 @@ class TaskViewSet(ModelDetailViewSet):
 
 class CommentViewSet(
     mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet,
@@ -150,6 +151,14 @@ class CommentViewSet(
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return super().create(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        request.data.update(dict(author=request.user.id))
+
+        if self.request.user != self.get_object().author:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+        return super().destroy(request, *args, **kwargs)
 
 
 class ColumnViewSet(ModelDetailViewSet):
