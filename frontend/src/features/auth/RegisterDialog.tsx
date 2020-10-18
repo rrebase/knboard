@@ -122,7 +122,7 @@ const RegisterDialog = () => {
               label="Email"
               variant="outlined"
               inputRef={register()}
-              helperText={errors.email?.message || "Can be left empty."}
+              helperText={errors.email?.message}
               error={Boolean(errors.email)}
               fullWidth
             />
