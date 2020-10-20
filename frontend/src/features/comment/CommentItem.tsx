@@ -14,11 +14,15 @@ interface Props {
   comment: TaskComment;
 }
 
-const CommentItem = ({ comment }: Props) => {
+const CommentActionRow = ({ comment }: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const memberEntities = useSelector(selectMembersEntities);
   const author = memberEntities[comment.author];
+
+  if (!user || !author || user.id !== author.id) {
+    return null;
+  }
 
   const handleDelete = () => {
     if (window.confirm("Are you sure? Deleting a comment cannot be undone.")) {
@@ -26,23 +30,22 @@ const CommentItem = ({ comment }: Props) => {
     }
   };
 
+  return (
+    <Box>
+      <Link onClick={handleDelete} data-testid={`delete-comment-${comment.id}`}>
+        Delete
+      </Link>
+    </Box>
+  );
+};
+
+const CommentItem = ({ comment }: Props) => {
+  const memberEntities = useSelector(selectMembersEntities);
+  const author = memberEntities[comment.author];
+
   if (!author) {
     return null;
   }
-
-  const actionRowIfUserIsAuthor =
-    user && user.id === author.id ? (
-      <Box>
-        <Link
-          onClick={handleDelete}
-          data-testid={`delete-comment-${comment.id}`}
-        >
-          Delete
-        </Link>
-      </Box>
-    ) : (
-      ""
-    );
 
   return (
     <Box display="flex" mb={2}>
@@ -59,7 +62,7 @@ const CommentItem = ({ comment }: Props) => {
           </TimeAgo>
         </Box>
         <Text>{comment.text}</Text>
-        {actionRowIfUserIsAuthor}
+        {CommentActionRow({ comment })}
       </Box>
     </Box>
   );
