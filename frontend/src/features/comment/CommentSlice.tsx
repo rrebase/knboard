@@ -7,10 +7,11 @@ import api, { API_COMMENTS } from "api";
 import { AxiosResponse } from "axios";
 import {
   createErrorToast,
+  createInfoToast,
   createSuccessToast,
 } from "features/toast/ToastSlice";
 import { RootState } from "store";
-import { NewTaskComment, Status, TaskComment } from "types";
+import { Id, NewTaskComment, Status, TaskComment } from "types";
 
 export const fetchComments = createAsyncThunk<TaskComment[], number>(
   "comment/fetchCommentsStatus",
@@ -42,6 +43,19 @@ export const createComment = createAsyncThunk<
     dispatch(createErrorToast(err.message));
   }
 });
+
+export const deleteComment = createAsyncThunk<Id | undefined, Id>(
+  "task/deleteCommentStatus",
+  async (id, { dispatch }) => {
+    try {
+      await api.delete(`${API_COMMENTS}${id}/`);
+      dispatch(createInfoToast("Comment deleted"));
+      return id;
+    } catch (err) {
+      dispatch(createErrorToast(err.message));
+    }
+  }
+);
 
 const commentAdapter = createEntityAdapter<TaskComment>({
   sortComparer: (a, b) => b.created.localeCompare(a.created),
@@ -75,6 +89,9 @@ export const slice = createSlice({
     builder.addCase(createComment.fulfilled, (state, action) => {
       commentAdapter.addOne(state, action.payload as TaskComment);
       state.createCommentStatus = "succeeded";
+    });
+    builder.addCase(deleteComment.fulfilled, (state, action) => {
+      commentAdapter.removeOne(state, action.payload as Id);
     });
   },
 });

@@ -4,7 +4,9 @@ import MemberAvatar from "components/MemberAvatar";
 import { formatDistanceToNow } from "date-fns";
 import { selectMembersEntities } from "features/member/MemberSlice";
 import React from "react";
-import { useSelector } from "react-redux";
+import { deleteComment } from "./CommentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
 import { TaskComment } from "types";
 import { HINT } from "utils/colors";
 
@@ -13,12 +15,34 @@ interface Props {
 }
 
 const CommentItem = ({ comment }: Props) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
   const memberEntities = useSelector(selectMembersEntities);
   const author = memberEntities[comment.author];
+
+  const handleDelete = () => {
+    if (window.confirm("Are you sure? Deleting a comment cannot be undone.")) {
+      dispatch(deleteComment(comment.id));
+    }
+  };
 
   if (!author) {
     return null;
   }
+
+  const actionRowIfUserIsAuthor =
+    user && user.id === author.id ? (
+      <Box>
+        <Link
+          onClick={handleDelete}
+          data-testid={`delete-comment-${comment.id}`}
+        >
+          Delete
+        </Link>
+      </Box>
+    ) : (
+      ""
+    );
 
   return (
     <Box display="flex" mb={2}>
@@ -35,10 +59,21 @@ const CommentItem = ({ comment }: Props) => {
           </TimeAgo>
         </Box>
         <Text>{comment.text}</Text>
+        {actionRowIfUserIsAuthor}
       </Box>
     </Box>
   );
 };
+
+const Link = styled.a`
+  font-size: 0.75rem;
+  color: ${HINT};
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const Name = styled.div`
   font-size: 0.75rem;
