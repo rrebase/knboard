@@ -320,4 +320,48 @@ context("Task", () => {
       });
     });
   });
+
+  it("should delete a comment from a task", () => {
+    cy.fixture("internals_board").then((board) => {
+      const stub = cy.stub();
+      stub.onFirstCall().returns(true);
+      cy.on("window:confirm", stub);
+
+      const task = board.columns[1].tasks[0];
+      const commentToBeDeleted = {
+        id: 1,
+        task: task.id,
+        author: 1, // testuser from stubbedSetup
+        text: "A comment that will be deleted.",
+        created: "2020-10-13T18:10:48.551816Z",
+        modified: "2020-10-13T18:10:48.551816Z",
+      };
+      const commentThatRemains = {
+        id: 2,
+        task: task.id,
+        author: 3, // daveice
+        text: "A comment that will remain.",
+        created: "2020-10-20T16:22:55.115181Z",
+        modified: "2020-10-20T16:22:55.115181Z",
+      };
+      cy.route("GET", `/api/comments/?task=${task.id}`, [
+        commentToBeDeleted,
+        commentThatRemains,
+      ]).as("getComments");
+
+      cy.route("DELETE", `/api/comments/${task.id}`, "").as("deleteComment");
+
+      cy.findByTestId(`task-${task.id}`).click();
+      cy.findByTestId(`delete-comment-${commentThatRemains.id}`).should(
+        "not.be.visible",
+        "Delete link must not be visible to others than the comment's author"
+      );
+      cy.findByTestId(`delete-comment-${commentToBeDeleted.id}`).click();
+
+      cy.wait("@deleteComment").then(() => {
+        cy.findByText(commentToBeDeleted.text).should("not.be.visible");
+        cy.findByText(commentThatRemains.text).should("be.visible");
+      });
+    });
+  });
 });
