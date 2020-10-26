@@ -27,7 +27,7 @@ context("Stubbed Auth User Not Logged In", () => {
     cy.findByLabelText("Password").type("TestPw123");
     cy.findByLabelText("Confirm Password").type("TestPw123");
     cy.findByTestId("submit-register-btn").click();
-    cy.wait(200);
+    cy.wait(500);
     cy.get("p[id='email-helper-text']")
       .should("be.visible")
       .should("have.text", "This field is required.");
