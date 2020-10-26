@@ -150,3 +150,33 @@ def test_guest_registration(api_client, settings):
     assert Label.objects.filter(board=board).count() > 0
     assert Column.objects.filter(board=board).count() > 0
     assert Task.objects.filter(column__board=board).count() > 0
+
+
+def test_user_registration_email_entered(api_client):
+    assert User.objects.count() == 0
+    response = api_client.post(
+        reverse("rest_register"),
+        {
+            "password1": "Test12345!",
+            "password2": "Test12345!",
+            "email": "test@test.ee",
+            "username": "testaccount",
+        },
+    )
+    assert response.status_code == 201
+    assert User.objects.count() == 1
+
+
+def test_user_registration_no_email_entered(api_client):
+    assert User.objects.count() == 0
+    response = api_client.post(
+        reverse("rest_register"),
+        {
+            "password1": "Test12345!",
+            "password2": "Test12345!",
+            "username": "testaccount",
+        },
+    )
+    assert response.status_code == 400
+    assert response.data["email"][0] == "This field is required."
+    assert User.objects.count() == 0
