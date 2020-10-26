@@ -23,10 +23,7 @@ context("Stubbed Auth User Not Logged In", () => {
   it("should not register if no email entered", () => {
     cy.findByText(/register/i).click();
     cy.findByLabelText("Username").type("testuser");
-    cy.get("p[id='email-helper-text']").should(
-      "not.have.text",
-      "Can be left empty."
-    );
+    cy.get("p[id='email-helper-text']").should("not.exist");
     cy.findByLabelText("Password").type("TestPw123");
     cy.findByLabelText("Confirm Password").type("TestPw123");
     cy.findByTestId("submit-register-btn").click();
