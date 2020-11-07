@@ -16,7 +16,7 @@ import { Avatar } from "@material-ui/core";
 import { setEditDialogOpen } from "./TaskSlice";
 import TaskLabels from "./TaskLabels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCube } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { selectMembersEntities } from "features/member/MemberSlice";
 
 const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean) => {
@@ -113,7 +113,7 @@ export const TaskFooter = ({ task }: { task: ITask }) => {
   return (
     <Footer>
       <CardIcon data-testid="task-priority">
-        <FontAwesomeIcon icon={faCube} color={PRIO_COLORS[task.priority]} />
+        <FontAwesomeIcon icon={faArrowUp} color={PRIO_COLORS[task.priority]} />
       </CardIcon>
       {assignees.length > 0 && (
         <Assignees>

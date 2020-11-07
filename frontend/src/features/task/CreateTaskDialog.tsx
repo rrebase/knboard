@@ -107,7 +107,9 @@ const CreateTaskDialog = () => {
   }, [open]);
 
   const handleClose = () => {
-    dispatch(setCreateDialogOpen(false));
+    if (window.confirm("Are you sure? Any progress made will be lost.")) {
+      dispatch(setCreateDialogOpen(false));
+    }
   };
 
   const handleCreate = async () => {

@@ -10,10 +10,13 @@ import { selectAllMembers } from "./MemberSlice";
 
 const FilterButton = styled.div`
   margin-left: 0.5rem;
+  border-color: #d1d8e2;
+  border-radius: 12px;
 `;
 
 const Content = styled.div`
   padding: 2rem;
+  width: 300px;
 `;
 
 const Description = styled.p`
@@ -21,6 +24,7 @@ const Description = styled.p`
   margin-bottom: 1rem;
   font-size: 1.125rem;
   font-weight: bold;
+  font-size: 0.875rem;
 `;
 
 interface Props {
@@ -111,9 +115,9 @@ const MemberFilter = ({ boardId }: Props) => {
         transitionDuration={0}
       >
         <Content>
-          <Description>Filter Tasks by Assignees</Description>
-          <Box display="flex" flexDirection="row" alignItems="center">
-            <Box flexGrow={1} p={1}>
+          <Description>Filter tasks by assignees</Description>
+          <Box display="flex" alignItems="center">
+            <Box flexGrow={1}>
               <AssigneeAutoComplete
                 assignee={filteredAssignee}
                 members={members}
@@ -122,21 +126,19 @@ const MemberFilter = ({ boardId }: Props) => {
                 setAssignee={setFilteredAssignee}
               />
             </Box>
-            <Box>
-              <Button
-                color="primary"
-                variant="contained"
-                css={css`
-                  margin-top: 0.75rem;
-                  font-size: 0.625rem;
-                `}
-                onClick={handleClickFilter}
-                data-testid="filter-selected"
-                disabled={filteredAssignee.length === 0}
-              >
-                Filter
-              </Button>
-            </Box>
+            <Button
+              color="primary"
+              variant="contained"
+              css={css`
+                font-size: 0.625rem;
+                margin-left: 0.5rem;
+              `}
+              onClick={handleClickFilter}
+              data-testid="filter-selected"
+              disabled={filteredAssignee.length === 0}
+            >
+              Filter
+            </Button>
           </Box>
         </Content>
       </Popover>

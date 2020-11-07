@@ -25,7 +25,7 @@ const TopArea = styled.div`
 
 const linkStyles = css`
   display: block;
-  color: #8e97d8;
+  color: #caceed;
   font-weight: bold;
   padding: 6px 20px;
   text-decoration: none;

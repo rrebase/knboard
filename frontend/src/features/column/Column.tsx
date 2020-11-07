@@ -1,26 +1,21 @@
-import React from "react";
 import styled from "@emotion/styled";
+import ColumnTitle from "components/ColumnTitle";
 import { grid } from "const";
-import { COLUMN_COLOR, PRIMARY } from "utils/colors";
-import { ITask } from "types";
+import TaskList from "features/task/TaskList";
+import React from "react";
 import {
   Draggable,
   DraggableProvided,
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
-import TaskList from "features/task/TaskList";
-import ColumnTitle from "components/ColumnTitle";
-import { useDispatch } from "react-redux";
-import {
-  setCreateDialogColumn,
-  setCreateDialogOpen,
-} from "features/task/TaskSlice";
+import { ITask } from "types";
+import { COLUMN_COLOR } from "utils/colors";
 
 const Container = styled.div`
   margin: ${grid / 2}px;
   display: flex;
   flex-direction: column;
-  border-top: 3px solid ${PRIMARY};
+  border-top: 3px solid #cfd3dc;
 `;
 
 const Header = styled.div<{ isDragging: boolean }>`
@@ -42,22 +37,6 @@ type Props = {
 };
 
 const Column = ({ id, title, tasks, index }: Props) => {
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (index > 8) return;
-      if (e.key === (index + 1).toString() && e.metaKey && e.shiftKey) {
-        e.preventDefault();
-        dispatch(setCreateDialogColumn(id));
-        dispatch(setCreateDialogOpen(true));
-      }
-    };
-
-    document.addEventListener("keydown", (e) => handleKeydown(e));
-    return () => document.removeEventListener("keydown", handleKeydown);
-  }, []);
-
   return (
     <Draggable draggableId={`col-${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (

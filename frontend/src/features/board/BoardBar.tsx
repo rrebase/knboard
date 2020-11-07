@@ -127,6 +127,7 @@ const BoardBar = () => {
             css={css`
               ${buttonStyles}
               margin-right: 0.5rem;
+              font-weight: 600;
             `}
             onClick={handleEditLabels}
             startIcon={<FontAwesomeIcon icon={faPen} />}
@@ -138,12 +139,13 @@ const BoardBar = () => {
             size="small"
             css={css`
               ${buttonStyles}
+              font-weight: 600;
             `}
             onClick={handleAddColumn}
             startIcon={<FontAwesomeIcon icon={faPlus} />}
             data-testid="add-col"
           >
-            Add List
+            Add Column
           </Button>
         </Right>
       </Items>

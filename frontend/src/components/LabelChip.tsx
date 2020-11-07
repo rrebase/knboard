@@ -35,6 +35,7 @@ const LabelChip = ({ label, onCard = false, ...rest }: Props) => {
         .MuiChip-label {
           ${onCard &&
           `
+            font-weight: 500;
             padding: 1px 0.75em;
             line-height: 1.5;
             height: 18px;
