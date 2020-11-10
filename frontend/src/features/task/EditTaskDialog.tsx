@@ -23,7 +23,7 @@ import {
   faTrash,
   faLock,
   faAlignLeft,
-  faCube,
+  faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { createInfoToast } from "features/toast/ToastSlice";
 import { PRIMARY, TASK_G } from "utils/colors";
@@ -361,6 +361,10 @@ const EditTaskDialog = () => {
       handleDelete();
     }
 
+    if (e.key === "Escape" && e.metaKey) {
+      handleClose();
+    }
+
     if (e.key === "l" && e.metaKey) {
       e.preventDefault();
       handleNotImplemented();
@@ -377,7 +381,7 @@ const EditTaskDialog = () => {
       fullScreen={xsDown}
       css={css`
         .MuiDialog-paper {
-          max-width: 768px;
+          max-width: 920px;
         }
       `}
     >
@@ -386,7 +390,7 @@ const EditTaskDialog = () => {
         <Main>
           <Header>id: {task.id}</Header>
           <Title>
-            <FontAwesomeIcon icon={faCube} />
+            <FontAwesomeIcon icon={faArrowUp} />
             <TextareaAutosize
               ref={titleTextAreaRef}
               value={title}
@@ -405,7 +409,9 @@ const EditTaskDialog = () => {
             data-testid="task-description"
           >
             <EditorWrapper
-              onClick={editingDescription ? undefined : handleDescriptionClick}
+              onDoubleClick={
+                editingDescription ? undefined : handleDescriptionClick
+              }
               editing={editingDescription}
               ref={wrapperRef}
               theme={theme}

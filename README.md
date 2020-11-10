@@ -80,7 +80,16 @@ python3 --version
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
+
+# Windows users
+# virtualenv .venv
+# .venv/scripts/activate
+
 pip install -r requirements/local.txt
+
+# Need to have Docker and Docker Compose installed
+# Start PostgreSQL and other services via Docker Compose
+docker-compose -f services.yml up --d
 
 python manage.py migrate
 python manage.py createsuperuser --username admin --email a@a.com
@@ -88,36 +97,8 @@ python manage.py loaddata avatars
 python manage.py runserver
 ```
 
-```
-python3 -m venv .venv
-source .venv/bin/activate
-
------ For Windows----
-virtualenv .venv
-.venv/scripts/activate
----------------------
-
-pip install -r requirements/local.txt
-
-#if failed to import from psycopg:
-pip install psycopg2-binary
-
-docker-compose -f services.yml up --d
-
-#if postgres is installed locally, stop its service or uninstall it
-python manage.py migrate --settings=config.settings.local
-python manage.py createsuperuser --username admin --email a@a.com --settings=config.settings.local
-python manage.py loaddata avatars --settings=config.settings.local
-python manage.py runserver --settings=config.settings.local
-```
-
-Troubleshooting running the project:
-
-- Make sure PostgreSQL container is running
-- Make sure Python virtual environment is activated
-
-The Django API is now accessible at `http://localhost:8000/api/`
-with the admin backend available at `http://localhost:8000/backdoor/`
+- API root available at `http://localhost:8000/api/`
+- Admin available at `http://localhost:8000/backdoor/`
 
 ### React
 

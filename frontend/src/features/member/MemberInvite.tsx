@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Popover } from "@material-ui/core";
+import { Button, Popover, Box } from "@material-ui/core";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import UserSearch, { UserOption } from "components/UserSearch";
@@ -23,7 +23,7 @@ const Content = styled.div`
 const Description = styled.p`
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 18px;
+  font-size: 0.875rem;
   font-weight: bold;
 `;
 
@@ -103,24 +103,26 @@ const MemberInvite = ({ boardId }: Props) => {
       >
         <Content>
           <Description>Invite to this board</Description>
-          <UserSearch
-            boardId={boardId}
-            tagsValue={tagsValue}
-            setTagsValue={setTagsValue}
-          />
-          <Button
-            color="primary"
-            variant="contained"
-            css={css`
-              margin-top: 0.75rem;
-              font-size: 0.625rem;
-            `}
-            onClick={handleClickInvite}
-            data-testid="invite-selected"
-            disabled={tagsValue.length === 0}
-          >
-            Invite
-          </Button>
+          <Box display="flex" alignItems="center">
+            <UserSearch
+              boardId={boardId}
+              tagsValue={tagsValue}
+              setTagsValue={setTagsValue}
+            />
+            <Button
+              color="primary"
+              variant="contained"
+              css={css`
+                font-size: 0.625rem;
+                margin-left: 0.5rem;
+              `}
+              onClick={handleClickInvite}
+              data-testid="invite-selected"
+              disabled={tagsValue.length === 0}
+            >
+              Invite
+            </Button>
+          </Box>
         </Content>
       </Popover>
     </>

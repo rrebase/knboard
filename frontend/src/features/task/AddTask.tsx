@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { css } from "@emotion/core";
 import { useDispatch } from "react-redux";
 import { setCreateDialogColumn, setCreateDialogOpen } from "./TaskSlice";
-import getMetaKey from "utils/shortcuts";
 
 interface Props {
   columnId: Id;
@@ -45,7 +44,7 @@ const AddTask = ({ columnId, index }: Props) => {
       onClick={handleOnClick}
       fullWidth
     >
-      Add card {index <= 8 && `(${getMetaKey()}+shift+${index + 1})`}
+      Add card
     </Button>
   );
 };

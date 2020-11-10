@@ -148,13 +148,13 @@ context("Task", () => {
 
     cy.findByTestId("task-1").click();
     cy.findByText(initialTargetText).should("be.visible");
-    cy.findByTestId("task-description").click();
+    cy.findByTestId("task-description").dblclick();
     cy.get("#textarea")
       .type(newText + "{meta}{enter}")
       .then(() => {
         cy.findAllByText(newText).should("be.visible");
       });
-    cy.findByTestId("task-description").click();
+    cy.findByTestId("task-description").dblclick();
     cy.get("#textarea").type(initialTargetText);
     cy.findByText(/Save.*/)
       .click()
@@ -172,7 +172,7 @@ context("Task", () => {
     cy.findByText(initialTargetText).should("be.visible");
     cy.findAllByText(draftText).should("not.exist");
 
-    cy.findByTestId("task-description").click();
+    cy.findByTestId("task-description").dblclick();
     cy.get("#textarea").type(draftText);
     cy.findAllByText(draftText).should("exist");
 
@@ -180,7 +180,7 @@ context("Task", () => {
     cy.findByText(initialTargetText).should("be.visible");
     cy.findAllByText(draftText).should("not.exist");
 
-    cy.findByTestId("task-description").click();
+    cy.findByTestId("task-description").dblclick();
     cy.get("#textarea").type(draftText);
     cy.findAllByText(draftText).should("exist");
 
