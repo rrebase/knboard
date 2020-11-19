@@ -21,8 +21,10 @@ context.skip("Login Functional tests", () => {
 
 context.skip("Register Functional tests", () => {
   beforeEach(() => {
-    cy.wrap("testuser-" + nanoid()).as("username");
-    cy.wrap(nanoid() + "testuser@example.com").as("email");
+    // pre: a user with given username or email doesn't exist in the db
+    // nanoid() is a unique id added as a temp solution to achieve this condition
+    cy.wrap("TestUser.123" + nanoid()).as("username");
+    cy.wrap("testuser" + nanoid() + "@example.com").as("email");
     cy.wrap("SecretPw519").as("pw");
     cy.visit("/");
     cy.findByText(/register/i).click();
@@ -34,6 +36,7 @@ context.skip("Register Functional tests", () => {
     cy.findByLabelText("Password").type(this.pw);
     cy.findByLabelText("Confirm Password").type(this.pw);
     cy.findByTestId("submit-register-btn").click();
+    cy.findByText("View Boards").should("be.visible");
   });
 
   it("should successfully register via enter key", function () {
@@ -41,6 +44,7 @@ context.skip("Register Functional tests", () => {
     cy.findByLabelText("Email").type(this.email);
     cy.findByLabelText("Password").type(this.pw);
     cy.findByLabelText("Confirm Password").type(this.pw + "{enter}");
+    cy.findByText("View Boards").should("be.visible");
   });
 
   it("should require username", function () {
@@ -49,6 +53,32 @@ context.skip("Register Functional tests", () => {
     cy.findByLabelText("Confirm Password").type(this.pw);
     cy.findByTestId("submit-register-btn").click();
     cy.findByText("This field is required").should("be.visible");
+  });
+
+  it("should not allow an invalid username", function () {
+    cy.findByLabelText("Username").type("@.!");
+    cy.findByLabelText("Email").type(this.email);
+    cy.findByLabelText("Password").type(this.pw);
+    cy.findByLabelText("Confirm Password").type(this.pw);
+    cy.findByTestId("submit-register-btn").click();
+    cy.findByText(
+      "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters."
+    ).should("be.visible");
+  });
+
+  it("should not allow a username longer than 150 characters", function () {
+    cy.findByLabelText("Username").type(
+      "Loremipsumdolorsitametconsecteturadipiscingel" +
+        "itseddoeiusmodtemporincididuntutlaboreetdolor" +
+        "emagnaaliqua.Utenimadminimveniamquisnostrudexercitationullamco"
+    );
+    cy.findByLabelText("Email").type(this.email);
+    cy.findByLabelText("Password").type(this.pw);
+    cy.findByLabelText("Confirm Password").type(this.pw);
+    cy.findByTestId("submit-register-btn").click();
+    cy.findByText("Ensure this field has no more than 150 characters.").should(
+      "be.visible"
+    );
   });
 
   it("should require email", function () {
