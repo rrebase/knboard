@@ -82,10 +82,12 @@ python3 -m venv .venv
 source .venv/bin/activate
 
 # Windows users
-# virtualenv .venv
 # .venv/scripts/activate
 
 pip install -r requirements/local.txt
+
+# Windows users, if you encounter pg_config error:
+# 1) Install PostgresSQL and use the solution at https://stackoverflow.com/a/58440598/1262198
 
 # Need to have Docker and Docker Compose installed
 # Start PostgreSQL and other services via Docker Compose
