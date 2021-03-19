@@ -8,7 +8,7 @@ django-admin-sortable==2.2.3
 dj-rest-auth==1.0.7
 markdown==3.2.2
 PyYAML==5.3.1
-Pillow==7.1.2
+Pillow==8.1.1
 pre-commit==2.4.0
 shortuuid==1.0.1
 psycopg2==2.8.5 --no-binary psycopg2
