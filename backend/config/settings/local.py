@@ -1,3 +1,4 @@
+import os
 from .base import *
 
 # Dummy value for development
@@ -7,12 +8,13 @@ DEBUG_TOOLBAR = False
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "knboard",
-        "USER": "knboard",
-        "PASSWORD": "knboard",
-        "HOST": "localhost",
-        "PORT": 5432,
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.expanduser("~/knboard.sqlite3"),
+        # "NAME": "knboard",
+        # "USER": "knboard",
+        # "PASSWORD": "knboard",
+        # "HOST": "localhost",
+        # "PORT": 5432,
     }
 }
 

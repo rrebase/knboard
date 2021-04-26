@@ -17,12 +17,13 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "PORT": get_env("POSTGRES_PORT"),
-        "HOST": get_env("POSTGRES_HOST"),
-        "NAME": get_env("POSTGRES_DB"),
-        "USER": get_env("POSTGRES_USER"),
-        "PASSWORD": get_env("POSTGRES_PASSWORD"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.expanduser("~/knboard.sqlite"),
+        # "PORT": get_env("POSTGRES_PORT"),
+        # "HOST": get_env("POSTGRES_HOST"),
+        # "NAME": get_env("POSTGRES_DB"),
+        # "USER": get_env("POSTGRES_USER"),
+        # "PASSWORD": get_env("POSTGRES_PASSWORD"),
         "ATOMIC_REQUESTS": True,
     }
 }
@@ -47,7 +48,11 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
-        "django.request": {"handlers": [], "level": "ERROR", "propagate": True,},
+        "django.request": {
+            "handlers": [],
+            "level": "ERROR",
+            "propagate": True,
+        },
         "django.security.DisallowedHost": {
             "level": "ERROR",
             "handlers": ["console"],
