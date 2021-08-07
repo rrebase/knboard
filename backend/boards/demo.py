@@ -29,14 +29,18 @@ def create_demo_board(user):
         alice.save()
     board.members.set([user, alice])
 
-    duplicate = Label.objects.create(name="Duplicate", color="#CCC", board=board)
-    review = Label.objects.create(name="Needs review", color="#48C774", board=board)
-    bug = Label.objects.create(name="Bug", color="#D0362E", board=board)
-    design = Label.objects.create(name="Design 🎨", color="#965CCA", board=board)
-    devops = Label.objects.create(name="DevOps", color="#5EA8CB", board=board)
-    docs = Label.objects.create(name="Docs", color="#5DCEB3", board=board)
-    cookie = Label.objects.create(name="Cookie 🍪", color="#D475CE", board=board)
-    enhancement = Label.objects.create(name="Enhancement", color="#AF838E", board=board)
+    duplicate = Label.objects.create(name="Duplicate", color="#CCC")  # , board=board)
+    review = Label.objects.create(
+        name="Needs review", color="#48C774"
+    )  # , board=board)
+    bug = Label.objects.create(name="Bug", color="#D0362E")  # , board=board)
+    design = Label.objects.create(name="Design 🎨", color="#965CCA")  # , board=board)
+    devops = Label.objects.create(name="DevOps", color="#5EA8CB")  # , board=board)
+    docs = Label.objects.create(name="Docs", color="#5DCEB3")  # , board=board)
+    cookie = Label.objects.create(name="Cookie 🍪", color="#D475CE")  # , board=board)
+    enhancement = Label.objects.create(
+        name="Enhancement", color="#AF838E"
+    )  # , board=board)
 
     backlog = Column.objects.create(title="Backlog", board=board)
     requested = Column.objects.create(title="Requested", board=board)

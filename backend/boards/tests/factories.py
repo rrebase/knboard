@@ -55,4 +55,4 @@ class LabelFactory(DjangoModelFactory):
 
     name = factory.Sequence(lambda n: f"label{n}")
     color = factory.Faker("hex_color")
-    board = factory.SubFactory(BoardFactory)
+    # board = factory.SubFactory(BoardFactory)

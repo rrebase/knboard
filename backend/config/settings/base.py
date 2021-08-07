@@ -20,6 +20,8 @@ BACKEND_DIR = os.path.dirname(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SQLITE_FILE = os.environ.get("KNBOARD_SQLITE", os.path.expanduser("~/knboard.sqlite3"))
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -92,9 +94,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 # Internationalization

@@ -4,12 +4,12 @@ from .base import *
 # Dummy value for development
 SECRET_KEY = "*m(r@4mdh*!zabwg&6tp%mgs_ezkprs9g+$@x@cdq-z_)dtf2i"
 
-DEBUG_TOOLBAR = False
+DEBUG_TOOLBAR = True  # False
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.expanduser("~/knboard.sqlite3"),
+        "NAME": SQLITE_FILE,
         # "NAME": "knboard",
         # "USER": "knboard",
         # "PASSWORD": "knboard",

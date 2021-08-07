@@ -178,7 +178,8 @@ class LabelViewSet(ModelDetailViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return super().get_queryset().filter(board__members=user)
+        # TODO: Filter by either board or task?
+        return super().get_queryset()  # .filter(board__members=user)
 
 
 class SortColumn(APIView):

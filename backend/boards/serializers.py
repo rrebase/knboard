@@ -34,12 +34,12 @@ class TaskSerializer(serializers.ModelSerializer):
     )
 
     def extra_validation(self, board=None, labels=None, assignees=None, user=None):
-        if labels and board:
-            for label in labels:
-                if label.board != board:
-                    raise serializers.ValidationError(
-                        "Can't set a label that doesn't belong to the board!"
-                    )
+        # if labels and board:
+        #     for label in labels:
+        #         if label.board != board:
+        #             raise serializers.ValidationError(
+        #                 "Can't set a label that doesn't belong to the board!"
+        #             )
         if assignees and board:
             for assignee in assignees:
                 if assignee not in board.members.all():
@@ -98,7 +98,7 @@ class ColumnSerializer(BoardModelSerializer):
 
 
 class LabelSerializer(BoardModelSerializer):
-    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
+    # board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all())
 
     def update(self, instance, validated_data):
         try:
@@ -108,7 +108,7 @@ class LabelSerializer(BoardModelSerializer):
 
     class Meta:
         model = Label
-        fields = ["id", "name", "color", "board"]
+        fields = ["id", "name", "color"]  # , "board"]
 
 
 class BoardDetailSerializer(serializers.ModelSerializer):

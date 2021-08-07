@@ -18,7 +18,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.expanduser("~/knboard.sqlite"),
+        "NAME": SQLITE_FILE,
         # "PORT": get_env("POSTGRES_PORT"),
         # "HOST": get_env("POSTGRES_HOST"),
         # "NAME": get_env("POSTGRES_DB"),

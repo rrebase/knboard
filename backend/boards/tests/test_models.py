@@ -9,3 +9,8 @@ def test_str_methods(board, column, task):
     assert str(board) == board.name
     assert str(column) == column.title
     assert str(task) == f"{task.id} - {task.title}"
+
+
+def test_foo(board_factory, steve):
+    foo = board_factory(owner=steve)
+    print(foo)

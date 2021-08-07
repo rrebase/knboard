@@ -552,13 +552,14 @@ def test_create_task(api_client, column_factory, steve, amy):
     assert Task.objects.filter(title=task_data["title"]).exists()
 
 
+@pytest.mark.skip(reason="Skip until task & board global labels implemented.")
 def test_only_board_members_see_labels(
     api_client, board_factory, label_factory, steve, amy
 ):
     board = board_factory(name="Internals")
     board.members.set([steve])
 
-    label = label_factory(name="Documentation", board=board)
+    label = label_factory(name="Documentation") 
     get_label = lambda: api_client.get(reverse("label-detail", kwargs={"pk": label.id}))
 
     # Steve is a board member, can get label
@@ -572,6 +573,7 @@ def test_only_board_members_see_labels(
     assert response.status_code == 404
 
 
+@pytest.mark.xfail(reason="Global label support.")
 def test_add_labels_to_task(
     api_client, board_factory, column_factory, task_factory, label_factory, steve, amy
 ):
@@ -579,8 +581,8 @@ def test_add_labels_to_task(
     board1.members.set([steve])
     board2 = board_factory()
     column1 = column_factory(board=board1)
-    label1 = label_factory(board=board1)
-    label2 = label_factory(board=board2)
+    label1 = label_factory()
+    label2 = label_factory()
     task1 = task_factory(column=column1)
 
     add_labels = lambda labels: api_client.patch(
@@ -615,8 +617,8 @@ def test_label_names_unique_per_board(
 ):
     board = board_factory()
     board.members.set([steve])
-    label1 = label_factory(board=board, name="Hotfix")
-    label_factory(board=board, name="Bug")
+    label1 = label_factory( name="Hotfix")
+    label_factory( name="Bug")
     api_client.force_authenticate(user=steve)
     response = api_client.patch(
         reverse("label-detail", kwargs={"pk": label1.id}), {"name": "Bug"}

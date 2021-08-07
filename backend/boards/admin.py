@@ -5,8 +5,8 @@ from .models import Board, Label, Column, Task
 
 
 class LabelAdmin(admin.ModelAdmin):
-    list_display = ["name", "board"]
-    list_filter = ["board"]
+    list_display = ["name"]  # , "board"]
+    list_filter = []  # "board"]
     search_fields = ["name"]
 
     class Meta:
