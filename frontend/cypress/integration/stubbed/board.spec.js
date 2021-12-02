@@ -59,6 +59,45 @@ context("Board Detail (Owner)", () => {
     cy.title().should("eq", "Internals | Knboard");
   });
 
+  it("should edit board name if not empty & cancel via esc", () => {
+    cy.fixture("internals_board").then((board) => {
+      const boardName = "Internals";
+      const newBoardName = "Internals Updated";
+      const newBoard = board;
+      cy.route("PATCH", "/api/boards/1/", {
+        ...newBoard,
+        name: newBoardName,
+      });
+
+      cy.findAllByText(newBoardName).should("not.exist");
+      // cy.findAllByText(newBoardName).should("be.visible");
+      cy.findByText(boardName).should("be.visible");
+
+      cy.findByTestId("board").within(() => {
+        cy.findAllByTestId("board-name-textarea").should("not.exist");
+        cy.findByTestId("board-name").click();
+
+        cy.findByTestId("board-name-textarea")
+          .clear()
+          .type("{enter}")
+          .should("be.visible");
+
+        cy.findByTestId("board-name-textarea").type(`${newBoardName}{enter}`);
+        cy.findByTestId("board-name").should("be.visible");
+      });
+      cy.findAllByText(boardName).should("not.exist");
+      cy.findByText(newBoardName).should("be.visible");
+
+      cy.findByTestId("board").within(() => {
+        cy.findByTestId("board-name").click();
+        cy.findByTestId("board-name-textarea").type("Cancelled name{esc}");
+        cy.findAllByTestId("board-name-textarea").should("not.exist");
+      });
+      cy.findByText(newBoardName).should("be.visible");
+
+    });
+  });
+
   it("should have all columns and tasks", () => {
     cy.findByText("Internals").should("be.visible");
 
