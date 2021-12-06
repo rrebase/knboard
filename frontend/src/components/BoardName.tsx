@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Key } from "const";
 import { TextareaAutosize } from "@material-ui/core";
+import { css } from "@emotion/core";
 import { useDispatch } from "react-redux";
 import { Id } from "types";
 import { patchBoard } from "features/board/BoardSlice";
@@ -17,9 +18,10 @@ const Container = styled.div`
 interface Props {
   id: Id;
   name: string;
+  isOwner: boolean;
 }
 
-const BoardName = ({ id, name, ...props }: Props) => {
+const BoardName = ({ id, name, isOwner, ...props }: Props) => {
   const dispatch = useDispatch();
   const [pendingName, setPendingName] = useState<string>(name);
   const [editing, setEditing] = useState<boolean>(false);
@@ -79,7 +81,14 @@ const BoardName = ({ id, name, ...props }: Props) => {
           />
         </div>
       ) : (
-        <div onClick={() => setEditing(true)}>{pendingName}</div>
+        <div
+          css={css`
+            ${isOwner && `&:hover {cursor: pointer;}`}
+          `}
+          onClick={() => setEditing(isOwner)}
+        >
+          {pendingName}
+        </div>
       )}
     </Container>
   );

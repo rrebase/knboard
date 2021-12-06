@@ -90,6 +90,7 @@ const BoardBar = () => {
           <BoardName
             id={detail.id}
             name={detail.name}
+            isOwner={boardOwner}
             data-testid="board-name"
           />
           <AvatarGroup

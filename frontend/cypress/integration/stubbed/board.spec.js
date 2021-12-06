@@ -49,6 +49,13 @@ context("Board Detail (Member)", () => {
     cy.findByText("Owner of this board").should("not.exist");
     cy.findAllByText(/Remove from board/i).should("not.exist");
   });
+  it("should not edit board name", () => {
+    cy.findByText("Operating Systems").should("be.visible");
+    cy.findByTestId("board").within(() => {
+      cy.findByTestId("board-name").click();
+      cy.findAllByTestId("board-name-textarea").should("not.exist");
+    });
+  });
 });
 
 context("Board Detail (Owner)", () => {
@@ -70,7 +77,6 @@ context("Board Detail (Owner)", () => {
       });
 
       cy.findAllByText(newBoardName).should("not.exist");
-      // cy.findAllByText(newBoardName).should("be.visible");
       cy.findByText(boardName).should("be.visible");
 
       cy.findByTestId("board").within(() => {
