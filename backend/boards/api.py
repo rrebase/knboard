@@ -34,6 +34,7 @@ User = get_user_model()
 class BoardViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
     GenericViewSet,

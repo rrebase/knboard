@@ -6,6 +6,7 @@ import { barHeight } from "const";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
+import BoardName from "components/BoardName";
 import MemberInvite from "features/member/MemberInvite";
 import MemberDetail from "features/member/MemberDetail";
 import MemberDialog from "features/member/MemberDialog";
@@ -54,10 +55,6 @@ const Right = styled.div`
   white-space: nowrap;
 `;
 
-const Name = styled.div`
-  color: #6869f6;
-`;
-
 const buttonStyles = css`
   color: ${PRIMARY};
   .MuiButton-iconSizeSmall > *:first-of-type {
@@ -87,10 +84,15 @@ const BoardBar = () => {
   };
 
   return (
-    <Container>
+    <Container data-testid="board">
       <Items>
         <Left>
-          <Name>{detail.name}</Name>
+          <BoardName
+            id={detail.id}
+            name={detail.name}
+            isOwner={boardOwner}
+            data-testid="board-name"
+          />
           <AvatarGroup
             max={3}
             data-testid="member-group"

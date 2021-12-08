@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Board, IColumn, ITask, Label, NanoBoard } from "types";
+import { Board, IColumn, Id, ITask, Label, NanoBoard } from "types";
 import api, { API_BOARDS } from "api";
 import { RootState } from "store";
 import { logout } from "features/auth/AuthSlice";
@@ -27,6 +27,18 @@ export const initialState: InitialState = {
   detailLoading: false,
   detailError: undefined,
 };
+
+interface PatchFields {
+  name: string;
+}
+
+export const patchBoard = createAsyncThunk<
+  Board,
+  { id: Id; fields: Partial<PatchFields> }
+>("board/patchBoardStatus", async ({ id, fields }) => {
+  const response = await api.patch(`${API_BOARDS}${id}/`, fields);
+  return response.data;
+});
 
 interface ColumnsResponse extends IColumn {
   tasks: ITask[];
@@ -126,6 +138,13 @@ export const slice = createSlice({
     builder.addCase(createBoard.rejected, (state, action) => {
       state.createError = action.payload as string;
       state.createLoading = false;
+    });
+    builder.addCase(patchBoard.fulfilled, (state, action) => {
+      if (state.detail !== null) {
+        state.detail.name = action.payload.name;
+      }
+      state.detailError = undefined;
+      state.detailLoading = false;
     });
     builder.addCase(logout.fulfilled, (state) => {
       state.all = [];
