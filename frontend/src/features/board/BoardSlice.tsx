@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Board, IColumn, Id, ITask, Label, NanoBoard } from "types";
 import api, { API_BOARDS } from "api";
+import { createInfoToast } from "features/toast/ToastSlice";
 import { RootState } from "store";
 import { logout } from "features/auth/AuthSlice";
 
@@ -39,6 +40,15 @@ export const patchBoard = createAsyncThunk<
   const response = await api.patch(`${API_BOARDS}${id}/`, fields);
   return response.data;
 });
+
+export const deleteBoard = createAsyncThunk<Id, Id>(
+  "board/deleteBoardStatus",
+  async (id, { dispatch }) => {
+    await api.delete(`${API_BOARDS}${id}/`);
+    dispatch(createInfoToast("Board deleted"));
+    return id;
+  }
+);
 
 interface ColumnsResponse extends IColumn {
   tasks: ITask[];
@@ -145,6 +155,16 @@ export const slice = createSlice({
       }
       state.detailError = undefined;
       state.detailLoading = false;
+    });
+    builder.addCase(deleteBoard.fulfilled, (state, action) => {
+      const indexOfDeletedBoard = state.all.findIndex((obj) => {
+        if (obj.id == action.payload) {
+          return true;
+        }
+        return false;
+      });
+      state.all.splice(indexOfDeletedBoard, 1);
+      state.detail = null;
     });
     builder.addCase(logout.fulfilled, (state) => {
       state.all = [];

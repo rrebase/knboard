@@ -6,6 +6,7 @@ import { barHeight } from "const";
 import { AvatarGroup } from "@material-ui/lab";
 import { css } from "@emotion/core";
 import { avatarStyles } from "styles";
+import { useHistory } from "react-router-dom";
 import BoardName from "components/BoardName";
 import MemberInvite from "features/member/MemberInvite";
 import MemberDetail from "features/member/MemberDetail";
@@ -17,10 +18,11 @@ import { Button } from "@material-ui/core";
 import { PRIMARY } from "utils/colors";
 import { addColumn } from "features/column/ColumnSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { setDialogOpen } from "features/label/LabelSlice";
 import LabelDialog from "features/label/LabelDialog";
 import { useParams } from "react-router-dom";
+import { deleteBoard } from "features/board/BoardSlice";
 import {
   selectAllMembers,
   setMemberListOpen,
@@ -64,6 +66,7 @@ const buttonStyles = css`
 
 const BoardBar = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const members = useSelector(selectAllMembers);
   const error = useSelector((state: RootState) => state.board.detailError);
   const detail = useSelector((state: RootState) => state.board.detail);
@@ -81,6 +84,17 @@ const BoardBar = () => {
 
   const handleEditLabels = () => {
     dispatch(setDialogOpen(true));
+  };
+
+  const handleDelete = () => {
+    if (
+      window.confirm(
+        "Are you sure? Deleting the board will also delete related columns and tasks, and this cannot be undone."
+      )
+    ) {
+      dispatch(deleteBoard(id));
+      history.push("/boards");
+    }
   };
 
   return (
@@ -149,6 +163,20 @@ const BoardBar = () => {
           >
             Add Column
           </Button>
+          {boardOwner && (
+            <Button
+              size="small"
+              css={css`
+                ${buttonStyles}
+                font-weight: 600;
+              `}
+              startIcon={<FontAwesomeIcon icon={faTrash} />}
+              data-testid="delete-board"
+              onClick={handleDelete}
+            >
+              Delete Board
+            </Button>
+          )}
         </Right>
       </Items>
       <MemberDialog board={detail} />

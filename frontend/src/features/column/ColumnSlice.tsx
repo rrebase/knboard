@@ -3,7 +3,7 @@ import {
   createEntityAdapter,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import { fetchBoardById } from "features/board/BoardSlice";
+import { deleteBoard, fetchBoardById } from "features/board/BoardSlice";
 import { IColumn, Id } from "types";
 import api, { API_SORT_COLUMNS, API_COLUMNS } from "api";
 import { createErrorToast, createInfoToast } from "features/toast/ToastSlice";
@@ -74,6 +74,9 @@ export const slice = createSlice({
     });
     builder.addCase(deleteColumn.fulfilled, (state, action) => {
       columnAdapter.removeOne(state, action.payload);
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      columnAdapter.removeAll(state);
     });
   },
 });

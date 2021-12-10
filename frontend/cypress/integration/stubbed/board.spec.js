@@ -56,6 +56,9 @@ context("Board Detail (Member)", () => {
       cy.findAllByTestId("board-name-textarea").should("not.exist");
     });
   });
+  it("should not see delete board button", () => {
+    cy.findAllByTestId("delete-board").should("not.exist");
+  });
 });
 
 context("Board Detail (Owner)", () => {
@@ -230,6 +233,24 @@ context("Board Detail (Owner)", () => {
       cy.get(".MuiAutocomplete-popper").within(() => {
         cy.findByText(member.username).should("have.value", "");
       });
+    });
+  });
+  it("should delete board", () => {
+    const stub = cy.stub();
+    stub.onFirstCall().returns(true);
+    cy.on("window:confirm", stub);
+    cy.fixture("internals_board").then((board) => {
+      cy.route("DELETE", `/api/boards/${board.id}/`, "");
+
+      cy.findByText(board.name).should("be.visible");
+
+      cy.findByTestId(`board`).within(() => {
+        cy.findByTestId("delete-board").click();
+      });
+
+      cy.findAllByText(board.name).should("not.exist");
+      cy.findByText("All Boards").should("be.visible");
+      cy.findByText(/Create new board/i).should("be.visible");
     });
   });
 });
