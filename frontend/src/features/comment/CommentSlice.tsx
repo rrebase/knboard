@@ -10,6 +10,7 @@ import {
   createInfoToast,
   createSuccessToast,
 } from "features/toast/ToastSlice";
+import { deleteBoard } from "features/board/BoardSlice";
 import { RootState } from "store";
 import { Id, NewTaskComment, Status, TaskComment } from "types";
 
@@ -92,6 +93,9 @@ export const slice = createSlice({
     });
     builder.addCase(deleteComment.fulfilled, (state, action) => {
       commentAdapter.removeOne(state, action.payload as Id);
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      commentAdapter.removeAll(state);
     });
   },
 });

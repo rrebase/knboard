@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { TasksByColumn, ITask, Id, NewTask, PriorityValue } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
+import { deleteBoard, fetchBoardById } from "features/board/BoardSlice";
 import { AppDispatch, AppThunk, RootState } from "store";
 import {
   createErrorToast,
@@ -155,6 +155,10 @@ export const slice = createSlice({
           (assigneeId) => assigneeId !== deletedMemberId
         );
       }
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      state.byColumn = {};
+      state.byId = {};
     });
   },
 });
