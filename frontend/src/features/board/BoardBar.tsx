@@ -71,7 +71,7 @@ const BoardBar = () => {
   const error = useSelector((state: RootState) => state.board.detailError);
   const detail = useSelector((state: RootState) => state.board.detail);
   const boardOwner = useSelector(currentBoardOwner);
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const detailDataExists = detail?.id.toString() === id;
 
   if (!detailDataExists || error || !detail) {

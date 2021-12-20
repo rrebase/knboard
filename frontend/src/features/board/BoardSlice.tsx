@@ -41,7 +41,7 @@ export const patchBoard = createAsyncThunk<
   return response.data;
 });
 
-export const deleteBoard = createAsyncThunk<Id, Id>(
+export const deleteBoard = createAsyncThunk<string, string>(
   "board/deleteBoardStatus",
   async (id, { dispatch }) => {
     await api.delete(`${API_BOARDS}${id}/`);
@@ -157,12 +157,9 @@ export const slice = createSlice({
       state.detailLoading = false;
     });
     builder.addCase(deleteBoard.fulfilled, (state, action) => {
-      const indexOfDeletedBoard = state.all.findIndex((obj) => {
-        if (obj.id == action.payload) {
-          return true;
-        }
-        return false;
-      });
+      const indexOfDeletedBoard = state.all.findIndex(
+        (board) => board.id.toString() === action.payload
+      );
       state.all.splice(indexOfDeletedBoard, 1);
       state.detail = null;
     });
