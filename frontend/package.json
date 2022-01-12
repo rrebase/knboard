@@ -45,7 +45,7 @@
     "eslint-plugin-react": "7.20.5",
     "jest-junit": "10.0.0",
     "jest-localstorage-mock": "2.4.2",
-    "markdown-it": "10.0.0",
+    "markdown-it": "12.3.2",
     "material-ui-popup-state": "1.5.4",
     "mutationobserver-shim": "0.3.5",
     "node-sass": "4.14.1",
