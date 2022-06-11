@@ -1,8 +1,6 @@
-<h1 align="center">Simple Kanban boards</h1>
+<h1 align="center">Kanban boards - SPA with React & Django</h1>
 
-👉 [View Live](http://knboard.com/)
-
-![image](https://user-images.githubusercontent.com/23059874/82831611-8f672600-9ec1-11ea-9d39-137936997925.png)
+<h2 align="center">⚠️ Archived as it's no longer updated 🥲</h1>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -168,7 +166,3 @@ black --exclude .venv .
 ## License
 
 Licensed under the MIT license.
-
----
-
-👉 [View Live](http://knboard.com/)
