@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { Label, Id } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
+import { deleteBoard, fetchBoardById } from "features/board/BoardSlice";
 import { RootState } from "store";
 import api, { API_LABELS } from "api";
 import { createInfoToast, createErrorToast } from "features/toast/ToastSlice";
@@ -83,6 +83,9 @@ export const slice = createSlice({
     });
     builder.addCase(deleteLabel.fulfilled, (state, action) => {
       labelAdapter.removeOne(state, action.payload);
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      labelAdapter.removeAll(state);
     });
   },
 });

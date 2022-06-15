@@ -4,7 +4,7 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { BoardMember } from "types";
-import { fetchBoardById } from "features/board/BoardSlice";
+import { deleteBoard, fetchBoardById } from "features/board/BoardSlice";
 import { RootState } from "store";
 
 const memberAdapter = createEntityAdapter<BoardMember>({
@@ -37,6 +37,9 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchBoardById.fulfilled, (state, action) => {
       memberAdapter.setAll(state, action.payload.members);
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      memberAdapter.removeAll(state);
     });
   },
 });
